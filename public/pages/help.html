@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<!-- ===== SOFA EXPERIENCE - HELP PAGE ===== -->
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>طلب بمساعدة - صوفا للتصميم الداخلي</title>
+
+    <!-- ===== EXTERNAL LIBRARIES ===== -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.theme.default.min.css" />
+
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="../node_modules/flag-icons/css/flag-icons.min.css" />
+
+    <!-- ===== CUSTOM CSS ===== -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/pages/help.css" />
+    <link rel="stylesheet" href="../assets/css/utilities/translations.css" />
+
+    <!-- ===== FAVICON & MANIFEST ===== -->
+    <link rel="shortcut icon" href="../assets/images/logos/Logo.png" type="image/x-icon" />
+    <link rel="manifest" href="../manifest.json" />
+</head>
+
+<body>
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header container">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="header-logo">
+                <img src="../assets/images/logos/logo.svg" alt="Logo" />
+            </div>
+
+            <!-- Navigation -->
+            <nav class="header-nav">
+                <ul class="header-nav-list">
+                    <li class="header-nav-item">
+                        <a href="/" class="header-nav-link">الرئيسية</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/categories.html" class="header-nav-link">التصنيفات</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/about.html" class="header-nav-link">من نحن</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/gallery.html" class="header-nav-link">المعرض</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/blog.html" class="header-nav-link">المدونة</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/contact.html" class="header-nav-link">اتصل بنا</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <!-- Auth -->
+                <img src="../assets/images/icons/user.svg" alt="User" />
+
+                <!-- Language Dropdown -->
+                <div class="dropdown language-dropdown">
+                    <!-- Button -->
+                    <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
+                        id="languageDropdown" aria-expanded="false">
+                        <img src="../assets/images/icons/translation.svg" alt="Globe" />
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
+                        <li class="language-option" data-language="ar">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇸🇦
+                                <span class="body-2 text-body">العربية</span>
+                            </div>
+                            <input type="radio" name="language" id="arabicRadio" checked />
+                        </li>
+                        <li class="hr"></li>
+                        <li class="language-option" data-language="en">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇺🇲
+                                <span class="body-2 text-body">English</span>
+                            </div>
+                            <input type="radio" name="language" id="englishRadio" />
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <a class="btn btn-custom-primary" href="/pages/help.html">
+                    طلب بمساعدة
+                </a>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== BREADCRUMB ===== -->
+    <div class="breadcrumb-container container">
+        <a href="#" class="body-2 text-body">الرئيسية</a>
+        <span class="body-2 text-body">/</span>
+        <a href="#" class="body-1 text-primary">طلب بمساعدة</a>
+    </div>
+
+    <!-- NAV MOBILE OVERLAY -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- NAV MOBILE DRAWER -->
+    <div class="nav-mobile-drawer" id="navMobileDrawer">
+        <!-- Close Button -->
+        <div class="nav-mobile-header" id="navMobileClose">
+            <i class="fas fa-times" style="font-size: 18px;"></i>
+            <p class="body-1 text-subheading mb-0">اغلاق</p>
+        </div>
+
+        <!-- Content -->
+        <div class="nav-mobile-content">
+            <!-- Navigation Links -->
+            <div class="nav-mobile-group">
+                <ul class="nav-mobile-nav-list">
+                    <li class="nav-mobile-nav-item">
+                        <a href="/" class="nav-mobile-nav-link body-1">الرئيسية</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/categories.html" class="nav-mobile-nav-link body-1">التصنيفات</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/about.html" class="nav-mobile-nav-link body-1">من نحن</a>
+                    </li>
+                    <li class="nav-mobile-nav-item active">
+                        <a href="/pages/gallery.html" class="nav-mobile-nav-link body-1">المعرض</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/blog.html" class="nav-mobile-nav-link body-1">المدونة</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/contact.html" class="nav-mobile-nav-link body-1">اتصل بنا</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Language Selection -->
+            <div class="nav-mobile-language">
+                <div class="nav-mobile-language-option" data-language="ar">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇸🇦
+                        <p class="body-2 mb-0">العربية</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileArabicRadio" checked />
+                </div>
+                <div class="nav-mobile-language-option" data-language="en">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇺🇲
+                        <p class="body-2 mb-0">English</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileEnglishRadio" />
+                </div>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Actions Buttons -->
+            <div class="nav-mobile-action-button">
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">تسجيل دخول / انشاء حساب</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">حسابي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/order.svg" alt="Cart" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">طلباتي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4 text-danger">
+                    <img src="../assets/images/icons/logout.svg" alt="Logout" />
+                    <p class="body-2 mb-0 sub-heading-4 text-danger">تسجيل خروج</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <div class="flex-grow-1 d-flex">
+            <a class="btn btn-custom-primary w-100 mt-auto" href="/pages/help.html">
+                طلب بمساعدة
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== HELP SECTION ===== -->
+    <section class="help">
+        <div class="container">
+            <!-- heading -->
+            <div class="d-flex flex-column gap-sm-4">
+                <h1 class="heading-h7 mb-0">هل أنت جاهز لبدء تأثيث مشروعك؟</h1>
+                <p class="body-2 mb-0"> تواصل معنا اليوم للحصول على باكجاتنا الفندقية الجاهزة باحترافية وسرعة</p>
+            </div>
+
+            <!-- form -->
+            <div class="help-form">
+                <form action="" class="d-flex flex-column gap-sm-3">
+                    <!-- Name -->
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" placeholder="الاسم الكامل" />
+                    </div>
+
+                    <!-- Company Name -->
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="company-name" placeholder="إسم الشركة (ان وجد)" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="البريد الإلكتروني" />
+                    </div>
+
+                    <!-- Phone -->
+                    <!-- Phone Input -->
+                    <div class="form-group">
+                        <div class="input-phone">
+                            <!-- Country Select -->
+                            <div class="country-select" data-bs-toggle="dropdown" aria-expanded="false"
+                                style="height: 50px;">
+                                <span class="flag fi fi-sa" id="selected-flag"></span>
+                                <span class="code" id="selected-code">+966</span>
+                                <i class="fas fa-chevron-down dropdown-icon"></i>
+                            </div>
+
+                            <!-- Dropdown Menu -->
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="input-with-icon" style="min-height: 45px;">
+                                        <input type="text" class="form-control" placeholder="ابحث هنا" />
+                                        <i class="input-icon">
+                                            <img src="../assets/images/icons/search-normal.png" alt="بحث" />
+                                        </i>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="sa" data-code="+966">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-sa"></span>
+                                            <span class="body-2">السعودية</span>
+                                        </span>
+                                        <span class="body-2">+966</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ae" data-code="+971">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ae"></span>
+                                            <span class="body-2">الإمارات</span>
+                                        </span>
+                                        <span class="body-2">+971</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="kw" data-code="+965">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-kw"></span>
+                                            <span class="body-2">الكويت</span>
+                                        </span>
+                                        <span class="body-2">+965</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="qa" data-code="+974">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-qa"></span>
+                                            <span class="body-2">قطر</span>
+                                        </span>
+                                        <span class="body-2">+974</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="bh" data-code="+973">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-bh"></span>
+                                            <span class="body-2">البحرين</span>
+                                        </span>
+                                        <span class="body-2">+973</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="om" data-code="+968">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-om"></span>
+                                            <span class="body-2">عمان</span>
+                                        </span>
+                                        <span class="body-2">+968</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="jo" data-code="+962">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-jo"></span>
+                                            <span class="body-2">الأردن</span>
+                                        </span>
+                                        <span class="body-2">+962</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="lb" data-code="+961">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-lb"></span>
+                                            <span class="body-2">لبنان</span>
+                                        </span>
+                                        <span class="body-2">+961</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="eg" data-code="+20">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-eg"></span>
+                                            <span class="body-2">مصر</span>
+                                        </span>
+                                        <span class="body-2">+20</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ma" data-code="+212">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ma"></span>
+                                            <span class="body-2">المغرب</span>
+                                        </span>
+                                        <span class="body-2">+212</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="dz" data-code="+213">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-dz"></span>
+                                            <span class="body-2">الجزائر</span>
+                                        </span>
+                                        <span class="body-2">+213</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="tn" data-code="+216">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-tn"></span>
+                                            <span class="body-2">تونس</span>
+                                        </span>
+                                        <span class="body-2">+216</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ly" data-code="+218">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ly"></span>
+                                            <span class="body-2">ليبيا</span>
+                                        </span>
+                                        <span class="body-2">+218</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="sd" data-code="+249">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-sd"></span>
+                                            <span class="body-2">السودان</span>
+                                        </span>
+                                        <span class="body-2">+249</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="iq" data-code="+964">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-iq"></span>
+                                            <span class="body-2">العراق</span>
+                                        </span>
+                                        <span class="body-2">+964</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="sy" data-code="+963">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-sy"></span>
+                                            <span class="body-2">سوريا</span>
+                                        </span>
+                                        <span class="body-2">+963</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ye" data-code="+967">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ye"></span>
+                                            <span class="body-2">اليمن</span>
+                                        </span>
+                                        <span class="body-2">+967</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ps" data-code="+970">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ps"></span>
+                                            <span class="body-2">فلسطين</span>
+                                        </span>
+                                        <span class="body-2">+970</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="us" data-code="+1">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-us"></span>
+                                            <span class="body-2">الولايات المتحدة</span>
+                                        </span>
+                                        <span class="body-2">+1</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="gb" data-code="+44">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-gb"></span>
+                                            <span class="body-2">المملكة المتحدة</span>
+                                        </span>
+                                        <span class="body-2">+44</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="de" data-code="+49">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-de"></span>
+                                            <span class="body-2">ألمانيا</span>
+                                        </span>
+                                        <span class="body-2">+49</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="fr" data-code="+33">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-fr"></span>
+                                            <span class="body-2">فرنسا</span>
+                                        </span>
+                                        <span class="body-2">+33</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="it" data-code="+39">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-it"></span>
+                                            <span class="body-2">إيطاليا</span>
+                                        </span>
+                                        <span class="body-2">+39</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="es" data-code="+34">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-es"></span>
+                                            <span class="body-2">إسبانيا</span>
+                                        </span>
+                                        <span class="body-2">+34</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ca" data-code="+1">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ca"></span>
+                                            <span class="body-2">كندا</span>
+                                        </span>
+                                        <span class="body-2">+1</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="au" data-code="+61">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-au"></span>
+                                            <span class="body-2">أستراليا</span>
+                                        </span>
+                                        <span class="body-2">+61</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="in" data-code="+91">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-in"></span>
+                                            <span class="body-2">الهند</span>
+                                        </span>
+                                        <span class="body-2">+91</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="pk" data-code="+92">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-pk"></span>
+                                            <span class="body-2">باكستان</span>
+                                        </span>
+                                        <span class="body-2">+92</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="tr" data-code="+90">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-tr"></span>
+                                            <span class="body-2">تركيا</span>
+                                        </span>
+                                        <span class="body-2">+90</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="ir" data-code="+98">
+                                        <span class="d-flex align-items-center gap-sm-3">
+                                            <span class="flag fi fi-ir"></span>
+                                            <span class="body-2">إيران</span>
+                                        </span>
+                                        <span class="body-2">+98</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Phone Number Input -->
+                            <input type="tel" class="phone-number" dir="rtl" placeholder="مثال 5xxxxxxx"
+                                style="height: 50px" />
+                        </div>
+                    </div>
+
+                    <!-- Number of units -->
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="units" placeholder="عدد الوحدات / حجم المشروع" />
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                        <textarea class="form-control" id="message" placeholder="ملاحظات اضافية او طلبات خاصة"
+                            rows="3"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <a class="btn btn-custom-primary" href="/pages/contact.html">
+                        أرسل الطلب
+                    </a>
+
+                    <!-- Helper text -->
+                    <p class="body-3 mb-0 text-secondary">
+                        سوف يتم التواصل معكم خلال 48 ساعة
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER SECTION ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Content -->
+            <div class="container">
+                <!-- Pattern background element -->
+                <img class="footer-pattern" src="../assets/images/footer/pattern.svg" alt="Pattern" />
+
+                <div class="row text-center">
+                    <!-- Column 4: Logo -->
+                    <div class="footer-item align-items-center align-items-md-start col-md-3 gap-sm">
+                        <img src="../assets/images/logos/logo-white.svg" alt="SOFA Logo" />
+                        <p class="body-2 text-white mb-0" style="opacity: 0.8" data-translate="footer.vision">
+                            جزء من رؤية المملكة 2030
+                        </p>
+                    </div>
+
+                    <!-- Column 3: Quick Links -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.quickLinks">
+                            روابط سريعة
+                        </h6>
+                        <div class="d-flex flex-column text-start gap-sm-4">
+                            <a href="../index.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.home">الرئيسية</a>
+                            <a href="categories.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.packages">الباكجات</a>
+                            <a href="about.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.about">من
+                                نحن</a>
+                            <a href="faq.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.faq">الأسئلة الشائعة</a>
+                            <a href="contact.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.contact">اتصل بنا</a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Contact Information -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.contactInfo">
+                            معلومات الاتصال
+                        </h6>
+                        <div class="d-flex flex-column gap-sm-4">
+                            <div class="mb-0 d-flex flex-row gap-sm-5 align-items-center">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/phone.svg" alt="phone" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.phone">+966
+                                    500000000</span>
+                            </div>
+                            <div class="mb-0 d-flex flex-row gap-sm-5">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/email.svg" alt="email" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.email">info@sofa.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 1: Follow Us -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.followUs">
+                            تابعنا
+                        </h6>
+                        <div class="d-flex flex-row gap-sm-4">
+                            <a href="#"><img src="../assets/images/social/snapchat.png" alt="Snapchat" /></a>
+                            <a href="#"><img src="../assets/images/social/youtube.png" alt="YouTube" /></a>
+                            <a href="#"><img src="../assets/images/social/tiktok.png" alt="TikTok" /></a>
+                            <a href="#"><img src="../assets/images/social/instagram.png" alt="Instagram" /></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <hr class="m-0" style="opacity: 0.1" />
+
+                <!-- Copyright Section -->
+                <div class="footer-bottom body-2 text-caption" data-translate="footer.copyright">
+                    © 2025 SOFA Furnishing Co. جميع الحقوق محفوظة.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS SECTION ===== -->
+    <!-- jQuery -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="../node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/language.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/nav-bar.js"></script>
+    <script src="../assets/js/optimizations.js"></script>
+</body>
+<!-- ===== END BODY ===== -->
+
+</html>
+<!-- ===== END HTML ===== -->

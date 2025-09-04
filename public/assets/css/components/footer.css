@@ -1,0 +1,103 @@
+/* ===== FOOTER COMPONENT ===== */
+
+/* Main footer container */
+.footer {
+  padding: var(--padding-box-normal);
+}
+
+/* Footer content wrapper */
+.footer .footer-container {
+  color: var(--surface-white);
+  background-color: var(--primary);
+  border-radius: var(--radius-normal-box);
+  padding-top: var(--padding-box-normal);
+  padding-bottom: var(--padding-box-normal);
+  padding-left: var(--frame-margin);
+  padding-right: var(--frame-margin);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pattern background element */
+.footer .footer-pattern {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  max-width: 930px;
+  transform: translateX(-50%);
+}
+
+/* Footer content */
+.footer .footer-container .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+/* Footer item styling */
+.footer .footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Footer contact icon */
+.footer .footer-container .footer-item .footer-contact-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.footer .footer-container .footer-item .footer-contact-icon img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Footer bottom section */
+.footer .footer-bottom {
+  text-align: center;
+}
+
+/* ===== MOBILE DESIGN ===== */
+@media (max-width: 991.98px) {
+
+  /* Mobile footer container */
+  .footer {
+    padding: var(--padding-mobile-box-normal);
+  }
+
+  /* Mobile footer content wrapper */
+  .footer .footer-container {
+    border-radius: var(--radius-mobile-normal-box);
+    padding-top: var(--padding-mobile-box-normal);
+    padding-bottom: var(--padding-mobile-box-normal);
+    padding-left: var(--frame-mobile-margin);
+    padding-right: var(--frame-mobile-margin);
+  }
+
+  .footer .footer-container .row {
+    gap: var(--gap-mobile-l);
+  }
+
+  /* Mobile pattern adjustments */
+  .footer .footer-container::before {
+    display: none;
+  }
+
+  /* Mobile footer content adjustments */
+  .footer .footer-container .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-mobile-sm);
+  }
+
+  /* Mobile footer pattern adjustments */
+  .footer .footer-pattern {
+    height: 240px;
+  }
+
+  /* Mobile footer item adjustments */
+  .footer .footer-item {
+    align-items: flex-start;
+    text-align: left;
+  }
+}

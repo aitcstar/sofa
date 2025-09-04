@@ -1,0 +1,359 @@
+/* ===== BUTTONS COMPONENT ===== */
+
+/* Main Primary Button */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-sm-5);
+}
+
+.btn-custom-primary {
+  font-weight: 700;
+  min-width: 192px;
+  font-size: 14px;
+  line-height: 24px;
+  border-color: var(--primary);
+  color: var(--surface-white);
+  background-color: var(--primary);
+  font-family: var(--font-primary);
+  min-height: var(--button-lg-height);
+  border-radius: var(--button-radius);
+  transition: all var(--transition-normal);
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.btn-custom-primary:hover {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Secondary Button */
+.btn-custom-secondary {
+  font-weight: 700;
+  min-width: 192px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--surface-white);
+  border-color: var(--secondary);
+  font-family: var(--font-primary);
+  background-color: var(--secondary);
+  min-height: var(--button-lg-height);
+  border-radius: var(--button-radius);
+  transition: all var(--transition-normal);
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.btn-custom-secondary:hover {
+  background-color: transparent;
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+
+/* White Outline Button */
+.btn-custom-outline {
+  font-weight: 700;
+  min-width: 192px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--text-heading);
+  margin-left: var(--gap-sm-5);
+  font-family: var(--font-primary);
+  min-height: var(--button-lg-height);
+  border-radius: var(--button-radius);
+  background-color: var(--surface-white);
+  border: 1px solid var(--primary);
+  transition: all var(--transition-normal);
+  padding: var(--spacing-sm) var(--spacing-lg);
+}
+
+.btn-custom-outline:hover {
+  background-color: var(--surface-white);
+  border-color: var(--surface-white);
+  color: var(--text-heading);
+}
+
+/* Border Button (White Border) */
+.border-btn {
+  border: 1px solid var(--surface-white);
+  color: var(--surface-white);
+  width: 120px;
+  font-size: 13px !important;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  transition: all var(--transition-normal);
+  border-radius: var(--button-radius);
+  white-space: nowrap;
+}
+
+.border-btn:hover {
+  background-color: var(--surface-white);
+  color: var(--text-heading);
+}
+
+/* ===== ACTION BUTTONS ===== */
+
+/* Submit Button */
+.btn-submit {
+  background-color: var(--primary) !important;
+  color: var(--surface-white) !important;
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  min-height: var(--button-lg-height) !important;
+  font-weight: 600;
+  width: 436px;
+  font-size: 14px;
+  transition: all var(--transition-normal);
+}
+
+.btn-submit:hover {
+  background-color: var(--primary-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== BUTTON SIZES ===== */
+
+/* Large Button */
+.btn-lg {
+  min-height: var(--button-lg-height);
+  font-size: 16px;
+  padding: var(--spacing-sm) var(--spacing-xl);
+}
+
+/* Small Button */
+.btn-sm {
+  min-height: var(--button-sm-height);
+  font-size: 12px;
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+/* Full Width Button */
+.btn-w-100 {
+  width: 100% !important;
+}
+
+/* ===== BUTTON STATES ===== */
+
+/* Disabled Button */
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  border: none;
+  background-color: var(--primary-disabled) !important;
+}
+
+/* Loading Button */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* ===== RESPONSIVE BUTTONS ===== */
+.btn-order {
+  display: flex;
+  font-size: 12px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Breakpoint */
+@media (max-width: 991.98px) {
+  /* Tablet Button Adjustments */
+  .btn-custom-primary,
+  .btn-custom-secondary,
+  .btn-custom-outline {
+    min-width: 160px;
+    font-size: 13px;
+    line-height: 22px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .border-btn {
+    width: 100px;
+    font-size: 12px !important;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  /* Mobile Primary & Outline Buttons */
+  .btn-custom-primary,
+  .btn-custom-outline {
+    width: 100%;
+    margin-left: 0;
+    min-width: auto;
+    font-size: 14px;
+    line-height: 24px;
+    min-height: var(--button-mobile-lg-height);
+    border-radius: var(--button-mobile-radius);
+    padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+  }
+
+  /* Mobile Secondary Button */
+  .btn-custom-secondary {
+    width: 100%;
+    min-width: auto;
+    font-size: 14px;
+    line-height: 24px;
+    min-height: var(--button-mobile-lg-height);
+    border-radius: var(--button-mobile-radius);
+    padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+  }
+
+  /* Mobile Action Buttons */
+  .btn-witch,
+  .border-btn {
+    width: 100% !important;
+    min-height: var(--button-mobile-lg-height);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  /* Mobile Submit Button */
+  .btn-submit {
+    width: 100%;
+    min-height: var(--button-mobile-lg-height);
+    border-radius: var(--button-mobile-radius);
+    padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+  }
+
+  /* Mobile WhatsApp & Arrow Buttons */
+  .btn-whatsapp,
+  .btn-arrow {
+    width: 100%;
+    min-height: var(--button-mobile-lg-height);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  /* Mobile Responsive Spacing */
+  .responsve-btn {
+    margin-left: 0 !important;
+    margin-top: var(--gap-mobile-sm-3);
+    margin-right: 0 !important;
+  }
+
+  /* Mobile Button Sizes */
+  .btn-lg {
+    height: var(--button-mobile-lg-height);
+    font-size: 14px;
+    padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  .btn-sm {
+    height: var(--button-mobile-sm-height);
+    font-size: 12px;
+    padding: var(--padding-mobile-box-small-4) var(--padding-mobile-box-small-2);
+    border-radius: var(--button-mobile-radius);
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 575.98px) {
+  /* Small Mobile Button Adjustments */
+  .btn-custom-primary,
+  .btn-custom-outline,
+  .btn-custom-secondary,
+  .btn-submit,
+  .btn-whatsapp,
+  .btn-arrow,
+  .btn-witch {
+    font-size: 13px;
+    line-height: 20px;
+    min-height: var(--button-mobile-sm-height);
+    padding: var(--padding-mobile-box-small-4) var(--padding-mobile-box-small-2);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  .border-btn {
+    font-size: 12px !important;
+    min-height: var(--button-mobile-sm-height);
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-3);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  /* Small Mobile Button Sizes */
+  .btn-lg {
+    height: var(--button-mobile-sm-height);
+    font-size: 13px;
+    padding: var(--padding-mobile-box-small-4) var(--padding-mobile-box-small-2);
+  }
+
+  .btn-sm {
+    height: var(--button-mobile-sm-height);
+    font-size: 11px;
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-3);
+  }
+}
+
+/* Extra Small Mobile Breakpoint */
+@media (max-width: 375px) {
+  /* Extra Small Mobile Button Adjustments */
+  .btn-custom-primary,
+  .btn-custom-outline,
+  .btn-custom-secondary,
+  .btn-submit,
+  .btn-whatsapp,
+  .btn-arrow,
+  .btn-witch {
+    font-size: 12px;
+    line-height: 18px;
+    min-height: var(--button-mobile-sm-height);
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-3);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  .border-btn {
+    font-size: 11px !important;
+    min-height: var(--button-mobile-sm-height);
+    padding: var(--padding-mobile-box-small-6) var(--padding-mobile-box-small-4);
+    border-radius: var(--button-mobile-radius);
+  }
+
+  /* Extra Small Mobile Button Sizes */
+  .btn-lg {
+    height: var(--button-mobile-sm-height);
+    font-size: 12px;
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-3);
+  }
+
+  .btn-sm {
+    height: var(--button-mobile-sm-height);
+    font-size: 10px;
+    padding: var(--padding-mobile-box-small-6) var(--padding-mobile-box-small-4);
+  }
+}

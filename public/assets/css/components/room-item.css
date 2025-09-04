@@ -1,0 +1,97 @@
+/* ===== ROOM ITEM COMPONENT ===== */
+.room-item {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-white);
+    border-radius: var(--radius-small-box);
+    border: 1px solid var(--surface-border);
+    overflow: hidden;
+}
+
+/* Room card specific styles */
+.room-item .image {
+    position: relative;
+    height: 293px;
+    overflow: hidden;
+}
+
+.room-item .image .widget {
+    position: absolute;
+    background-color: #33415C;
+    padding: 8px 12px;
+    z-index: 2;
+    min-width: 175px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: var(--radius-small-box-3);
+}
+
+.room-item .image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition-normal);
+}
+
+.room-item .content {
+    padding: var(--padding-box-small) var(--padding-box-small) var(--padding-box-small-3) var(--padding-box-small);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.room-item .feature-item {
+    padding: 4px 14px;
+    background-color: transparent;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box);
+}
+
+.room-item .feature-item span {
+    white-space: nowrap;
+}
+
+.room-item .feature-item img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.room-item .actions {
+    padding: var(--padding-box-small-3) var(--padding-box-small);
+    border-top: 1px solid var(--surface-line);
+}
+
+.room-item .action-icon {
+    font-size: 18px;
+}
+
+/* ===== RESPONSIVE DESIGN MOBILE ===== */
+@media (max-width: 768px) {
+    .room-item {
+        border-radius: var(--radius-mobile-small-box);
+    }
+
+    .room-item .image {
+        height: 200px;
+    }
+
+    .room-item .image .widget {
+        border-bottom-left-radius: var(--radius-mobile-small-box-3);
+    }
+
+    .room-item .content {
+        padding: var(--padding-mobile-box-small) var(--padding-mobile-box-small) var(--padding-mobile-box-small-3) var(--padding-mobile-box-small);
+    }
+
+    .room-item .feature-item {
+        border-radius: var(--radius-mobile-small-box);
+    }
+
+    .room-item .actions {
+        padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-small);
+    }
+}

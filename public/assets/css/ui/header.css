@@ -1,0 +1,1036 @@
+/* ===== HEADER COMPONENT ===== */
+
+/* Navbar Styles */
+nav.navbar {
+  z-index: var(--z-fixed);
+}
+
+.navbar-brand {
+  margin: 0;
+}
+
+.navbar-brand img {
+  height: 36px;
+  max-height: 50px;
+}
+
+/* Navbar background when collapsed */
+.navbar.bg-transparent {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Active navbar item */
+.active_navbar {
+  position: relative;
+}
+
+.active_navbar::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--surface-white);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Navbar bottom line */
+nav>div {
+  position: relative;
+}
+
+nav>div::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  opacity: 0.2;
+  background-color: var(--surface-white);
+}
+
+/* Navbar items */
+.item_navbar {
+  color: #FFFFFFCC !important;
+}
+
+/* Profile user */
+.profileuser {
+  cursor: pointer;
+}
+
+/* Language change icons */
+.image_navbar_langge {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+/* Language dropdown */
+.h_langage_change {
+  height: 113px !important;
+}
+
+.dropdown-menu {
+  --bs-dropdown-link-active-bg: var(--secondary) !important;
+}
+
+.dropdown-menu.show {
+  height: 170px !important;
+}
+
+.dropdown-toggle::after {
+  color: white;
+}
+
+.language_change img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Navbar buttons */
+.btn-navbar {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.border_input_navbar {
+  border: 2px solid var(--surface-check-radio) !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  cursor: pointer !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  position: relative !important;
+}
+
+.border_input_navbar:checked {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  background-image: none !important;
+}
+
+.border_input_navbar:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+.border_input_navbar:focus {
+  outline: none !important;
+}
+
+/* ===== LANGUAGE DROPDOWN FIXES ===== */
+/* Language Dropdown Button */
+.language-dropdown-btn {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 8px 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.language-dropdown-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.language-dropdown-btn:hover::before {
+  left: 100%;
+}
+
+.language-dropdown-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px);
+}
+
+.language-dropdown-btn:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.language-dropdown-btn:active {
+  transform: translateY(0);
+}
+
+/* Language Dropdown Menu */
+.language-dropdown-menu {
+  position: absolute !important;
+  right: -50% !important;
+  left: auto !important;
+  top: 150% !important;
+  margin-top: 0.5rem !important;
+  min-width: 220px !important;
+  background: var(--surface-white) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  padding: 0 !important;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateY(0);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Dropdown Header */
+.language-dropdown-menu .dropdown-header {
+  background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--surface-border);
+  margin: 0;
+  position: relative;
+}
+
+.language-dropdown-menu .dropdown-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.language-dropdown-menu .dropdown-header span {
+  color: var(--text-subheading);
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+/* Language Options */
+.language-option {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.language-option::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.05), transparent);
+  transition: left 0.3s ease;
+}
+
+.language-option:hover::after {
+  left: 100%;
+}
+
+.language-option:hover {
+  background-color: var(--primary-10) !important;
+  transform: translateX(-2px);
+}
+
+.language-option::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.language-option:hover::before {
+  transform: scaleY(1);
+}
+
+.language-option-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.language-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.language-flag {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.language-flag:hover {
+  transform: scale(1.15) rotate(2deg);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-20);
+}
+
+.language-option:hover .language-flag {
+  transform: scale(1.1);
+}
+
+/* Radio Button Styling */
+.language-option input[type="radio"] {
+  cursor: pointer;
+  margin: 0;
+  border: 2px solid var(--surface-check-radio) !important;
+  border-radius: 50% !important;
+  width: 22px !important;
+  height: 22px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  position: relative !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.language-option input[type="radio"]:checked {
+  background: linear-gradient(135deg, var(--secondary), var(--primary)) !important;
+  border-color: var(--secondary) !important;
+  background-image: none !important;
+  transform: scale(1.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(var(--secondary-rgb), 0.3);
+}
+
+.language-option input[type="radio"]:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  animation: checkmarkAppear 0.3s ease;
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.language-option input[type="radio"]:hover {
+  border-color: var(--secondary) !important;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.language-option input[type="radio"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--secondary-rgb), 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix dropdown positioning */
+.dropdown-menu.h_langage_change {
+  position: absolute !important;
+  right: -50% !important;
+  left: auto !important;
+  top: 150% !important;
+  margin-top: 0.5rem !important;
+  min-width: 200px !important;
+}
+
+/* Hide default dropdown arrow */
+#languageDropdown::after {
+  display: none !important;
+}
+
+/* Language selection styling */
+.language-option {
+  cursor: pointer;
+}
+
+/* Checkbox styling for language selection */
+.language-option input[type="checkbox"] {
+  cursor: pointer;
+  margin: 0;
+  border: 2px solid var(--surface-check-radio) !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  position: relative !important;
+}
+
+.language-option input[type="checkbox"]:checked {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  background-image: none !important;
+}
+
+.language-option input[type="checkbox"]:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+/* Ensure only one language can be selected */
+.language-option input[type="checkbox"]:checked+label {
+  font-weight: bold;
+}
+
+/* Radio button group styling */
+.language-option input[type="radio"] {
+  margin-right: 0;
+}
+
+/* Ensure only one radio button can be selected */
+.language-option input[type="radio"]:checked ~ .language-option-content .language-info span {
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+/* Dropdown item styling */
+.dropdown-item.language-option {
+  padding: 0;
+  border: none;
+  background: transparent;
+  margin: 0;
+}
+
+/* Remove all hover effects from language dropdown */
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Remove Bootstrap default dropdown hover effects */
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: transparent !important;
+}
+
+/* Ensure no color changes on interaction for old dropdown items */
+.dropdown-item.language-option:hover,
+.dropdown-item.language-option:focus,
+.dropdown-item.language-option:active {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Allow hover effects for new language options */
+.language-option:hover,
+.language-option:focus,
+.language-option:active {
+  background-color: var(--primary-10) !important;
+  color: inherit !important;
+}
+
+/* Remove any transition effects */
+.dropdown-item,
+.border_input_navbar {
+  transition: none !important;
+}
+
+/* Keep smooth transitions for language options */
+.language-option {
+  transition: all 0.2s ease !important;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Language Dropdown Responsive */
+@media (max-width: 991.98px) {
+  .language-dropdown-menu {
+    right: -25% !important;
+    min-width: 200px !important;
+  }
+  
+  .language-option-content {
+    padding: 10px 14px;
+  }
+  
+  .language-info {
+    gap: 10px;
+  }
+  
+  .language-flag {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .language-dropdown-btn {
+    padding: 6px 10px;
+  }
+}
+
+/* Tablet Breakpoint */
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: var(--padding-mobile-box-small-2);
+    border-radius: var(--radius-mobile-normal-box);
+  }
+
+  .navbar-nav .nav-link {
+    color: var(--surface-white) !important;
+  }
+
+  .navbar .d-flex img {
+    width: 25px;
+    height: 25px;
+  }
+
+  /* Language dropdown adjustments for tablet */
+  .dropdown-menu.h_langage_change {
+    right: -25% !important;
+    min-width: 180px !important;
+  }
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  .navbar {
+    z-index: 1055;
+  }
+
+  .navbar-brand img {
+    height: 32px;
+    max-height: 40px;
+  }
+
+  .offcanvas-body a.nav-link {
+    color: var(--text-heading);
+    font-weight: 500;
+    margin-bottom: var(--gap-mobile-sm-3);
+    padding: var(--padding-mobile-box-small-3) 0;
+  }
+
+  .btn-help {
+    background-color: var(--primary);
+    color: white;
+    border-radius: var(--radius-mobile-small-box);
+    padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-small-2);
+    width: 100%;
+  }
+
+  .language-option img {
+    width: 20px;
+    height: auto;
+  }
+
+  .offcanvas-body hr {
+    margin: var(--gap-mobile-sm-3) 0;
+  }
+
+  .btn-custom-outline {
+    border: 1px solid white;
+    color: white;
+    border-radius: var(--radius-mobile-small-box);
+    padding: var(--padding-mobile-box-small-4) var(--padding-mobile-box-small-2);
+    background: transparent;
+  }
+
+  .btn_navbar_order_help {
+    margin-top: var(--gap-mobile-sm-2) !important;
+  }
+
+  /* Language dropdown mobile positioning */
+  .dropdown-menu.h_langage_change {
+    position: fixed !important;
+    right: var(--frame-mobile-margin) !important;
+    left: var(--frame-mobile-margin) !important;
+    top: auto !important;
+    bottom: var(--frame-mobile-margin) !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    width: calc(100% - (var(--frame-mobile-margin) * 2)) !important;
+  }
+  
+  /* Mobile language dropdown adjustments */
+  .language-dropdown-menu {
+    position: fixed !important;
+    right: var(--frame-mobile-margin) !important;
+    left: var(--frame-mobile-margin) !important;
+    top: auto !important;
+    bottom: var(--frame-mobile-margin) !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    width: calc(100% - (var(--frame-mobile-margin) * 2)) !important;
+    border-radius: 16px !important;
+  }
+  
+  .language-dropdown-btn {
+    padding: 8px 10px;
+  }
+  
+  .language-option-content {
+    padding: 14px 16px;
+  }
+  
+  .language-flag {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Ensure dropdown appears above other elements on mobile */
+  .dropdown-menu.h_langage_change.show {
+    z-index: 9999 !important;
+  }
+
+  /* Mobile language options styling */
+  .language-option {
+    padding: var(--padding-mobile-box-small-3) !important;
+    border-radius: var(--radius-mobile-small-box-2) !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .language-option:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* Mobile language option layout */
+  .language-option .d-flex {
+    width: 100% !important;
+    pointer-events: none !important;
+  }
+
+  .language-option input[type="checkbox"] {
+    pointer-events: auto !important;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 575.98px) {
+  .navbar-brand img {
+    height: 28px;
+    max-height: 36px;
+  }
+
+  .offcanvas-body a.nav-link {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--gap-mobile-sm-4);
+    padding: var(--padding-mobile-box-small-4) 0;
+  }
+
+  .btn-help {
+    padding: var(--padding-mobile-box-small-4) var(--padding-mobile-box-small-3);
+    border-radius: var(--radius-mobile-small-box-2);
+  }
+
+  .btn-custom-outline {
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-3);
+    border-radius: var(--radius-mobile-small-box-2);
+  }
+
+  /* Language dropdown small mobile adjustments */
+  .dropdown-menu.h_langage_change {
+    right: var(--frame-mobile-margin-l) !important;
+    left: var(--frame-mobile-margin-l) !important;
+    bottom: var(--frame-mobile-margin-l) !important;
+    width: calc(100% - (var(--frame-mobile-margin-l) * 2)) !important;
+  }
+
+  .language-option {
+    padding: var(--padding-mobile-box-small-4) !important;
+  }
+  
+  /* Small mobile language dropdown adjustments */
+  .language-dropdown-menu {
+    right: var(--frame-mobile-margin-l) !important;
+    left: var(--frame-mobile-margin-l) !important;
+    bottom: var(--frame-mobile-margin-l) !important;
+    width: calc(100% - (var(--frame-mobile-margin-l) * 2)) !important;
+  }
+  
+  .language-dropdown-btn {
+    padding: 6px 8px;
+  }
+  
+  .language-option-content {
+    padding: 12px 14px;
+  }
+  
+  .language-flag {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Extra Small Mobile Breakpoint */
+@media (max-width: 375px) {
+  .navbar-brand img {
+    height: 24px;
+    max-height: 32px;
+  }
+
+  .offcanvas-body a.nav-link {
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--gap-mobile-sm-5);
+    padding: var(--padding-mobile-box-small-5) 0;
+  }
+
+  .btn-help {
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-4);
+    font-size: var(--font-size-sm);
+  }
+
+  .btn-custom-outline {
+    padding: var(--padding-mobile-box-small-6) var(--padding-mobile-box-small-4);
+    font-size: var(--font-size-sm);
+  }
+
+  /* Language dropdown extra small mobile adjustments */
+  .dropdown-menu.h_langage_change {
+    right: var(--frame-mobile-margin) !important;
+    left: var(--frame-mobile-margin) !important;
+    bottom: var(--frame-mobile-margin) !important;
+    width: calc(100% - (var(--frame-mobile-margin) * 2)) !important;
+  }
+
+  .language-option {
+    padding: var(--padding-mobile-box-small-5) !important;
+  }
+  
+  /* Extra small mobile language dropdown adjustments */
+  .language-dropdown-menu {
+    right: var(--frame-mobile-margin) !important;
+    left: var(--frame-mobile-margin) !important;
+    bottom: var(--frame-mobile-margin) !important;
+    width: calc(100% - (var(--frame-mobile-margin) * 2)) !important;
+  }
+  
+  .language-dropdown-btn {
+    padding: 5px 7px;
+  }
+  
+  .language-option-content {
+    padding: 10px 12px;
+  }
+  
+  .language-flag {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Additional responsive adjustments for very small screens */
+@media (max-width: 480px) {
+  .dropdown-menu.h_langage_change {
+    right: 0.5rem !important;
+    left: 0.5rem !important;
+    bottom: 0.5rem !important;
+  }
+  
+  .language-dropdown-menu {
+    right: 0.5rem !important;
+    left: 0.5rem !important;
+    bottom: 0.5rem !important;
+    width: calc(100% - 1rem) !important;
+  }
+  
+  .language-dropdown-btn {
+    padding: 4px 6px;
+  }
+  
+  .language-option-content {
+    padding: 8px 10px;
+  }
+  
+  .language-flag {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Remove all default browser checkmarks and ensure clean appearance */
+.border_input_navbar,
+.language-option input[type="checkbox"],
+.language-option input[type="radio"] {
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: auto !important;
+}
+
+/* Ensure no duplicate checkmarks */
+.border_input_navbar:checked,
+.language-option input[type="checkbox"]:checked,
+.language-option input[type="radio"]:checked {
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: auto !important;
+}
+
+/* Remove any default browser styling */
+.border_input_navbar::-ms-check,
+.language-option input[type="checkbox"]::-ms-check,
+.language-option input[type="radio"]::-ms-check {
+  display: none !important;
+}
+
+/* Remove any additional dots or marks */
+.border_input_navbar::before,
+.language-option input[type="checkbox"]::before,
+.language-option input[type="radio"]::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Ensure only our custom checkmark appears */
+.border_input_navbar:checked::before,
+.language-option input[type="checkbox"]:checked::before,
+.language-option input[type="radio"]:checked::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Remove any list-style dots */
+.dropdown-item {
+  list-style: none !important;
+}
+
+.dropdown-item::before,
+.dropdown-item::after {
+  content: none !important;
+}
+
+/* Language dropdown list styling */
+.language-dropdown-menu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.language-dropdown-menu li::before,
+.language-dropdown-menu li::after {
+  content: none;
+}
+
+/* Checkbox styling for selected state */
+.border_input_navbar:checked {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+}
+
+.border_input_navbar:checked::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+/* Checkbox styling for unchecked state */
+.border_input_navbar:not(:checked) {
+  background-color: transparent !important;
+  border-color: var(--surface-check-radio) !important;
+}
+
+.border_input_navbar:not(:checked)::after {
+  content: none !important;
+}
+
+/* Radio button styling for unchecked state */
+.language-option input[type="radio"]:not(:checked) {
+  background-color: transparent !important;
+  border-color: var(--surface-check-radio) !important;
+}
+
+.language-option input[type="radio"]:not(:checked)::after {
+  content: none !important;
+}
+
+/* Language dropdown text styling */
+.language-info span {
+  font-weight: 500;
+  color: var(--text-body);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.language-info span::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.3s ease;
+}
+
+.language-option:hover .language-info span {
+  color: var(--text-heading);
+  transform: translateX(2px);
+}
+
+.language-option:hover .language-info span::after {
+  width: 100%;
+}
+
+/* Selected language styling */
+.language-option input[type="radio"]:checked ~ .language-option-content .language-info span {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+.language-option input[type="radio"]:checked ~ .language-option-content .language-info span::after {
+  width: 100%;
+}
+
+/* Language option active state */
+.language-option.active .language-info span {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+.language-option.active .language-info span::after {
+  width: 100%;
+}
+
+/* Language option active state styling */
+.language-option.active {
+  background-color: var(--primary-10) !important;
+}
+
+.language-option.active::before {
+  transform: scaleY(1);
+}
+
+/* ===== MODAL STYLES ===== */
+/* Modal Container Styles */
+.modal-auth .modal-content {
+  border-radius: var(--radius-small-box);
+  padding: var(--padding-box-l) var(--padding-box-small);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.modal-auth .nav-tabs {
+  background-color: var(--primary-50);
+  border-radius: var(--radius-small-box-3);
+  padding: 4px var(--padding-box-small-5);
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.modal-auth .nav-tabs li {
+  flex: 0.5;
+}
+
+.modal-auth .nav-tabs li button {
+  width: 100%;
+  overflow: hidden;
+  border: none;
+  color: var(--text-body);
+  border-radius: var(--radius-small-box-4) !important;
+  padding: var(--padding-box-small-5) var(--padding-box-small-2);
+}
+
+.modal-auth .nav-tabs li button:hover {
+  color: initial;
+  background-color: var(--surface-bg);
+}
+
+.modal-auth .dropdown-menu {
+  padding: var(--padding-box-small-4);
+  box-shadow: var(--shadow);
+  border: none;
+  height: auto !important;
+}
+
+/* ===== MODAL RESPONSIVE DESIGN ===== */
+@media (max-width: 767.98px) {
+  .modal-auth .modal-content {
+    border-radius: var(--radius-mobile-small-box);
+    padding: var(--padding-mobile-box-l) var(--padding-mobile-box-small);
+    gap: var(--gap-mobile-md);
+  }
+
+  .modal-auth .nav-tabs {
+    border-radius: var(--radius-mobile-small-box-3);
+    padding: 4px var(--padding-mobile-box-small-5);
+    gap: var(--gap-mobile-sm);
+  }
+
+  .modal-auth .nav-tabs li button {
+    border-radius: var(--radius-mobile-small-box-4) !important;
+    padding: var(--padding-mobile-box-small-5) var(--padding-mobile-box-small-2);
+    font-size: var(--font-size-sm);
+  }
+
+  .modal-auth .dropdown-menu {
+    padding: var(--padding-mobile-box-small-4);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .modal-auth .modal-content {
+    padding: var(--padding-mobile-box-normal) var(--padding-mobile-box-small-2);
+    gap: var(--gap-mobile-sm);
+  }
+
+  .modal-auth .nav-tabs {
+    padding: 4px var(--padding-mobile-box-small-6);
+    gap: var(--gap-mobile-sm-4);
+  }
+
+  .modal-auth .nav-tabs li button {
+    padding: var(--padding-mobile-box-small-6) var(--padding-mobile-box-small-3);
+    font-size: var(--font-size-xs);
+  }
+}

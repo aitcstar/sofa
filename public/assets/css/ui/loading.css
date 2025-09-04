@@ -1,0 +1,128 @@
+/* ===== LOADING OVERLAY ===== */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+}
+
+.loading-spinner {
+  background-color: var(--surface-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.loading-spinner .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* ===== ALERT STYLES ===== */
+
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: var(--z-modal);
+  min-width: 300px;
+  max-width: 500px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: none;
+}
+
+.alert-success {
+  background-color: var(--success-light);
+  color: var(--success);
+  border-left: 4px solid var(--success);
+}
+
+.alert-danger {
+  background-color: var(--danger-light);
+  color: var(--danger);
+  border-left: 4px solid var(--danger);
+}
+
+.alert-warning {
+  background-color: var(--warning-light);
+  color: var(--warning);
+  border-left: 4px solid var(--warning);
+}
+
+.alert-info {
+  background-color: var(--info-light);
+  color: var(--info);
+  border-left: 4px solid var(--info);
+}
+
+/* ===== RESPONSIVE LOADING ===== */
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  .loading-spinner {
+    padding: var(--mobile-spacing-lg);
+    margin: var(--mobile-spacing-md);
+  }
+  
+  .loading-spinner .spinner-border {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .alert {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    min-width: auto;
+    max-width: none;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 575.98px) {
+  .loading-spinner {
+    padding: var(--mobile-spacing-md);
+    margin: var(--mobile-spacing-sm);
+  }
+  
+  .loading-spinner .spinner-border {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .alert {
+    top: 5px;
+    right: 5px;
+    left: 5px;
+    font-size: var(--mobile-font-sm);
+  }
+}
+
+/* Extra Small Mobile Breakpoint */
+@media (max-width: 375px) {
+  .loading-spinner {
+    padding: var(--mobile-spacing-sm);
+    margin: var(--mobile-spacing-xs);
+  }
+  
+  .loading-spinner .spinner-border {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  
+  .alert {
+    top: 2px;
+    right: 2px;
+    left: 2px;
+    font-size: var(--mobile-font-xs);
+  }
+} 

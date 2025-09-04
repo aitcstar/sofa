@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<!-- ===== SOFA EXPERIENCE - CATEGORY DETAILS PAGE ===== -->
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تفاصيل التصنيف - صوفا للتصميم الداخلي</title>
+
+    <!-- ===== EXTERNAL LIBRARIES ===== -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.theme.default.min.css" />
+
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="../node_modules/flag-icons/css/flag-icons.min.css" />
+
+    <!-- ===== CUSTOM CSS ===== -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/pages/category-details.css" />
+    <link rel="stylesheet" href="../assets/css/utilities/translations.css" />
+
+    <!-- Category Details Custom CSS -->
+    <style>
+        /* تحسين مظهر الأزرار */
+        .category-details-images-grid-col-two-button button,
+        .category-details-images-grid-col-two-resize button {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-details-images-grid-col-two-button button:hover,
+        .category-details-images-grid-col-two-resize button:hover {
+            background-color: #33415C !important;
+            color: white !important;
+            transform: scale(1.1);
+        }
+
+        /* تحسين مظهر الصور المصغرة */
+        .category-details-images-grid-col-one-item {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-details-images-grid-col-one-item:hover {
+            border-color: #33415C;
+            transform: scale(1.05);
+        }
+
+        .category-details-images-grid-col-one-item.active {
+            border-color: #33415C;
+            box-shadow: 0 0 10px rgba(51, 65, 92, 0.3);
+        }
+
+        /* تحسين مظهر الديالوج */
+        #imageModal .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        #imageModal .modal-header {
+            border-bottom: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+
+        #imageModal .modal-footer {
+            border-top: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+    </style>
+
+    <!-- ===== FAVICON & MANIFEST ===== -->
+    <link rel="shortcut icon" href="../assets/images/logos/Logo.png" type="image/x-icon" />
+    <link rel="manifest" href="../manifest.json" />
+</head>
+
+<body>
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header container">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="header-logo">
+                <img src="../assets/images/logos/logo.svg" alt="Logo" />
+            </div>
+
+            <!-- Navigation -->
+            <nav class="header-nav">
+                <ul class="header-nav-list">
+                    <li class="header-nav-item">
+                        <a href="/" class="header-nav-link">الرئيسية</a>
+                    </li>
+                    <li class="header-nav-item active">
+                        <a href="/pages/categories.html" class="header-nav-link">التصنيفات</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/about.html" class="header-nav-link">من نحن</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/gallery.html" class="header-nav-link">المعرض</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/blog.html" class="header-nav-link">المدونة</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/contact.html" class="header-nav-link">اتصل بنا</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <!-- Auth -->
+                <img src="../assets/images/icons/user.svg" alt="User" />
+
+                <!-- Language Dropdown -->
+                <div class="dropdown language-dropdown">
+                    <!-- Button -->
+                    <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
+                        id="languageDropdown" aria-expanded="false">
+                        <img src="../assets/images/icons/translation.svg" alt="Globe" />
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
+                        <li class="language-option" data-language="ar">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇸🇦
+                                <span class="body-2 text-body">العربية</span>
+                            </div>
+                            <input type="radio" name="language" id="arabicRadio" checked />
+                        </li>
+                        <li class="hr"></li>
+                        <li class="language-option" data-language="en">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇺🇲
+                                <span class="body-2 text-body">English</span>
+                            </div>
+                            <input type="radio" name="language" id="englishRadio" />
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <a class="btn btn-custom-primary" href="/pages/help.html">
+                    طلب بمساعدة
+                </a>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== BREADCRUMB ===== -->
+    <div class="breadcrumb-container container">
+        <a href="#" class="body-2 text-body">الرئيسية</a>
+        <span class="body-2 text-body">/</span>
+        <a href="/pages/categories.html" class="body-2 text-body">التصنيفات</a>
+        <span class="body-2 text-body">/</span>
+        <a href="#" class="body-2 text-primary">تفاصيل التصنيف</a>
+    </div>
+
+    <!-- ===== CATEGORY DETAILS ===== -->
+    <section class="category-details">
+        <div class="container">
+            <!-- Accordion Details -->
+            <div class="accordion-details">
+                <div class="accordion" id="accordionExample">
+                    <!-- Item 1 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button d-flex align-items-center gap-sm-5" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                aria-controls="collapseOne">
+                                <img src="../assets/images/gallery/living-room.svg" alt="arrow-down" />
+                                <p class="body-2 mb-0">اختر نمط غرفة المعيشة المناسب لك</p>
+                            </button>
+                        </div>
+                        <div class="accordion-collapse collapse show" id="collapseOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body d-flex flex-column gap-sm-4">
+                                <div class="d-flex gap-sm-4 flex-wrap">
+                                    <div class="accordion-details-content-item">
+                                        <p class="sub-heading-5 text-body mb-0">فئة فاخرة كبيرة</p>
+                                    </div>
+                                    <div class="accordion-details-content-item active">
+                                        <p class="sub-heading-5 text-body mb-0">فئة فاخرة صغيرة</p>
+                                    </div>
+                                    <div class="accordion-details-content-item">
+                                        <p class="sub-heading-5 text-body mb-0">فئة قياسية كبيرة</p>
+                                    </div>
+                                    <div class="accordion-details-content-item">
+                                        <p class="sub-heading-5 text-body mb-0">فئة قياسية صغيرة</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <ul class="d-flex flex-wrap gap-md p-0 m-0" style="margin-right: 20px !important;">
+                                        <li class="body-4 mb-0">طاولة جانبية</li>
+                                        <li class="body-4 mb-0">لوحة فنيّة واحدة</li>
+                                        <li class="body-4 mb-0">كنبة 3 مقاعد</li>
+                                        <li class="body-4 mb-0">طاولة قهوة</li>
+                                        <li class="body-4 mb-0">كرسي كبير ×1</li>
+                                        <li class="body-4 mb-0">كرسي صغير ×1</li>
+                                    </ul>
+                                </div>
+
+                                <div class="category-details-images">
+                                    <div class="category-details-images-grid">
+                                        <div class="category-details-images-grid-col-one">
+                                            <div class="category-details-images-grid-col-one-item active">
+                                                <img src="../assets/images/gallery/gallery-01.jpg" alt="image" />
+                                            </div>
+                                            <div class="category-details-images-grid-col-one-item">
+                                                <img src="../assets/images/gallery/gallery-02.jpg" alt="image" />
+                                            </div>
+                                            <div class="category-details-images-grid-col-one-item">
+                                                <img src="../assets/images/gallery/gallery-03.jpg" alt="image" />
+                                            </div>
+                                            <div class="category-details-images-grid-col-one-item">
+                                                <img src="../assets/images/gallery/gallery-04.jpg" alt="image" />
+                                            </div>
+                                        </div>
+                                        <div class="category-details-images-grid-col-two">
+                                            <!-- Resize button -->
+                                            <div class="category-details-images-grid-col-two-resize">
+                                                <button class="btn">
+                                                    <i class="fa-solid fa-maximize"></i>
+                                                </button>
+                                            </div>
+
+                                            <img src="../assets/images/gallery/gallery-01.jpg" alt="image" />
+
+                                            <!-- owl carousel button -->
+                                            <div class="category-details-images-grid-col-two-button">
+                                                <button class="btn">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                                <button class="btn">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button d-flex align-items-center gap-sm-5" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                <img src="../assets/images/gallery/living-room.svg" alt="arrow-down" />
+                                <p class="body-2 mb-0">اختر تصميم المطبخ المناسب</p>
+                            </button>
+                        </div>
+                        <div class="accordion-collapse collapse" id="collapseTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body d-flex gap-sm-4 flex-wrap">
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">تصميم خشبي كلاسيكي</p>
+                                </div>
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">تصميم طوبي صناعي</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button d-flex align-items-center gap-sm-5" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
+                                aria-controls="collapseThree">
+                                <img src="../assets/images/gallery/living-room.svg" alt="arrow-down" />
+                                <p class="body-2 mb-0">اختر تصميم وحدة التلفزيون</p>
+                            </button>
+                        </div>
+                        <div class="accordion-collapse collapse" id="collapseThree" data-bs-parent="#accordionExample">
+                            <div class="accordion-body d-flex gap-sm-4 flex-wrap">
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">تصميم خشبي كلاسيكي</p>
+                                </div>
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">تصميم طوبي صناعي</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button d-flex align-items-center gap-sm-5" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true"
+                                aria-controls="collapseFour">
+                                <img src="../assets/images/gallery/living-room.svg" alt="arrow-down" />
+                                <p class="body-2 mb-0">اختر تصميم الخزائن</p>
+                            </button>
+                        </div>
+                        <div class="accordion-collapse collapse" id="collapseFour" data-bs-parent="#accordionExample">
+                            <div class="accordion-body d-flex gap-sm-4 flex-wrap">
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">التصميم العصري المفتوح</p>
+                                </div>
+                                <div class="accordion-details-content-item">
+                                    <p class="sub-heading-5 text-body mb-0">التصميم التقليدي المغلق</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Details & Order Button -->
+            <div class="category-details-order-button">
+                <!-- heading -->
+                <div class="category-details-order-button-heading d-flex flex-column gap-sm-7">
+                    <h2 class="heading-h7">باكج غرفة نوم واحدة</h2>
+                    <div class="d-flex align-items-center gap-sm-5 mb-1">
+                        <p class="body-2 text-body mb-0">السعر يبدأ من</p>
+                        <div class="d-flex align-items-center gap-sm-6">
+                            <p class="heading-h7 mb-0">26,000</p>
+                            <img src="../assets/images/currency/sar.svg" alt="SAR" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-sm-5">
+                        <div class="category-details-widget d-flex align-items-center gap-sm-6">
+                            <img src="../assets/images/category/layers.svg" alt="layers" />
+                            <p class="body-4 text-body mb-0">60 قطعة</p>
+                        </div>
+                        <div class="category-details-widget d-flex align-items-center gap-sm-6">
+                            <img src="../assets/images/category/delivery.svg" alt="delivery" />
+                            <p class="body-4 text-body mb-0">التوصيل خلال 90 يوم</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="category-details-order-button-pricing d-flex flex-column gap-sm-7">
+                    <div class="category-details-order-button-pricing-item">
+                        <p class="body-2 text-body mb-0">السعر الأساسي</p>
+                        <div class="d-flex align-items-center gap-sm-6">
+                            <p class="body-2 text-body mb-0">23,000</p>
+                            <img src="../assets/images/currency/sar.svg" alt="SAR" />
+                        </div>
+                    </div>
+                    <div class="category-details-order-button-pricing-item">
+                        <p class="body-2 text-body mb-0">الضريبة (15%)</p>
+                        <div class="d-flex align-items-center gap-sm-6">
+                            <p class="body-2 text-body mb-0">3,450</p>
+                            <img src="../assets/images/currency/sar.svg" alt="SAR" />
+                        </div>
+                    </div>
+                    <div class="category-details-order-button-pricing-item">
+                        <p class="body-2 text-body mb-0">السعر النهائي</p>
+                        <div class="d-flex align-items-center gap-sm-6">
+                            <p class="heading-h7 mb-0">26,450</p>
+                            <img src="../assets/images/currency/sar.svg" alt="SAR" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Button -->
+                <a href="/pages/confirm-order.html" class="btn btn-custom-primary">
+                    أضف إلى الطلب
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TABS SECTION ===== -->
+    <section class="tabs">
+        <div class="container">
+            <div class="tab-options">
+                <div class="tab-option">
+                    <p class="body-2 text-body mb-0">جدول الكميات</p>
+                </div>
+                <div class="tab-option active">
+                    <p class="body-2 text-body mb-0">صور جدول الكميات</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TABLE SECTION ===== -->
+    <section class="table-section">
+        <div class="container">
+            <div class="table-section-grid">
+                <!-- Item 1 -->
+                <div class="table-section-item d-flex flex-column gap-sm-4">
+                    <!-- heading -->
+                    <div class="d-flex align-items-center gap-sm-5">
+                        <img src="../assets/images/gallery/living-room.svg" alt="living-room" />
+                        <p class="heading-h9 mb-0">المعيشة</p>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-section-item">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="body-2">القطعة</th>
+                                        <th class="body-2">المقاس</th>
+                                        <th class="body-2">الخامة</th>
+                                        <th class="body-2">اللون</th>
+                                        <th class="body-2">الصورة</th>
+                                        <th class="body-2">الكمية</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="table-section-item d-flex flex-column gap-sm-4">
+                    <!-- heading -->
+                    <div class="d-flex align-items-center gap-sm-5">
+                        <img src="../assets/images/gallery/living-room.svg" alt="living-room" />
+                        <p class="heading-h9 mb-0">غرفة النوم الرئيسية</p>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-section-item">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="body-2">القطعة</th>
+                                        <th class="body-2">المقاس</th>
+                                        <th class="body-2">الخامة</th>
+                                        <th class="body-2">اللون</th>
+                                        <th class="body-2">الصورة</th>
+                                        <th class="body-2">الكمية</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="table-section-item d-flex flex-column gap-sm-4">
+                    <!-- heading -->
+                    <div class="d-flex align-items-center gap-sm-5">
+                        <img src="../assets/images/gallery/living-room.svg" alt="living-room" />
+                        <p class="heading-h9 mb-0">المطبخ</p>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-section-item">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="body-2">القطعة</th>
+                                        <th class="body-2">المقاس</th>
+                                        <th class="body-2">الخامة</th>
+                                        <th class="body-2">اللون</th>
+                                        <th class="body-2">الصورة</th>
+                                        <th class="body-2">الكمية</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="table-section-item d-flex flex-column gap-sm-4">
+                    <!-- heading -->
+                    <div class="d-flex align-items-center gap-sm-5">
+                        <img src="../assets/images/gallery/living-room.svg" alt="living-room" />
+                        <p class="heading-h9 mb-0">الملحقات الخارجية والإضافية</p>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-section-item">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="body-2">القطعة</th>
+                                        <th class="body-2">المقاس</th>
+                                        <th class="body-2">الخامة</th>
+                                        <th class="body-2">اللون</th>
+                                        <th class="body-2">الصورة</th>
+                                        <th class="body-2">الكمية</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="body-2">كنبة 3 مقاعد</td>
+                                        <td class="body-2">2.2×100×70</td>
+                                        <td class="body-2">قماش مخملي</td>
+                                        <td class="color-box">
+                                            <p class="body-2 text-subheading mb-0" style="background-color: #262626;">
+                                                أسود</p>
+                                        </td>
+                                        <td class="image-box">
+                                            <div class="img-box">
+                                                <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                            </div>
+                                        </td>
+                                        <td class="body-2">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="container mt-4">
+        <hr class="divider">
+    </div>
+
+    <!-- ===== CUSTOMER REVIEW SECTION ===== -->
+    <section class="customer-review-section">
+        <div>
+            <div class="customer-review-section-container">
+                <div class="d-flex flex-column gap-sm-5 text-center">
+                    <h2 class="heading-h6 text-heading">آراء عملائنا</h2>
+                    <p class="body-2 text-body mx-auto" style="max-width: 482px;">تعليقات عملائنا تعبّر عن رضاهم عن
+                        مستوى التشطيب، سرعة التنفيذ، وتجربة التأثيث المتكاملة التي نقدمها في SOFA</p>
+                </div>
+
+                <!-- Content -->
+                <div id="testimonial-carousel-category-details" class="testimonial-carousel owl-carousel owl-theme">
+                    <!-- Item One -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="../assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="../assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Two -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="../assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="../assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Three -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="../assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="../assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Four -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Five -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="../assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="../assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Six -->
+                    <div class="d-flex flex-column gap-sm">
+                        <div class="testimonial-item">
+                            <img src="../assets/images/icons/quotation.png" />
+                            <div>
+                                <p class="caption-2 text-subheading mb-0">
+                                    وصل الطلب في الموعد، خدمة رائعة كما هو موضح في الموقع. شكراً
+                                    لكم!
+                                </p>
+                            </div>
+                            <div class="d-flex align-items-center gap-sm-4">
+                                <img src="../assets/images/avatar/avatar-01.jpg" class="imgprofile" alt="" />
+                                <div style="flex: 1">
+                                    <p class="mb-0 sub-heading-4 text-subheading">سالم الحربي</p>
+                                    <span class="text-body body-3">الدمام</span>
+                                </div>
+                                <div style="color: var(--system-yellow) !important">★★★★★</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="container mb-4">
+        <hr class="divider">
+    </div>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-section-container">
+                <div class="faq-section-heading d-flex flex-column gap-sm-5">
+                    <h2 class="heading-h6 text-heading">الأسئلة المتكررة</h2>
+                    <p class="body-2 text-body">جمعنا لك أهم الأسئلة التي قد تدور في بالك قبل طلب هذا الباكج، لتكون
+                        الصورة أوضح وأسهل في اتخاذ القرار</p>
+                </div>
+
+                <!-- Accordion -->
+                <div class="faq-section-content">
+                    <div class="accordion" id="accordionExample">
+                        <!-- Item 1 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <p class="sub-heading-3 mb-0">كم تستغرق مدة التوصيل؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse show" id="collapseOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <p class="sub-heading-3 mb-0">هل تشمل الأسعار التركيب؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseTwo"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <p class="sub-heading-3 mb-0">هل يمكن جدولة موعد الشحن حسب رغبة العميل؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseThree"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    <p class="sub-heading-3 mb-0">هل توفرون التوصيل لجميع مدن المملكة؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseFour"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    <p class="sub-heading-3 mb-0">هل يتم التواصل مع العميل قبل موعد التوصيل؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseFive"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 6 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    <p class="sub-heading-3 mb-0">ماذا يحدث إذا لم أكن متواجدًا أثناء التوصيل؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseSix"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 7 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    <p class="sub-heading-3 mb-0">هل يمكن تغيير عنوان التوصيل بعد تأكيد الطلب؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseSeven"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 8 -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    <p class="sub-heading-3 mb-0">كم مدة التركيب في الموقع؟</p>
+                                </button>
+                            </div>
+                            <div class="accordion-collapse collapse" id="collapseEight"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="body-2 text-body mb-0">
+                                        نعم، جميع أسعار الباكجات تشمل خدمة التركيب الكامل في الموقع المحدد.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NAV MOBILE OVERLAY ===== -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- ===== NAV MOBILE DRAWER ===== -->
+    <div class="nav-mobile-drawer" id="navMobileDrawer">
+        <!-- Close Button -->
+        <div class="nav-mobile-header" id="navMobileClose">
+            <i class="fas fa-times" style="font-size: 18px;"></i>
+            <p class="body-1 text-subheading mb-0">اغلاق</p>
+        </div>
+
+        <!-- Content -->
+        <div class="nav-mobile-content">
+            <!-- Navigation Links -->
+            <div class="nav-mobile-group">
+                <ul class="nav-mobile-nav-list">
+                    <li class="nav-mobile-nav-item">
+                        <a href="/" class="nav-mobile-nav-link body-1">الرئيسية</a>
+                    </li>
+                    <li class="nav-mobile-nav-item active">
+                        <a href="/pages/categories.html" class="nav-mobile-nav-link body-1">التصنيفات</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/about.html" class="nav-mobile-nav-link body-1">من نحن</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/gallery.html" class="nav-mobile-nav-link body-1">المعرض</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/blog.html" class="nav-mobile-nav-link body-1">المدونة</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/contact.html" class="nav-mobile-nav-link body-1">اتصل بنا</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Language Selection -->
+            <div class="nav-mobile-language">
+                <div class="nav-mobile-language-option" data-language="ar">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇸🇦
+                        <p class="body-2 mb-0">العربية</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileArabicRadio" checked />
+                </div>
+                <div class="nav-mobile-language-option" data-language="en">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇺🇲
+                        <p class="body-2 mb-0">English</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileEnglishRadio" />
+                </div>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Actions Buttons -->
+            <div class="nav-mobile-action-button">
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">تسجيل دخول / انشاء حساب</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">حسابي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/order.svg" alt="Cart" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">طلباتي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4 text-danger">
+                    <img src="../assets/images/icons/logout.svg" alt="Logout" />
+                    <p class="body-2 mb-0 sub-heading-4 text-danger">تسجيل خروج</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <div class="flex-grow-1 d-flex">
+            <button class="btn btn-custom-primary w-100 mt-auto">
+                طلب بمساعدة
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER SECTION ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Content -->
+            <div class="container">
+                <!-- Pattern background element -->
+                <img class="footer-pattern" src="../assets/images/footer/pattern.svg" alt="Pattern" />
+
+                <div class="row text-center">
+                    <!-- Column 4: Logo -->
+                    <div class="footer-item align-items-center align-items-md-start col-md-3 gap-sm">
+                        <img src="../assets/images/logos/logo-white.svg" alt="SOFA Logo" />
+                        <p class="body-2 text-white mb-0" style="opacity: 0.8" data-translate="footer.vision">
+                            جزء من رؤية المملكة 2030
+                        </p>
+                    </div>
+
+                    <!-- Column 3: Quick Links -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.quickLinks">
+                            روابط سريعة
+                        </h6>
+                        <div class="d-flex flex-column text-start gap-sm-4">
+                            <a href="../index.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.home">الرئيسية</a>
+                            <a href="categories.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.packages">الباكجات</a>
+                            <a href="about.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.about">من
+                                نحن</a>
+                            <a href="faq.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.faq">الأسئلة الشائعة</a>
+                            <a href="contact.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.contact">اتصل بنا</a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Contact Information -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.contactInfo">
+                            معلومات الاتصال
+                        </h6>
+                        <div class="d-flex flex-column gap-sm-4">
+                            <div class="mb-0 d-flex flex-row gap-sm-5 align-items-center">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/phone.svg" alt="phone" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.phone">+966
+                                    500000000</span>
+                            </div>
+                            <div class="mb-0 d-flex flex-row gap-sm-5">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/email.svg" alt="email" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.email">info@sofa.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 1: Follow Us -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.followUs">
+                            تابعنا
+                        </h6>
+                        <div class="d-flex flex-row gap-sm-4">
+                            <a href="#"><img src="../assets/images/social/snapchat.png" alt="Snapchat" /></a>
+                            <a href="#"><img src="../assets/images/social/youtube.png" alt="YouTube" /></a>
+                            <a href="#"><img src="../assets/images/social/tiktok.png" alt="TikTok" /></a>
+                            <a href="#"><img src="../assets/images/social/instagram.png" alt="Instagram" /></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <hr class="m-0" style="opacity: 0.1" />
+
+                <!-- Copyright Section -->
+                <div class="footer-bottom body-2 text-caption" data-translate="footer.copyright">
+                    © 2025 SOFA Furnishing Co. جميع الحقوق محفوظة.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS SECTION ===== -->
+    <!-- jQuery -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="../node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/language.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/nav-bar.js"></script>
+    <script src="../assets/js/optimizations.js"></script>
+
+    <!-- Category Details JavaScript -->
+    <script>
+        $(document).ready(function () {
+            // current image index
+            let currentImageIndex = 0;
+
+            // get elements
+            const mainImage = document.querySelector('.category-details-images-grid-col-two img');
+            const thumbnails = document.querySelectorAll('.category-details-images-grid-col-one-item img');
+            const prevBtn = document.querySelector('.fa-chevron-left').closest('button');
+            const nextBtn = document.querySelector('.fa-chevron-right').closest('button');
+            const maximizeBtn = document.querySelector('.fa-maximize').closest('button');
+
+            // enable click on thumbnails
+            thumbnails.forEach((thumb, index) => {
+                thumb.addEventListener('click', function () {
+                    // change main image
+                    mainImage.src = this.src;
+                    currentImageIndex = index;
+
+                    // remove active class from all thumbnails
+                    thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+
+                    // add active class to the selected thumbnail
+                    this.closest('.category-details-images-grid-col-one-item').classList.add('active');
+                });
+            });
+
+            // next button
+            nextBtn.addEventListener('click', function () {
+                currentImageIndex = (currentImageIndex + 1) % thumbnails.length;
+                mainImage.src = thumbnails[currentImageIndex].src;
+
+                // update active image
+                thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+                thumbnails[currentImageIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
+            });
+
+            // previous button
+            prevBtn.addEventListener('click', function () {
+                currentImageIndex = (currentImageIndex - 1 + thumbnails.length) % thumbnails.length;
+                mainImage.src = thumbnails[currentImageIndex].src;
+
+                // update active image
+                thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+                thumbnails[currentImageIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
+            });
+
+            // maximize button
+            maximizeBtn.addEventListener('click', function () {
+                // create modal
+                const modalHTML = `
+                    <div class="modal fade" id="imageModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-xl p-2">
+                            <div class="modal-content">
+                                <div class="d-flex justify-content-end p-2">
+                                    <button type="button" data-bs-dismiss="modal" style="width: 36px; height: 36px; border-radius: 50%; background-color: #33415C; color: #fff !important;">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center p-4">
+                                     <img src="${mainImage.src}" alt="صورة مكبرة" style="max-width: 100%; max-height: 350px; object-fit: contain; border-radius: 8px;">
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // add modal to page
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                // show modal
+                const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                modal.show();
+
+                // delete modal after close
+                document.getElementById('imageModal').addEventListener('hidden.bs.modal', function () {
+                    this.remove();
+                });
+            });
+        });
+    </script>
+</body>
+<!-- ===== END BODY ===== -->
+
+</html>
+<!-- ===== END HTML ===== -->

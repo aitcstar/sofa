@@ -1,0 +1,20 @@
+/* ===== REQUEST SUCCESSFULLY SECTION ===== */
+.request-successfully {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--padding-box-2xl);
+    padding-bottom: var(--padding-box-2xl);
+}
+
+.request-successfully-icon {
+    width: 67px;
+    height: 64px;
+}
+
+.request-successfully-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

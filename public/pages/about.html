@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<!-- ===== SOFA EXPERIENCE - ABOUT US PAGE ===== -->
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>من نحن - صوفا للتصميم الداخلي</title>
+
+  <!-- ===== EXTERNAL LIBRARIES ===== -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.theme.default.min.css" />
+
+  <!-- Flag Icons -->
+  <link rel="stylesheet" href="../node_modules/flag-icons/css/flag-icons.min.css" />
+
+  <!-- ===== CUSTOM CSS ===== -->
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/pages/about.css" />
+  <link rel="stylesheet" href="../assets/css/utilities/translations.css" />
+
+  <!-- ===== FAVICON & MANIFEST ===== -->
+  <link rel="shortcut icon" href="../assets/images/logos/Logo.png" type="image/x-icon" />
+  <link rel="manifest" href="../manifest.json" />
+</head>
+
+<body>
+  <!-- ===== HEADER SECTION ===== -->
+  <header class="header container">
+    <div class="header-container">
+      <!-- Logo -->
+      <div class="header-logo">
+        <img src="../assets/images/logos/logo.svg" alt="Logo" />
+      </div>
+
+      <!-- Navigation -->
+      <nav class="header-nav">
+        <ul class="header-nav-list">
+          <li class="header-nav-item">
+            <a href="/" class="header-nav-link">الرئيسية</a>
+          </li>
+          <li class="header-nav-item">
+            <a href="/pages/categories.html" class="header-nav-link">التصنيفات</a>
+          </li>
+          <li class="header-nav-item active">
+            <a href="/pages/about.html" class="header-nav-link">من نحن</a>
+          </li>
+          <li class="header-nav-item">
+            <a href="/pages/gallery.html" class="header-nav-link">المعرض</a>
+          </li>
+          <li class="header-nav-item">
+            <a href="/pages/blog.html" class="header-nav-link">المدونة</a>
+          </li>
+          <li class="header-nav-item">
+            <a href="/pages/contact.html" class="header-nav-link">اتصل بنا</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <!-- Auth -->
+        <img src="../assets/images/icons/user.svg" alt="User" />
+
+        <!-- Language Dropdown -->
+        <div class="dropdown language-dropdown">
+          <!-- Button -->
+          <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
+            id="languageDropdown" aria-expanded="false">
+            <img src="../assets/images/icons/translation.svg" alt="Globe" />
+          </button>
+
+          <!-- Dropdown Menu -->
+          <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
+            <li class="language-option" data-language="ar">
+              <div class="d-flex gap-sm-5 align-items-center">
+                🇸🇦
+                <span class="body-2 text-body">العربية</span>
+              </div>
+              <input type="radio" name="language" id="arabicRadio" checked />
+            </li>
+            <li class="hr"></li>
+            <li class="language-option" data-language="en">
+              <div class="d-flex gap-sm-5 align-items-center">
+                🇺🇲
+                <span class="body-2 text-body">English</span>
+              </div>
+              <input type="radio" name="language" id="englishRadio" />
+            </li>
+          </ul>
+        </div>
+
+        <!-- Help -->
+        <a class="btn btn-custom-primary" href="/pages/help.html">
+          طلب بمساعدة
+        </a>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== BREADCRUMB ===== -->
+  <div class="breadcrumb-container container">
+    <a href="#" class="body-2 text-body">الرئيسية</a>
+    <span class="body-2 text-body">/</span>
+    <a href="#" class="body-2 text-primary">من نحن</a>
+  </div>
+
+  <!-- NAV MOBILE OVERLAY -->
+  <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+  <!-- NAV MOBILE DRAWER -->
+  <div class="nav-mobile-drawer" id="navMobileDrawer">
+    <!-- Close Button -->
+    <div class="nav-mobile-header" id="navMobileClose">
+      <i class="fas fa-times" style="font-size: 18px;"></i>
+      <p class="body-1 text-subheading mb-0">اغلاق</p>
+    </div>
+
+    <!-- Content -->
+    <div class="nav-mobile-content">
+      <!-- Navigation Links -->
+      <div class="nav-mobile-group">
+        <ul class="nav-mobile-nav-list">
+          <li class="nav-mobile-nav-item">
+            <a href="/" class="nav-mobile-nav-link body-1">الرئيسية</a>
+          </li>
+          <li class="nav-mobile-nav-item active">
+            <a href="/pages/categories.html" class="nav-mobile-nav-link body-1">التصنيفات</a>
+          </li>
+          <li class="nav-mobile-nav-item">
+            <a href="/pages/about.html" class="nav-mobile-nav-link body-1">من نحن</a>
+          </li>
+          <li class="nav-mobile-nav-item">
+            <a href="/pages/gallery.html" class="nav-mobile-nav-link body-1">المعرض</a>
+          </li>
+          <li class="nav-mobile-nav-item">
+            <a href="/pages/blog.html" class="nav-mobile-nav-link body-1">المدونة</a>
+          </li>
+          <li class="nav-mobile-nav-item">
+            <a href="/pages/contact.html" class="nav-mobile-nav-link body-1">اتصل بنا</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-mobile-hr"></div>
+
+      <!-- Language Selection -->
+      <div class="nav-mobile-language">
+        <div class="nav-mobile-language-option" data-language="ar">
+          <div class="d-flex align-items-center gap-sm-5">
+            🇸🇦
+            <p class="body-2 mb-0">العربية</p>
+          </div>
+          <input type="radio" name="mobile-language" id="mobileArabicRadio" checked />
+        </div>
+        <div class="nav-mobile-language-option" data-language="en">
+          <div class="d-flex align-items-center gap-sm-5">
+            🇺🇲
+            <p class="body-2 mb-0">English</p>
+          </div>
+          <input type="radio" name="mobile-language" id="mobileEnglishRadio" />
+        </div>
+      </div>
+
+      <div class="nav-mobile-hr"></div>
+
+      <!-- Actions Buttons -->
+      <div class="nav-mobile-action-button">
+        <div class="d-flex align-items-center gap-sm-4">
+          <img src="../assets/images/icons/user.svg" alt="User" />
+          <p class="body-2 mb-0 sub-heading-4 text-body">تسجيل دخول / انشاء حساب</p>
+        </div>
+        <div class="d-flex align-items-center gap-sm-4">
+          <img src="../assets/images/icons/user.svg" alt="User" />
+          <p class="body-2 mb-0 sub-heading-4 text-body">حسابي</p>
+        </div>
+        <div class="d-flex align-items-center gap-sm-4">
+          <img src="../assets/images/icons/order.svg" alt="Cart" />
+          <p class="body-2 mb-0 sub-heading-4 text-body">طلباتي</p>
+        </div>
+        <div class="d-flex align-items-center gap-sm-4 text-danger">
+          <img src="../assets/images/icons/logout.svg" alt="Logout" />
+          <p class="body-2 mb-0 sub-heading-4 text-danger">تسجيل خروج</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Button -->
+    <div class="flex-grow-1 d-flex">
+      <button class="btn btn-custom-primary w-100 mt-auto">
+        طلب بمساعدة
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== OUR VISION SECTION ===== -->
+  <section class="our-vision">
+    <div class="container position-relative">
+      <!-- Pattern -->
+      <img class="our-vision-pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+
+      <!-- Content -->
+      <div class="our-vision-content d-flex flex-column gap-md">
+        <!-- Heading -->
+        <div class="d-flex flex-column gap-sm-5">
+          <h6 class="heading-h6">رؤيتنا</h6>
+          <p class="caption-4 mb-0">
+             نطمح إلى أن نكون المنصة الأذكى والأكثر احترافًا في تأثيث الوحدات السكنية والفندقية في السوق السعودي والعربي
+          </p>
+        </div>
+
+        <!-- List -->
+        <ul class="d-flex flex-column gap-sm-4">
+          <li class="sub-heading-4">
+            تقديم حلول جاهزة وسريعة
+          </li>
+          <li class="sub-heading-4">
+            ضمان الجودة والشفافية
+          </li>
+          <li class="sub-heading-4">
+            تمكين العميل من التحكم الكامل بتجربة التأثيث
+          </li>
+        </ul>
+      </div>
+
+      <!-- Image -->
+      <div class="our-vision-image">
+        <img src="../assets/images/about/about-01.jpg" alt="Our Vision" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OUR VALUES SECTION ===== -->
+  <section class="our-values">
+    <div class="container position-relative">
+      <!-- Pattern -->
+      <img class="our-values-pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+
+      <!-- Image -->
+      <div class="our-values-image">
+        <img src="../assets/images/about/about-02.jpg" alt="Our Values" />
+      </div>
+
+      <!-- Content -->
+      <div class="our-values-content d-flex flex-column gap-md">
+        <!-- Heading -->
+        <div class="d-flex flex-column gap-sm-5">
+          <h6 class="heading-h6">قيمنا</h6>
+          <p class="caption-4 mb-0" style="max-width: 274px;">
+            قيمنا ليست شعارات… بل التزام حقيقي ينعكس في جودة التنفيذ ورضا العميل.
+          </p>
+        </div>
+
+        <!-- List -->
+        <ul class="list-unstyled d-flex flex-column gap-sm-4">
+          <li class="sub-heading-4">
+            تنفيذ احترافي بجودة عالية في كل مرة
+          </li>
+          <li class="sub-heading-4">
+            الالتزام بالجودة والوقت
+          </li>
+          <li class="sub-heading-4">
+            الشفافية في التسعير والتعامل
+          </li>
+          <li class="sub-heading-4">
+            راحة العميل أولويتنا
+          </li>
+          <li class="sub-heading-4">
+            التكامل بين التصميم والتنفيذ
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY SOFA SECTION ===== -->
+  <section class="why-sofa bg-primary">
+    <div class="d-flex">
+      <!-- Content -->
+      <div class="why-sofa-content container d-flex flex-column justify-content-center gap-md position-relative">
+        <!-- pattern -->
+        <img class="why-sofa-pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+
+        <!-- Heading -->
+        <div class="d-flex flex-column gap-sm-5">
+          <h2 class="heading-h6 text-white">لماذا SOFA؟</h2>
+          <p class="caption-4 mb-0"> SOFA ليست مجرد منصة بيع أثاث… بل شريك تأثيث فندقي ذكي</p>
+        </div>
+
+        <!-- List -->
+        <ul class="list-unstyled d-flex flex-column gap-sm-4">
+          <li class="body-3 mb-0">
+            باكجات تصميم جاهزة
+          </li>
+          <li class="body-3 mb-0">
+            تجربة طلب ذكية بالكامل
+          </li>
+          <li class="body-3 mb-0">
+            متابعة الطلب من البداية حتى التركيب
+          </li>
+          <li class="body-3 mb-0">
+            خيارات تشطيب تناسب كل وحدة
+          </li>
+        </ul>
+      </div>
+
+      <!-- Image -->
+      <div class="why-sofa-image flex-1">
+        <img src="../assets/images/about/about-03.jpg" alt="Why SOFA" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OUR SMART STEPS SECTION ===== -->
+  <section class="our-smart-steps">
+    <div class="container">
+      <!-- info -->
+      <div class="our-smart-steps-info position-relative">
+        <!-- pattern -->
+        <img class="pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+
+        <!-- info item -->
+        <div class="our-smart-steps-info-item">
+          <!-- avatar -->
+          <div class="our-smart-steps-info-avatar">
+            <img src="../assets/images/about/avatar.jpg" alt="Avatar" />
+          </div>
+
+          <!-- content -->
+          <div class="our-smart-steps-info-content">
+            <p class="sub-heading-5 text-white mb-0">م. أحمد ابراهيم</p>
+            <p class="body-4 text-white mb-0">2 وحدات</p>
+          </div>
+        </div>
+
+        <!-- info item -->
+        <div class="our-smart-steps-info-item">
+          <!-- content -->
+          <div class="our-smart-steps-info-content d-flex flex-column gap-sm-4">
+            <p class="body-4 text-white mb-0" style="opacity: 0.8">حالة الطلب الحالية</p>
+            <p class="body-4 text-white mb-0">جاري التركيب 80%</p>
+            <div class="our-smart-steps-info-progress">
+              <div class="our-smart-steps-info-progress-bar" style="width: 80%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- steps -->
+      <div class="our-smart-steps-steps d-flex flex-column gap-md">
+        <!-- heading -->
+        <div class="our-smart-steps-heading">
+          <h2 class="heading-h6">خطواتنا الذكية</h2>
+          <p class="caption-3 mb-0">رحلة تأثيث تبدأ بفهم مشروعك وتنتهي بوحدة جاهزة</p>
+        </div>
+
+        <!-- list -->
+        <ul class="our-smart-list list-unstyled d-flex flex-column gap-sm-4 p-0">
+          <!-- step 1 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-01.svg" alt="Step 1" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">المشروع غير مؤثث</p>
+            </div>
+          </li>
+
+          <!-- step 2 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-02.svg" alt="Step 2" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">تحديد نوع الوحدة</p>
+            </div>
+          </li>
+
+          <!-- step 3 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-03.svg" alt="Step 3" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">مراجعة التصميم والتشطيب</p>
+            </div>
+          </li>
+
+          <!-- step 4 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-04.svg" alt="Step 4" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">اختيار الباكج</p>
+            </div>
+          </li>
+
+          <!-- step 5 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-05.svg" alt="Step 5" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">تنفيذ الطلب (تصميم – تصنيع – شحن)</p>
+            </div>
+          </li>
+
+          <!-- step 6 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-06.svg" alt="Step 6" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">التركيب</p>
+            </div>
+          </li>
+
+          <!-- step 7 -->
+          <li class="d-flex gap-sm-3 align-items-center">
+            <div class="our-smart-steps-step-icon">
+              <img src="../assets/images/about/step-07.svg" alt="Step 7" />
+            </div>
+
+            <!-- content -->
+            <div class="our-smart-steps-step-content">
+              <p class="sub-heading-5 mb-0">المشروع مؤثث وجاهز للسكن</p>
+            </div>
+          </li>
+        </ul>
+
+        <!-- start button -->
+        <div class="our-smart-steps-start-button">
+          <button class="btn btn-custom-secondary w-100">
+            ابدأ الآن و استلم عرض السعر
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== READY TO FURNISH YOUR UNIT SECTION ===== -->
+  <section class="ready-to-furnish-your-unit">
+    <div class="ready-to-furnish-your-unit-container container position-relative bg-primary">
+      <!-- pattern -->
+      <img class="ready-to-furnish-your-unit-pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+
+      <!-- content -->
+      <div class="ready-to-furnish-your-unit-content d-flex flex-column gap-sm">
+        <div class="d-flex flex-column gap-sm-5">
+          <h2 class="heading-h6 text-white">جاهز لتأثيث وحدتك؟</h2>
+          <p class="caption-4 mb-0">
+            ابدأ خطوتك الأولى الآن… باكجاتنا جاهزة للتنفيذ والتسليم في وقت قياسي
+          </p>
+        </div>
+
+        <!-- buttons -->
+        <div class="ready-to-furnish-your-unit-buttons d-flex gap-sm-3">
+          <button class="btn btn-custom-secondary">
+            <p class="text-nowrap mb-0">تحدث معنا عبر واتساب</p>
+            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
+          </button>
+          <button class="btn border-btn">
+            <p class="text-nowrap mb-0">اطلب الان</p>
+            <i class="fa-solid fa-arrow-left" style="font-size: 18px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- image -->
+      <div class="ready-to-furnish-your-unit-image-container">
+        <div class="ready-to-furnish-your-unit-image">
+          <img src="../assets/images/about/about-05.jpg" alt="Ready to Furnish Your Unit" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY DO WE SERVE SECTION ===== -->
+  <section class="why-do-we-serve">
+    <div class="container">
+      <!-- Content -->
+      <div class="why-do-we-serve-content d-flex flex-column gap-md">
+        <!-- Heading -->
+        <div class="d-flex flex-column gap-sm-5">
+          <h6 class="heading-h6">نخدم من؟</h6>
+          <p class="caption-4 mb-0">حلول تأثيث مرنة وسريعة لأصحاب الشقق، المطورين، والمشغّلين في قطاع السكن والضيافة.
+          </p>
+        </div>
+
+        <!-- List -->
+        <ul class="d-flex flex-column gap-sm-4">
+          <li class="sub-heading-4">
+            أصحاب الشقق
+          </li>
+          <li class="sub-heading-4">
+            المطورين العقاريين
+          </li>
+          <li class="sub-heading-4">
+            مشغلي الشقق الفندقية
+          </li>
+          <li class="sub-heading-4">المستثمرين العقاريين</li>
+        </ul>
+      </div>
+
+      <!-- images -->
+      <div class="why-do-we-serve-images d-flex gap-sm-3">
+        <div class="d-flex flex-column gap-sm-3 mt-4">
+          <div class="why-do-we-serve-image">
+            <img src="../assets/images/about/about-06.jpg" alt="Why Do We Serve" />
+          </div>
+          <div class="why-do-we-serve-image">
+            <img src="../assets/images/about/about-07.jpg" alt="Why Do We Serve" />
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-sm-3">
+          <div class="why-do-we-serve-image">
+            <img src="../assets/images/about/about-08.jpg" alt="Why Do We Serve" />
+          </div>
+          <div class="why-do-we-serve-image">
+            <img src="../assets/images/about/about-09.jpg" alt="Why Do We Serve" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER SECTION ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <!-- Content -->
+      <div class="container">
+        <!-- Pattern background element -->
+        <img class="footer-pattern" src="../assets/images/footer/pattern.svg" alt="Pattern" />
+
+        <div class="row text-center">
+          <!-- Column 4: Logo -->
+          <div class="footer-item align-items-center align-items-md-start col-md-3 gap-sm">
+            <img src="../assets/images/logos/logo-white.svg" alt="SOFA Logo" />
+            <p class="body-2 text-white mb-0" style="opacity: 0.8" data-translate="footer.vision">
+              جزء من رؤية المملكة 2030
+            </p>
+          </div>
+
+          <!-- Column 3: Quick Links -->
+          <div class="footer-item col-md-3 gap-sm-3">
+            <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.quickLinks">
+              روابط سريعة
+            </h6>
+            <div class="d-flex flex-column text-start gap-sm-4">
+              <a href="../index.html" class="body-2 text-white" style="opacity: 0.8"
+                data-translate="footer.links.home">الرئيسية</a>
+              <a href="categories.html" class="body-2 text-white" style="opacity: 0.8"
+                data-translate="footer.links.packages">الباكجات</a>
+              <a href="about.html" class="body-2 text-white" style="opacity: 0.8" data-translate="footer.links.about">من
+                نحن</a>
+              <a href="faq.html" class="body-2 text-white" style="opacity: 0.8"
+                data-translate="footer.links.faq">الأسئلة الشائعة</a>
+              <a href="contact.html" class="body-2 text-white" style="opacity: 0.8"
+                data-translate="footer.links.contact">اتصل بنا</a>
+            </div>
+          </div>
+
+          <!-- Column 2: Contact Information -->
+          <div class="footer-item col-md-3 gap-sm-3">
+            <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.contactInfo">
+              معلومات الاتصال
+            </h6>
+            <div class="d-flex flex-column gap-sm-4">
+              <div class="mb-0 d-flex flex-row gap-sm-5 align-items-center">
+                <div class="footer-contact-icon">
+                  <img src="../assets/images/footer/phone.svg" alt="phone" />
+                </div>
+                <span class="body-2 text-white mb-0" style="opacity: 0.8" data-translate="footer.contact.phone">+966
+                  500000000</span>
+              </div>
+              <div class="mb-0 d-flex flex-row gap-sm-5">
+                <div class="footer-contact-icon">
+                  <img src="../assets/images/footer/email.svg" alt="email" />
+                </div>
+                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                  data-translate="footer.contact.email">info@sofa.com</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 1: Follow Us -->
+          <div class="footer-item col-md-3 gap-sm-3">
+            <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.followUs">
+              تابعنا
+            </h6>
+            <div class="d-flex flex-row gap-sm-4">
+              <a href="#"><img src="../assets/images/social/snapchat.png" alt="Snapchat" /></a>
+              <a href="#"><img src="../assets/images/social/youtube.png" alt="YouTube" /></a>
+              <a href="#"><img src="../assets/images/social/tiktok.png" alt="TikTok" /></a>
+              <a href="#"><img src="../assets/images/social/instagram.png" alt="Instagram" /></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <hr class="m-0" style="opacity: 0.1" />
+
+        <!-- Copyright Section -->
+        <div class="footer-bottom body-2 text-caption" data-translate="footer.copyright">
+          © 2025 SOFA Furnishing Co. جميع الحقوق محفوظة.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS SECTION ===== -->
+  <!-- jQuery -->
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Owl Carousel JS -->
+  <script src="../node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="../assets/js/language.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/nav-bar.js"></script>
+  <script src="../assets/js/optimizations.js"></script>
+</body>
+<!-- ===== END BODY ===== -->
+
+</html>
+<!-- ===== END HTML ===== -->

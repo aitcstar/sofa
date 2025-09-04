@@ -1,0 +1,7 @@
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm-5);
+  padding-top: var(--padding-box-small-4) !important;
+  padding-bottom: var(--padding-box-small-4) !important;
+}

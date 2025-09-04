@@ -1,0 +1,190 @@
+/* ===== RTL/LTR SUPPORT ===== */
+
+/* RTL Direction */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* LTR Direction */
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* RTL Specific Adjustments */
+[dir="rtl"] .header-container {
+  flex-direction: row;
+}
+
+[dir="rtl"] .header-actions {
+  flex-direction: row;
+}
+
+/* RTL Header specific adjustments */
+[dir="rtl"] .header-nav-list {
+  flex-direction: row;
+}
+
+[dir="rtl"] .header-nav-item {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+[dir="rtl"] .header-nav-link {
+  text-align: center;
+}
+
+[dir="rtl"] .language-dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .breadcrumb-container {
+  flex-direction: row;
+}
+
+[dir="rtl"] .filter-rooms-container {
+  flex-direction: row;
+}
+
+[dir="rtl"] .filter-section {
+  margin-left: 0;
+  margin-right: var(--gap-lg);
+}
+
+[dir="rtl"] .room-item .content {
+  text-align: right;
+}
+
+[dir="rtl"] .room-item .actions {
+  flex-direction: row;
+}
+
+[dir="rtl"] .footer-item {
+  text-align: right;
+}
+
+[dir="rtl"] .footer .d-flex.flex-column {
+  align-items: flex-start;
+}
+
+/* LTR Specific Adjustments */
+[dir="ltr"] .header-container {
+  flex-direction: row;
+}
+
+[dir="ltr"] .header-actions {
+  flex-direction: row;
+}
+
+/* LTR Header specific adjustments */
+[dir="ltr"] .header-nav-list {
+  flex-direction: row;
+}
+
+[dir="ltr"] .header-nav-item {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+[dir="ltr"] .header-nav-link {
+  text-align: center;
+}
+
+[dir="ltr"] .language-dropdown-menu {
+  left: 0;
+  right: auto;
+}
+
+[dir="ltr"] .breadcrumb-container {
+  flex-direction: row;
+}
+
+[dir="ltr"] .filter-rooms-container {
+  flex-direction: row;
+}
+
+[dir="ltr"] .filter-section {
+  margin-right: 0;
+  margin-left: var(--gap-lg);
+}
+
+[dir="ltr"] .room-item .content {
+  text-align: left;
+}
+
+[dir="ltr"] .room-item .actions {
+  flex-direction: row;
+}
+
+[dir="ltr"] .footer-item {
+  text-align: left;
+}
+
+[dir="ltr"] .footer .d-flex.flex-column {
+  align-items: flex-start;
+}
+
+/* Language Transition */
+body {
+  transition: all 0.3s ease;
+}
+
+/* Header specific fixes to prevent reversal */
+.header-container {
+  flex-direction: row !important;
+}
+
+.header-nav-list {
+  flex-direction: row !important;
+}
+
+.header-actions {
+  flex-direction: row !important;
+}
+
+/* Ensure header elements maintain their order */
+[dir="rtl"] .header-logo,
+[dir="ltr"] .header-logo {
+  order: 1;
+}
+
+[dir="rtl"] .header-nav,
+[dir="ltr"] .header-nav {
+  order: 2;
+}
+
+[dir="rtl"] .header-actions,
+[dir="ltr"] .header-actions {
+  order: 3;
+}
+
+[dir="rtl"] .mobile-menu-toggle,
+[dir="ltr"] .mobile-menu-toggle {
+  order: 4;
+}
+
+/* RTL/LTR Classes */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Responsive RTL/LTR */
+@media (max-width: 768px) {
+  [dir="rtl"] .filter-section {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  
+  [dir="ltr"] .filter-section {
+    margin-left: 0;
+    margin-right: 0;
+  }
+} 

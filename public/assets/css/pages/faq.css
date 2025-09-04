@@ -1,0 +1,96 @@
+/* ===== FAQ SECTION ===== */
+.faq {
+    padding-top: var(--gap-3xl);
+    padding-bottom: var(--gap-3xl);
+}
+
+.faq .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-l);
+}
+
+.faq .faq-content {
+    display: flex;
+    gap: var(--gap-l);
+    text-align: center;
+}
+
+.faq .faq-content .faq-list {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    max-width: 280px;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: var(--radius-small-box);
+    border: 1px solid var(--surface-border);
+}
+
+.faq .faq-content .faq-list .faq-item {
+    padding: var(--padding-box-small-3);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.faq .faq-content .faq-list .faq-item:hover {
+    background-color: var(--primary);
+}
+
+.faq .faq-content .faq-list .faq-item:hover p {
+    color: var(--surface-white) !important;
+}
+
+.faq .faq-content .faq-list .faq-item:not(:last-child) {
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.faq .faq-content .faq-list .faq-item.active {
+    background-color: var(--primary);
+}
+
+.faq .faq-content .faq-list .faq-item.active p {
+    color: var(--surface-white) !important;
+}
+
+.faq .faq-content .accordion {
+    flex: 1;
+}
+
+/* ===== RESPONSIVE MOBILE DESIGN ===== */
+@media (max-width: 767.98px) {
+    .faq {
+        padding-top: var(--gap-mobile-3xl);
+        padding-bottom: var(--gap-mobile-3xl);
+    }
+
+    .faq .container {
+        gap: var(--gap-mobile-l);
+    }
+    
+    .faq .faq-content {
+        flex-direction: column;
+        gap: var(--gap-mobile-l);
+    }
+
+    .faq .faq-content .faq-list {
+        display: flex;
+        flex-direction: row;
+        max-width: 100%;
+        border-radius: var(--radius-mobile-small-box-2);
+    }
+
+    .faq .faq-content .faq-list .faq-item {
+        white-space: nowrap;
+        padding: var(--padding-mobile-box-small-3);
+    }
+
+    .faq .faq-content .faq-list .faq-item:not(:last-child) {
+        border-bottom: none !important;
+        border-left: 1px solid var(--surface-border) !important;
+    }
+
+    .faq .faq-content .accordion {
+        flex: 1;
+    }
+}

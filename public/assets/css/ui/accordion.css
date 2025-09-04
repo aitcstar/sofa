@@ -1,0 +1,93 @@
+/* ===== ACCORDION COMPONENT ===== */
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm-3);
+}
+
+.accordion .accordion-item {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box-2);
+    background-color: var(--surface-white);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-normal);
+}
+
+.accordion .accordion-item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.accordion-button {
+    text-align: right;
+    justify-content: flex-end;
+    background-color: var(--surface-white);
+    transition: var(--transition-normal);
+}
+
+/* Remove default focus outline and add custom one */
+.accordion-button:focus {
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+.accordion-button:focus-visible {
+    box-shadow: 0 0 0 2px var(--primary);
+    outline: none;
+}
+
+.accordion-button::after {
+    margin-left: 0;
+    margin-right: auto;
+    transform: rotate(180deg);
+    transition: var(--transition-normal);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--surface-dropbox);
+    color: var(--text-heading);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.accordion-button:not(.collapsed)::after {
+    transform: rotate(0deg);
+}
+
+.accordion-body {
+    text-align: right;
+    padding: var(--padding-box-small-4);
+    color: var(--text-caption);
+    line-height: var(--line-height-normal);
+}
+
+/* ===== RESPONSIVE MOBILE DESIGN ===== */
+@media (max-width: 767.98px) {
+    .accordion {
+        gap: var(--gap-mobile-sm-2);
+    }
+
+    .accordion .accordion-item {
+        border-radius: var(--radius-mobile-small-box-2);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .accordion .accordion-item:hover {
+        box-shadow: var(--shadow);
+    }
+
+    .accordion-button {
+        padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+        font-size: var(--font-size-sm);
+        line-height: 1.4;
+    }
+
+    .accordion-body {
+        padding: var(--padding-mobile-box-small-3) var(--padding-mobile-box-normal);
+        font-size: var(--font-size-sm);
+        line-height: 1.5;
+    }
+}

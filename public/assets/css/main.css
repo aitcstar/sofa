@@ -1,0 +1,366 @@
+/* ===== SOFA EXPERIENCE - MAIN CSS ===== */
+/* This file imports all component and page styles */
+
+/* ===== IMPORTS ===== */
+
+/* Base Styles */
+@import url("base/variables.css");
+@import url("base/fonts.css");
+@import url("base/typography.css");
+@import url("base/spacing.css");
+@import url("base/mobile.css");
+
+/* Layout
+@import url("layout/layout.css");*/
+
+/* Utilities */
+@import url("utilities/utilities.css");
+@import url("utilities/animations.css");
+@import url("utilities/translations.css");
+
+/* UI Components */
+@import url("ui/buttons.css");
+/*@import url("ui/forms.css");*/
+@import url("ui/cards.css");
+@import url("ui/accordion.css");
+@import url("ui/inputs.css");
+@import url("ui/loading.css");
+
+/* Reusable Components */
+@import url("components/hero.css");
+@import url("components/dialog.css");
+@import url("components/card.css");
+/*@import url("components/faq.css");*/
+@import url("components/footer.css");
+@import url("components/room-item.css");
+@import url("components/breadcrumb.css");
+@import url("components/header.css");
+@import url("components/cta.css");
+@import url("components/blog-item.css");
+@import url("components/table.css");
+@import url("components/ready-to-furnish-unit.css");
+@import url("components/gallery-details-image.css");
+@import url("components/testimonial-carousel.css");
+@import url("components/auth-model.css");
+
+/* ===== GLOBAL STYLES ===== */
+
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Noto+Sans+Arabic:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* ===== CUSTOM COMPONENTS ===== */
+
+/* Links */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* ===== GLOBAL RESPONSIVE STYLES ===== */
+
+/* Base Mobile-First Approach */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-body);
+  background-color: var(--surface-white);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* ===== RESPONSIVE CONTAINERS ===== */
+
+.container {
+  width: 100%;
+  max-width: var(--frame-width);
+  margin: 0 auto;
+  padding: 0 var(--frame-margin);
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 var(--frame-margin);
+}
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  .container {
+    max-width: var(--frame-mobile-width);
+    padding: 0;
+  }
+
+  .container-fluid {
+    padding: 0 var(--frame-mobile-margin);
+  }
+}
+
+/* ===== RESPONSIVE GRID SYSTEM ===== */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 calc(-1 * var(--gap-sm-3));
+}
+
+.col {
+  flex: 1;
+  padding: 0 var(--gap-sm-3);
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 var(--gap-sm-3);
+}
+
+.col-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 0 var(--gap-sm-3);
+}
+
+.col-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 0 var(--gap-sm-3);
+}
+
+.col-3 {
+  flex: 0 0 25%;
+  max-width: 25%;
+  padding: 0 var(--gap-sm-3);
+}
+
+
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  .row {
+    margin: 0 calc(-1 * var(--gap-mobile-sm-3));
+  }
+
+  .col,
+  .col-12,
+  .col-6,
+  .col-4,
+  .col-3 {
+    padding: 0 var(--gap-mobile-sm-3);
+  }
+
+  .col-6,
+  .col-4,
+  .col-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+
+/* ===== RESPONSIVE UTILITIES ===== */
+
+/* Hide/Show Elements */
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-grid {
+  display: grid !important;
+}
+
+
+
+/* Mobile Breakpoint */
+@media (max-width: 767.98px) {
+  .d-md-none {
+    display: none !important;
+  }
+
+  .d-md-block {
+    display: block !important;
+  }
+
+  .d-md-flex {
+    display: flex !important;
+  }
+}
+
+
+
+
+
+
+/* ===== RESPONSIVE SPACING ===== */
+
+/* Margin and Padding Utilities */
+.m-0 { margin: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.ml-0 { margin-left: 0 !important; }
+.mr-0 { margin-right: 0 !important; }
+
+.p-0 { padding: 0 !important; }
+.pt-0 { padding-top: 0 !important; }
+.pb-0 { padding-bottom: 0 !important; }
+.pl-0 { padding-left: 0 !important; }
+.pr-0 { padding-right: 0 !important; }
+
+/* ===== RESPONSIVE TEXT ALIGNMENT ===== */
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+/* RTL Support */
+[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left !important;
+}
+
+/* ===== RESPONSIVE VISIBILITY ===== */
+
+/* Hide on specific breakpoints */
+@media (max-width: 767.98px) {
+  .d-md-hide {
+    display: none !important;
+  }
+}
+
+/* Show on specific breakpoints */
+@media (min-width: 768px) {
+  .d-md-show {
+    display: block !important;
+  }
+}
+
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --text-body: #000000;
+    --text-heading: #000000;
+    --surface-white: #ffffff;
+    --surface-border: #000000;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}

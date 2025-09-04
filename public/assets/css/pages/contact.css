@@ -1,0 +1,136 @@
+/* ===== CONTACT FORM ===== */
+.contact-form {
+    padding-top: var(--padding-box-xl);
+}
+
+.contact-form .container {
+    display: flex;
+    gap: var(--gap-sm);
+}
+
+.contact-form {
+    flex: 0.5;
+    padding: var(--padding-box-small);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+}
+
+.contact-info {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm-2);
+    border-radius: var(--radius-small-box);
+    border: 1px solid var(--surface-border);
+    padding: var(--padding-box-small);
+    background-color: var(--surface-gray-box);
+}
+
+.contact-info-social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--surface-white);
+    transition: all 0.3s ease;
+}
+
+.contact-info-social-icon:hover {
+    color: var(--surface-white);
+    background-color: var(--secondary-hover);
+}
+
+@media (max-width: 767.98px) {
+    .contact-form {
+        padding-top: var(--padding-mobile-box-small);
+        padding-bottom: var(--padding-mobile-box-small);
+    }
+
+    .contact-form .container {
+        flex-direction: column;
+        gap: var(--gap-mobile-sm-2);
+    }
+
+    .contact-form {
+        padding: var(--padding-mobile-box-small);
+        gap: var(--gap-mobile-sm);
+    }
+
+    .contact-info {
+        gap: var(--gap-mobile-sm-2);
+        border-radius: var(--radius-mobile-small-box);
+        padding: var(--padding-mobile-box-small);
+    }
+}
+
+/* ===== CTA BUTTON ===== */
+.cta-button {
+    padding-top: var(--padding-box-xl);
+    padding-bottom: var(--padding-box-xl);
+}
+
+@media (max-width: 767.98px) {
+    .cta-button {
+        padding-top: var(--padding-mobile-box-xl);
+        padding-bottom: var(--padding-mobile-box-xl);
+    }
+}
+
+/* ===== CONTACT MAP ===== */
+.contact-map {
+    padding-bottom: var(--padding-box-xl);
+}
+
+.contact-map-map {
+    overflow: hidden;
+    border-radius: var(--radius-small-box);
+    position: relative;
+}
+
+.contact-map-map #map {
+    width: 100%;
+    height: 484px;
+}
+
+.contact-map-map::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--color-secondary), var(--color-primary), var(--color-secondary));
+    border-radius: var(--radius-small-box);
+    z-index: -1;
+}
+
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker div {
+    font-family: inherit;
+    direction: rtl;
+    text-align: center;
+}
+
+.leaflet-control-zoom,
+.leaflet-control-attribution {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .contact-map {
+        padding-bottom: var(--padding-mobile-box-xl);
+    }
+
+    .contact-map-map #map {
+        width: 100%;
+        height: 146px;
+    }
+}

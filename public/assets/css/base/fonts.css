@@ -1,0 +1,292 @@
+/* Fonts Configuration */
+
+/* Arabic Font - Cairo */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+
+/* English Font - Rounded Elegance */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Alternative: If you want to use actual Rounded Elegance font */
+/* Note: Rounded Elegance is a premium font, so we're using Inter as a free alternative */
+/* If you have the Rounded Elegance font files, you can add them here */
+
+/* Font Variables */
+:root {
+  /* Arabic Font */
+  --font-arabic: 'Cairo', sans-serif;
+
+  /* English Font */
+  --font-english: 'Inter', sans-serif;
+
+  /* Default Font (Arabic) */
+  --font-primary: var(--font-arabic);
+}
+
+/* Language-specific font classes */
+[lang="ar"],
+[dir="rtl"] {
+  font-family: var(--font-arabic) !important;
+}
+
+[lang="en"],
+[dir="ltr"] {
+  font-family: var(--font-english) !important;
+}
+
+/* Font weights for Arabic */
+.font-arabic-light {
+  font-weight: 300;
+}
+
+.font-arabic-regular {
+  font-weight: 400;
+}
+
+.font-arabic-medium {
+  font-weight: 500;
+}
+
+.font-arabic-semibold {
+  font-weight: 600;
+}
+
+.font-arabic-bold {
+  font-weight: 700;
+}
+
+.font-arabic-extrabold {
+  font-weight: 800;
+}
+
+.font-arabic-black {
+  font-weight: 900;
+}
+
+/* Font weights for English */
+.font-english-light {
+  font-weight: 300;
+}
+
+.font-english-regular {
+  font-weight: 400;
+}
+
+.font-english-medium {
+  font-weight: 500;
+}
+
+.font-english-semibold {
+  font-weight: 600;
+}
+
+.font-english-bold {
+  font-weight: 700;
+}
+
+.font-english-extrabold {
+  font-weight: 800;
+}
+
+.font-english-black {
+  font-weight: 900;
+}
+
+/* ===== RESPONSIVE FONT SIZES ===== */
+
+/* Desktop (Default) */
+@media (min-width: 1200px) {
+  :root {
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 28px;
+    --font-size-3xl: 36px;
+    --font-size-4xl: 48px;
+    --font-size-5xl: 64px;
+  }
+}
+
+/* Large Tablet */
+@media (max-width: 1199.98px) and (min-width: 992px) {
+  :root {
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 20px;
+    --font-size-2xl: 26px;
+    --font-size-3xl: 34px;
+    --font-size-4xl: 44px;
+    --font-size-5xl: 58px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 991.98px) and (min-width: 768px) {
+  :root {
+    --font-size-base: 15px;
+    --font-size-lg: 17px;
+    --font-size-xl: 19px;
+    --font-size-2xl: 24px;
+    --font-size-3xl: 32px;
+    --font-size-4xl: 40px;
+    --font-size-5xl: 52px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767.98px) and (min-width: 576px) {
+  :root {
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 22px;
+    --font-size-3xl: 28px;
+    --font-size-4xl: 36px;
+    --font-size-5xl: 46px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 575.98px) and (min-width: 376px) {
+  :root {
+    --font-size-base: 13px;
+    --font-size-lg: 15px;
+    --font-size-xl: 17px;
+    --font-size-2xl: 20px;
+    --font-size-3xl: 26px;
+    --font-size-4xl: 32px;
+    --font-size-5xl: 40px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 375px) {
+  :root {
+    --font-size-base: 12px;
+    --font-size-lg: 14px;
+    --font-size-xl: 16px;
+    --font-size-2xl: 18px;
+    --font-size-3xl: 24px;
+    --font-size-4xl: 28px;
+    --font-size-5xl: 36px;
+  }
+}
+
+/* ===== RESPONSIVE LINE HEIGHTS ===== */
+
+/* Desktop (Default) */
+@media (min-width: 1200px) {
+  :root {
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+  }
+}
+
+/* Tablet and Mobile */
+@media (max-width: 1199.98px) {
+  :root {
+    --line-height-tight: 1.3;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 575.98px) {
+  :root {
+    --line-height-tight: 1.35;
+    --line-height-normal: 1.65;
+    --line-height-relaxed: 1.85;
+  }
+}
+
+/* ===== RESPONSIVE LETTER SPACING ===== */
+
+/* Desktop (Default) */
+@media (min-width: 1200px) {
+  :root {
+    --letter-spacing-tight: -0.025em;
+    --letter-spacing-normal: 0em;
+    --letter-spacing-wide: 0.025em;
+  }
+}
+
+/* Tablet and Mobile */
+@media (max-width: 1199.98px) {
+  :root {
+    --letter-spacing-tight: -0.02em;
+    --letter-spacing-normal: 0em;
+    --letter-spacing-wide: 0.02em;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 575.98px) {
+  :root {
+    --letter-spacing-tight: -0.015em;
+    --letter-spacing-normal: 0em;
+    --letter-spacing-wide: 0.015em;
+  }
+}
+
+/* Font optimization */
+.font-display {
+  font-display: swap;
+}
+
+/* Smooth font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Preload critical fonts */
+@font-face {
+  font-family: 'Cairo';
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --font-weight-normal: 600;
+    --font-weight-bold: 900;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

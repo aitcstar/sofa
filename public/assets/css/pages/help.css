@@ -1,0 +1,42 @@
+/* ===== HELP SECTION ===== */
+.help {
+    padding-top: var(--padding-box-xl);
+    padding-bottom: var(--padding-box-xl);
+}
+
+.help .container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-l);
+    text-align: center;
+    align-items: center;
+}
+
+.help .container .d-flex {
+    flex-direction: column;
+    gap: var(--gap-l);
+}
+
+.help .help-form {
+    width: 450px;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box);
+    padding: var(--padding-box-small);
+}
+
+@media (max-width: 767.98px) {
+    .help {
+        padding-top: var(--padding-mobile-box-xl);
+        padding-bottom: var(--padding-mobile-box-xl);
+    }
+
+    .help .container {
+        gap: var(--gap-mobile-l);
+    }
+
+    .help .help-form {
+        width: 100%;
+        border-radius: var(--radius-mobile-small-box);
+        padding: var(--padding-mobile-box-small);
+    }
+}

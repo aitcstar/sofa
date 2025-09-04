@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<!-- ===== SOFA EXPERIENCE - GALLERY DETAILS PAGE ===== -->
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تفاصيل المشروع - صوفا للتصميم الداخلي</title>
+
+    <!-- ===== EXTERNAL LIBRARIES ===== -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="../node_modules/owl.carousel/dist/assets/owl.theme.default.min.css" />
+
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="../node_modules/flag-icons/css/flag-icons.min.css" />
+
+    <!-- ===== CUSTOM CSS ===== -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/pages/gallery-details.css" />
+    <link rel="stylesheet" href="../assets/css/utilities/translations.css" />
+
+    <!-- ===== FAVICON & MANIFEST ===== -->
+    <link rel="shortcut icon" href="../assets/images/logos/Logo.png" type="image/x-icon" />
+    <link rel="manifest" href="../manifest.json" />
+</head>
+
+<body>
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header container">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="header-logo">
+                <img src="../assets/images/logos/logo.svg" alt="Logo" />
+            </div>
+
+            <!-- Navigation -->
+            <nav class="header-nav">
+                <ul class="header-nav-list">
+                    <li class="header-nav-item">
+                        <a href="/" class="header-nav-link">الرئيسية</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/categories.html" class="header-nav-link">التصنيفات</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/about.html" class="header-nav-link">من نحن</a>
+                    </li>
+                    <li class="header-nav-item active">
+                        <a href="/pages/gallery.html" class="header-nav-link">المعرض</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/blog.html" class="header-nav-link">المدونة</a>
+                    </li>
+                    <li class="header-nav-item">
+                        <a href="/pages/contact.html" class="header-nav-link">اتصل بنا</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <!-- Auth -->
+                <img src="../assets/images/icons/user.svg" alt="User" />
+
+                <!-- Language Dropdown -->
+                <div class="dropdown language-dropdown">
+                    <!-- Button -->
+                    <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
+                        id="languageDropdown" aria-expanded="false">
+                        <img src="../assets/images/icons/translation.svg" alt="Globe" />
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
+                        <li class="language-option" data-language="ar">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇸🇦
+                                <span class="body-2 text-body">العربية</span>
+                            </div>
+                            <input type="radio" name="language" id="arabicRadio" checked />
+                        </li>
+                        <li class="hr"></li>
+                        <li class="language-option" data-language="en">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇺🇲
+                                <span class="body-2 text-body">English</span>
+                            </div>
+                            <input type="radio" name="language" id="englishRadio" />
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Help -->
+                <a class="btn btn-custom-primary" href="/pages/help.html">
+                    طلب بمساعدة
+                </a>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== BREADCRUMB ===== -->
+    <div class="breadcrumb-container container">
+        <a href="#" class="body-2 text-body">الرئيسية</a>
+        <span class="body-2 text-body">/</span>
+        <a href="/pages/gallery.html" class="body-2 text-body">المعرض</a>
+        <span class="body-2 text-body">/</span>
+        <a href="#" class="body-2 text-primary">تفاصيل المشروع</a>
+    </div>
+
+    <!-- ===== NAV MOBILE OVERLAY ===== -->
+    <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
+
+    <!-- ===== NAV MOBILE DRAWER ===== -->
+    <div class="nav-mobile-drawer" id="navMobileDrawer">
+        <!-- Close Button -->
+        <div class="nav-mobile-header" id="navMobileClose">
+            <i class="fas fa-times" style="font-size: 18px;"></i>
+            <p class="body-1 text-subheading mb-0">اغلاق</p>
+        </div>
+
+        <!-- Content -->
+        <div class="nav-mobile-content">
+            <!-- Navigation Links -->
+            <div class="nav-mobile-group">
+                <ul class="nav-mobile-nav-list">
+                    <li class="nav-mobile-nav-item">
+                        <a href="/" class="nav-mobile-nav-link body-1">الرئيسية</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/categories.html" class="nav-mobile-nav-link body-1">التصنيفات</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/about.html" class="nav-mobile-nav-link body-1">من نحن</a>
+                    </li>
+                    <li class="nav-mobile-nav-item active">
+                        <a href="/pages/gallery.html" class="nav-mobile-nav-link body-1">المعرض</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/blog.html" class="nav-mobile-nav-link body-1">المدونة</a>
+                    </li>
+                    <li class="nav-mobile-nav-item">
+                        <a href="/pages/contact.html" class="nav-mobile-nav-link body-1">اتصل بنا</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Language Selection -->
+            <div class="nav-mobile-language">
+                <div class="nav-mobile-language-option" data-language="ar">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇸🇦
+                        <p class="body-2 mb-0">العربية</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileArabicRadio" checked />
+                </div>
+                <div class="nav-mobile-language-option" data-language="en">
+                    <div class="d-flex align-items-center gap-sm-5">
+                        🇺🇲
+                        <p class="body-2 mb-0">English</p>
+                    </div>
+                    <input type="radio" name="mobile-language" id="mobileEnglishRadio" />
+                </div>
+            </div>
+
+            <div class="nav-mobile-hr"></div>
+
+            <!-- Actions Buttons -->
+            <div class="nav-mobile-action-button">
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">تسجيل دخول / انشاء حساب</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/user.svg" alt="User" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">حسابي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4">
+                    <img src="../assets/images/icons/order.svg" alt="Cart" />
+                    <p class="body-2 mb-0 sub-heading-4 text-body">طلباتي</p>
+                </div>
+                <div class="d-flex align-items-center gap-sm-4 text-danger">
+                    <img src="../assets/images/icons/logout.svg" alt="Logout" />
+                    <p class="body-2 mb-0 sub-heading-4 text-danger">تسجيل خروج</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <div class="flex-grow-1 d-flex">
+            <a class="btn btn-custom-primary w-100 mt-auto" href="/pages/help.html">
+                طلب بمساعدة
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== GALLERY HEADING SECTION ===== -->
+    <section class="gallery-heading-section">
+        <div class="container">
+            <div class="gallery-heading-container d-flex flex-column text-center gap-md">
+                <!-- Heading -->
+                <div class="gallery-heading-title d-flex flex-column gap-sm-5">
+                    <h2 class="heading-h7 text-heading">فندق المها – الرياض</h2>
+                    <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">تم تنفيذ المشروع في فندق
+                        المها بمدينة الرياض باستخدام باكج جاهز لغرفة نوم واحدة من SOFA، مع تخصيصات بسيطة تناسب الطابع
+                        الفندقي. تنسيق الألوان المستخدم هو بيج، أبيض، وبني (دافئ)، وتم التسليم في مارس 2025</p>
+
+                    <div class="gallery-features d-flex gap-sm-4 mx-auto">
+                        <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
+                            <img src="../assets/images/icons/user.svg" alt="Delivery" />
+                            <p class="body-2 text-body mb-0" style="white-space: nowrap;">غرفة نوم رئيسية</p>
+                        </div>
+                        <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
+                            <img src="../assets/images/icons/book-mark.svg" alt="Delivery" />
+                            <p class="body-2 text-body mb-0" style="white-space: nowrap;">منطقة معيشة</p>
+                        </div>
+                        <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
+                            <img src="../assets/images/icons/user.svg" alt="Delivery" />
+                            <p class="body-2 text-body mb-0" style="white-space: nowrap;">مطبخ صغير</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Images -->
+                <div class="gallery-heading-images">
+                    <div class="gallery-heading-image-grid">
+                        <!-- item 1 -->
+                        <div class="gallery-heading-image-item">
+                            <div class="gallery-heading-image-sub-item gallery-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+
+                        <!-- item 2 -->
+                        <div class="gallery-heading-image-item d-flex flex-column gap-sm-3">
+                            <div class="gallery-heading-image-sub-item gallery-small-img">
+                                <img src="../assets/images/gallery/gallery-02.jpg" alt="Gallery Image" />
+                            </div>
+                            <div class="gallery-heading-image-sub-item gallery-small-img">
+                                <img src="../assets/images/gallery/gallery-02.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+
+                        <!-- item 3 -->
+                        <div class="gallery-heading-image-item d-flex flex-column gap-sm-3">
+                            <div class="gallery-heading-image-sub-item gallery-small-img">
+                                <img src="../assets/images/gallery/gallery-03.jpg" alt="Gallery Image" />
+                            </div>
+                            <div class="gallery-heading-image-sub-item gallery-small-img">
+                                <img src="../assets/images/gallery/gallery-03.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY DETAILS SECTION ===== -->
+    <section class="gallery-details-section">
+        <div class="container">
+            <div class="gallery-details-container d-flex flex-column text-center gap-md">
+                <!-- Heading -->
+                <div class="gallery-details-title d-flex flex-column gap-sm-5">
+                    <h2 class="heading-h7 text-heading">تفاصيل الباكج</h2>
+                    <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">الباكج المستخدم يحتوي على
+                        60 قطعة، ويشمل الأثاث الكامل لغرفة نوم واحدة، المعيشة، والمطبخ. تم اختيار تصميم خشبي كلاسيكي
+                        للتلفزيون وتصميم عمراني مفتوح لطاولة الطعام</p>
+                </div>
+
+                <!-- images -->
+                <div class="gallery-details-images">
+                    <div class="gallery-details-image-grid">
+                        <div class="gallery-details-image-item">
+                            <div class="gallery-details-image-sub-item gallery-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">Bedroom</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-details-image-item d-flex gap-sm">
+                            <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">Bedroom</span>
+                                </div>
+                            </div>
+                            <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">Bedroom</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-details-image-item">
+                            <div class="gallery-details-image-sub-item gallery-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">Bedroom</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-details-image-item">
+                            <div class="gallery-details-image-sub-item gallery-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">Bedroom</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STEPS IMPLEMENT PROJECT SECTION ===== -->
+    <section class="steps-implement-project-section">
+        <div class="container">
+            <div class="steps-implement-project-container d-flex flex-column text-center gap-md">
+                <!-- Heading -->
+                <div class="gallery-details-title d-flex flex-column gap-sm-5">
+                    <h2 class="heading-h7 text-heading">خطوات تنفيذ المشروع</h2>
+                    <p class="caption-4 text-caption mb-0 mx-auto">اعتمد المشروع على باكج جاهز من SOFA، وتم تخصيصه حسب
+                        المساحة والتشطيب. شملت الخدمة</p>
+                </div>
+
+                <!-- steps -->
+                <div class="steps-implement-project-steps d-flex gap-md">
+                    <div class="steps-implement-project-step-item d-flex flex-column align-items-center gap-sm-4">
+                        <div class="steps-implement-project-step-icon">
+                            <img src="../assets/images/gallery/step-01.svg" alt="Gallery Image" />
+                        </div>
+                        <div class="steps-implement-project-step-content">
+                            <p class="body-2 text-subheading mb-0">تحديد الوحدة ونوع الاستخدام الفندقي</p>
+                        </div>
+                    </div>
+                    <div class="steps-implement-project-step-item d-flex flex-column align-items-center gap-sm-4">
+                        <div class="steps-implement-project-step-icon">
+                            <img src="../assets/images/gallery/step-02.svg" alt="Gallery Image" />
+                        </div>
+                        <div class="steps-implement-project-step-content">
+                            <p class="body-2 text-subheading mb-0">اختيار الألوان الدافئة المناسبة للضيوف</p>
+                        </div>
+                    </div>
+                    <div class="steps-implement-project-step-item d-flex flex-column align-items-center gap-sm-4">
+                        <div class="steps-implement-project-step-icon">
+                            <img src="../assets/images/gallery/step-03.svg" alt="Gallery Image" />
+                        </div>
+                        <div class="steps-implement-project-step-content">
+                            <p class="body-2 text-subheading mb-0">اعتماد الباكج بناءً على المساحة والوظيفة</p>
+                        </div>
+                    </div>
+                    <div class="steps-implement-project-step-item d-flex flex-column align-items-center gap-sm-4">
+                        <div class="steps-implement-project-step-icon">
+                            <img src="../assets/images/gallery/step-04.svg" alt="Gallery Image" />
+                        </div>
+                        <div class="steps-implement-project-step-content">
+                            <p class="body-2 text-subheading mb-0">التنفيذ (تصنيع – تجهيز – شحن)</p>
+                        </div>
+                    </div>
+                    <div class="steps-implement-project-step-item d-flex flex-column align-items-center gap-sm-4">
+                        <div class="steps-implement-project-step-icon">
+                            <img src="../assets/images/gallery/step-05.svg" alt="Gallery Image" />
+                        </div>
+                        <div class="steps-implement-project-step-content">
+                            <p class="body-2 text-subheading mb-0">التركيب والتسليم في الموقع</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- images -->
+                <div class="steps-implement-project-images">
+                    <div class="steps-implement-project-image-grid">
+                        <div class="steps-implement-project-image-item">
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+                        <div class="steps-implement-project-image-item d-flex flex-column gap-sm-3">
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+                        <div class="steps-implement-project-image-item d-flex gap-sm-3">
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+                        <div class="steps-implement-project-image-item">
+                            <div class="steps-implement-project-image-sub-item steps-implement-project-large-img">
+                                <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PACKAGE CONTAIN SECTION ===== -->
+    <section class="package-contain-section">
+        <div class="container">
+            <div class="package-contain-container d-flex flex-column gap-sm-4">
+                <h2 class="heading-h7 text-heading">مكونات وصور الباكج</h2>
+
+                <!-- details -->
+                <div class="package-contain-details-grid">
+                    <!-- item 1 -->
+                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
+                        <!-- heading -->
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <img src="/assets/images/gallery/living-room.svg" alt="living-room" />
+                            <p class="heading-h9 mb-0">المعيشة</p>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="package-contain-detail-item-table">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>القطعة</th>
+                                            <th>المقاس</th>
+                                            <th>الخامة</th>
+                                            <th>اللون</th>
+                                            <th>الصورة</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 2 -->
+                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
+                        <!-- heading -->
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <img src="/assets/images/gallery/living-room.svg" alt="living-room" />
+                            <p class="heading-h9 mb-0">غرفة النوم الرئيسية</p>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="package-contain-detail-item-table">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>القطعة</th>
+                                            <th>المقاس</th>
+                                            <th>الخامة</th>
+                                            <th>اللون</th>
+                                            <th>الصورة</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 3 -->
+                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
+                        <!-- heading -->
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <img src="/assets/images/gallery/kitchen.svg" alt="kitchen" />
+                            <p class="heading-h9 mb-0">المطبخ</p>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="package-contain-detail-item-table">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>القطعة</th>
+                                            <th>المقاس</th>
+                                            <th>الخامة</th>
+                                            <th>اللون</th>
+                                            <th>الصورة</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- item 4 -->
+                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
+                        <!-- heading -->
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <img src="/assets/images/gallery/kitchen.svg" alt="kitchen" />
+                            <p class="heading-h9 mb-0">الملحقات الخارجية والإضافية</p>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="package-contain-detail-item-table">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>القطعة</th>
+                                            <th>المقاس</th>
+                                            <th>الخامة</th>
+                                            <th>اللون</th>
+                                            <th>الصورة</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="body-2">كنبة 3 مقاعد</td>
+                                            <td class="body-2">2.2×100×70</td>
+                                            <td class="body-2">قماش مخملي</td>
+                                            <td class="color-box">
+                                                <p class="body-2 text-subheading mb-0"
+                                                    style="background-color: #262626;">أسود</p>
+                                            </td>
+                                            <td class="image-box">
+                                                <div class="img-box">
+                                                    <img src="../assets/images/gallery/char.png" alt="Gallery Image" />
+                                                </div>
+                                            </td>
+                                            <td class="body-2">1</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER SECTION ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Content -->
+            <div class="container">
+                <!-- Pattern background element -->
+                <img class="footer-pattern" src="../assets/images/footer/pattern.svg" alt="Pattern" />
+
+                <div class="row text-center">
+                    <!-- Column 4: Logo -->
+                    <div class="footer-item align-items-center align-items-md-start col-md-3 gap-sm">
+                        <img src="../assets/images/logos/logo-white.svg" alt="SOFA Logo" />
+                        <p class="body-2 text-white mb-0" style="opacity: 0.8" data-translate="footer.vision">
+                            جزء من رؤية المملكة 2030
+                        </p>
+                    </div>
+
+                    <!-- Column 3: Quick Links -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.quickLinks">
+                            روابط سريعة
+                        </h6>
+                        <div class="d-flex flex-column text-start gap-sm-4">
+                            <a href="../index.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.home">الرئيسية</a>
+                            <a href="categories.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.packages">الباكجات</a>
+                            <a href="about.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.about">من
+                                نحن</a>
+                            <a href="faq.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.faq">الأسئلة الشائعة</a>
+                            <a href="contact.html" class="body-2 text-white" style="opacity: 0.8"
+                                data-translate="footer.links.contact">اتصل بنا</a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Contact Information -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.contactInfo">
+                            معلومات الاتصال
+                        </h6>
+                        <div class="d-flex flex-column gap-sm-4">
+                            <div class="mb-0 d-flex flex-row gap-sm-5 align-items-center">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/phone.svg" alt="phone" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.phone">+966
+                                    500000000</span>
+                            </div>
+                            <div class="mb-0 d-flex flex-row gap-sm-5">
+                                <div class="footer-contact-icon">
+                                    <img src="../assets/images/footer/email.svg" alt="email" />
+                                </div>
+                                <span class="body-2 text-white mb-0" style="opacity: 0.8"
+                                    data-translate="footer.contact.email">info@sofa.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 1: Follow Us -->
+                    <div class="footer-item col-md-3 gap-sm-3">
+                        <h6 class="sub-heading-4 mb-0 text-white text-start" data-translate="footer.followUs">
+                            تابعنا
+                        </h6>
+                        <div class="d-flex flex-row gap-sm-4">
+                            <a href="#"><img src="../assets/images/social/snapchat.png" alt="Snapchat" /></a>
+                            <a href="#"><img src="../assets/images/social/youtube.png" alt="YouTube" /></a>
+                            <a href="#"><img src="../assets/images/social/tiktok.png" alt="TikTok" /></a>
+                            <a href="#"><img src="../assets/images/social/instagram.png" alt="Instagram" /></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <hr class="m-0" style="opacity: 0.1" />
+
+                <!-- Copyright Section -->
+                <div class="footer-bottom body-2 text-caption" data-translate="footer.copyright">
+                    © 2025 SOFA Furnishing Co. جميع الحقوق محفوظة.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS SECTION ===== -->
+    <!-- jQuery -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="../node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../assets/js/language.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/nav-bar.js"></script>
+    <script src="../assets/js/optimizations.js"></script>
+</body>
+<!-- ===== END BODY ===== -->
+
+</html>
+<!-- ===== END HTML ===== -->

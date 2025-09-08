@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 
-@section('title', 'الأسئلة المتكررة')
+@section('title', ' الأسئلة الشائعة')
 
 @section('content')
 <div class="container">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">الأسئلة المتكررة</h1>
+        <h1 class="h2"> الأسئلة الشائعة</h1>
         <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة سؤال جديد
         </a>
@@ -23,6 +23,8 @@
                             <th>السؤال (إنجليزي)</th>
                             <th>الإجابة (عربي)</th>
                             <th>الإجابة (إنجليزي)</th>
+                            <th>القسم</th>
+                            <th>الترتيب</th>
                             <th width="180">الإجراءات</th>
                         </tr>
                     </thead>
@@ -33,6 +35,8 @@
                             <td>{{ $faq->question_en }}</td>
                             <td>{{ $faq->answer_ar }}</td>
                             <td>{{ $faq->answer_en }}</td>
+                            <td>{{ $faq->category_ar }}</td>
+                            <td>{{ $faq->sort }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-outline-primary">
@@ -72,7 +76,7 @@
    $(document).ready(function() {
     $('#faqsTable').DataTable({
         responsive: true,
-        order: [[0, 'desc']],
+        order: [[4, 'desc']],
         pageLength: 10,
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "الكل"]],
         dom: '<"row"<"col-md-6"l><"col-md-6 text-end"f>>rt<"row"<"col-md-6"i><"col-md-6"p>>',

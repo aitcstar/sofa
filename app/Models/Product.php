@@ -11,7 +11,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
+        'package_id',
         'name_ar',
         'name_en',
         'description_ar',
@@ -44,9 +44,9 @@ class Product extends Model
     ];
 
     // Relationships
-    public function category()
+    public function package()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Package::class);
     }
 
     public function orderItems()

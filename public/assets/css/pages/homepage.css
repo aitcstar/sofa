@@ -380,6 +380,11 @@ header .header-nav .header-nav-item::before {
   border-right: 10px solid;
 }
 
+.cam{
+    text-align :right;
+    flex: 1;
+}
+
 .order-time-line-section .arrow.right-arrow {
   position: absolute;
   right: -10px;

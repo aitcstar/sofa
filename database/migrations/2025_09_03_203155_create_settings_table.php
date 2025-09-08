@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('site_name')->nullable();
             $table->string('email')->nullable();
+            $table->string('worktime')->nullable();
             $table->string('phone')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('address')->nullable();

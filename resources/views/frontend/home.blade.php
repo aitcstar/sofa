@@ -20,12 +20,13 @@
                 </div>
                 <div class="hero-section-actions d-flex justify-content-center gap-sm-3">
                     <a href="{{ route('categories.index') }}" class="btn btn-custom-outline">
-                      استعرض الباكجات
+                        {{ __('site.browse_packages') }}
                     </a>
                     <a href="{{ route('help.index') }}" class="btn btn-custom-secondary">
-                      اطلب الان
+                        {{ __('site.order_now') }}
                     </a>
-                  </div>
+                </div>
+
             </div>
         </div>
         @endforeach
@@ -48,7 +49,7 @@
   <section class="step-section">
     <div class="content mx-auto">
       <!-- Heading -->
-      <h5 class="heading-h8 text-center">مراحل تجهيز وحدتك</h5>
+      <h5 class="heading-h8 text-center">{{ __('site.steps_heading') }}</h5>
 
       <!-- Steps -->
       <div class="d-flex gap-sm-3 position-relative mx-auto">
@@ -61,10 +62,10 @@
           </div>
           <div class="d-flex flex-column align-items-center gap-sm-7">
             <p class="sub-heading-4 mb-0">
-              اختيار الوحدة
+              {{ __('site.step1_title') }}
             </p>
             <div class="body-3 text-caption mb-0">
-              استوديو أو غرف
+              {{ __('site.step1_desc') }}
             </div>
           </div>
         </div>
@@ -76,10 +77,10 @@
           </div>
           <div class="d-flex flex-column align-items-center gap-sm-7">
             <p class="sub-heading-4 mb-0">
-              تخصيص الألوان
+              {{ __('site.step2_title') }}
             </p>
             <div class="body-3 text-caption mb-0">
-              نمط وتأثيث
+              {{ __('site.step2_desc') }}
             </div>
           </div>
         </div>
@@ -91,10 +92,10 @@
           </div>
           <div class="d-flex flex-column align-items-center gap-sm-7">
             <p class="sub-heading-4 mb-0">
-              اعتماد الباكج
+              {{ __('site.step3_title') }}
             </p>
             <div class="body-3 text-caption mb-0">
-              مخطط تجهيز
+              {{ __('site.step3_desc') }}
             </div>
           </div>
         </div>
@@ -106,31 +107,32 @@
           </div>
           <div class="d-flex flex-column align-items-center gap-sm-7">
             <p class="sub-heading-4 mb-0">
-              التوريد والتركيب
+              {{ __('site.step4_title') }}
             </p>
             <div class="body-3 text-caption mb-0">
-              شحن وتجهيز
+              {{ __('site.step4_desc') }}
             </div>
           </div>
         </div>
 
         <!-- Item 5 -->
-        <div class="d-flex flex-column align-items-center align-items-center gap-sm-4" style="width: 140px;">
+        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
           <div class="step-item-icon">
             <img src="{{ asset('assets/images/hero/loho7.png') }}" alt="" />
           </div>
           <div class="d-flex flex-column align-items-center gap-sm-7">
             <p class="sub-heading-4 mb-0">
-              التسليم
+              {{ __('site.step5_title') }}
             </p>
             <div class="body-3 text-caption mb-0">
-              جاهزة للسكن
+              {{ __('site.step5_desc') }}
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== ABOUT US SECTION ===== -->
   <section class="about-us-section">
@@ -143,7 +145,7 @@
         <!-- Image -->
         <div class="order-1 order-md-2 position-relative">
           <div class="image border-surface radius-normal-box overflow-hidden">
-            <img class="w-100 h-100" src="{{ asset('assets/images/hero/imagehome.png') }}" alt="صورة أثاث" />
+            <img class="w-100 h-100" src="{{ asset('assets/images/hero/imagehome.png') }}" alt="{{ __('site.about_us') }}" />
           </div>
         </div>
 
@@ -151,52 +153,51 @@
         <div class="order-2 order-md-1 d-flex flex-column gap-l mx-auto" style="max-width: 470px;">
           <!-- Heading -->
           <div class="d-flex flex-column gap-sm-5">
-            <p class="sub-heading-4" style="color: var(--secondary);">من نحن</p>
-            <h4 class="heading-h6">منصة تأثيث ذكية للوحدات الفندقية</h4>
+            <p class="sub-heading-4" style="color: var(--secondary);">{{ __('site.about_us') }}</p>
+            <h4 class="heading-h6">{{ __('site.about_heading') }}</h4>
             <p class="caption-3 text-caption mb-0">
-              نقدم اختيارات متنوعة متكاملة لتأثيث وحدتك الفندقية بالكامل بأعلى
-              التصميمات الجذابة ومحددة مسبقًا لتسهيل إنشاء الحلول الجاهزة لأوامر
-              الشراء الكامل من خلال منصة موحدة وسلسة.
+              {{ __('site.about_desc') }}
             </p>
           </div>
 
           <!-- Details -->
           <div class="d-flex flex-column gap-sm-3">
             <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/iconeclock.png') }}" alt="توفير الوقت" />
-              <span class="body-1">توفير الوقت</span>
+              <img src="{{ asset('assets/images/icons/iconeclock.png') }}" alt="{{ __('site.save_time') }}" />
+              <span class="body-1">{{ __('site.save_time') }}</span>
             </div>
 
             <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/shield-check.png') }}" alt="توفير التكلفة" />
-              <span class="body-1">توفير عالي للتكلفة</span>
+              <img src="{{ asset('assets/images/icons/shield-check.png') }}" alt="{{ __('site.save_cost') }}" />
+              <span class="body-1">{{ __('site.save_cost') }}</span>
             </div>
 
             <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/icone5.png') }}" alt="جاهزية" />
-              <span class="body-1">جاهزية كاملة للتسليم</span>
+              <img src="{{ asset('assets/images/icons/icone5.png') }}" alt="{{ __('site.ready_delivery') }}" />
+              <span class="body-1">{{ __('site.ready_delivery') }}</span>
             </div>
           </div>
+
           <a href="{{ route('about') }}" class="btn btn-custom-primary w-100">
-            تعرف على طريقتنا العمل
-        </a>
-
-
+            {{ __('site.learn_how') }}
+          </a>
         </div>
       </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== PACKAGE SELECTION SECTION ===== -->
   <section id="package-selection" class="package-selection-section">
     <div class="container d-flex flex-column gap-xl">
       <!-- Heading -->
       <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">اختر الباكج المناسب لوحدتك</h3>
+        <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
         <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-          باكجات فندقية مؤثثة بالكامل، جاهزة للتنفيذ خلال 90 يومًا، بخيارات تصميم وألوان راقية
+            {{ __('site.package_desc') }}
         </p>
-      </div>
+    </div>
+
 
       <!-- Form -->
       <form class="package-selection-form padding-box-normal d-flex flex-column gap-md border border-surface radius-small-box mx-auto">
@@ -278,7 +279,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-custom-primary w-100">
-          عرض الباكيجات
+            {{ __('site.show_packages') }}
         </button>
       </form>
     </div>
@@ -289,9 +290,9 @@
     <div class="container d-flex flex-column gap-xl">
       <!-- Heading -->
       <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">اختر الباكج المناسب لوحدتك</h3>
+        <h3 class="heading-h6 mb-0">  {{ __('site.choose_package') }}</h3>
         <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-          باكجات فندقية مؤثثة بالكامل، جاهزة للتنفيذ خلال 90 يومًا، بخيارات تصميم وألوان راقية
+          {{ __('site.package_desc') }}
         </p>
       </div>
 
@@ -412,16 +413,16 @@
               <div class="actions d-flex gap-sm-2">
 
 
-                <a href="https://wa.me/{{$siteSettings->whatsapp}}" target="_blank" class="btn btn-custom-primary w-100">
-                    <p class="text-nowrap mb-0">أرسل لي عرض السعر عبر الوتساب</p>
+                <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
+                    <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                 </a>
-
+                </a>
 
                 <a href="{{ route('categories.show', $category->slug) }}" class="btn btn-custom-secondary w-100">
-                  <span style="white-space: nowrap;">عرض التفاصيل</span>
-                  <i class="fa-solid fa-arrow-left action-icon"></i>
+                    <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
+                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
                 </a>
+
               </div>
             </div>
           </div>
@@ -467,82 +468,76 @@
 
         <!-- Column 2 -->
         <div class="d-flex flex-column gap-md" style="flex: 0.5;">
-          <!-- Heading -->
-          <div class="d-flex flex-column gap-sm-5">
-            <h6 class="heading-h6">
-              خطوات سهلة لإنهاء تأثيث وحدتك
-            </h6>
-            <p class="text-caption mb-0">
-              خطوات واضحة وسريعة من اختيار الباكدج حتى استلام وحدتك مؤثثة
-              بالكامل
-            </p>
-          </div>
-
-          <!-- Steps -->
-          <div class="d-flex flex-column gap-sm">
-            <!-- Item 1 -->
-            <div class="step d-flex gap-sm-3">
-              <div class="step-icon">
-                <img src="assets/images/hero/Platform Text Container.png" />
-              </div>
-              <div class="d-flex flex-column gap-sm-5">
-                <h2 class="sub-heading-3 mb-0">اختر الباكدج واللون</h2>
+            <!-- Heading -->
+            <div class="d-flex flex-column gap-sm-5">
+                <h6 class="heading-h6">
+                    {{ __('site.process_steps') }}
+                </h6>
                 <p class="text-caption mb-0">
-                  اختر التصميم المناسب من بين خيارات الألوان: هادئ ومحايد أو
-                  ترابي ودافئ
+                    {{ __('site.process_steps_desc') }}
                 </p>
-              </div>
             </div>
 
-            <!-- Item 2 -->
-            <div class="step d-flex gap-sm-3">
-              <div class="step-icon">
-                <img src="assets/images/hero/icone9.png" />
-              </div>
-              <div class="d-flex flex-column gap-sm-5">
-                <h2 class="sub-heading-3 mb-0">املأ النموذج الذكي</h2>
-                <p class="text-caption mb-0">
-                  أدخل بياناتك وعدد الوحدات، وسنتولى الباقي
-                </p>
-              </div>
+            <!-- Steps -->
+            <div class="d-flex flex-column gap-sm">
+                <!-- Item 1 -->
+                <div class="step d-flex gap-sm-3">
+                    <div class="step-icon">
+                        <img src="assets/images/hero/Platform Text Container.png" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-5">
+                        <h2 class="sub-heading-3 mb-0">{{ __('site.choose_package_color') }}</h2>
+                        <p class="text-caption mb-0">
+                            {{ __('site.choose_package_desc') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="step d-flex gap-sm-3">
+                    <div class="step-icon">
+                        <img src="assets/images/hero/icone9.png" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-5">
+                        <h2 class="sub-heading-3 mb-0">{{ __('site.fill_smart_form') }}</h2>
+                        <p class="text-caption mb-0">
+                            {{ __('site.fill_form_desc') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="step d-flex gap-sm-3">
+                    <div class="step-icon">
+                        <img src="assets/images/hero/icone10.png" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-5">
+                        <h2 class="sub-heading-3 mb-0">{{ __('site.receive_quote') }}</h2>
+                        <p class="text-caption mb-0">
+                            {{ __('site.receive_quote_desc') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="step d-flex gap-sm-3">
+                    <div class="step-icon2">
+                        <img src="assets/images/hero/icone11.png" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-5">
+                        <h2 class="sub-heading-3 mb-0">{{ __('site.receive_furnished') }}</h2>
+                        <p class="text-caption mb-0">
+                            {{ __('site.receive_furnished_desc') }}
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Item 3 -->
-            <div class="step d-flex gap-sm-3">
-              <div class="step-icon">
-                <img src="assets/images/hero/icone10.png" />
-              </div>
-              <div class="d-flex flex-column gap-sm-5">
-                <h2 class="sub-heading-3 mb-0">استلم عرض السعر والموافقة</h2>
-                <p class="text-caption mb-0">
-                  نرسل لك تسعيرة تفصيلية مع الموافقة قبل التنفيذ
-                </p>
-              </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="step d-flex gap-sm-3">
-              <div class="step-icon2">
-                <img src="assets/images/hero/icone11.png" />
-              </div>
-              <div class="d-flex flex-column gap-sm-5">
-                <h2 class="sub-heading-3 mb-0">استلم وحدتك مؤثثة</h2>
-                <p class="text-caption mb-0">
-                  نقوم بالتنفيذ والشحن والتركيب حتى باب وحدتك
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Button
-          <button class="btn btn-custom-primary w-100">
-            ابدأ الآن أو استلم عرض السعر
-          </button> -->
-          <a href="{{ route('help.index') }}" class="btn btn-custom-primary w-100">
-            ابدأ الآن أو استلم عرض السعر
-        </a>
-
+            <a href="{{ route('help.index') }}" class="btn btn-custom-primary w-100">
+                {{ __('site.start_now') }}
+            </a>
         </div>
+
       </div>
     </div>
   </section>
@@ -550,17 +545,17 @@
   <!-- ===== WHY CHOOSE US SECTION ===== -->
   <section class="why-choose-section bg-primary-light overflow-hidden">
     <!-- Decorative Pattern -->
-    <img src="assets/images/about/pattern.svg" alt="pattern" class="pattern" />
+    <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
 
     <!-- Content -->
     <div class="container d-flex flex-column gap-md">
       <!-- Heading -->
       <div class="heading d-flex flex-column gap-sm-5">
         <h3 class="heading-h6">
-          لماذا نحن؟
+          {{ __('site.why_choose_us') }}
         </h3>
         <p class="body-2 text-caption mb-0">
-          لأنك تستحق تأثيثًا فندقيًا متكاملًا... بجودة، سرعة، وراحة.
+          {{ __('site.why_desc') }}
         </p>
       </div>
 
@@ -572,10 +567,10 @@
             <p class="heading-h6 mb-0">1.</p>
             <div class="d-flex flex-column gap-sm-6">
               <h5 class="sub-heading-4 mb-0">
-                إنجاز فوري خلال 14 يومًا
+                {{ __('site.fast_delivery') }}
               </h5>
               <p class="body-3 mb-0">
-                نوفر لك باكج جاهز يتم تسليمه خلال فترة قصيرة دون تأخير
+                {{ __('site.fast_delivery_desc') }}
               </p>
             </div>
           </div>
@@ -587,10 +582,10 @@
             <h2 class="heading-h6 mb-0">2.</h2>
             <div class="d-flex flex-column gap-sm-6">
               <h5 class="sub-heading-4 mb-0">
-                أسعار شاملة وواضحة
+                {{ __('site.clear_pricing') }}
               </h5>
               <p class="body-3 mb-0">
-                سعر موحّد يشمل كل شيء: الأثاث، الشحن، التركيب
+                {{ __('site.clear_pricing_desc') }}
               </p>
             </div>
           </div>
@@ -602,10 +597,10 @@
             <h2 class="heading-h6 mb-0">3.</h2>
             <div class="d-flex flex-column gap-sm-6">
               <h5 class="sub-heading-4 mb-0">
-                جودة فندقية مضمونة
+                {{ __('site.quality') }}
               </h5>
               <p class="body-3 mb-0">
-                اختيار دقيق للخامات وتنفيذ بمعايير تناسب الاستخدام
+                {{ __('site.quality_desc') }}
               </p>
             </div>
           </div>
@@ -616,9 +611,11 @@
           <div class="d-flex gap-sm align-items-center">
             <h2 class="heading-h6 mb-0">4.</h2>
             <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">نظام متابعة ذكي</h5>
+              <h5 class="sub-heading-4 mb-0">
+                {{ __('site.smart_tracking') }}
+              </h5>
               <p class="body-3 mb-0">
-                تابع حالة الطلب خطوة بخطوة من خلال لوحة رقمية
+                {{ __('site.smart_tracking_desc') }}
               </p>
             </div>
           </div>
@@ -630,10 +627,10 @@
             <h2 class="heading-h6 mb-0">5.</h2>
             <div class="d-flex flex-column gap-sm-6">
               <h5 class="sub-heading-4 mb-0">
-                إشعارات في كل مرحلة
+                {{ __('site.notifications') }}
               </h5>
               <p class="body-3 mb-0">
-                نُبقيك على اطلاع تام في كل مرحلة: من التصنيع
+                {{ __('site.notifications_desc') }}
               </p>
             </div>
           </div>
@@ -645,10 +642,10 @@
             <h2 class="heading-h6 mb-0">6.</h2>
             <div class="d-flex flex-column gap-sm-6">
               <h5 class="sub-heading-4 mb-0">
-                استلام مؤثث بالكامل
+                {{ __('site.complete_handover') }}
               </h5>
               <p class="body-3 mb-0">
-                كل ما تحتاجه في مكان واحد – تستلم وحدتك جاهزة
+                {{ __('site.complete_handover_desc') }}
               </p>
             </div>
           </div>
@@ -657,21 +654,22 @@
     </div>
   </section>
 
+
   <!-- ===== ORDER TIMELINE SECTION ===== -->
   <section class="order-time-line-section">
     <div class="container d-flex flex-column gap-l">
       <!-- Heading -->
       <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">تابع تقدم طلبك لحظة بلحظة</h3>
+        <h3 class="heading-h6 mb-0">{{ __('site.order_timeline') }}</h3>
         <p class="body-2 text-caption mb-0">
-          مخطط زمني يوضح كل مرحلة من الطلب حتى التسليم النهائي، دائماً في الصورة
+          {{ __('site.order_timeline_desc') }}
         </p>
       </div>
 
       <!-- Timeline Rows -->
       <div class="timeline-wrapper position-relative">
         <!-- Decorative Pattern -->
-        <img src="assets/images/about/pattern.svg" alt="pattern" class="pattern" />
+        <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
 
         <!-- Row 1 -->
         <div class="timeline-row d-flex align-items-center">
@@ -685,8 +683,8 @@
           <div class="col-5">
             <div class="timeline-item" style="background-color: #08203E;">
               <div class="arrow right-arrow" style="border-left-color: #08203E;"></div>
-              <div class="sub-heading-3 text-white">تم الطلب</div>
-              <div class="body-3 text-white">تم استلام طلبك بنجاح وجاري مراجعته داخلياً</div>
+              <div class="sub-heading-3 text-white">{{ __('site.order_placed') }}</div>
+              <div class="body-3 text-white">{{ __('site.order_placed_desc') }}</div>
             </div>
           </div>
         </div>
@@ -694,10 +692,10 @@
         <!-- Row 2 -->
         <div class="timeline-row d-flex align-items-center">
           <div class="col-5">
-            <div class="timeline-item bg-secondary" style="margin-right: auto;">
+            <div class="timeline-item bg-secondary" style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }}">
               <div class="arrow left-arrow" style="border-right-color: #ad996f;"></div>
-              <div class="sub-heading-3 text-white">التصميم</div>
-              <div class="body-3 text-white">يتم تجهيز الرسومات واختيار النمط والألوان النهائية</div>
+              <div class="sub-heading-3 text-white">{{ __('site.design') }}</div>
+              <div class="body-3 text-white">{{ __('site.design_desc') }}</div>
             </div>
           </div>
           <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
@@ -715,8 +713,8 @@
           <div class="col-5">
             <div class="timeline-item" style="background-color: #979DAC;">
               <div class="arrow right-arrow" style="border-left-color: #979DAC;"></div>
-              <div class="sub-heading-3 text-white">التصنيع</div>
-              <div class="body-3 text-white">نبدأ بتنفيذ الأثاث حسب المقاسات والمواصفات المعتمدة</div>
+              <div class="sub-heading-3 text-white">{{ __('site.manufacturing') }}</div>
+              <div class="body-3 text-white">{{ __('site.manufacturing_desc') }}</div>
             </div>
           </div>
         </div>
@@ -724,10 +722,10 @@
         <!-- Row 4 -->
         <div class="timeline-row d-flex align-items-center">
           <div class="col-5">
-            <div class="timeline-item" style="margin-right: auto; background-color: #33415C;">
+            <div class="timeline-item"   style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }} ;background-color: #33415C;">
               <div class="arrow left-arrow" style="border-right-color: #33415C;"></div>
-              <div class="sub-heading-3 text-white">الشحن</div>
-              <div class="body-3 text-white">يتم شحن الطلب إلى موقعك مع إشعار بالموعد المتوقع</div>
+              <div class="sub-heading-3 text-white">{{ __('site.shipping') }}</div>
+              <div class="body-3 text-white">{{ __('site.shipping_desc') }}</div>
             </div>
           </div>
           <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
@@ -745,8 +743,8 @@
           <div class="col-5">
             <div class="timeline-item" style="background-color: #32B828;">
               <div class="arrow right-arrow" style="border-left-color: #32B828;"></div>
-              <div class="sub-heading-3 text-white">الدفعة الثانية</div>
-              <div class="body-3 text-white">يتم تحصيل الدفعة النهائية قبل التركيب</div>
+              <div class="sub-heading-3 text-white">{{ __('site.second_payment') }}</div>
+              <div class="body-3 text-white">{{ __('site.second_payment_desc') }}</div>
             </div>
           </div>
         </div>
@@ -754,10 +752,10 @@
         <!-- Row 6 -->
         <div class="timeline-row d-flex align-items-center">
           <div class="col-5">
-            <div class="timeline-item" style="margin-right: auto; background-color: #C1B41C;">
+            <div class="timeline-item"   style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }}; background-color: #C1B41C;">
               <div class="arrow left-arrow" style="border-right-color: #C1B41C;"></div>
-              <div class="sub-heading-3 text-white">التركيب والتسليم</div>
-              <div class="body-3 text-white">يتم تركيب الأثاث بالكامل وتسليمه للوحدة</div>
+              <div class="sub-heading-3 text-white">{{ __('site.installation') }}</div>
+              <div class="body-3 text-white">{{ __('site.installation_desc') }}</div>
             </div>
           </div>
           <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
@@ -767,54 +765,47 @@
         </div>
       </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== CALL TO ACTION SECTION ===== -->
   <section class="ready-to-furnish-section">
     <div class="ready-to-furnish-your-unit-container container position-relative bg-primary">
       <!-- pattern -->
-      <img class="ready-to-furnish-your-unit-pattern" src="../assets/images/about/pattern.svg" alt="Pattern" />
+      <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="ready-to-furnish-your-unit-pattern" />
 
       <!-- content -->
       <div class="ready-to-furnish-your-unit-content d-flex flex-column gap-sm">
         <div class="d-flex flex-column gap-sm-5">
-          <h2 class="heading-h6 text-white">جاهز لتأثيث وحدتك؟</h2>
+          <h2 class="heading-h6 text-white">{{ __('site.ready_to_furnish') }}</h2>
           <p class="caption-4 mb-0">
-            ابدأ خطوتك الأولى الآن… باكجاتنا جاهزة للتنفيذ والتسليم في وقت قياسي
+            {{ __('site.ready_desc') }}
           </p>
         </div>
 
         <!-- buttons -->
         <div class="ready-to-furnish-your-unit-buttons d-flex gap-sm-3">
-          <!--<button class="btn btn-custom-secondary">
-            <p class="text-nowrap mb-0">تحدث معنا عبر واتساب</p>
+          <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-secondary d-flex align-items-center gap-2">
+            <p class="text-nowrap mb-0">{{ __('site.whatsapp_chat') }}</p>
             <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-          </button>-->
-          <a href="https://wa.me/{{$siteSettings->whatsapp}}" target="_blank" class="btn btn-custom-secondary d-flex align-items-center gap-2">
-            <p class="text-nowrap mb-0">تحدث معنا عبر واتساب</p>
-            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-        </a>
-          <!--<button class="btn border-btn">
-            <p class="text-nowrap mb-0">اطلب الان</p>
-            <i class="fa-solid fa-arrow-left" style="font-size: 18px;"></i>
-          </button>-->
+          </a>
+
           <a href="{{ route('help.index') }}" class="btn border-btn d-flex align-items-center gap-2">
-            <p class="text-nowrap mb-0">اطلب الان</p>
-            <i class="fa-solid fa-arrow-left" style="font-size: 18px;"></i>
-        </a>
+            <p class="text-nowrap mb-0">{{ __('site.start_order') }}</p>
+            <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" style="font-size: 18px;"></i>
+          </a>
         </div>
-
-
       </div>
 
       <!-- image -->
       <div class="ready-to-furnish-your-unit-image-container">
         <div class="ready-to-furnish-your-unit-image">
-          <img src="../assets/images/about/about-05.jpg" alt="Ready to Furnish Your Unit" />
+          <img src="../assets/images/about/about-05.jpg" alt="{{ __('site.ready_to_furnish') }}" />
         </div>
       </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== TESTIMONIAL SECTION ===== -->
   <section class="testimonial-section">
@@ -822,11 +813,11 @@
       <!-- Heading -->
       <div class="heading text-center d-flex flex-column gap-sm-5">
         <h6 class="sub-title bg-primary-light px-2 pt-1 pb-1 mx-auto mb-0" style="width: fit-content">
-          آراء العملاء
+          {{ __('site.testimonials') }}
         </h6>
-        <h3 class="heading-h6 mb-0">ثقة عملائنا... هي أكبر إنجاز لنا</h3>
+        <h3 class="heading-h6 mb-0">{{ __('site.testimonials_heading') }}</h3>
         <p class="body-2 text-caption mb-0">
-          آراء عملائنا تعكس مستوى الجودة والراحة والاحترافية بكل خطوة من تجربة الشراء.
+          {{ __('site.testimonials_desc') }}
         </p>
       </div>
 
@@ -834,14 +825,14 @@
       <div id="testimonial-carousel-homepage" class="testimonial-carousel owl-carousel owl-theme">
         @foreach($testimonials as $testimonial)
           <div class="testimonial-item card shadow-sm h-100 p-3">
-            <img src="{{ asset('assets/images/icons/quotation.png') }}" class="mb-3" />
+            <img src="{{ asset('assets/images/icons/quotation.png') }}" class="mb-3" alt="quotation icon" />
             <p class="caption-2 text-subheading mb-3">
               {{ $testimonial->message }}
             </p>
             <div class="d-flex align-items-center gap-sm-4 mt-auto">
               <img src="{{ $testimonial->image ? asset('storage/' . $testimonial->image) : asset('assets/images/avatar/default.png') }}"
-                   class="imgprofile" alt="" />
-              <div style="flex: 1">
+                   class="imgprofile" alt="{{ $testimonial->name }}" />
+              <div class="cam">
                 <p class="mb-0 sub-heading-4 text-subheading">{{ $testimonial->name }}</p>
                 <span class="text-body body-3">{{ $testimonial->location }}</span>
               </div>
@@ -854,7 +845,8 @@
         @endforeach
       </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== GALLERY SECTION ===== -->
   <section class="gallery-section bg-primary-light">
@@ -862,12 +854,13 @@
       <!-- Heading -->
       <div class="heading text-center d-flex flex-column gap-sm-5">
         <h3 class="heading-h6 mb-0">
-          شاهد نماذج تأثيثنا
+            {{ __('site.gallery_heading') }}
         </h3>
         <p class="body-2 text-caption mb-0">
-          نقدّم لك لمحة بصرية عن مستوى التأثيث، التفاصيل، والتشطيب في مشاريعنا السابقة
+            {{ __('site.gallery_desc') }}
         </p>
-      </div>
+    </div>
+
 
       <!-- images -->
       <div class="gallery-details-images">
@@ -916,7 +909,7 @@
       <!-- CTA Button -->
       <div class="w-100">
         <button class="btn btn-custom-primary mx-auto">
-          شاهد المعرض كاملا
+            {{ __('site.view_gallery') }}
         </button>
       </div>
     </div>
@@ -927,13 +920,15 @@
     <div class="container d-flex flex-column gap-l">
         <!-- Heading -->
         <div class="heading text-center d-flex flex-column gap-sm-5">
-            <h3 class="heading-h6 mb-0" data-translate="faq.title">
-                {{ __('أسئلتك… نُجيب عليها بكل وضوح') }}
+            <h3 class="heading-h6 mb-0">
+                {{ __('site.faq_title') }}
             </h3>
-            <p class="body-2 text-caption mb-0" data-translate="faq.subtitle">
-                {{ __('كل ما تحتاج معرفته قبل الطلب، جمعناه لك هنا باختصار وشفافية') }}
+            <p class="body-2 text-caption mb-0">
+                {{ __('site.faq_subtitle') }}
             </p>
         </div>
+
+
 
         <!-- Accordion -->
         <div class="faq-section-content">
@@ -960,7 +955,7 @@
             </div>
         </div>
     </div>
-</section>
+ </section>
 
 
 

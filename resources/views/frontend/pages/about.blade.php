@@ -1,15 +1,16 @@
 @extends('frontend.layouts.pages')
 
-@section('title', 'من نحن - SOFA Experience')
+@section('title', __('site.about_us') . ' - SOFA Experience')
 @section('description', 'تعرف على رؤية وقيم SOFA Experience في تقديم حلول التأثيث الفندقي الذكية')
 
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ route('home') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ route('about') }}" class="body-2 text-primary">من نحن</a>
+    <a href="{{ route('about') }}" class="body-2 text-primary">{{ __('site.about_us') }}</a>
 </div>
+
 
 <!-- ===== OUR VISION SECTION ===== -->
 <section class="our-vision">
@@ -21,32 +22,27 @@
         <div class="our-vision-content d-flex flex-column gap-md">
             <!-- Heading -->
             <div class="d-flex flex-column gap-sm-5">
-                <h6 class="heading-h6">رؤيتنا</h6>
+                <h6 class="heading-h6">{{ __('site.our_vision_title') }}</h6>
                 <p class="caption-4 mb-0">
-                     نطمح إلى أن نكون المنصة الأذكى والأكثر احترافًا في تأثيث الوحدات السكنية والفندقية في السوق السعودي والعربي
+                    {{ __('site.our_vision_text') }}
                 </p>
             </div>
 
             <!-- List -->
             <ul class="d-flex flex-column gap-sm-4">
-                <li class="sub-heading-4">
-                    تقديم حلول جاهزة وسريعة
-                </li>
-                <li class="sub-heading-4">
-                    ضمان الجودة والشفافية
-                </li>
-                <li class="sub-heading-4">
-                    تمكين العميل من التحكم الكامل بتجربة التأثيث
-                </li>
+                <li class="sub-heading-4">{{ __('site.our_vision_item1') }}</li>
+                <li class="sub-heading-4">{{ __('site.our_vision_item2') }}</li>
+                <li class="sub-heading-4">{{ __('site.our_vision_item3') }}</li>
             </ul>
         </div>
 
         <!-- Image -->
         <div class="our-vision-image">
-            <img src="{{ asset('assets/images/about/about-01.jpg') }}" alt="رؤيتنا" />
+            <img src="{{ asset('assets/images/about/about-01.jpg') }}" alt="{{ __('site.our_vision_title') }}" />
         </div>
     </div>
 </section>
+
 
 <!-- ===== OUR VALUES SECTION ===== -->
 <section class="our-values">
@@ -56,36 +52,26 @@
 
         <!-- Image -->
         <div class="our-values-image">
-            <img src="{{ asset('assets/images/about/about-02.jpg') }}" alt="قيمنا" />
+            <img src="{{ asset('assets/images/about/about-02.jpg') }}" alt="{{ __('site.values') }}" />
         </div>
 
         <!-- Content -->
         <div class="our-values-content d-flex flex-column gap-md">
             <!-- Heading -->
             <div class="d-flex flex-column gap-sm-5">
-                <h6 class="heading-h6">قيمنا</h6>
+                <h6 class="heading-h6">{{ __('site.values') }}</h6>
                 <p class="caption-4 mb-0" style="max-width: 274px;">
-                    قيمنا ليست شعارات… بل التزام حقيقي ينعكس في جودة التنفيذ ورضا العميل.
+                    {{ __('site.values_description') }}
                 </p>
             </div>
 
             <!-- List -->
             <ul class="list-unstyled d-flex flex-column gap-sm-4">
-                <li class="sub-heading-4">
-                    تنفيذ احترافي بجودة عالية في كل مرة
-                </li>
-                <li class="sub-heading-4">
-                    الالتزام بالجودة والوقت
-                </li>
-                <li class="sub-heading-4">
-                    الشفافية في التسعير والتعامل
-                </li>
-                <li class="sub-heading-4">
-                    راحة العميل أولويتنا
-                </li>
-                <li class="sub-heading-4">
-                    التكامل بين التصميم والتنفيذ
-                </li>
+                <li class="sub-heading-4">{{ __('site.value_1') }}</li>
+                <li class="sub-heading-4">{{ __('site.value_2') }}</li>
+                <li class="sub-heading-4">{{ __('site.value_3') }}</li>
+                <li class="sub-heading-4">{{ __('site.value_4') }}</li>
+                <li class="sub-heading-4">{{ __('site.value_5') }}</li>
             </ul>
         </div>
     </div>
@@ -101,30 +87,22 @@
 
             <!-- Heading -->
             <div class="d-flex flex-column gap-sm-5">
-                <h2 class="heading-h6 text-white">لماذا SOFA؟</h2>
-                <p class="caption-4 mb-0"> SOFA ليست مجرد منصة بيع أثاث… بل شريك تأثيث فندقي ذكي</p>
+                <h2 class="heading-h6 text-white">{{ __('site.why_sofa_title') }}</h2>
+                <p class="caption-4 mb-0">{{ __('site.why_sofa_description') }}</p>
             </div>
 
             <!-- List -->
             <ul class="list-unstyled d-flex flex-column gap-sm-4">
-                <li class="body-3 mb-0">
-                    باكجات تصميم جاهزة
-                </li>
-                <li class="body-3 mb-0">
-                    تجربة طلب ذكية بالكامل
-                </li>
-                <li class="body-3 mb-0">
-                    متابعة الطلب من البداية حتى التركيب
-                </li>
-                <li class="body-3 mb-0">
-                    خيارات تشطيب تناسب كل وحدة
-                </li>
+                <li class="body-3 mb-0">{{ __('site.why_sofa_item_1') }}</li>
+                <li class="body-3 mb-0">{{ __('site.why_sofa_item_2') }}</li>
+                <li class="body-3 mb-0">{{ __('site.why_sofa_item_3') }}</li>
+                <li class="body-3 mb-0">{{ __('site.why_sofa_item_4') }}</li>
             </ul>
         </div>
 
         <!-- Image -->
         <div class="why-sofa-image flex-1">
-            <img src="{{ asset('assets/images/about/about-03.jpg') }}" alt="لماذا SOFA" />
+            <img src="{{ asset('assets/images/about/about-03.jpg') }}" alt="{{ __('site.why_sofa_title') }}" />
         </div>
     </div>
 </section>
@@ -146,8 +124,8 @@
 
                 <!-- content -->
                 <div class="our-smart-steps-info-content">
-                    <p class="sub-heading-5 text-white mb-0">م. أحمد ابراهيم</p>
-                    <p class="body-4 text-white mb-0">2 وحدات</p>
+                    <p class="sub-heading-5 text-white mb-0">{{ __('site.smart_steps_user_name') }}</p>
+                    <p class="body-4 text-white mb-0">{{ __('site.smart_steps_units') }}</p>
                 </div>
             </div>
 
@@ -155,10 +133,10 @@
             <div class="our-smart-steps-info-item">
                 <!-- content -->
                 <div class="our-smart-steps-info-content d-flex flex-column gap-sm-4">
-                    <p class="body-4 text-white mb-0" style="opacity: 0.8">حالة الطلب الحالية</p>
-                    <p class="body-4 text-white mb-0">جاري التركيب 80%</p>
+                    <p class="body-4 text-white mb-0" style="opacity: 0.8">{{ __('site.smart_steps_status_label') }}</p>
+                    <p class="body-4 text-white mb-0">{{ __('site.smart_steps_status') }}</p>
                     <div class="our-smart-steps-info-progress">
-                        <div class="our-smart-steps-info-progress-bar" style="width: 80%;"></div>
+                        <div class="our-smart-steps-info-progress-bar" style="width: {{ __('site.smart_steps_progress') }};"></div>
                     </div>
                 </div>
             </div>
@@ -168,131 +146,61 @@
         <div class="our-smart-steps-steps d-flex flex-column gap-md">
             <!-- heading -->
             <div class="our-smart-steps-heading">
-                <h2 class="heading-h6">خطواتنا الذكية</h2>
-                <p class="caption-3 mb-0">رحلة تأثيث تبدأ بفهم مشروعك وتنتهي بوحدة جاهزة</p>
+                <h2 class="heading-h6">{{ __('site.smart_steps_title') }}</h2>
+                <p class="caption-3 mb-0">{{ __('site.smart_steps_description') }}</p>
             </div>
 
             <!-- list -->
             <ul class="our-smart-list list-unstyled d-flex flex-column gap-sm-4 p-0">
-                <!-- step 1 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-01.svg') }}" alt="Step 1" />
-                    </div>
+                @for ($i = 1; $i <= 7; $i++)
+                    <li class="d-flex gap-sm-3 align-items-center">
+                        <div class="our-smart-steps-step-icon">
+                            <img src="{{ asset('assets/images/about/step-0' . $i . '.svg') }}" alt="Step {{ $i }}" />
+                        </div>
 
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">المشروع غير مؤثث</p>
-                    </div>
-                </li>
-
-                <!-- step 2 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-02.svg') }}" alt="Step 2" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">تحديد نوع الوحدة</p>
-                    </div>
-                </li>
-
-                <!-- step 3 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-03.svg') }}" alt="Step 3" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">مراجعة التصميم والتشطيب</p>
-                    </div>
-                </li>
-
-                <!-- step 4 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-04.svg') }}" alt="Step 4" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">اختيار الباكج</p>
-                    </div>
-                </li>
-
-                <!-- step 5 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-05.svg') }}" alt="Step 5" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">تنفيذ الطلب (تصميم – تصنيع – شحن)</p>
-                    </div>
-                </li>
-
-                <!-- step 6 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-06.svg') }}" alt="Step 6" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">التركيب</p>
-                    </div>
-                </li>
-
-                <!-- step 7 -->
-                <li class="d-flex gap-sm-3 align-items-center">
-                    <div class="our-smart-steps-step-icon">
-                        <img src="{{ asset('assets/images/about/step-07.svg') }}" alt="Step 7" />
-                    </div>
-
-                    <!-- content -->
-                    <div class="our-smart-steps-step-content">
-                        <p class="sub-heading-5 mb-0">المشروع مؤثث وجاهز للسكن</p>
-                    </div>
-                </li>
+                        <!-- content -->
+                        <div class="our-smart-steps-step-content">
+                            <p class="sub-heading-5 mb-0">{{ __('site.smart_steps_step_' . $i) }}</p>
+                        </div>
+                    </li>
+                @endfor
             </ul>
 
             <!-- start button -->
             <div class="our-smart-steps-start-button">
                 <a href="{{ route('categories.index') }}" class="btn btn-custom-secondary w-100">
-                    ابدأ الآن و استلم عرض السعر
+                    {{ __('site.smart_steps_start_button') }}
                 </a>
             </div>
         </div>
     </div>
 </section>
 
+
 <!-- ===== READY TO FURNISH YOUR UNIT SECTION ===== -->
 <section class="ready-to-furnish-your-unit">
     <div class="ready-to-furnish-your-unit-container container position-relative bg-primary">
         <!-- pattern -->
-        <img class="ready-to-furnish-your-unit-pattern" src="{{ asset('assets/images/about/pattern.svg') }}" alt="Pattern" />
+        <img class="ready-to-furnish-your-unit-pattern" src="{{ asset('assets/images/about/pattern.svg') }}" alt="{{ __('site.pattern') }}" />
 
         <!-- content -->
         <div class="ready-to-furnish-your-unit-content d-flex flex-column gap-sm">
             <div class="d-flex flex-column gap-sm-5">
-                <h2 class="heading-h6 text-white">جاهز لتأثيث وحدتك؟</h2>
+                <h2 class="heading-h6 text-white">{{ __('site.ready_to_furnish_heading') }}</h2>
                 <p class="caption-4 mb-0">
-                    ابدأ خطوتك الأولى الآن… باكجاتنا جاهزة للتنفيذ والتسليم في وقت قياسي
+                    {{ __('site.ready_to_furnish_text') }}
                 </p>
             </div>
 
             <!-- buttons -->
             <div class="ready-to-furnish-your-unit-buttons d-flex gap-sm-3">
                 <a href="https://wa.me/{{$siteSettings->whatsapp}}" target="_blank" class="btn btn-custom-secondary d-flex align-items-center gap-2">
-                    <p class="text-nowrap mb-0">تحدث معنا عبر واتساب</p>
+                    <p class="text-nowrap mb-0">{{ __('site.whatsapp_button') }}</p>
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
                 <a href="{{ route('contact.index') }}" class="btn border-btn">
-                    <p class="text-nowrap mb-0">اطلب الان</p>
-                    <i class="fa-solid fa-arrow-left" style="font-size: 18px;"></i>
+                    <p class="text-nowrap mb-0">{{ __('site.order_now_button') }}</p>
+                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" style="font-size: 18px;"></i>
                 </a>
             </div>
         </div>
@@ -300,7 +208,7 @@
         <!-- image -->
         <div class="ready-to-furnish-your-unit-image-container">
             <div class="ready-to-furnish-your-unit-image">
-                <img src="{{ asset('assets/images/about/about-05.jpg') }}" alt="جاهز لتأثيث وحدتك" />
+                <img src="{{ asset('assets/images/about/about-05.jpg') }}" alt="{{ __('site.ready_to_furnish_heading') }}" />
             </div>
         </div>
     </div>
@@ -313,23 +221,15 @@
         <div class="why-do-we-serve-content d-flex flex-column gap-md">
             <!-- Heading -->
             <div class="d-flex flex-column gap-sm-5">
-                <h6 class="heading-h6">نخدم من؟</h6>
-                <p class="caption-4 mb-0">حلول تأثيث مرنة وسريعة لأصحاب الشقق، المطورين، والمشغّلين في قطاع السكن والضيافة.
-                </p>
+                <h6 class="heading-h6">{{ __('site.why_do_we_serve_heading') }}</h6>
+                <p class="caption-4 mb-0">{{ __('site.why_do_we_serve_text') }}</p>
             </div>
 
             <!-- List -->
             <ul class="d-flex flex-column gap-sm-4">
-                <li class="sub-heading-4">
-                    أصحاب الشقق
-                </li>
-                <li class="sub-heading-4">
-                    المطورين العقاريين
-                </li>
-                <li class="sub-heading-4">
-                    مشغلي الشقق الفندقية
-                </li>
-                <li class="sub-heading-4">المستثمرين العقاريين</li>
+                @foreach(__('site.serve_list') as $item)
+                    <li class="sub-heading-4">{{ $item }}</li>
+                @endforeach
             </ul>
         </div>
 
@@ -337,29 +237,26 @@
         <div class="why-do-we-serve-images d-flex gap-sm-3">
             <div class="d-flex flex-column gap-sm-3 mt-4">
                 <div class="why-do-we-serve-image">
-                    <img src="{{ asset('assets/images/about/about-06.jpg') }}" alt="Why Do We Serve" />
+                    <img src="{{ asset('assets/images/about/about-06.jpg') }}" alt="{{ __('site.why_do_we_serve_heading') }}" />
                 </div>
                 <div class="why-do-we-serve-image">
-                    <img src="{{ asset('assets/images/about/about-07.jpg') }}" alt="Why Do We Serve" />
+                    <img src="{{ asset('assets/images/about/about-07.jpg') }}" alt="{{ __('site.why_do_we_serve_heading') }}" />
                 </div>
             </div>
             <div class="d-flex flex-column gap-sm-3">
                 <div class="why-do-we-serve-image">
-                    <img src="{{ asset('assets/images/about/about-08.jpg') }}" alt="Why Do We Serve" />
+                    <img src="{{ asset('assets/images/about/about-08.jpg') }}" alt="{{ __('site.why_do_we_serve_heading') }}" />
                 </div>
                 <div class="why-do-we-serve-image">
-                    <img src="{{ asset('assets/images/about/about-09.jpg') }}" alt="Why Do We Serve" />
+                    <img src="{{ asset('assets/images/about/about-09.jpg') }}" alt="{{ __('site.why_do_we_serve_heading') }}" />
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 @endsection
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/pages/about.css') }}">
-@endpush
-
-@push('scripts')
-<script src="{{ asset('assets/js/pages/about.js') }}"></script>
 @endpush

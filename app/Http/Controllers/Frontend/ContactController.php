@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
+use App\Models\Contact;
 class ContactController extends Controller
 {
     public function index()
@@ -63,33 +64,25 @@ class ContactController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+        //dd($validator);
 
         try {
-            // هنا يمكنك إضافة logic لمعالجة البيانات:
-            // 1. حفظ في قاعدة البيانات
-            // 2. إرسال بريد إلكتروني
-            // 3. إرسال إشعار
-
-            // مثال: حفظ في قاعدة البيانات (إذا كان لديك نموذج Contact)
-            /*
             Contact::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->country_code . $request->phone,
+                'country_code' => $request->country_code,
+                'phone' => $request->phone,
                 'message' => $request->message,
-                'ip_address' => $request->ip()
             ]);
-            */
+
 
             // مثال: إرسال بريد إلكتروني
             /*
             Mail::to('support@sofa.com')->send(new ContactFormSubmitted($request->all()));
             */
 
-            return response()->json([
-                'success' => true,
-                'message' => 'تم استلام رسالتك بنجاح وسنتواصل معك قريباً'
-            ]);
+            return redirect()->back()->with('success', __('site.message_sent_success'));
+
 
         } catch (\Exception $e) {
             return response()->json([
@@ -99,3 +92,4 @@ class ContactController extends Controller
         }
     }
 }
+

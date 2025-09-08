@@ -1,15 +1,16 @@
 @extends('frontend.layouts.pages')
 
-@section('title', 'اتصل بنا - SOFA Experience')
+@section('title', __('site.contact_us') . ' - SOFA Experience')
 @section('description', 'يسعدنا تواصلك معنا! نحن في SOFA نهتم بتقديم تجربة متكاملة لعملائنا، ونسعد بالإجابة على استفساراتكم وتقديم الدعم')
 
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ route('home') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="#" class="body-2 text-primary">اتصل بنا</a>
+    <a href="#" class="body-2 text-primary">{{ __('site.contact_us') }}</a>
 </div>
+
 
 <!-- ===== CONTACT FORM SECTION ===== -->
 <section class="contact-form">
@@ -18,10 +19,9 @@
         <div class="contact-form">
             <!-- heading -->
             <div class="contact-form-heading">
-                <h2 class="heading-h7">اتصل بنا</h2>
+                <h2 class="heading-h7">{{ __('site.contact_us') }}</h2>
                 <p class="caption-5">
-                    يسعدنا تواصلك معنا! نحن في SOFA نهتم بتقديم تجربة متكاملة لعملائنا، ونسعد بالإجابة على استفساراتكم، وتقديم
-                    الدعم في كل ما يخص باكجات التأثيث، الطلبات، أو المشاريع الخاصة
+                    {{ __('site.contact_description') }}
                 </p>
             </div>
 
@@ -31,12 +31,12 @@
                     @csrf
                     <!-- Name Input -->
                     <div class="form-group">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="الاسم" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('site.name') }}" required>
                     </div>
 
                     <!-- Email Input -->
                     <div class="form-group">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="البريد الإلكتروني" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('site.email') }}" required>
                     </div>
 
                     <!-- Phone Input -->
@@ -53,9 +53,9 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <div class="input-with-icon" style="min-height: 45px;">
-                                        <input type="text" class="form-control" placeholder="ابحث هنا" id="countrySearch" />
+                                        <input type="text" class="form-control" placeholder="{{ __('site.search_here') }}" id="countrySearch" />
                                         <i class="input-icon">
-                                            <img src="{{ asset('assets/images/icons/search-normal.png') }}" alt="بحث" />
+                                            <img src="{{ asset('assets/images/icons/search-normal.png') }}" alt="{{ __('site.search') }}" />
                                         </i>
                                     </div>
                                 </li>
@@ -74,7 +74,7 @@
                             </ul>
 
                             <!-- Phone Number Input -->
-                            <input type="tel" class="phone-number" name="phone" dir="rtl" placeholder="مثال 5xxxxxxx" style="height: 50px" required />
+                            <input type="tel" class="phone-number" name="phone" dir="rtl" placeholder="{{ __('site.phone_example') }}" style="height: 50px" required />
                             <input type="hidden" name="country_code" id="countryCode" value="+966">
                         </div>
                     </div>
@@ -82,12 +82,12 @@
                     <!-- Message Input -->
                     <div class="form-group">
                         <textarea rows="3" class="form-control form-textarea" id="message" name="message"
-                            placeholder="اكتب رسالتك هنا..." required></textarea>
+                            placeholder="{{ __('site.write_message_here') }}" required></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-custom-primary">
-                        إرسال الرسالة
+                        {{ __('site.send_message') }}
                     </button>
                 </form>
             </div>
@@ -97,39 +97,38 @@
         <div class="contact-info">
             <!-- Item 1 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="heading-h7 mb-0">معلومات التواصل</h6>
-                <p class="caption-4 mb-0">في SOFA، نؤمن أن القيمة الحقيقية تكمن في التكامل بين التصميم والتنفيذ. نعمل على
-                    تقديم باكجات تأثيث جاهزة تم إعدادها بعناية، بدءًا من التخطيط وحتى التركيب، لضمان تجربة سلسة ونتيجة مثالية
-                    ترضي تطلعات العميل</p>
+                <h6 class="heading-h7 mb-0">{{ __('site.contact_info') }}</h6>
+                <p class="caption-4 mb-0">{{ __('site.contact_info_description') }}</p>
             </div>
 
             <!-- Item 2 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="sub-heading-4 mb-0">موقع المعرض الرئيسي</h6>
-                <p class="caption-4 mb-0">الرياض – طريق الملك عبدالعزيز، حي الياسمين داخل مركز SOFA لتجربة التأثيث</p>
+                <h6 class="sub-heading-4 mb-0">{{ __('site.main_showroom') }}</h6>
+                <p class="caption-4 mb-0">{{ __('site.main_showroom_address') }}</p>
             </div>
 
-            <!-- Item 3 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="sub-heading-4 mb-0">ساعات العمل</h6>
-                <p class="caption-4 mb-0">من السبت إلى الخميس: 10:00 صباحًا – 9:00 مساءً الجمعة: 4:00 مساءً – 9:00 مساءً</p>
+                <h6 class="sub-heading-4 mb-0">{{ __('site.work_hours') }}</h6>
+                <p class="caption-4 mb-0">{{ __('site.work_hours_time') }}</p>
             </div>
+
+
 
             <!-- Item 4 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="sub-heading-4 mb-0">رقم التواصل</h6>
+                <h6 class="sub-heading-4 mb-0">{{ __('site.contact_number') }}</h6>
                 <p class="caption-4 mb-0">{{$siteSettings->phone}}</p>
             </div>
 
             <!-- Item 5 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="sub-heading-4 mb-0">البريد الإلكتروني</h6>
+                <h6 class="sub-heading-4 mb-0">{{ __('site.email') }}</h6>
                 <p class="caption-4 mb-0">{{$siteSettings->email}}</p>
             </div>
 
             <!-- Item 6 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
-                <h6 class="sub-heading-4 mb-0">حسابات التواصل الاجتماعي</h6>
+                <h6 class="sub-heading-4 mb-0">{{ __('site.social_accounts') }}</h6>
                 <div class="d-flex gap-sm-4">
                     <a href="{{$siteSettings->snapchat}}" class="contact-info-social-icon">
                         <i class="fa-brands fa-snapchat"></i>
@@ -158,35 +157,40 @@
 
             <!-- heading -->
             <div class="cta-button-heading d-flex flex-column gap-sm-3">
-                <h2 class="heading-h7 mb-0 text-white">هل ترغب بتجهيز وحدتك الفندقية بأناقة وبأسرع وقت؟</h2>
+                <h2 class="heading-h7 mb-0 text-white">{{ __('site.cta_heading') }}</h2>
                 <p class="caption-5 mb-0 text-white" style="max-width: 592px; opacity: 0.8;">
-                    في SOFA، نوفّر لك باكجات جاهزة بتصاميم مدروسة تناسب مختلف أنماط التشطيب. اختصر الوقت والجهد، ودعنا نهتم
-                    بالتفاصيل من التصميم حتى التسليم. </p>
+                    {{ __('site.cta_text') }}
+                </p>
             </div>
 
             <!-- buttons -->
             <div class="cta-button-buttons d-flex gap-sm-3">
-                <button class="btn btn-custom-secondary" onclick="openWhatsApp()">
-                    <p class="mb-0">تحدث معنا عبر واتساب</p>
+
+
+                <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-secondary">
+                    <p class="text-nowrap mb-0">{{ __('site.cta_whatsapp') }}</p>
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                </button>
-                <a href="{{ route('categories.index') }}" class="btn btn-custom-outline">
-                    <p class="mb-0">اطلب الان</p>
-                    <i class="fa-solid fa-arrow-left" style="font-size: 18px;"></i>
+                </a>
+
+                <a href="{{ route('help.index') }}" class="btn btn-custom-outline">
+                    <p class="mb-0">{{ __('site.cta_order_now') }}</p>
+                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}" style="font-size: 18px;"></i>
                 </a>
             </div>
         </div>
     </div>
 </section>
 
+
 <!-- ===== CONTACT MAP SECTION ===== -->
 <section class="contact-map">
     <div class="container d-flex flex-column gap-sm">
         <!-- heading -->
         <div class="contact-map-heading d-flex flex-column gap-sm-5">
-            <h2 class="heading-h7 mb-0">الرياض</h2>
-            <p class="caption-5 mb-0">طريق الملك عبدالعزيز، حي الياسمين، الرياض 13322 – المملكة العربية السعودية</p>
+            <h2 class="heading-h7 mb-0">{{ __('site.city') }}</h2>
+            <p class="caption-5 mb-0">{{ __('site.address') }}</p>
         </div>
+
 
         <!-- map -->
         <div class="contact-map-map">
@@ -312,46 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // تهيئة الخريطة عند تحميل الصفحة
     initMap();
 
-    // إرسال نموذج الاتصال
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
 
-            // هنا يمكن إضافة التحقق من صحة البيانات وإرسالها عبر AJAX
-            const formData = new FormData(this);
-
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
-                    this.reset();
-                } else {
-                    alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.');
-            });
-        });
-    }
-
-    // فتح واتساب
-    window.openWhatsApp = function() {
-        const phoneNumber = "966500000000";
-        const message = "مرحباً، أريد الاستفسار عن خدمات SOFA";
-        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-    }
 });
 
 // تحديث الدولة الافتراضية عند التحميل

@@ -13,20 +13,19 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title_ar');
             $table->string('title_en');
+            $table->string('slug_ar')->unique();
+            $table->string('slug_en')->unique();
             $table->text('excerpt_ar')->nullable();
             $table->text('excerpt_en')->nullable();
-            $table->longText('content_ar');
-            $table->longText('content_en');
-            $table->string('slug')->unique();
-            $table->string('featured_image')->nullable();
-            $table->json('tags')->nullable();
-            $table->boolean('is_published')->default(false);
-            $table->boolean('is_featured')->default(false);
-            $table->integer('views_count')->default(0);
-            $table->timestamp('published_at')->nullable();
+            $table->longText('content_ar')->nullable();
+            $table->longText('content_en')->nullable();
+            $table->string('image')->nullable();
+            $table->string('category_ar')->nullable();
+            $table->string('category_en')->nullable();
+            $table->string('author_ar')->nullable();
+            $table->string('author_en')->nullable();
             $table->timestamps();
         });
     }

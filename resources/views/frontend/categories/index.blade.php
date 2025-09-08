@@ -218,7 +218,7 @@
                                  </a>
                                 <a href="{{ route('categories.show', $category->id) }}" class="btn btn-custom-secondary">
                                     <span style="white-space: nowrap;">عرض التفاصيل</span>
-                                    <i class="fa-solid fa-arrow-left action-icon"></i>
+                                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" action-icon"></i>
                                 </a>
                             </div>
                         </div>

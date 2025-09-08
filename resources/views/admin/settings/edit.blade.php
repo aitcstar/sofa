@@ -31,9 +31,15 @@
                     <input type="text" name="whatsapp" class="form-control" value="{{ old('whatsapp', $setting->whatsapp ?? '') }}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">العنوان</label>
+                    <label class="form-label">موقع المعرض الرئيسي</label>
                     <input type="text" name="address" class="form-control" value="{{ old('address', $setting->address ?? '') }}">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">ساعات العمل</label>
+                    <input type="text" name="worktime" class="form-control" value="{{ old('worktime', $setting->worktime ?? '') }}">
+                </div>
+
+
             </div>
         </div>
 

@@ -17,7 +17,22 @@ class HomeController extends Controller
         $categories = Category::active()->ordered()->take(4)->get();
         $featured_products = Product::active()->featured()->take(8)->get();
         $testimonials = Testimonial::latest()->take(10)->get();
-        $faqs = Faq::latest()->take(10)->get();
+
+        $firstCategoryAr = 'التوصيل والتركيب';
+        $firstCategoryEn = 'Delivery & Installation'; // الترجمة الإنجليزية للقسم
+
+        if (app()->getLocale() == 'ar') {
+            $faqs = Faq::where('category_ar', $firstCategoryAr)
+                    ->orderBy('sort', 'asc')
+                    ->get();
+        } else {
+            $faqs = Faq::where('category_en', $firstCategoryEn)
+                    ->orderBy('sort', 'asc')
+                    ->get();
+        }
+
+
+        //$faqs = Faq::latest()->take(10)->get();
         $sliders = HeroSlider::where('is_active', true)->orderBy('order')->get();
 
         return view('frontend.home', compact('categories', 'featured_products','testimonials','faqs','sliders'));

@@ -496,7 +496,7 @@
 @endpush
 
 @push('scripts')
-<script src="{{ asset('assets/js/pages/gallery.js') }}"></script>
+<!--<script src="{{ asset('assets/js/pages/gallery.js') }}"></script>-->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // كود JavaScript المخصص لصفحة المعرض

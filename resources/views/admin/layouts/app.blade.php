@@ -152,6 +152,10 @@
             font-weight: 700;
         }
 
+        h5 {
+            color: #ffffff;
+            font-weight: 700;
+        }
         .text-primary {
             color: var(--primary-dark) !important;
         }
@@ -320,6 +324,16 @@
     text-align: left !important; /* يحرك البحث لليسار */
 }
 
+#blogsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+#contactsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+
+#packagesTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
@@ -352,33 +366,76 @@
                             </a>
                         </li>
 
+                        <!-- إدارة الباكجات مع Sub-menu -->
+<li class="nav-item">
+    <a class="nav-link {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'active' : '' }}"
+       href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fas fa-tags me-2"></i>
+        إدارة الباكجات
+    </a>
+
+    <!-- Sub-menu -->
+    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'show' : '' }}"
+        id="packagesSubmenu">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
+               href="{{ route('admin.packages.index') }}">
+                <i class="fas fa-boxes me-2"></i>
+                الباكجات
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
+               href="{{ route('admin.designs.index') }}">
+                <i class="fas fa-palette me-2"></i>
+                التصاميم
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.items.all') ? 'active' : '' }}"
+               href="{{ route('admin.items.all') }}">
+                <i class="fas fa-box me-2"></i>
+                جميع العناصر
+            </a>
+        </li>
+    </ul>
+</li>
+
+
+
+
+
+
+
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"
-                               href="{{ route('admin.categories.index') }}">
-                                <i class="fas fa-tags me-2"></i>
-                                التصنيفات
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}"
-                               href="{{ route('admin.products.index') }}">
+                               href="#">
                                 <i class="fas fa-couch me-2"></i>
                                 المنتجات
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"
-                               href="{{ route('admin.orders.index') }}">
+                               href="#">
                                 <i class="fas fa-shopping-cart me-2"></i>
                                 الطلبات
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-                               href="{{ route('admin.users.index') }}">
+                               href="#">
                                 <i class="fas fa-users me-2"></i>
                                 المستخدمين
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}"
+                               href="{{ route('admin.blogs.index') }}">
+                                <i class="fas fa-blog me-2"></i>
+                                المدونات
                             </a>
                         </li>
 
@@ -396,10 +453,17 @@
                             <a class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}"
                             href="{{ route('admin.faqs.index') }}">
                                 <i class="fas fa-comments me-2"></i>
-                                الأسئلة المتكررة
+                                الأسئلة الشائعة
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"
+                               href="{{ route('admin.contacts.index') }}">
+                                <i class="fas fa-envelope me-2"></i>
+                               رسائل اتصل بنا
+                            </a>
+                        </li>
 
                         <hr>
 

@@ -16,9 +16,10 @@ class SettingsTableSeeder extends Seeder
         Setting::create([
             'site_name'       => 'SOFA Experience',
             'email'           => 'info@sofa.com',
+            'worktime'           => 'من السبت إلى الخميس: 10:00 صباحًا – 9:00 مساءً الجمعة: 4:00 مساءً – 9:00 مساءً',
             'phone'           => '+966500000000',
             'whatsapp'        => '+966500000000',
-            'address'         => 'الرياض، السعودية',
+            'address'         => 'الرياض – طريق الملك عبدالعزيز، حي الياسمين داخل مركز SOFA لتجربة التأثيث',
             'snapchat'        => 'https://snapchat.com/sofa',
             'tiktok'          => 'https://tiktok.com/sofa',
             'instagram'       => 'https://instagram.com/sofa',

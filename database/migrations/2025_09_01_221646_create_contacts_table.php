@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('phone')->nullable();
-            $table->string('subject');
+            $table->string('country_code');
+            $table->string('phone');
             $table->text('message');
             $table->enum('status', ['new', 'read', 'replied', 'closed'])->default('new');
             $table->text('admin_reply')->nullable();

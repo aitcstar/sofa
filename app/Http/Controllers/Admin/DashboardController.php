@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Category;
+use App\Models\Package;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Contact;
@@ -57,7 +57,7 @@ class DashboardController extends Controller
     // إحصائيات عامة
     $stats = [
         'total_users'      => User::count(),
-        'total_categories' => Category::count(),
+        'total_packages'   => Package::count(),
         'total_products'   => Product::count(),
         'total_orders'     => Order::count(),
         'total_sales'      => Order::where('status', 'delivered')->sum('total_amount'),

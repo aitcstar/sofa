@@ -20,6 +20,30 @@
   background-color: var(--surface-white);
 }
 
+
+html[dir="ltr"] .tit{
+   text-align: left;
+}
+
+html[dir="rtl"] .tit{
+    text-align: right;
+ }
+
+
+ html[dir="ltr"] .accordion-button::after {
+    margin-right: 0;
+    margin-left: auto;
+ }
+
+
+[type=email], [type=number], [type=tel], [type=url] {
+    direction: rtl;
+}
+
+html[dir="ltr"] [type=email], [type=number], [type=tel], [type=url] {
+    direction: ltr;
+}
+
 .filter-section .filter-title {
   min-height: 56px;
   padding: var(--padding-box-small-3);
@@ -256,7 +280,7 @@
 
   .rooms-container .row > div:not(:last-child) {
     margin-bottom: var(--gap-sm-2);
-  }  
+  }
 
   .filter-section {
     display: none;

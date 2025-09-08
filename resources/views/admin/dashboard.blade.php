@@ -146,9 +146,9 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <h5 class="card-title text-primary">التصنيفات</h5>
-                <h2 class="text-dark">{{ $stats['total_categories'] }}</h2>
-                <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-primary btn-sm">إدارة التصنيفات</a>
+                <h5 class="card-title text-primary">الباكجات</h5>
+                <h2 class="text-dark">{{ $stats['total_packages'] }}</h2>
+                <a href="{{ route('admin.packages.index') }}" class="btn btn-outline-primary btn-sm">إدارة الباكجات</a>
             </div>
         </div>
     </div>

@@ -14,6 +14,8 @@ class FaqsSeeder extends Seeder
 
         $faqs = [
             [
+                'category_ar' => 'التوصيل والتركيب',
+                'category_en' => 'Delivery & Installation',
                 'question_ar' => 'ما هو هدف الموقع؟',
                 'question_en' => 'What is the purpose of the website?',
                 'answer_ar' => 'هدف الموقع هو تقديم أفضل الخدمات للعملاء.',
@@ -22,6 +24,8 @@ class FaqsSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
+                'category_ar' => 'التوصيل والتركيب',
+                'category_en' => 'Delivery & Installation',
                 'question_ar' => 'كيف يمكنني التواصل مع الدعم؟',
                 'question_en' => 'How can I contact support?',
                 'answer_ar' => 'يمكنك التواصل معنا عبر صفحة التواصل أو البريد الإلكتروني.',

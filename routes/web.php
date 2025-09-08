@@ -4,7 +4,10 @@ use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\DesignController;
+use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
@@ -13,6 +16,9 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
 use App\Http\Controllers\Admin\HeroSliderController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
@@ -52,7 +58,7 @@ Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('ga
 
 // صفحة المدونة
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.details');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
 
 // صفحة اتصل بنا
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
@@ -89,7 +95,15 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 
 Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('categories', CategoryController::class);
+    Route::resource('packages', PackageController::class);
+    Route::delete('/package-images/{imageId}', [PackageController::class, 'destroyImage'])->name('package-images.destroy');
+    Route::delete('units/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
+
+    Route::resource('designs', DesignController::class);
+    Route::resource('designs.items', ItemController::class)->scoped(['design' => 'id']);
+
+    Route::get('admin/items', [ItemController::class, 'allItems'])->name('items.all');
+
     Route::resource('products', ProductController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('users', UserController::class);
@@ -99,6 +113,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
 
 
     Route::resource('hero-sliders', HeroSliderController::class);
+    Route::resource('blogs', AdminBlogController::class);
+    Route::resource('contacts', AdminContactController::class);
+
 
     Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::post('settings', [SettingController::class, 'update'])->name('settings.update');

@@ -19,6 +19,7 @@ class SettingController extends Controller
         $request->validate([
             'site_name'       => 'nullable|string|max:255',
             'email'           => 'nullable|email',
+            'worktime'         => 'nullable|string',
             'phone'           => 'nullable|string|max:50',
             'whatsapp'        => 'nullable|string|max:50',
             'address'         => 'nullable|string|max:255',

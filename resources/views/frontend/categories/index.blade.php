@@ -6,7 +6,7 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="body-2 text-body">الرئيسية</a>
     <span class="body-2 text-body">/</span>
     <a href="#" class="body-2 text-primary">التصنيفات</a>
 </div>
@@ -216,7 +216,7 @@
                                     <p class="text-nowrap mb-0">أرسل لي عرض السعر</p>
                                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                                  </a>
-                                <a href="{{ route('categories.show', $category->id) }}" class="btn btn-custom-secondary">
+                                <a href="{{ route('categories.show', ['locale' => app()->getLocale(), $category->slug]) }}" class="btn btn-custom-secondary">
                                     <span style="white-space: nowrap;">عرض التفاصيل</span>
                                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" action-icon"></i>
                                 </a>

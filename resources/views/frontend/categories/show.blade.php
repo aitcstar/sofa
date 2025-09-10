@@ -6,9 +6,9 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="body-2 text-body">الرئيسية</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ route('categories.index') }}" class="body-2 text-body">التصنيفات</a>
+    <a href="{{ route('categories.index', ['locale' => app()->getLocale()]) }}" class="body-2 text-body">التصنيفات</a>
     <span class="body-2 text-body">/</span>
     <a href="#" class="body-2 text-primary">تفاصيل التصنيف</a>
 </div>

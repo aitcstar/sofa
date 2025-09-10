@@ -17,6 +17,7 @@ class Faq extends Model
         'answer_ar',
         'answer_en',
         'sort',
+        'page',
     ];
 
 

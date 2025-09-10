@@ -8,6 +8,15 @@ use App\Models\Product;
 use App\Models\Testimonial;
 use App\Models\Faq;
 use App\Models\HeroSlider;
+use App\Models\Step;
+use App\Models\HomeAboutSection;
+use App\Models\ProcessSection;
+use App\Models\ProcessStep;
+use App\Models\WhyChooseSection;
+use App\Models\ReadyToFurnishSection;
+
+use App\Models\OrderTimelineSection;
+
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -18,15 +27,13 @@ class HomeController extends Controller
         $featured_products = Product::active()->featured()->take(8)->get();
         $testimonials = Testimonial::latest()->take(10)->get();
 
-        $firstCategoryAr = 'التوصيل والتركيب';
-        $firstCategoryEn = 'Delivery & Installation'; // الترجمة الإنجليزية للقسم
 
         if (app()->getLocale() == 'ar') {
-            $faqs = Faq::where('category_ar', $firstCategoryAr)
+            $faqs = Faq::where('page', 'home')
                     ->orderBy('sort', 'asc')
                     ->get();
         } else {
-            $faqs = Faq::where('category_en', $firstCategoryEn)
+            $faqs = Faq::where('page', 'home')
                     ->orderBy('sort', 'asc')
                     ->get();
         }
@@ -34,7 +41,15 @@ class HomeController extends Controller
 
         //$faqs = Faq::latest()->take(10)->get();
         $sliders = HeroSlider::where('is_active', true)->orderBy('order')->get();
+        $steps = Step::orderBy('order')->get();
+        $about = HomeAboutSection::with('icons')->first();
+        $process = ProcessSection::first(); // البيانات الأساسية
+        $processsteps = ProcessStep::orderBy('order')->get(); // الخطوات بالترتيب
+        $whyChoose = WhyChooseSection::with('items')->first();
+        $timelines = OrderTimelineSection::with('items')->first();
+        $readyToFurnish = ReadyToFurnishSection::first();
 
-        return view('frontend.home', compact('categories', 'featured_products','testimonials','faqs','sliders'));
+        return view('frontend.home', compact('categories', 'featured_products','testimonials','faqs','sliders'
+                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish'));
     }
 }

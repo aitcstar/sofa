@@ -28,6 +28,7 @@ class FaqController extends Controller
         'answer_ar' => 'required|string',
         'answer_en' => 'required|string',
         'sort' => 'required|string',
+        'page'        => 'required|string',
     ]);
 
     Faq::create([
@@ -38,6 +39,8 @@ class FaqController extends Controller
         'answer_ar' => $request->answer_ar,
         'answer_en' => $request->answer_en,
         'sort' => $request->sort,
+        'page'        => $request->page,
+
 
     ]);
 
@@ -60,6 +63,7 @@ class FaqController extends Controller
             'answer_ar' => 'required|string',
             'answer_en' => 'required|string',
             'sort' => 'required|string',
+            'page'        => 'required|string',
         ]);
 
         // تحديث الأعمدة مباشرة
@@ -71,6 +75,7 @@ class FaqController extends Controller
             'answer_ar' => $request->answer_ar,
             'answer_en' => $request->answer_en,
             'sort' => $request->sort,
+            'page'        => $request->page,
         ]);
 
         return redirect()->route('admin.faqs.index')->with('success', 'تم تحديث السؤال بنجاح');

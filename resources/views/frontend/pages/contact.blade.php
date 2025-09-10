@@ -6,7 +6,7 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">{{ __('site.home') }}</a>
+    <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
     <a href="#" class="body-2 text-primary">{{ __('site.contact_us') }}</a>
 </div>
@@ -27,7 +27,7 @@
 
             <!-- form -->
             <div class="contact-form-form">
-                <form action="{{ route('contact.submit') }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">
+                <form action="{{ route('contact.submit',['locale' => app()->getLocale()]) }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">
                     @csrf
                     <!-- Name Input -->
                     <div class="form-group">
@@ -172,7 +172,7 @@
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
 
-                <a href="{{ route('help.index') }}" class="btn btn-custom-outline">
+                <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-outline">
                     <p class="mb-0">{{ __('site.cta_order_now') }}</p>
                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}" style="font-size: 18px;"></i>
                 </a>

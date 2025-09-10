@@ -87,6 +87,21 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="page" class="form-label">الصفحة <span class="text-danger">*</span></label>
+                        <select id="page" name="page" class="form-select" required>
+                            <option value="">اختر الصفحة</option>
+                            <option value="home" {{ old('page') == 'home' ? 'selected' : '' }}>الصفحة الرئيسية</option>
+                            <option value="blog" {{ old('page') == 'blog' ? 'selected' : '' }}>المدونة</option>
+                            <option value="category" {{ old('page') == 'category' ? 'selected' : '' }}>التصنيفات</option>
+                        </select>
+                        @error('page')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="order">الترتيب</label>
                     <input type="number" name="sort" id="sort" class="form-control" value="{{ old('sort', $faq->sort ?? 0) }}">

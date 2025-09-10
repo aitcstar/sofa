@@ -7,10 +7,20 @@ use Illuminate\Support\Facades\App;
 class SetLocale
 {
     public function handle($request, Closure $next)
-    {
-        $locale = session('locale', 'ar'); // أو أي طريقة تحدد اللغة
-        App::setLocale($locale);
+{
+    $supportedLocales = ['ar', 'en'];
+    $firstSegment = $request->segment(1);
 
-        return $next($request);
+    if (in_array($firstSegment, $supportedLocales)) {
+        session(['locale' => $firstSegment]);
+        App::setLocale($firstSegment);
+    } else {
+        $locale = session('locale', 'ar');
+        App::setLocale($locale);
     }
+
+    return $next($request);
+}
+
+
 }

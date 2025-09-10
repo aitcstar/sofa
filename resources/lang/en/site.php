@@ -55,6 +55,9 @@ return [
     'choose_package' => 'Choose the Right Package for Your Unit',
     'package_desc' => 'Complete furnished hotel packages, ready for implementation within 90 days, with elegant design and color options',
 
+    'unit' => ' Unit',
+
+
     // Form Labels
     'unit_type' => 'Unit Type',
     'studio' => 'Studio',

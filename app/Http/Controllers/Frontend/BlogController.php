@@ -26,23 +26,24 @@ class BlogController extends Controller
     }
 
 
-    public function show($slug)
-{
-    $locale = app()->getLocale();
-    $slugColumn = $locale === 'ar' ? 'slug_ar' : 'slug_en';
-    $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
+    public function show($locale, $slug)
+    {
+        app()->setLocale($locale); // تعيين اللغة
+        $slugColumn = $locale === 'ar' ? 'slug_ar' : 'slug_en';
+        $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
 
-    $post = Blog::where($slugColumn, $slug)->firstOrFail();
+        $post = Blog::where($slugColumn, $slug)->firstOrFail();
 
-    // المقالات ذات صلة بنفس التصنيف
-    $relatedPosts = Blog::where($categoryColumn, $post->category)
-                        ->where($slugColumn, '!=', $slug)
-                        ->latest()
-                        ->take(3)
-                        ->get();
-    $faqs = Faq::latest()->take(10)->get();
+        $relatedPosts = Blog::where($categoryColumn, $post->category)
+                            ->where($slugColumn, '!=', $slug)
+                            ->latest()
+                            ->take(3)
+                            ->get();
 
-    return view('frontend.pages.blog-details', compact('post', 'relatedPosts','faqs'));
-}
+        $faqs = Faq::where('page','blog')->latest()->take(10)->get();
+
+        return view('frontend.pages.blog-details', compact('post', 'relatedPosts','faqs'));
+    }
+
 
 }

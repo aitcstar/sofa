@@ -43,24 +43,25 @@
           <nav class="header-nav">
             <ul class="header-nav-list">
                 <li class="header-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <a href="{{ route('home') }}" class="header-nav-link">{{ __('site.home') }}</a>
+                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.home') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                    <a href="{{ route('categories.index') }}" class="header-nav-link">{{ __('site.categories') }}</a>
+                    <a href="{{ route('categories.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.categories') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                    <a href="{{ route('about') }}" class="header-nav-link">{{ __('site.about_us') }}</a>
+                    <a href="{{ route('about', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.about_us') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
-                    <a href="{{ route('gallery.index') }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
+                    <a href="{{ route('gallery.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-                    <a href="{{ route('blog.index') }}" class="header-nav-link">{{ __('site.blog') }}</a>
+                    <a href="{{ route('blog.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.blog') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
-                    <a href="{{ route('contact.index') }}" class="header-nav-link">{{ __('site.contact') }}</a>
+                    <a href="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.contact') }}</a>
                 </li>
             </ul>
+
         </nav>
 
 
@@ -72,11 +73,11 @@
                     <img src="{{ asset('assets/images/icons/user.svg') }}" alt="User"
                         class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
                     <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">حسابي</a></li>
+                    <li><a class="dropdown-item" href="{{ route('profile.edit',['locale' => app()->getLocale()]) }}">حسابي</a></li>
                     <li><a class="dropdown-item" href="#">طلباتي</a></li>
                     @if(auth()->user()->isAdmin())
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">لوحة التحكم</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.dashboard',['locale' => app()->getLocale()]) }}">لوحة التحكم</a></li>
                     @endif
                     <li><hr class="dropdown-divider"></li>
                     <li>
@@ -118,13 +119,13 @@
                                 🇺🇲
                                 <span class="body-2 text-body">English</span>
                             </div>
-                            <input  onclick="changeLanguage('en')" type="radio" name="language" id="englishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
+                            <input onclick="changeLanguage('en')" type="radio" name="language" id="englishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
                         </li>
                     </ul>
                 </div>
 
                 <!-- Help -->
-                <a class="btn btn-custom-primary" href="{{ route('help.index') }}">
+                <a class="btn btn-custom-primary" href="{{ route('help.index',['locale' => app()->getLocale()]) }}">
                     {{ __('site.help') }}
                   </a>
             </div>
@@ -157,22 +158,22 @@
       <div class="nav-mobile-group">
         <ul class="nav-mobile-nav-list">
           <li class="nav-mobile-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-            <a href="{{ route('home') }}" class="nav-mobile-nav-link body-1">{{ __('site.home') }}</a>
+            <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.home') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-            <a href="{{ route('categories.index') }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
+            <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-            <a href="{{ route('about') }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }}</a>
+            <a href="{{ route('about',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
-            <a href="{{ route('gallery.index') }}" class="nav-mobile-nav-link body-1">{{ __('site.mgallery') }}</a>
+            <a href="{{ route('gallery.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.mgallery') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-            <a href="{{ route('blog.index') }}" class="nav-mobile-nav-link body-1">{{ __('site.blog') }}</a>
+            <a href="{{ route('blog.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.blog') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
-            <a href="{{ route('contact.index') }}" class="nav-mobile-nav-link body-1">{{ __('site.contact') }}</a>
+            <a href="{{ route('contact.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.contact') }}</a>
           </li>
         </ul>
       </div>
@@ -182,19 +183,19 @@
       <!-- Language Selection -->
       <div class="nav-mobile-language">
         <div class="nav-mobile-language-option" data-language="ar" onclick="changeLanguage('ar')">
-          <div class="d-flex align-items-center gap-sm-5">
-            🇸🇦
-            <p class="body-2 mb-0">العربية</p>
+            <div class="d-flex align-items-center gap-sm-5">
+              🇸🇦
+              <p class="body-2 mb-0">العربية</p>
+            </div>
+            <input type="radio" name="mobile-language" id="mobileArabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
           </div>
-          <input type="radio" name="mobile-language" id="mobileArabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
-        </div>
-        <div class="nav-mobile-language-option" data-language="en" onclick="changeLanguage('en')">
-          <div class="d-flex align-items-center gap-sm-5">
-            🇺🇲
-            <p class="body-2 mb-0">English</p>
+          <div class="nav-mobile-language-option" data-language="en" onclick="changeLanguage('en')" >
+            <div class="d-flex align-items-center gap-sm-5">
+              🇺🇲
+              <p class="body-2 mb-0">English</p>
+            </div>
+            <input type="radio" name="mobile-language" id="mobileEnglishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
           </div>
-          <input type="radio" name="mobile-language" id="mobileEnglishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }}/>
-        </div>
       </div>
 
       <div class="nav-mobile-hr"></div>
@@ -277,19 +278,19 @@
                         {{ __('site.footer_quick_links') }}
                     </h6>
                     <div class="d-flex flex-column text-start gap-sm-4">
-                        <a href="{{ route('home') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_home') }}
                         </a>
-                        <a href="{{ route('categories.index') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_packages') }}
                         </a>
-                        <a href="{{ route('about') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ route('about',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_about') }}
                         </a>
-                        <a href="{{ route('faq') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ route('faq',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_faq') }}
                         </a>
-                        <a href="{{ route('contact.index') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ route('contact.index',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_contact') }}
                         </a>
                     </div>
@@ -1129,22 +1130,25 @@
 
 function changeLanguage(locale) {
     fetch("{{ route('setLocale') }}", {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
         },
-        body: JSON.stringify({ locale: locale })
+        body: JSON.stringify({
+            locale: locale,
+            current_url: window.location.href
+        })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
-        if(data.status === 'success') {
-            location.reload(); // إعادة تحميل الصفحة بعد تغيير اللغة
+        if (data.status === 'success') {
+            window.location.href = data.redirect; // الآن رابط نسبي
         }
     });
 }
-</script>
 
+</script>
 
 
   @stack('scripts')

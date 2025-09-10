@@ -15,10 +15,17 @@ use App\Http\Controllers\Admin\SettingController;
 
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
-use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
+////Home
+use App\Http\Controllers\Admin\Home\HeroSliderController;
+use App\Http\Controllers\Admin\Home\StepController;
+use App\Http\Controllers\Admin\Home\HomeAboutController;
+use App\Http\Controllers\Admin\Home\ProcessSectionController;
+use App\Http\Controllers\Admin\Home\WhyChooseController;
+use App\Http\Controllers\Admin\Home\OrderTimelineController;
+use App\Http\Controllers\Admin\Home\ReadyToFurnishController;
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
@@ -44,32 +51,34 @@ use App\Http\Controllers\LocaleController;
 */
 
 // Frontend Routes
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
-Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show');
-Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
+Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], function () {
 
-// صفحة من نحن
-Route::get('/about', [AboutController::class, 'index'])->name('about');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
+    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
 
-// صفحة المعرض
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
+    // صفحة من نحن
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-// صفحة المدونة
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
+    // صفحة المعرض
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
 
-// صفحة اتصل بنا
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+    // صفحة المدونة
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
 
-// صفحة المساعدة
-Route::get('/help', [HelpController::class, 'index'])->name('help.index');
-Route::post('/help', [HelpController::class, 'submit'])->name('help.submit');
+    // صفحة اتصل بنا
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
-Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+    // صفحة المساعدة
+    Route::get('/help', [HelpController::class, 'index'])->name('help.index');
+    Route::post('/help', [HelpController::class, 'submit'])->name('help.submit');
 
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+});
 
 
 
@@ -113,6 +122,36 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
 
 
     Route::resource('hero-sliders', HeroSliderController::class);
+    Route::resource('steps', StepController::class);
+
+    Route::get('/home-about', [HomeAboutController::class, 'edit'])->name('home-about.edit');
+    Route::put('/home-about', [HomeAboutController::class, 'update'])->name('home-about.update');
+
+    Route::get('/process-section', [ProcessSectionController::class, 'edit'])->name('process.edit');
+    Route::put('/process-section', [ProcessSectionController::class, 'update'])->name('process.update');
+
+
+    Route::get('/why-choose', [WhyChooseController::class, 'edit'])
+        ->name('why-choose.edit');
+    // تحديث السيكشن + العناصر مع بعض
+    Route::put('/why-choose', [WhyChooseController::class, 'update'])
+        ->name('why-choose.update');
+    // التحكم في العناصر لوحدها (لو عايز تضيف/تعدل/تحذف مستقل)
+    Route::post('/why-choose/items', [WhyChooseController::class, 'storeItem'])
+        ->name('why-choose.items.store');
+    Route::put('/why-choose/items/{item}', [WhyChooseController::class, 'updateItem'])
+        ->name('why-choose.items.update');
+    Route::delete('/why-choose/items/{item}', [WhyChooseController::class, 'destroyItem'])
+        ->name('why-choose.items.destroy');
+
+    Route::get('/order-timeline', [OrderTimelineController::class, 'edit'])->name('order-timeline.edit');
+    Route::put('/order-timeline', [OrderTimelineController::class, 'update'])->name('order-timeline.update');
+
+
+    Route::get('/ready-to-furnish', [ReadyToFurnishController::class, 'edit'])->name('ready-to-furnish.edit');
+Route::put('/ready-to-furnish', [ReadyToFurnishController::class, 'update'])->name('ready-to-furnish.update');
+
+
     Route::resource('blogs', AdminBlogController::class);
     Route::resource('contacts', AdminContactController::class);
 
@@ -122,5 +161,6 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
 });
 
 Route::post('/set-locale', [LocaleController::class, 'setLocale'])->name('setLocale');
+
 
 require __DIR__.'/auth.php';

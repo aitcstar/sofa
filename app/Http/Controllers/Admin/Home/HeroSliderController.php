@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
@@ -11,12 +11,12 @@ class HeroSliderController extends Controller
     public function index()
     {
         $sliders = HeroSlider::latest()->paginate(10);
-        return view('admin.hero-sliders.index', compact('sliders'));
+        return view('admin.home.hero-sliders.index', compact('sliders'));
     }
 
     public function create()
     {
-        return view('admin.hero-sliders.create');
+        return view('admin.home.hero-sliders.create');
     }
 
     public function store(Request $request)
@@ -49,7 +49,7 @@ class HeroSliderController extends Controller
 
     public function edit(HeroSlider $heroSlider)
     {
-        return view('admin.hero-sliders.edit', compact('heroSlider'));
+        return view('admin.home.hero-sliders.edit', compact('heroSlider'));
     }
 
     public function update(Request $request, HeroSlider $heroSlider)

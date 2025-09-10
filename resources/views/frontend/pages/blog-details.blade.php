@@ -6,9 +6,9 @@
 @section('content')
 
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">{{ __('site.home') }}</a>
+    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ route('blog.index') }}" class="body-2 text-primary">{{ __('site.blog') }}</a>
+    <a href="{{ route('blog.index', ['locale' => app()->getLocale()]) }}" class="body-2 text-primary">{{ __('site.blog') }}</a>
     <span class="body-2 text-body">/</span>
     <span class="body-2 text-primary">{{ $post->title }}</span>
 </div>
@@ -221,7 +221,7 @@
                                 <p class="caption-5 mb-0">{{ $related->excerpt }}</p>
                             </div>
                             <div class="blog-content-item">
-                                <A href="{{ route('blog.details', $related->slug) }}" class="d-flex align-items-center gap-sm-5 cursor-pointer" style="height: 40px;">
+                                <A href="{{ route('blog.details', ['locale' => app()->getLocale(), $related->slug]) }}" class="d-flex align-items-center gap-sm-5 cursor-pointer" style="height: 40px;">
                                     <p class="sub-heading-5 mb-0">إقرأ المزيد</p>
                                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-subheading"></i>
                                 </a>

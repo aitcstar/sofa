@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('answer_ar');
             $table->text('answer_en');
             $table->integer('sort')->default(0);
+            $table->string('page')->default('general'); // home, about, contact, etc.
+
             $table->timestamps();
         });
     }

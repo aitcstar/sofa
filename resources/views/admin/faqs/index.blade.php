@@ -24,6 +24,7 @@
                             <th>الإجابة (عربي)</th>
                             <th>الإجابة (إنجليزي)</th>
                             <th>القسم</th>
+                            <th>الصفحة</th>
                             <th>الترتيب</th>
                             <th width="180">الإجراءات</th>
                         </tr>
@@ -36,6 +37,18 @@
                             <td>{{ $faq->answer_ar }}</td>
                             <td>{{ $faq->answer_en }}</td>
                             <td>{{ $faq->category_ar }}</td>
+                            <td>
+                                @if($faq->page == 'home')
+                                    الصفحة الرئيسية
+                                @elseif($faq->page == 'blog')
+                                    المدونة
+                                @elseif($faq->page == 'category')
+                                    التصنيفات
+                                @else
+                                    {{ $faq->page }}
+                                @endif
+                            </td>
+
                             <td>{{ $faq->sort }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">

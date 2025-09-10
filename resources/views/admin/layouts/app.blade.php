@@ -334,6 +334,10 @@
 #packagesTable_filter {
     text-align: left !important; /* يحرك البحث لليسار */
 }
+
+#stepsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
@@ -358,57 +362,164 @@
                                 الرئيسية
                             </a>
                         </li>
+
+
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') ? 'active' : '' }}"
-                               href="{{ route('admin.hero-sliders.index') }}">
-                                <i class="fas fa-image me-2"></i>
-                                السلايدر
+                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*')? 'active' : '' }}"
+                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*')? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <i class="fas fa-cogs me-2"></i>
+                                إدارة المحتوى
                             </a>
+
+                            <!-- Sub-menu رئيسي -->
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') ? 'show' : '' }}"
+                                id="contentMenu">
+
+                                <!-- Sub-menu الصفحة الرئيسية -->
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*')? 'active' : '' }}"
+                                       href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.oready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') ? 'true' : 'false' }}"
+                                       class="dropdown-toggle">
+                                        <i class="fas fa-home me-2"></i>
+                                        الصفحة الرئيسية
+                                    </a>
+
+                                    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*')  || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*')  ||  request()->routeIs('admin.testimonials.*')? 'show' : '' }}"  id="homeSubmenu">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') ? 'active' : '' }}"
+                                               href="{{ route('admin.hero-sliders.index') }}">
+                                                السلايدر
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.steps.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.steps.index') }}">
+                                                مراحل تجهيز وحدتك
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.home-about.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.home-about.edit') }}">
+                                                نبذة من نحن
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.process.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.process.edit') }}">
+                                                خطوات تأثيث وحدتك
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.why-choose.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.why-choose.edit') }}">
+                                                لماذا نحن
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.order-timeline.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.order-timeline.edit') }}">
+                                                تابع تقدم طلبك
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.ready-to-furnish.*') ? 'active' : '' }}"
+                                                href="{{ route('admin.ready-to-furnish.edit') }}">
+                                                جاهز لتأثيث وحدتك
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}"
+                                               href="{{ route('admin.testimonials.index') }}">
+                                                آراء العملاء
+                                            </a>
+                                        </li>
+
+
+
+                                    </ul>
+                                </li>
+
+                                <!-- Sub-menu صفحة "من نحن"
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'active' : '' }}"
+                                       href="#aboutSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'true' : 'false' }}"
+                                       class="dropdown-toggle">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        من نحن
+                                    </a>
+
+                                    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'show' : '' }}" id="aboutSubmenu">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}"
+                                               href="#">
+                                               الصفحة
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.about-team.*') ? 'active' : '' }}"
+                                               href="#">
+                                               فريق العمل
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li> -->
+
+                                <!-- يمكن إضافة صفحات أخرى بنفس الطريقة -->
+                            </ul>
                         </li>
 
+
                         <!-- إدارة الباكجات مع Sub-menu -->
-<li class="nav-item">
-    <a class="nav-link {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'active' : '' }}"
-       href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-        <i class="fas fa-tags me-2"></i>
-        إدارة الباكجات
-    </a>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'active' : '' }}"
+                            href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <i class="fas fa-tags me-2"></i>
+                                إدارة الباكجات
+                            </a>
 
-    <!-- Sub-menu -->
-    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'show' : '' }}"
-        id="packagesSubmenu">
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
-               href="{{ route('admin.packages.index') }}">
-                <i class="fas fa-boxes me-2"></i>
-                الباكجات
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
-               href="{{ route('admin.designs.index') }}">
-                <i class="fas fa-palette me-2"></i>
-                التصاميم
-            </a>
-        </li>
+                            <!-- Sub-menu -->
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'show' : '' }}"
+                                id="packagesSubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.packages.index') }}">
+                                        <i class="fas fa-boxes me-2"></i>
+                                        الباكجات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
+                                    href="{{ route('admin.designs.index') }}">
+                                        <i class="fas fa-palette me-2"></i>
+                                        التصاميم
+                                    </a>
+                                </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.items.all') ? 'active' : '' }}"
-               href="{{ route('admin.items.all') }}">
-                <i class="fas fa-box me-2"></i>
-                جميع العناصر
-            </a>
-        </li>
-    </ul>
-</li>
-
-
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.items.all') ? 'active' : '' }}"
+                                    href="{{ route('admin.items.all') }}">
+                                        <i class="fas fa-box me-2"></i>
+                                        جميع العناصر
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
 
 
 
 
 
+
+                        <!--
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}"
                                href="#">
@@ -430,7 +541,7 @@
                                 المستخدمين
                             </a>
                         </li>
-
+                    -->
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}"
                                href="{{ route('admin.blogs.index') }}">
@@ -440,13 +551,7 @@
                         </li>
 
 
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}"
-                               href="{{ route('admin.testimonials.index') }}">
-                                <i class="fas fa-comment-dots me-2"></i>
-                                آراء العملاء
-                            </a>
-                        </li>
+
 
 
                         <li class="nav-item">

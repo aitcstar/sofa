@@ -21,7 +21,12 @@ class DatabaseSeeder extends Seeder
             HeroSliderSeeder::class,
             BlogSeeder::class,
             PackageSeeder::class,
-
+            StepsTableSeeder::class,
+            HomeAboutSeeder::class,
+            ProcessSectionSeeder::class,
+            WhyChooseSeeder::class,
+            OrderTimelineSeeder::class,
+            ReadyToFurnishSeeder::class,
         ]);
     }
 }

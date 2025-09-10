@@ -88,6 +88,19 @@
                         @enderror
                     </div>
                 </div>
+                <div class="col-md-6 mb-3">
+                    <label for="page" class="form-label">الصفحة <span class="text-danger">*</span></label>
+                    <select id="page" name="page" class="form-select" required>
+                        <option value="home" {{ old('page', $faq->page) == 'home' ? 'selected' : '' }}>الصفحة الرئيسية</option>
+                        <option value="blog" {{ old('page', $faq->page) == 'blog' ? 'selected' : '' }}>المدونة</option>
+                        <option value="category" {{ old('page', $faq->page) == 'category' ? 'selected' : '' }}>التصنيفات</option>
+                    </select>
+                    @error('page')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+
                 <div class="form-group">
                     <label for="order">الترتيب</label>
                     <input type="number" name="sort" id="sort" class="form-control" value="{{ old('sort', $faq->sort ?? 0) }}">

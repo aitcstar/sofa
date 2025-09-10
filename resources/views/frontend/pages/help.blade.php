@@ -6,7 +6,7 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-body">الرئيسية</a>
     <span class="body-2 text-body">/</span>
     <a href="#" class="body-1 text-primary">طلب بمساعدة</a>
 </div>
@@ -22,7 +22,7 @@
 
         <!-- form -->
         <div class="help-form">
-            <form action="{{ route('help.submit') }}" method="POST" class="d-flex flex-column gap-sm-3" id="helpForm">
+            <form action="{{ route('help.submit',['locale' => app()->getLocale()]) }}" method="POST" class="d-flex flex-column gap-sm-3" id="helpForm">
                 @csrf
                 <!-- Name -->
                 <div class="form-group">

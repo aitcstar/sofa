@@ -19,10 +19,10 @@
                     <p class="body-1 text-white mb-0" style="opacity: 0.8;">{{ $slider->description() }}</p>
                 </div>
                 <div class="hero-section-actions d-flex justify-content-center gap-sm-3">
-                    <a href="{{ route('categories.index') }}" class="btn btn-custom-outline">
+                    <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-outline">
                         {{ __('site.browse_packages') }}
                     </a>
-                    <a href="{{ route('help.index') }}" class="btn btn-custom-secondary">
+                    <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-secondary">
                         {{ __('site.order_now') }}
                     </a>
                 </div>
@@ -48,141 +48,81 @@
   <!-- ===== STEPS SECTION  ===== -->
   <section class="step-section">
     <div class="content mx-auto">
-      <!-- Heading -->
-      <h5 class="heading-h8 text-center">{{ __('site.steps_heading') }}</h5>
+        <h5 class="heading-h8 text-center">{{ __('site.steps_heading') }}</h5>
 
-      <!-- Steps -->
-      <div class="d-flex gap-sm-3 position-relative mx-auto">
-        <div class="line"></div>
+        <div class="d-flex gap-sm-3 position-relative mx-auto">
+            <div class="line"></div>
 
-        <!-- Item 1 -->
-        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
-          <div class="step-item-icon">
-            <img src="{{ asset('assets/images/hero/logo2.png') }}" alt="" />
-          </div>
-          <div class="d-flex flex-column align-items-center gap-sm-7">
-            <p class="sub-heading-4 mb-0">
-              {{ __('site.step1_title') }}
-            </p>
-            <div class="body-3 text-caption mb-0">
-              {{ __('site.step1_desc') }}
-            </div>
-          </div>
+            @foreach($steps as $step)
+                <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
+                    <div class="step-item-icon">
+                        <img src="{{ asset('storage/'.$step->icon) }}" alt="{{ $step->{'title_'.app()->getLocale()} }}" />
+                    </div>
+                    <div class="d-flex flex-column align-items-center gap-sm-7">
+                        <p class="sub-heading-4 mb-0">{{ $step->{'title_'.app()->getLocale()} }}</p>
+                        <div class="body-3 text-caption mb-0">
+                            {{ $step->{'desc_'.app()->getLocale()} }}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-
-        <!-- Item 2 -->
-        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
-          <div class="step-item-icon">
-            <img src="{{ asset('assets/images/hero/Frame 42 (1).png') }}" alt="" />
-          </div>
-          <div class="d-flex flex-column align-items-center gap-sm-7">
-            <p class="sub-heading-4 mb-0">
-              {{ __('site.step2_title') }}
-            </p>
-            <div class="body-3 text-caption mb-0">
-              {{ __('site.step2_desc') }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
-          <div class="step-item-icon">
-            <img src="{{ asset('assets/images/hero/icone3.png') }}" alt="" />
-          </div>
-          <div class="d-flex flex-column align-items-center gap-sm-7">
-            <p class="sub-heading-4 mb-0">
-              {{ __('site.step3_title') }}
-            </p>
-            <div class="body-3 text-caption mb-0">
-              {{ __('site.step3_desc') }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
-          <div class="step-item-icon">
-            <img src="{{ asset('assets/images/hero/logo6.png') }}" alt="" />
-          </div>
-          <div class="d-flex flex-column align-items-center gap-sm-7">
-            <p class="sub-heading-4 mb-0">
-              {{ __('site.step4_title') }}
-            </p>
-            <div class="body-3 text-caption mb-0">
-              {{ __('site.step4_desc') }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 5 -->
-        <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
-          <div class="step-item-icon">
-            <img src="{{ asset('assets/images/hero/loho7.png') }}" alt="" />
-          </div>
-          <div class="d-flex flex-column align-items-center gap-sm-7">
-            <p class="sub-heading-4 mb-0">
-              {{ __('site.step5_title') }}
-            </p>
-            <div class="body-3 text-caption mb-0">
-              {{ __('site.step5_desc') }}
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 </section>
+
+
 
 
   <!-- ===== ABOUT US SECTION ===== -->
   <section class="about-us-section">
     <div class="container position-relative">
-      <!-- Pattern -->
-      <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
+        <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
 
-      <!-- Content -->
-      <div class="about-us-content d-flex gap-5xl">
-        <!-- Image -->
-        <div class="order-1 order-md-2 position-relative">
-          <div class="image border-surface radius-normal-box overflow-hidden">
-            <img class="w-100 h-100" src="{{ asset('assets/images/hero/imagehome.png') }}" alt="{{ __('site.about_us') }}" />
-          </div>
-        </div>
+        @if($about)
+            <div class="about-us-content d-flex gap-5xl">
+                <!-- Image -->
+                <div class="order-1 order-md-2 position-relative">
+                    <div class="image border-surface radius-normal-box overflow-hidden">
+                        <img class="w-100 h-100"
+                             src="{{ asset('storage/'.$about->image) }}"
+                             alt="{{ $about->{'title_'.app()->getLocale()} }}" />
+                    </div>
+                </div>
 
-        <!-- Content -->
-        <div class="order-2 order-md-1 d-flex flex-column gap-l mx-auto" style="max-width: 470px;">
-          <!-- Heading -->
-          <div class="d-flex flex-column gap-sm-5">
-            <p class="sub-heading-4" style="color: var(--secondary);">{{ __('site.about_us') }}</p>
-            <h4 class="heading-h6">{{ __('site.about_heading') }}</h4>
-            <p class="caption-3 text-caption mb-0">
-              {{ __('site.about_desc') }}
-            </p>
-          </div>
+                <!-- Content -->
+                <div class="order-2 order-md-1 d-flex flex-column gap-l mx-auto" style="max-width: 470px;">
+                    <div class="d-flex flex-column gap-sm-5">
+                        <p class="sub-heading-4" style="color: var(--secondary);">
+                            {{ $about->{'sub_title_'.app()->getLocale()} }}
+                        </p>
+                        <h4 class="heading-h6">{{ $about->{'title_'.app()->getLocale()} }}</h4>
+                        <p class="caption-3 text-caption mb-0">
+                            {{ $about->{'desc_'.app()->getLocale()} }}
+                        </p>
+                    </div>
 
-          <!-- Details -->
-          <div class="d-flex flex-column gap-sm-3">
-            <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/iconeclock.png') }}" alt="{{ __('site.save_time') }}" />
-              <span class="body-1">{{ __('site.save_time') }}</span>
+                    <!-- Features -->
+                    @if($about->icons->count())
+                        <div class="d-flex flex-column gap-sm-3">
+                            @foreach($about->icons as $icon)
+                                <div class="d-flex gap-sm-4 align-items-center">
+                                    <img src="{{ asset('storage/'.$icon->icon) }}"
+                                         alt="{{ $icon->{'title_'.app()->getLocale()} }}"
+                                         style="width: 32px; height: 32px; object-fit: contain;" />
+                                    <span class="body-1">{{ $icon->{'title_'.app()->getLocale()} }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    @if($about->button_link && $about->{'button_text_'.app()->getLocale()})
+                        <a href="{{ route('about' ,['locale' => app()->getLocale()]) }}" class="btn btn-custom-primary w-100 mt-3">
+                            {{ $about->{'button_text_'.app()->getLocale()} }}
+                        </a>
+                    @endif
+                </div>
             </div>
-
-            <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/shield-check.png') }}" alt="{{ __('site.save_cost') }}" />
-              <span class="body-1">{{ __('site.save_cost') }}</span>
-            </div>
-
-            <div class="d-flex gap-sm-4">
-              <img src="{{ asset('assets/images/icons/icone5.png') }}" alt="{{ __('site.ready_delivery') }}" />
-              <span class="body-1">{{ __('site.ready_delivery') }}</span>
-            </div>
-          </div>
-
-          <a href="{{ route('about') }}" class="btn btn-custom-primary w-100">
-            {{ __('site.learn_how') }}
-          </a>
-        </div>
-      </div>
+        @endif
     </div>
 </section>
 
@@ -418,7 +358,7 @@
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
 
-                <a href="{{ route('categories.show', $category->slug) }}" class="btn btn-custom-secondary w-100">
+                <a href="{{ route('categories.show',['locale' => app()->getLocale(), 'id' => $category->slug]) }}" class="btn btn-custom-secondary w-100">
                     <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
                 </a>
@@ -436,111 +376,74 @@
   <!-- ===== PROCESS STEPS SECTION ===== -->
   <section class="process-section">
     <div class="container">
-      <div class="process-section-content">
-        <!-- image -->
-        <div
-          class="info w-100 mr-auto h-100 bg-secondary radius-normal-box d-flex flex-column gap-sm-2 justify-content-center padding-box-normal"
-          style="flex: 0.5">
-          <!-- Decorative Pattern -->
-          <img src="assets/images/ui/pattern.svg" alt="pattern" class="pattern" />
+        <div class="process-section-content">
+            <!-- image -->
+            <div class="info w-100 mr-auto h-100 bg-secondary radius-normal-box d-flex flex-column gap-sm-2 justify-content-center padding-box-normal"
+                 style="flex: 0.5">
+                <!-- Decorative Pattern -->
+                <img src="{{ asset('assets/images/ui/pattern.svg') }}" alt="pattern" class="pattern" />
 
-          <!-- Image Info -->
-          <div class="info-item radius-small-box d-flex gap-sm-3 z-1">
-            <div class="avatar">
-              <img class="w-100 h-100" src="assets/images/avatar/avatar-01.jpg" alt="" />
-            </div>
-            <div class="d-flex flex-column gap-sm-7">
-              <p class="sub-heading-5 text-white mb-0"> م. أحمد ابراهيم </p>
-              <p class="body-4 text-white mb-0">2 وحدة</p>
-            </div>
-          </div>
+                <!-- Image Info -->
+                <div class="info-item radius-small-box d-flex gap-sm-3 z-1">
+                    <div class="avatar">
+                        <img class="w-100 h-100" src="{{ asset('storage/'.$process->avatar) }}" alt="" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-7">
+                        <p class="sub-heading-5 text-white mb-0">{{ $process->name }}</p>
+                        <p class="body-4 text-white mb-0">{{ $process->units }} {{ __('site.unit') }}</p>
+                    </div>
+                </div>
 
-          <!-- Progress -->
-          <div class="info-item radius-small-box d-flex flex-column gap-sm-3 z-1">
-            <p class="body-4 text-white mb-0">حالة الطلب الحالية</p>
-            <p class="sub-heading-5 text-white mb-0">جاري التركيب 80%</p>
-            <div class="progress" role="progressbar" aria-label="Progress" aria-valuenow="80" aria-valuemin="0"
-              aria-valuemax="100">
-              <div class="progress-bar" style="width: 80%"></div>
+                <!-- Progress -->
+                <div class="info-item radius-small-box d-flex flex-column gap-sm-3 z-1">
+                    <p class="body-4 text-white mb-0">{{ __('site.smart_steps_status_label') }}</p>
+                    <p class="sub-heading-5 text-white mb-0">
+                        {{ $process->status }} {{ $process->progress }}%
+                    </p>
+                    <div class="progress" role="progressbar" aria-valuenow="{{ $process->progress }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: {{ $process->progress }}%"></div>
+                    </div>
+                </div>
             </div>
-          </div>
+
+            <!-- Column 2 -->
+            <div class="d-flex flex-column gap-md" style="flex: 0.5;">
+                <!-- Heading -->
+                <div class="d-flex flex-column gap-sm-5">
+                    <h6 class="heading-h6">
+                        {{ $process->{'title_'.app()->getLocale()} }}
+                    </h6>
+                    <p class="text-caption mb-0">
+                        {{ $process->{'desc_'.app()->getLocale()} }}
+                    </p>
+                </div>
+
+                <!-- Steps -->
+                <div class="d-flex flex-column gap-sm">
+                    @foreach($processsteps as $i => $step)
+                        <div class="step d-flex gap-sm-3">
+                            <div class="step-icon @if($loop->last) no-after @endif">
+                                <img src="{{ asset('storage/'.$step->icon) }}" alt="{{ $step->{'title_'.app()->getLocale()} }}" />
+                            </div>
+                            <div class="d-flex flex-column gap-sm-5">
+                                <h2 class="sub-heading-3 mb-0">{{ $step->{'title_'.app()->getLocale()} }}</h2>
+                                <p class="text-caption mb-0">
+                                    {{ $step->{'desc_'.app()->getLocale()} }}
+                                </p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+
+                <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-primary w-100">
+                    {{ __('site.start_now') }}
+                </a>
+            </div>
         </div>
-
-        <!-- Column 2 -->
-        <div class="d-flex flex-column gap-md" style="flex: 0.5;">
-            <!-- Heading -->
-            <div class="d-flex flex-column gap-sm-5">
-                <h6 class="heading-h6">
-                    {{ __('site.process_steps') }}
-                </h6>
-                <p class="text-caption mb-0">
-                    {{ __('site.process_steps_desc') }}
-                </p>
-            </div>
-
-            <!-- Steps -->
-            <div class="d-flex flex-column gap-sm">
-                <!-- Item 1 -->
-                <div class="step d-flex gap-sm-3">
-                    <div class="step-icon">
-                        <img src="assets/images/hero/Platform Text Container.png" />
-                    </div>
-                    <div class="d-flex flex-column gap-sm-5">
-                        <h2 class="sub-heading-3 mb-0">{{ __('site.choose_package_color') }}</h2>
-                        <p class="text-caption mb-0">
-                            {{ __('site.choose_package_desc') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="step d-flex gap-sm-3">
-                    <div class="step-icon">
-                        <img src="assets/images/hero/icone9.png" />
-                    </div>
-                    <div class="d-flex flex-column gap-sm-5">
-                        <h2 class="sub-heading-3 mb-0">{{ __('site.fill_smart_form') }}</h2>
-                        <p class="text-caption mb-0">
-                            {{ __('site.fill_form_desc') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Item 3 -->
-                <div class="step d-flex gap-sm-3">
-                    <div class="step-icon">
-                        <img src="assets/images/hero/icone10.png" />
-                    </div>
-                    <div class="d-flex flex-column gap-sm-5">
-                        <h2 class="sub-heading-3 mb-0">{{ __('site.receive_quote') }}</h2>
-                        <p class="text-caption mb-0">
-                            {{ __('site.receive_quote_desc') }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Item 4 -->
-                <div class="step d-flex gap-sm-3">
-                    <div class="step-icon2">
-                        <img src="assets/images/hero/icone11.png" />
-                    </div>
-                    <div class="d-flex flex-column gap-sm-5">
-                        <h2 class="sub-heading-3 mb-0">{{ __('site.receive_furnished') }}</h2>
-                        <p class="text-caption mb-0">
-                            {{ __('site.receive_furnished_desc') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <a href="{{ route('help.index') }}" class="btn btn-custom-primary w-100">
-                {{ __('site.start_now') }}
-            </a>
-        </div>
-
-      </div>
     </div>
-  </section>
+</section>
+
 
   <!-- ===== WHY CHOOSE US SECTION ===== -->
   <section class="why-choose-section bg-primary-light overflow-hidden">
@@ -549,262 +452,142 @@
 
     <!-- Content -->
     <div class="container d-flex flex-column gap-md">
-      <!-- Heading -->
-      <div class="heading d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6">
-          {{ __('site.why_choose_us') }}
-        </h3>
-        <p class="body-2 text-caption mb-0">
-          {{ __('site.why_desc') }}
-        </p>
-      </div>
-
-      <!-- Content -->
-      <div class="row">
-        <!-- Item 1 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <p class="heading-h6 mb-0">1.</p>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.fast_delivery') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.fast_delivery_desc') }}
-              </p>
-            </div>
-          </div>
+        <!-- Heading -->
+        <div class="heading d-flex flex-column gap-sm-5">
+            <h3 class="heading-h6">
+                {{ app()->getLocale() == 'ar' ? $whyChoose->title_ar : $whyChoose->title_en }}
+            </h3>
+            <p class="body-2 text-caption mb-0">
+                {{ app()->getLocale() == 'ar' ? $whyChoose->desc_ar : $whyChoose->desc_en }}
+            </p>
         </div>
 
-        <!-- Item 2 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <h2 class="heading-h6 mb-0">2.</h2>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.clear_pricing') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.clear_pricing_desc') }}
-              </p>
-            </div>
-          </div>
+        <!-- Content -->
+        <div class="row">
+            @foreach($whyChoose->items as $index => $item)
+                <div class="why-choose-col radius-small-box-2 padding-box-small-3">
+                    <div class="d-flex gap-sm align-items-center">
+                        <h2 class="heading-h6 mb-0">{{ $index + 1 }}.</h2>
+                        <div class="d-flex flex-column gap-sm-6">
+                            <h5 class="sub-heading-4 mb-0">
+                                {{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}
+                            </h5>
+                            <p class="body-3 mb-0">
+                                {{ app()->getLocale() == 'ar' ? $item->desc_ar : $item->desc_en }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-
-        <!-- Item 3 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <h2 class="heading-h6 mb-0">3.</h2>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.quality') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.quality_desc') }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <h2 class="heading-h6 mb-0">4.</h2>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.smart_tracking') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.smart_tracking_desc') }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 5 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <h2 class="heading-h6 mb-0">5.</h2>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.notifications') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.notifications_desc') }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 6 -->
-        <div class="why-choose-col radius-small-box-2 padding-box-small-3">
-          <div class="d-flex gap-sm align-items-center">
-            <h2 class="heading-h6 mb-0">6.</h2>
-            <div class="d-flex flex-column gap-sm-6">
-              <h5 class="sub-heading-4 mb-0">
-                {{ __('site.complete_handover') }}
-              </h5>
-              <p class="body-3 mb-0">
-                {{ __('site.complete_handover_desc') }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
+
 
 
   <!-- ===== ORDER TIMELINE SECTION ===== -->
   <section class="order-time-line-section">
     <div class="container d-flex flex-column gap-l">
-      <!-- Heading -->
-      <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">{{ __('site.order_timeline') }}</h3>
-        <p class="body-2 text-caption mb-0">
-          {{ __('site.order_timeline_desc') }}
-        </p>
-      </div>
-
-      <!-- Timeline Rows -->
-      <div class="timeline-wrapper position-relative">
-        <!-- Decorative Pattern -->
-        <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
-
-        <!-- Row 1 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5"></div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-wrapper position-relative d-flex flex-column align-items-center">
-              <div class="timeline-line"></div>
-              <div class="dot-item" style="background-color: #08203E;"></div>
-            </div>
-          </div>
-          <div class="col-5">
-            <div class="timeline-item" style="background-color: #08203E;">
-              <div class="arrow right-arrow" style="border-left-color: #08203E;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.order_placed') }}</div>
-              <div class="body-3 text-white">{{ __('site.order_placed_desc') }}</div>
-            </div>
-          </div>
+        <!-- Heading -->
+        <div class="heading text-center d-flex flex-column gap-sm-5">
+            <h3 class="heading-h6 mb-0">{{ app()->getLocale() == 'ar' ? $timelines->title_ar : $timelines->title_en }}</h3>
+            <p class="body-2 text-caption mb-0">
+                {{ app()->getLocale() == 'ar' ? $timelines->desc_ar : $timelines->desc_en }}
+            </p>
         </div>
 
-        <!-- Row 2 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5">
-            <div class="timeline-item bg-secondary" style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }}">
-              <div class="arrow left-arrow" style="border-right-color: #ad996f;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.design') }}</div>
-              <div class="body-3 text-white">{{ __('site.design_desc') }}</div>
-            </div>
-          </div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-item" style="background-color: #ad996f;"></div>
-          </div>
-          <div class="col-5"></div>
-        </div>
+        <!-- Timeline Rows -->
+        <div class="timeline-wrapper position-relative">
+            <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
 
-        <!-- Row 3 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5"></div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-item" style="background-color: #979DAC;"></div>
-          </div>
-          <div class="col-5">
-            <div class="timeline-item" style="background-color: #979DAC;">
-              <div class="arrow right-arrow" style="border-left-color: #979DAC;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.manufacturing') }}</div>
-              <div class="body-3 text-white">{{ __('site.manufacturing_desc') }}</div>
-            </div>
-          </div>
+            @foreach($timelines->items as $index => $item)
+                <div class="timeline-row d-flex align-items-center">
+                    @if($index % 2 == 0)
+                        <div class="col-5"></div>
+                        <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
+                            <div class="dot-item" style="background-color: {{ $item->color }}"></div>
+                        </div>
+                        <div class="col-5">
+                            <div class="timeline-item" style="background-color: {{ $item->color }}">
+                                <div class="arrow right-arrow" style="border-left-color: {{ $item->color }}"></div>
+                                <div class="sub-heading-3 text-white">
+                                    {{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}
+                                </div>
+                                <div class="body-3 text-white">
+                                    {{ app()->getLocale() == 'ar' ? $item->desc_ar : $item->desc_en }}
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-5">
+                            <div class="timeline-item" style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }}; background-color: {{ $item->color }}">
+                                <div class="arrow left-arrow" style="border-right-color: {{ $item->color }}"></div>
+                                <div class="sub-heading-3 text-white">
+                                    {{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}
+                                </div>
+                                <div class="body-3 text-white">
+                                    {{ app()->getLocale() == 'ar' ? $item->desc_ar : $item->desc_en }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
+                            <div class="dot-item" style="background-color: {{ $item->color }}"></div>
+                        </div>
+                        <div class="col-5"></div>
+                    @endif
+                </div>
+            @endforeach
         </div>
-
-        <!-- Row 4 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5">
-            <div class="timeline-item"   style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }} ;background-color: #33415C;">
-              <div class="arrow left-arrow" style="border-right-color: #33415C;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.shipping') }}</div>
-              <div class="body-3 text-white">{{ __('site.shipping_desc') }}</div>
-            </div>
-          </div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-item" style="background-color: #33415C;"></div>
-          </div>
-          <div class="col-5"></div>
-        </div>
-
-        <!-- Row 5 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5"></div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-item" style="background-color: #32B828;"></div>
-          </div>
-          <div class="col-5">
-            <div class="timeline-item" style="background-color: #32B828;">
-              <div class="arrow right-arrow" style="border-left-color: #32B828;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.second_payment') }}</div>
-              <div class="body-3 text-white">{{ __('site.second_payment_desc') }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 6 -->
-        <div class="timeline-row d-flex align-items-center">
-          <div class="col-5">
-            <div class="timeline-item"   style="{{ app()->getLocale() === 'ar' ? 'margin-right: auto;' : 'margin-left: auto;' }}; background-color: #C1B41C;">
-              <div class="arrow left-arrow" style="border-right-color: #C1B41C;"></div>
-              <div class="sub-heading-3 text-white">{{ __('site.installation') }}</div>
-              <div class="body-3 text-white">{{ __('site.installation_desc') }}</div>
-            </div>
-          </div>
-          <div class="col-2 d-flex justify-content-center" style="max-width: 120px;">
-            <div class="dot-item" style="background-color: #C1B41C;"></div>
-          </div>
-          <div class="col-5"></div>
-        </div>
-      </div>
     </div>
 </section>
+
 
 
   <!-- ===== CALL TO ACTION SECTION ===== -->
   <section class="ready-to-furnish-section">
     <div class="ready-to-furnish-your-unit-container container position-relative bg-primary">
-      <!-- pattern -->
-      <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="ready-to-furnish-your-unit-pattern" />
+        <!-- pattern -->
+        <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="ready-to-furnish-your-unit-pattern" />
 
-      <!-- content -->
-      <div class="ready-to-furnish-your-unit-content d-flex flex-column gap-sm">
-        <div class="d-flex flex-column gap-sm-5">
-          <h2 class="heading-h6 text-white">{{ __('site.ready_to_furnish') }}</h2>
-          <p class="caption-4 mb-0">
-            {{ __('site.ready_desc') }}
-          </p>
+        <!-- content -->
+        <div class="ready-to-furnish-your-unit-content d-flex flex-column gap-sm">
+            <div class="d-flex flex-column gap-sm-5">
+                <h2 class="heading-h6 text-white">
+                    {{ app()->getLocale() === 'ar' ? $readyToFurnish->title_ar : $readyToFurnish->title_en }}
+                </h2>
+                <p class="caption-4 mb-0">
+                    {{ app()->getLocale() === 'ar' ? $readyToFurnish->desc_ar : $readyToFurnish->desc_en }}
+                </p>
+            </div>
+
+            <!-- buttons -->
+            <div class="ready-to-furnish-your-unit-buttons d-flex gap-sm-3">
+                <a href="https://wa.me/{{ $readyToFurnish->whatsapp }}" target="_blank" class="btn btn-custom-secondary d-flex align-items-center gap-2">
+                    <p class="text-nowrap mb-0">
+                        {{ app()->getLocale() === 'ar' ? 'دردشة واتساب' : 'WhatsApp Chat' }}
+                    </p>
+                    <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
+                </a>
+
+                <a href="{{ $readyToFurnish->start_order_link }}" class="btn border-btn d-flex align-items-center gap-2">
+                    <p class="text-nowrap mb-0">
+                        {{ app()->getLocale() === 'ar' ? 'ابدأ الطلب' : 'Start Order' }}
+                    </p>
+                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" style="font-size: 18px;"></i>
+                </a>
+            </div>
         </div>
 
-        <!-- buttons -->
-        <div class="ready-to-furnish-your-unit-buttons d-flex gap-sm-3">
-          <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-secondary d-flex align-items-center gap-2">
-            <p class="text-nowrap mb-0">{{ __('site.whatsapp_chat') }}</p>
-            <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-          </a>
-
-          <a href="{{ route('help.index') }}" class="btn border-btn d-flex align-items-center gap-2">
-            <p class="text-nowrap mb-0">{{ __('site.start_order') }}</p>
-            <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" style="font-size: 18px;"></i>
-          </a>
+        <!-- image -->
+        <div class="ready-to-furnish-your-unit-image-container">
+            <div class="ready-to-furnish-your-unit-image">
+                <img src="{{ asset('storage/' . $readyToFurnish->image) }}"
+                     alt="{{ app()->getLocale() === 'ar' ? $readyToFurnish->title_ar : $readyToFurnish->title_en }}" />
+            </div>
         </div>
-      </div>
-
-      <!-- image -->
-      <div class="ready-to-furnish-your-unit-image-container">
-        <div class="ready-to-furnish-your-unit-image">
-          <img src="../assets/images/about/about-05.jpg" alt="{{ __('site.ready_to_furnish') }}" />
-        </div>
-      </div>
     </div>
 </section>
+
 
 
   <!-- ===== TESTIMONIAL SECTION ===== -->
@@ -961,7 +744,12 @@
 
 
 @endsection
+<style>
+.process-section .step-icon.no-after::after {
+    display: none;
+}
 
+    </style>
 @push('scripts')
 <script>
   // Hero Carousel Auto-play

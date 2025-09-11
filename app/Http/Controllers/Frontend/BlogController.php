@@ -29,26 +29,43 @@ class BlogController extends Controller
     }
 
 
-    public function show($slug)
-    {
-        $seo = SeoSetting::where('page','blog')->first();
-        $locale = app()->getLocale(); // الحصول على اللغة من الـ middleware
 
-        $slugColumn = $locale === 'ar' ? 'slug_ar' : 'slug_en';
-        $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
 
-        $post = Blog::where($slugColumn, $slug)->firstOrFail();
+public function show($slug)
+{
+    $locale = app()->getLocale();
+    $seo = SeoSetting::where('page','blog')->first();
 
-        $relatedPosts = Blog::where($categoryColumn, $post->category)
-                            ->where($slugColumn, '!=', $slug)
-                            ->latest()
-                            ->take(3)
-                            ->get();
+    // البحث في كلا الحقلين (slug_en و slug_ar)
+    $post = Blog::where('slug_en', $slug)
+                ->orWhere('slug_ar', $slug)
+                ->firstOrFail();
 
-        $faqs = Faq::where('page','blog')->latest()->take(10)->get();
-
-        return view('frontend.pages.blog-details', compact('seo','post', 'relatedPosts','faqs'));
+    // إذا كان الـ slug بالإنجليزية ولكن اللغة الحالية عربية
+    if ($post->slug_en === $slug && $locale === 'ar') {
+        // إعادة توجيه إلى الـ slug العربي
+        return redirect()->route('blog.details', [$post->slug_ar]);
     }
 
+    // إذا كان الـ slug بالعربية ولكن اللغة الحالية إنجليزية
+    if ($post->slug_ar === $slug && $locale === 'en') {
+        // إعادة توجيه إلى الـ slug الإنجليزي
+        return redirect()->route('blog.details.en', [$post->slug_en]);
+    }
+
+    $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
+
+    $relatedPosts = Blog::where($categoryColumn, $post->$categoryColumn)
+                        ->where(function($query) use ($slug, $locale) {
+                            $query->where('slug_en', '!=', $slug)
+                                  ->where('slug_ar', '!=', $slug);
+                        })
+                        ->latest()
+                        ->take(3)
+                        ->get();
+                        $faqs = Faq::where('page','blog')->latest()->take(10)->get();
+
+    return view('frontend.pages.blog-details', compact('post', 'relatedPosts', 'seo','faqs'));
+}
 
 }

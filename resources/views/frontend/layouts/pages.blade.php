@@ -4,49 +4,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  @php
-  $locale = app()->getLocale(); // ar أو en
-@endphp
-
 {{-- Title --}}
 <title>
-  @if($locale === 'ar')
-      {{ $seo->meta_title_ar ?? 'العنوان الافتراضي' }}
+    @if(  app()->getLocale() === 'ar')
+        {{ $seo->meta_title_ar ?? 'العنوان الافتراضي' }}
+    @else
+        {{ $seo->meta_title_en ?? 'Default Title' }}
+    @endif
+  </title>
+
+  {{-- Description --}}
+  <meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
+
+  {{-- Canonical URL --}}
+  <link rel="canonical" href="{{ dirname(url()->current()) }}/{{ app()->getLocale() == 'ar' ? $seo->slug_ar : $seo->slug_en }}">
+
+  {{-- Index/NoIndex --}}
+  @if($seo && $seo->index_status === 'noindex')
+    <meta name="robots" content="noindex, follow">
   @else
-      {{ $seo->meta_title_en ?? 'Default Title' }}
+    <meta name="robots" content="index, follow">
   @endif
-</title>
 
-{{-- Description --}}
-<meta name="description" content="{{ $locale === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
+  {{-- hreflang (علشان SEO متعدد اللغات) --}}
+  <link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
 
-{{-- Canonical URL --}}
-@if($locale === 'ar' && !empty($seo->canonical_ar))
-  <link rel="canonical" href="{{ $seo->canonical_ar }}">
-@elseif($locale === 'en' && !empty($seo->canonical_en))
-  <link rel="canonical" href="{{ $seo->canonical_en }}">
-@endif
+  {{-- OpenGraph --}}
+  <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
+  <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
+  <meta property="og:url" content="{{  app()->getLocale() === 'ar' ? (url()->current() ?? url('/')) : (url()->current() ?? url('/')) }}">
 
-{{-- Index/NoIndex --}}
-@if($seo && $seo->index_status === 'noindex')
-  <meta name="robots" content="noindex, follow">
-@else
-  <meta name="robots" content="index, follow">
-@endif
-
-{{-- hreflang (علشان SEO متعدد اللغات) --}}
-@if(!empty($seo->canonical_ar))
-  <link rel="alternate" href="{{ $seo->canonical_ar }}" hreflang="ar" />
-@endif
-@if(!empty($seo->canonical_en))
-  <link rel="alternate" href="{{ $seo->canonical_en }}" hreflang="en" />
-@endif
-
-{{-- OpenGraph --}}
-<meta property="og:title" content="{{ $locale === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
-<meta property="og:description" content="{{ $locale === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
-<meta property="og:url" content="{{ $locale === 'ar' ? ($seo->canonical_ar ?? url('/')) : ($seo->canonical_en ?? url('/')) }}">
 
 
   <!-- ===== EXTERNAL LIBRARIES ===== -->

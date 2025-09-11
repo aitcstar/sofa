@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faq;
+use App\Models\SeoSetting;
 
 class FaqController extends Controller
 {
     public function index()
 {
+    $seo = SeoSetting::where('page','faq')->first();
+
     // هات كل الأقسام المميزة من جدول الأسئلة
     $categories = Faq::select('category_ar', 'category_en')
         ->distinct()
@@ -35,7 +38,7 @@ class FaqController extends Controller
         ];
     }
 
-    return view('frontend.pages.faq', compact('faqCategories'));
+    return view('frontend.pages.faq', compact('seo','faqCategories'));
 }
 
 }

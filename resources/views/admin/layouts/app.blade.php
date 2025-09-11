@@ -573,6 +573,15 @@
                         <hr>
 
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}"
+                               href="{{ route('admin.seo.index') }}">
+                                <i class="fas fa-search me-2"></i> {{-- أيقونة SEO أفضل من الترس --}}
+                                SEO
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}"
                                href="{{ route('admin.settings.edit') }}">
                                 <i class="fas fa-cogs me-2"></i>

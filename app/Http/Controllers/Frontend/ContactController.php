@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact;
+use App\Models\SeoSetting;
+
 class ContactController extends Controller
 {
     public function index()
     {
+        $seo = SeoSetting::where('page','contact')->first();
+
         $countries = [
             ['code' => 'sa', 'name_ar' => 'السعودية', 'dial_code' => '+966'],
             ['code' => 'ae', 'name_ar' => 'الإمارات', 'dial_code' => '+971'],
@@ -43,7 +47,7 @@ class ContactController extends Controller
             ['code' => 'ir', 'name_ar' => 'إيران', 'dial_code' => '+98']
         ];
 
-        return view('frontend.pages.contact', compact('countries'));
+        return view('frontend.pages.contact', compact('seo','countries'));
     }
 
     public function submit(Request $request)

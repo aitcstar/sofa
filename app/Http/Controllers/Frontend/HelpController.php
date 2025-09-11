@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SeoSetting;
 
 class HelpController extends Controller
 {
     public function index()
     {
+        $seo = SeoSetting::where('page','help')->first();
+
         $countries = [
             ['code' => 'sa', 'name_ar' => 'السعودية', 'dial_code' => '+966'],
             ['code' => 'ae', 'name_ar' => 'الإمارات', 'dial_code' => '+971'],
@@ -41,7 +44,7 @@ class HelpController extends Controller
             ['code' => 'ir', 'name_ar' => 'إيران', 'dial_code' => '+98']
         ];
 
-        return view('frontend.pages.help', compact('countries'));
+        return view('frontend.pages.help', compact('seo','countries'));
     }
 
     public function submit(Request $request)

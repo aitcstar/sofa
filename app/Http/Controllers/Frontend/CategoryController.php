@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\SeoSetting;
 
 class CategoryController extends Controller
 {
     public function index()
     {
+        $seo = SeoSetting::where('page','category')->first();
+
         // جلب التصنيفات النشطة مع العلاقات إذا لزم الأمر
         $categories = Category::active()->ordered()->get();
 
@@ -90,11 +93,13 @@ class CategoryController extends Controller
             return $category;
         });
 
-        return view('frontend.categories.index', compact('categories'));
+        return view('frontend.categories.index', compact('seo','categories'));
     }
 
     public function show(Category $category)
 {
+    $seo = SeoSetting::where('page','category')->first();
+
     // Load products and category images
     $products = $category->products()->active()->ordered()->paginate(12);
 
@@ -130,6 +135,6 @@ class CategoryController extends Controller
         // Add more FAQs as needed
     ];
 
-    return view('frontend.categories.show', compact('category', 'products', 'images', 'testimonials', 'faqs'));
+    return view('frontend.categories.show', compact('seo','category', 'products', 'images', 'testimonials', 'faqs'));
 }
 }

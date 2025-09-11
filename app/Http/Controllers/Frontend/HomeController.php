@@ -14,7 +14,7 @@ use App\Models\ProcessSection;
 use App\Models\ProcessStep;
 use App\Models\WhyChooseSection;
 use App\Models\ReadyToFurnishSection;
-
+use App\Models\SeoSetting;
 use App\Models\OrderTimelineSection;
 
 use Illuminate\Http\Request;
@@ -23,6 +23,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $seo = SeoSetting::where('page','home')->first();
         $categories = Category::active()->ordered()->take(4)->get();
         $featured_products = Product::active()->featured()->take(8)->get();
         $testimonials = Testimonial::latest()->take(10)->get();
@@ -49,7 +50,7 @@ class HomeController extends Controller
         $timelines = OrderTimelineSection::with('items')->first();
         $readyToFurnish = ReadyToFurnishSection::first();
 
-        return view('frontend.home', compact('categories', 'featured_products','testimonials','faqs','sliders'
+        return view('frontend.home', compact('seo','categories', 'featured_products','testimonials','faqs','sliders'
                     ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish'));
     }
 }

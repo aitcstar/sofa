@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SeoSetting;
 
 class GalleryDetailsController extends Controller
 {
@@ -12,6 +13,8 @@ class GalleryDetailsController extends Controller
      */
     public function show($id)
     {
+        $seo = SeoSetting::where('page','gallery')->first();
+
         // بيانات المشروع (يمكن استبدالها ببيانات حقيقية من قاعدة البيانات)
         $project = $this->getProjectDetails($id);
 
@@ -22,7 +25,7 @@ class GalleryDetailsController extends Controller
             'project' => $project
         ];
 
-        return view('frontend.pages.gallery-details', compact('pageData'));
+        return view('frontend.pages.gallery-details', compact('seo','pageData'));
     }
 
     /**

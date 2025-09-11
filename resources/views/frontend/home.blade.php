@@ -1,8 +1,5 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'SOFA Experience')
-@section('description', 'منصة تأثيث ذكية للوحدات الفندقية - نقدم حلولاً متكاملة ومبتكرة لتأثيث الفنادق والمنتجعات')
-
 @section('content')
   <!-- ===== HERO SLIDER SECTION ===== -->
 
@@ -744,12 +741,7 @@
 
 
 @endsection
-<style>
-.process-section .step-icon.no-after::after {
-    display: none;
-}
 
-    </style>
 @push('scripts')
 <script>
   // Hero Carousel Auto-play

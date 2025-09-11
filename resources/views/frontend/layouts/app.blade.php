@@ -4,9 +4,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>@yield('title', $siteSettings->seo_title ?? $siteSettings->site_name ?? 'SOFA Experience')</title>
-  <meta name="description" content="@yield('description', $siteSettings->seo_description ?? 'منصة تأثيث ذكية للوحدات الفندقية')">
-  <meta name="keywords" content="@yield('keywords', $siteSettings->seo_keywords ?? 'SOFA, منصة, فندقية')">
+  @php
+  $locale = app()->getLocale(); // ar أو en
+@endphp
+
+{{-- Title --}}
+<title>
+  @if($locale === 'ar')
+      {{ $seo->meta_title_ar ?? 'العنوان الافتراضي' }}
+  @else
+      {{ $seo->meta_title_en ?? 'Default Title' }}
+  @endif
+</title>
+
+{{-- Description --}}
+<meta name="description" content="{{ $locale === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
+
+{{-- Canonical URL --}}
+@if($locale === 'ar' && !empty($seo->canonical_ar))
+  <link rel="canonical" href="{{ $seo->canonical_ar }}">
+@elseif($locale === 'en' && !empty($seo->canonical_en))
+  <link rel="canonical" href="{{ $seo->canonical_en }}">
+@endif
+
+{{-- Index/NoIndex --}}
+@if($seo && $seo->index_status === 'noindex')
+  <meta name="robots" content="noindex, follow">
+@else
+  <meta name="robots" content="index, follow">
+@endif
+
+{{-- hreflang (علشان SEO متعدد اللغات) --}}
+@if(!empty($seo->canonical_ar))
+  <link rel="alternate" href="{{ $seo->canonical_ar }}" hreflang="ar" />
+@endif
+@if(!empty($seo->canonical_en))
+  <link rel="alternate" href="{{ $seo->canonical_en }}" hreflang="en" />
+@endif
+
+{{-- OpenGraph --}}
+<meta property="og:title" content="{{ $locale === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
+<meta property="og:description" content="{{ $locale === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
+<meta property="og:url" content="{{ $locale === 'ar' ? ($seo->canonical_ar ?? url('/')) : ($seo->canonical_en ?? url('/')) }}">
+
 
   <!-- ===== EXTERNAL LIBRARIES ===== -->
 <!-- Bootstrap CSS -->
@@ -26,7 +66,12 @@
 
   <!-- ===== FAVICON ===== -->
   <link rel="shortcut icon" href="{{ asset('assets/images/logos/Logo.png') }}" type="image/x-icon" />
+  <style>
+    .process-section .step-icon.no-after::after {
+        display: none;
+    }
 
+        </style>
   @stack('styles')
 </head>
 

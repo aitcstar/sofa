@@ -66,7 +66,7 @@
         </div>
 
         <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-primary text-white">إعدادات SEO</div>
+            <div class="card-header bg-primary text-white">إعدادات SEO العامه</div>
             <div class="card-body">
                 <div class="mb-3">
                     <label class="form-label">Meta Title</label>
@@ -76,10 +76,10 @@
                     <label class="form-label">Meta Description</label>
                     <textarea name="seo_description" class="form-control" rows="3">{{ old('seo_description', $setting->seo_description ?? '') }}</textarea>
                 </div>
-                <div class="mb-3">
+            {{--<div class="mb-3">
                     <label class="form-label">Meta Keywords</label>
                     <textarea name="seo_keywords" class="form-control" rows="3">{{ old('seo_keywords', $setting->seo_keywords ?? '') }}</textarea>
-                </div>
+                </div>--}}
             </div>
         </div>
 

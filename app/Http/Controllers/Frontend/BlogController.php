@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Faq;
+use App\Models\SeoSetting;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
+        $seo = SeoSetting::where('page','blog')->first();
+
         $query = Blog::query();
 
         // تحديد العمود حسب اللغة الحالية
@@ -22,12 +25,14 @@ class BlogController extends Controller
 
         $blogs = $query->orderBy('created_at', 'desc')->paginate(9);
 
-        return view('frontend.pages.blog', compact('blogs'));
+        return view('frontend.pages.blog', compact('seo','blogs'));
     }
 
 
     public function show($locale, $slug)
     {
+        $seo = SeoSetting::where('page','blog')->first();
+
         app()->setLocale($locale); // تعيين اللغة
         $slugColumn = $locale === 'ar' ? 'slug_ar' : 'slug_en';
         $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
@@ -42,7 +47,7 @@ class BlogController extends Controller
 
         $faqs = Faq::where('page','blog')->latest()->take(10)->get();
 
-        return view('frontend.pages.blog-details', compact('post', 'relatedPosts','faqs'));
+        return view('frontend.pages.blog-details', compact('seo','post', 'relatedPosts','faqs'));
     }
 
 

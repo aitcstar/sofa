@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
-
+use App\Http\Controllers\Admin\SEOSettingController;
 ////Home
 use App\Http\Controllers\Admin\Home\HeroSliderController;
 use App\Http\Controllers\Admin\Home\StepController;
@@ -149,7 +149,11 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
 
 
     Route::get('/ready-to-furnish', [ReadyToFurnishController::class, 'edit'])->name('ready-to-furnish.edit');
-Route::put('/ready-to-furnish', [ReadyToFurnishController::class, 'update'])->name('ready-to-furnish.update');
+    Route::put('/ready-to-furnish', [ReadyToFurnishController::class, 'update'])->name('ready-to-furnish.update');
+
+
+    Route::get('admin/seo', [SEOSettingController::class, 'index'])->name('seo.index');
+    Route::post('admin/seo', [SEOSettingController::class, 'update'])->name('seo.update');
 
 
     Route::resource('blogs', AdminBlogController::class);

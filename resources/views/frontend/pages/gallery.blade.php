@@ -6,9 +6,9 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ route('gallery.index', ['locale' => app()->getLocale()]) }}" class="body-2 text-primary">المعرض</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="body-2 text-primary">المعرض</a>
 </div>
 
 <!-- ===== GALLERY SECTION ===== -->
@@ -59,7 +59,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 1]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [1]) : route('gallery.details.en', [1]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 
@@ -103,7 +103,7 @@
                         <img src="{{ asset('assets/images/gallery/tv.svg') }}" alt="Bed" />
                         <div class="d-flex gap-sm-5">
                             <p class="body-3 mb-0">التلفزيون</p>
-                            <p class="body-4 text-subheading mb-0">تصميم خشби كلاسيكي</p>
+                            <p class="body-4 text-subheading mb-0">تصميم خشبي كلاسيكي</p>
                         </div>
                     </div>
 
@@ -132,7 +132,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 2]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [2]) : route('gallery.details.en', [2]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 
@@ -205,7 +205,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 3]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [3]) : route('gallery.details.en', [3]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 
@@ -278,7 +278,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 4]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [4]) : route('gallery.details.en', [4]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 
@@ -351,7 +351,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 5]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [5]) : route('gallery.details.en', [5]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 
@@ -424,7 +424,7 @@
                 <div class="gallery-item-content d-flex flex-column gap-sm-5">
                     <!-- heading -->
                     <div class="d-flex flex-column gap-sm-6">
-                        <a class="sub-heading-4" href="{{ route('gallery.details', ['locale' => app()->getLocale(), 6]) }}">فندق المها – الرياض</a>
+                        <a class="sub-heading-4" href="{{ app()->getLocale() == 'ar' ? route('gallery.details', [6]) : route('gallery.details.en', [6]) }}">فندق المها – الرياض</a>
                         <div class="d-flex gap-sm-5 align-items-center">
                             <p class="body-3 text-subheading mb-0">باكج غرفة نوم واحدة</p>
 

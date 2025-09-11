@@ -51,6 +51,7 @@ use App\Http\Controllers\LocaleController;
 */
 
 // Frontend Routes
+/*
 Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -79,7 +80,44 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], functi
 
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 });
+*/
 
+// روتات بدون prefix للعربية (الافتراضية)
+Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
+    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+    Route::get('/help', [HelpController::class, 'index'])->name('help.index');
+    Route::post('/help', [HelpController::class, 'submit'])->name('help.submit');
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+});
+
+
+// روتات مع prefix للإنجليزية
+Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ أضف middleware هنا أيضاً
+    Route::get('/', [HomeController::class, 'index'])->name('home.en');
+    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index.en');
+    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show.en');
+    Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show.en');
+    Route::get('/about', [AboutController::class, 'index'])->name('about.en');
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index.en');
+    Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details.en');
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index.en');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details.en');
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index.en');
+    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit.en');
+    Route::get('/help', [HelpController::class, 'index'])->name('help.index.en');
+    Route::post('/help', [HelpController::class, 'submit'])->name('help.submit.en');
+    Route::get('/faq', [FaqController::class, 'index'])->name('faq.en');
+});
 
 
 /*Route::get('/dashboard', function () {

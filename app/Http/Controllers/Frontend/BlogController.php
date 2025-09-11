@@ -29,11 +29,11 @@ class BlogController extends Controller
     }
 
 
-    public function show($locale, $slug)
+    public function show($slug)
     {
         $seo = SeoSetting::where('page','blog')->first();
+        $locale = app()->getLocale(); // الحصول على اللغة من الـ middleware
 
-        app()->setLocale($locale); // تعيين اللغة
         $slugColumn = $locale === 'ar' ? 'slug_ar' : 'slug_en';
         $categoryColumn = $locale === 'ar' ? 'category_ar' : 'category_en';
 

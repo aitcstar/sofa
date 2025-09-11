@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 {{-- Title --}}
 <title>
   @if(  app()->getLocale() === 'ar')
@@ -13,56 +11,43 @@
       {{ $seo->meta_title_en ?? 'Default Title' }}
   @endif
 </title>
-
 {{-- Description --}}
 <meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
-
 {{-- Canonical URL --}}
 <link rel="canonical" href="{{ dirname(url()->current()) }}/{{ app()->getLocale() == 'ar' ? $seo->slug_ar : $seo->slug_en }}">
-
 {{-- Index/NoIndex --}}
 @if($seo && $seo->index_status === 'noindex')
   <meta name="robots" content="noindex, follow">
 @else
   <meta name="robots" content="index, follow">
 @endif
-
 {{-- hreflang (علشان SEO متعدد اللغات) --}}
 <link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
-
 {{-- OpenGraph --}}
 <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
 <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
 <meta property="og:url" content="{{  app()->getLocale() === 'ar' ? (url()->current() ?? url('/')) : (url()->current() ?? url('/')) }}">
-
-
   <!-- ===== EXTERNAL LIBRARIES ===== -->
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
   <!-- Owl Carousel CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-
   <!-- ===== CUSTOM CSS ===== -->
   <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}" />
-
   <!-- ===== FAVICON ===== -->
   <link rel="shortcut icon" href="{{ asset('assets/images/logos/Logo.png') }}" type="image/x-icon" />
   <style>
     .process-section .step-icon.no-after::after {
         display: none;
     }
-
         </style>
   @stack('styles')
 </head>
-
 <body>
   <!-- ===== HEADER SECTION ===== -->
   <header class="header container">
@@ -71,33 +56,29 @@
       <div class="header-logo">
         <img src="{{ asset('assets/images/logos/logo-white.svg') }}" alt="SOFA Experience" />
       </div>
-
       <!-- Navigation -->
       <nav class="header-nav">
         <ul class="header-nav-list">
-            <li class="header-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.home') }}</a>
+            <li class="header-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
+                <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="header-nav-link">{{ __('site.home') }}</a>
             </li>
             <li class="header-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                <a href="{{ route('categories.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.categories') }}</a>
+                <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="header-nav-link">{{ __('site.categories') }}</a>
             </li>
-            <li class="header-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                <a href="{{ route('about', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.about_us') }}</a>
+            <li class="header-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
+                <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="header-nav-link">{{ __('site.about_us') }}</a>
             </li>
             <li class="header-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
-                <a href="{{ route('gallery.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
+                <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
             </li>
             <li class="header-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-                <a href="{{ route('blog.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.blog') }}</a>
+                <a href="{{ app()->getLocale() == 'ar' ? route('blog.index') : route('blog.index.en') }}" class="header-nav-link">{{ __('site.blog') }}</a>
             </li>
             <li class="header-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
-                <a href="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="header-nav-link">{{ __('site.contact') }}</a>
+                <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="header-nav-link">{{ __('site.contact') }}</a>
             </li>
         </ul>
-
     </nav>
-
-
       <!-- Actions -->
       <div class="header-actions">
         <!-- Auth -->
@@ -106,11 +87,11 @@
             <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User"
                  class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ route('profile.edit',['locale' => app()->getLocale()]) }}">{{ __('site.my_account') }}</a></li>
+              <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('profile.edit') : route('profile.edit.en') }}">{{ __('site.my_account') }}</a></li>
               <li><a class="dropdown-item" href="#">{{ __('site.my_orders') }}</a></li>
               @if(auth()->user()->isAdmin())
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ route('admin.dashboard',['locale' => app()->getLocale()]) }}">{{ __('site.dashboard') }}</a></li>
+                <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('admin.dashboard') : route('admin.dashboard.en') }}">{{ __('site.dashboard') }}</a></li>
               @endif
               <li><hr class="dropdown-divider"></li>
               <li>
@@ -128,7 +109,6 @@
           <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User"
                data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
         @endauth
-
         <!-- Language Dropdown -->
         <div class="dropdown language-dropdown">
             <!-- Button -->
@@ -136,7 +116,6 @@
               id="languageDropdown" aria-expanded="false">
               <img src="{{ asset('assets/images/icons/globle-white.svg') }}" alt="Globe" />
             </button>
-
             <!-- Dropdown Menu -->
             <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
                 <li class="language-option" data-language="ar" onclick="changeLanguage('ar')">
@@ -156,24 +135,19 @@
                 </li>
             </ul>
           </div>
-
         <!-- Help -->
-        <a class="btn border-btn" href="{{ route('help.index',['locale' => app()->getLocale()]) }}" style="min-width: 132px;">
+        <a class="btn border-btn" href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}" style="min-width: 132px;">
           {{ __('site.help') }}
         </a>
     </div>
-
-
       <!-- Mobile Menu -->
       <div class="mobile-menu-toggle" id="mobileMenuToggle">
         <i class="fa-solid fa-bars text-white" style="font-size: 20px;"></i>
       </div>
     </div>
   </header>
-
   <!-- NAV MOBILE OVERLAY -->
   <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
-
   <!-- NAV MOBILE DRAWER -->
   <div class="nav-mobile-drawer" id="navMobileDrawer">
     <!-- Close Button -->
@@ -181,35 +155,32 @@
       <i class="fas fa-times" style="font-size: 18px;"></i>
       <p class="body-1 text-subheading mb-0"> {{ __('site.close') }}</p>
     </div>
-
     <!-- Content -->
     <div class="nav-mobile-content">
       <!-- Navigation Links -->
       <div class="nav-mobile-group">
         <ul class="nav-mobile-nav-list">
-          <li class="nav-mobile-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-            <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.home') }}</a>
+          <li class="nav-mobile-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
+            <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.home') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-            <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
+            <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
           </li>
-          <li class="nav-mobile-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-            <a href="{{ route('about',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }} </a>
+          <li class="nav-mobile-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
+            <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }} </a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
-            <a href="{{ route('gallery.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.mgallery') }}</a>
+            <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.mgallery') }}</a>
           </li>
           <li class="nav-mobile-nav-item  {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-            <a href="{{ route('blog.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.blog') }}</a>
+            <a href="{{ app()->getLocale() == 'ar' ? route('blog.index') : route('blog.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.blog') }}</a>
           </li>
           <li class="nav-mobile-nav-item  {{ request()->routeIs('contact.*') ? 'active' : '' }}">
-            <a href="{{ route('contact.index',['locale' => app()->getLocale()]) }}" class="nav-mobile-nav-link body-1">{{ __('site.contact') }}</a>
+            <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.contact') }}</a>
           </li>
         </ul>
       </div>
-
       <div class="nav-mobile-hr"></div>
-
       <!-- Language Selection -->
       <div class="nav-mobile-language">
         <div class="nav-mobile-language-option" data-language="ar" onclick="changeLanguage('ar')">
@@ -227,9 +198,7 @@
           <input type="radio" name="mobile-language" id="mobileEnglishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
         </div>
       </div>
-
       <div class="nav-mobile-hr"></div>
-
       <!-- Actions Buttons -->
       <div class="nav-mobile-action-button">
         @auth
@@ -253,7 +222,6 @@
         @endauth
       </div>
     </div>
-
     <!-- Help Button -->
     <div class="flex-grow-1 d-flex">
       <button class="btn btn-custom-primary w-100 mt-auto">
@@ -261,7 +229,6 @@
       </button>
     </div>
   </div>
-
   <!-- Main Content -->
   <main>
     @if(session('success'))
@@ -272,7 +239,6 @@
         </div>
       </div>
     @endif
-
     @if(session('error'))
       <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
         <div class="container">
@@ -281,10 +247,8 @@
         </div>
       </div>
     @endif
-
     @yield('content')
   </main>
-
   <!-- ===== FOOTER SECTION ===== -->
   <footer class="footer">
     <div class="footer-container">
@@ -292,7 +256,6 @@
         <div class="container">
             <!-- Pattern background element -->
             <img class="footer-pattern" src="{{ asset('assets/images/footer/pattern.svg') }}" alt="Pattern" />
-
             <div class="row text-center">
                 <!-- Column 4: Logo -->
                 <div class="footer-item align-items-center align-items-md-start col-md-3 gap-sm">
@@ -301,31 +264,29 @@
                         {{ __('site.footer_vision') }}
                     </p>
                 </div>
-
                 <!-- Column 3: Quick Links -->
                 <div class="footer-item col-md-3 gap-sm-3">
                     <h6 class="sub-heading-4 mb-0 text-white text-start">
                         {{ __('site.footer_quick_links') }}
                     </h6>
                     <div class="d-flex flex-column text-start gap-sm-4">
-                        <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_home') }}
                         </a>
-                        <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_packages') }}
                         </a>
-                        <a href="{{ route('about',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_about') }}
                         </a>
-                        <a href="{{ route('faq',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('faq') : route('faq.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_faq') }}
                         </a>
-                        <a href="{{ route('contact.index',['locale' => app()->getLocale()]) }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_contact') }}
                         </a>
                     </div>
                 </div>
-
                 <!-- Column 2: Contact Information -->
                 <div class="footer-item col-md-3 gap-sm-3">
                     <h6 class="sub-heading-4 mb-0 text-white text-start">
@@ -350,7 +311,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Column 1: Follow Us -->
                 <div class="footer-item col-md-3 gap-sm-3">
                     <h6 class="sub-heading-4 mb-0 text-white text-start">
@@ -364,10 +324,8 @@
                     </div>
                 </div>
             </div>
-
             <!-- Divider -->
             <hr class="m-0" style="opacity: 0.1" />
-
             <!-- Copyright Section -->
             <div class="footer-bottom body-2 text-caption">
                 {{ __('site.footer_copyright') }}
@@ -375,8 +333,6 @@
         </div>
     </div>
 </footer>
-
-
   <!-- Auth Modal -->
   @guest
   <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
@@ -386,7 +342,6 @@
         <div class="border-0 d-flex flex-column gap-sm-6">
           <!-- Close Button -->
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
           <!-- Tabs -->
           <ul class="nav nav-tabs w-100 d-flex flex-column justify-content-between border-0" id="myTab" role="tablist">
             <div class="d-flex mt-3">
@@ -402,7 +357,6 @@
               </li>
             </div>
           </ul>
-
           <!-- Body -->
           <div class="tab-content mt-4" id="myTabContent">
             <!-- Sign In -->
@@ -418,7 +372,6 @@
                     <span class="code" id="selected-code">+966</span>
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                   </div>
-
                   <!-- Dropdown Menu -->
                   <ul class="dropdown-menu">
                     <li>
@@ -730,26 +683,21 @@
                       </a>
                     </li>
                   </ul>
-
                   <!-- Phone Number Input -->
                   <input type="tel" class="phone-number" dir="rtl" placeholder="@lang('site.example_number')" style="height: 44px" />
                 </div>
               </div>
-
               <!-- Submit Button -->
               <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
             </div>
-
             <!-- Register -->
             <div class="tab-pane fade d-flex flex-column gap-sm-3" id="register" role="tabpanel"
               aria-labelledby="register-tab" style="display: none;">
-
               <!-- Name -->
               <div class="form-group">
                 <label class="form-label mb-0">@lang('site.name')</label>
                 <input type="text" class="form-control" placeholder="@lang('site.name')" />
               </div>
-
               <!-- Phone -->
               <div class="form-group">
                 <label class="form-label mb-0">@lang('site.phone_number')</label>
@@ -760,7 +708,6 @@
                     <span class="code" id="selected-code">+966</span>
                     <i class="fas fa-chevron-down dropdown-icon"></i>
                   </div>
-
                   <!-- Dropdown Menu -->
                   <ul class="dropdown-menu">
                     <li>
@@ -1072,18 +1019,15 @@
                       </a>
                     </li>
                   </ul>
-
                   <!-- Phone Number Input -->
                   <input type="tel" class="phone-number" dir="rtl" placeholder="@lang('site.example_number')" style="height: 44px" />
                 </div>
               </div>
-
               <!-- Email -->
               <div class="form-group">
                 <label class="form-label mb-0">@lang('site.email')</label>
                 <input type="email" class="form-control" placeholder="@lang('site.email')" />
               </div>
-
               <!-- Submit Button -->
               <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
             </div>
@@ -1092,21 +1036,14 @@
       </div>
     </div>
   </div>
-
-
   @endguest
-
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
     <script src="{{ asset('assets/js/language.js') }}"></script>
     <script src="{{ asset('assets/js/nav-bar.js') }}"></script>
-
-
   <!-- Custom Scripts -->
   <script>
     // Mobile Menu Toggle
@@ -1114,17 +1051,14 @@
       document.getElementById('navMobileOverlay').classList.add('active');
       document.getElementById('navMobileDrawer').classList.add('active');
     });
-
     document.getElementById('navMobileClose').addEventListener('click', function() {
       document.getElementById('navMobileOverlay').classList.remove('active');
       document.getElementById('navMobileDrawer').classList.remove('active');
     });
-
     document.getElementById('navMobileOverlay').addEventListener('click', function() {
       document.getElementById('navMobileOverlay').classList.remove('active');
       document.getElementById('navMobileDrawer').classList.remove('active');
     });
-
     // Language Dropdown
     document.querySelectorAll('.language-option').forEach(function(option) {
       option.addEventListener('click', function() {
@@ -1133,7 +1067,6 @@
         console.log('Language changed to:', language);
       });
     });
-
     $(document).ready(function () {
         if ($("#testimonial-carousel-homepage").length > 0) {
             $("#testimonial-carousel-homepage").owlCarousel({
@@ -1152,10 +1085,9 @@
     1200: { items: 3 }
   }
 });
-
 }
-
-});function changeLanguage(locale) {
+});
+function changeLanguage(locale) {
     fetch("{{ route('setLocale') }}", {
         method: "POST",
         headers: {
@@ -1170,18 +1102,16 @@
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
-            window.location.href = data.redirect; // الآن رابط نسبي
+            // لو العربية — امسح /ar لو موجود
+            if (locale === 'ar') {
+                window.location.href = data.redirect.replace('/ar', '');
+            } else {
+                window.location.href = data.redirect;
+            }
         }
     });
 }
-
-
-
-
 </script>
-
-
   @stack('scripts')
 </body>
 </html>
-

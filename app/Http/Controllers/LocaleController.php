@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,29 +15,29 @@ class LocaleController extends Controller
 
         session(['locale' => $locale]);
 
-        // الرابط الحالي
         $currentUrl = $request->get('current_url') ?? url()->current();
         $parsed = parse_url($currentUrl);
 
         $path = $parsed['path'] ?? '/';
         $segments = explode('/', trim($path, '/'));
 
-        // إزالة أي لغة موجودة في بداية الرابط
-        if (in_array($segments[0] ?? '', ['ar', 'en'])) {
-            array_shift($segments);
+        if ($locale === 'ar') {
+            if (in_array($segments[0] ?? '', ['ar', 'en'])) {
+                array_shift($segments);
+            }
+            $newPath = '/' . implode('/', $segments);
+        } else {
+            if (!in_array($segments[0] ?? '', ['ar', 'en'])) {
+                array_unshift($segments, 'en');
+            } else {
+                $segments[0] = 'en';
+            }
+            $newPath = '/' . implode('/', $segments);
         }
-
-        // إضافة اللغة الجديدة
-        array_unshift($segments, $locale);
-
-        // استخدام رابط نسبي فقط
-        $newPath = '/' . implode('/', $segments);
 
         return response()->json([
             'status' => 'success',
-            'redirect' => $newPath // بدلًا من الرابط الكامل
+            'redirect' => $newPath
         ]);
-    }
-
-
+ }
 }

@@ -6,8 +6,8 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-body">{{ __('site.home') }}</a>
-    <span class="body-2 text-body">/</span>
+    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
+        <span class="body-2 text-body">/</span>
     <a href="#" class="body-2 text-primary">{{ __('site.contact_us') }}</a>
 </div>
 
@@ -27,8 +27,7 @@
 
             <!-- form -->
             <div class="contact-form-form">
-                <form action="{{ route('contact.submit',['locale' => app()->getLocale()]) }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">
-                    @csrf
+                <form action="{{ app()->getLocale() == 'ar' ? route('contact.submit') : route('contact.submit.en') }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">                    @csrf
                     <!-- Name Input -->
                     <div class="form-group">
                         <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('site.name') }}" required>
@@ -172,8 +171,7 @@
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
 
-                <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-outline">
-                    <p class="mb-0">{{ __('site.cta_order_now') }}</p>
+                <a href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}" class="btn btn-custom-outline">                    <p class="mb-0">{{ __('site.cta_order_now') }}</p>
                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}" style="font-size: 18px;"></i>
                 </a>
             </div>

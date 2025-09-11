@@ -6,9 +6,9 @@
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ route('home',['locale' => app()->getLocale()]) }}" class="body-2 text-body">{{ __('site.home') }}</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ route('about',['locale' => app()->getLocale()]) }}" class="body-2 text-primary">{{ __('site.about_us') }}</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="body-2 text-primary">{{ __('site.about_us') }}</a>
 </div>
 
 
@@ -168,7 +168,7 @@
 
             <!-- start button -->
             <div class="our-smart-steps-start-button">
-                <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-secondary w-100">
+                <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="btn btn-custom-secondary w-100">
                     {{ __('site.smart_steps_start_button') }}
                 </a>
             </div>
@@ -198,7 +198,7 @@
                     <p class="text-nowrap mb-0">{{ __('site.whatsapp_button') }}</p>
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
-                <a href="{{ route('contact.index',['locale' => app()->getLocale()]) }}" class="btn border-btn">
+                <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="btn border-btn">
                     <p class="text-nowrap mb-0">{{ __('site.order_now_button') }}</p>
                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon" style="font-size: 18px;"></i>
                 </a>

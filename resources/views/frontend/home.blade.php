@@ -16,10 +16,10 @@
                     <p class="body-1 text-white mb-0" style="opacity: 0.8;">{{ $slider->description() }}</p>
                 </div>
                 <div class="hero-section-actions d-flex justify-content-center gap-sm-3">
-                    <a href="{{ route('categories.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-outline">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="btn btn-custom-outline">
                         {{ __('site.browse_packages') }}
                     </a>
-                    <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-secondary">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}" class="btn btn-custom-secondary">
                         {{ __('site.order_now') }}
                     </a>
                 </div>
@@ -113,7 +113,7 @@
                     @endif
 
                     @if($about->button_link && $about->{'button_text_'.app()->getLocale()})
-                        <a href="{{ route('about' ,['locale' => app()->getLocale()]) }}" class="btn btn-custom-primary w-100 mt-3">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="btn btn-custom-primary w-100 mt-3">
                             {{ $about->{'button_text_'.app()->getLocale()} }}
                         </a>
                     @endif
@@ -355,7 +355,7 @@
                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                 </a>
 
-                <a href="{{ route('categories.show',['locale' => app()->getLocale(), 'id' => $category->slug]) }}" class="btn btn-custom-secondary w-100">
+                <a href="{{ app()->getLocale() == 'ar' ? route('categories.show', ['id' => $category->slug]) : route('categories.show.en', ['id' => $category->slug]) }}" class="btn btn-custom-secondary w-100">
                     <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
                 </a>
@@ -433,7 +433,7 @@
                 </div>
 
 
-                <a href="{{ route('help.index',['locale' => app()->getLocale()]) }}" class="btn btn-custom-primary w-100">
+                <a href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}" class="btn btn-custom-primary w-100">
                     {{ __('site.start_now') }}
                 </a>
             </div>

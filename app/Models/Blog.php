@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,37 +12,66 @@ class Blog extends Model
         'excerpt_ar', 'excerpt_en',
         'content_ar', 'content_en',
         'image',
-        'category_ar', 'category_en',
-        'author_ar', 'author_en'
+        'author_ar', 'author_en',
+        'category_id', // مفتاح أجنبي يربط مع blog_categories
     ];
 
+    /**
+     * العلاقة مع التصنيفات
+     */
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
+
+    /**
+     * لوكالايز للعنوان
+     */
     public function getTitleAttribute()
     {
         return app()->getLocale() === 'ar' ? $this->title_ar : $this->title_en;
     }
 
+    /**
+     * لوكالايز للـ slug
+     */
     public function getSlugAttribute()
     {
         return app()->getLocale() === 'ar' ? $this->slug_ar : $this->slug_en;
     }
 
+    /**
+     * لوكالايز للملخص
+     */
     public function getExcerptAttribute()
     {
         return app()->getLocale() === 'ar' ? $this->excerpt_ar : $this->excerpt_en;
     }
 
+    /**
+     * لوكالايز للمحتوى
+     */
     public function getContentAttribute()
     {
         return app()->getLocale() === 'ar' ? $this->content_ar : $this->content_en;
     }
 
-    public function getCategoryAttribute()
-    {
-        return app()->getLocale() === 'ar' ? $this->category_ar : $this->category_en;
-    }
-
+    /**
+     * لوكالايز للمؤلف
+     */
     public function getAuthorAttribute()
     {
         return app()->getLocale() === 'ar' ? $this->author_ar : $this->author_en;
+    }
+
+    /**
+     * لوكالايز للقسم (عن طريق العلاقة)
+     */
+    public function getCategoryNameAttribute()
+    {
+        if (!$this->category) {
+            return null;
+        }
+        return app()->getLocale() === 'ar' ? $this->category->name_ar : $this->category->name_en;
     }
 }

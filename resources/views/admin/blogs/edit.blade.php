@@ -34,29 +34,18 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label required-field">الفئة بالعربية</label>
-                            <select name="category_ar" class="form-select" required>
-                                <option value="" disabled {{ old('category_ar', $blog->category_ar ?? '') == '' ? 'selected' : '' }}>اختر الفئة</option>
-                                <option value="نصائح التأثيث" {{ old('category_ar', $blog->category_ar ?? '') == 'نصائح التأثيث' ? 'selected' : '' }}>نصائح التأثيث</option>
-                                <option value="العروض والخدمات" {{ old('category_ar', $blog->category_ar ?? '') == 'العروض والخدمات' ? 'selected' : '' }}>العروض والخدمات</option>
-                                <option value="تنسيقات الألوان والديكور" {{ old('category_ar', $blog->category_ar ?? '') == 'تنسيقات الألوان والديكور' ? 'selected' : '' }}>تنسيقات الألوان والديكور</option>
-                                <option value="مقارنات وتجارب المنتجات" {{ old('category_ar', $blog->category_ar ?? '') == 'مقارنات وتجارب المنتجات' ? 'selected' : '' }}>مقارنات وتجارب المنتجات</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label required-field">الفئة بالإنجليزية</label>
-                            <select name="category_en" class="form-select" required>
-                                <option value="" disabled {{ old('category_en', $blog->category_en ?? '') == '' ? 'selected' : '' }}>Select category</option>
-                                <option value="Furniture Tips" {{ old('category_en', $blog->category_en ?? '') == 'Furniture Tips' ? 'selected' : '' }}>Furniture Tips</option>
-                                <option value="Offers & Services" {{ old('category_en', $blog->category_en ?? '') == 'Offers & Services' ? 'selected' : '' }}>Offers & Services</option>
-                                <option value="Color Schemes & Décor" {{ old('category_en', $blog->category_en ?? '') == 'Color Schemes & Décor' ? 'selected' : '' }}>Color Schemes & Décor</option>
-                                <option value="Product Comparisons & Reviews" {{ old('category_en', $blog->category_en ?? '') == 'Product Comparisons & Reviews' ? 'selected' : '' }}>Product Comparisons & Reviews</option>
-                            </select>
-                        </div>
+                    <div class="mb-3">
+                        <label class="form-label required-field">الفئة</label>
+                        <select name="category_id" class="form-select" required>
+                            <option value="" disabled>اختر الفئة</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $blog->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ app()->getLocale() === 'ar' ? $category->name_ar : $category->name_en }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+
 
 
                     <div class="row">

@@ -374,7 +374,7 @@
                    <div class="input-with-icon" style="min-height: 45px;">
                      <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
                      <i class="input-icon">
-                       <img src="assets/images/icons/search-normal.png" alt="@lang('site.search')">
+                       <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
                      </i>
                    </div>
                  </li>
@@ -710,7 +710,7 @@
                    <div class="input-with-icon" style="min-height: 45px;">
                      <input type="text" class="form-control" placeholder="@lang('site.search_here')" />
                      <i class="input-icon">
-                       <img src="assets/images/icons/search-normal.png" alt="@lang('site.search')">
+                       <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
                      </i>
                    </div>
                  </li>

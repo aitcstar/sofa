@@ -3,20 +3,28 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\SeoSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use App\Models\BlogCategory;
+use App\Models\PageContent;
 class BlogController extends Controller
 {
     public function index()
     {
         $blogs = Blog::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.blogs.index', compact('blogs'));
+        $page = 'blog';
+        $seoSettings = SeoSetting::all()->keyBy('page');
+        $content = PageContent::where('page', 'blog')->first();
+
+        return view('admin.blogs.index', compact('blogs','page','seoSettings','content'));
     }
 
     public function create()
     {
-        return view('admin.blogs.create');
+        $categories = BlogCategory::all();
+
+        return view('admin.blogs.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -29,8 +37,7 @@ class BlogController extends Controller
             'content_ar'=>'required|string',
             'content_en'=>'required|string',
             'image'=>'nullable|image|max:2048',
-            'category_ar'=>'required|string|max:255',
-            'category_en'=>'required|string|max:255',
+            'category_id' => 'required|exists:blog_categories,id',
             'author_ar'=>'required|string|max:255',
             'author_en'=>'required|string|max:255',
         ]);
@@ -67,7 +74,9 @@ class BlogController extends Controller
 
     public function edit(Blog $blog)
     {
-        return view('admin.blogs.edit', compact('blog'));
+        $categories = BlogCategory::all();
+
+        return view('admin.blogs.edit', compact('blog','categories'));
     }
 
     public function update(Request $request, Blog $blog)
@@ -82,8 +91,7 @@ class BlogController extends Controller
             'content_ar'=>'required|string',
             'content_en'=>'required|string',
             'image'=>'nullable|image|max:2048',
-            'category_ar'=>'required|string|max:255',
-            'category_en'=>'required|string|max:255',
+            'category_id' => 'required|exists:blog_categories,id',
             'author_ar'=>'nullable|string|max:255',
             'author_en'=>'nullable|string|max:255',
         ]);
@@ -110,5 +118,21 @@ class BlogController extends Controller
         }
         $blog->delete();
         return redirect()->route('admin.blogs.index')->with('success','تم حذف المقال بنجاح');
+    }
+
+
+    public function updateBlog(Request $request)
+    {
+        $request->validate([
+            'title_ar' => 'required',
+            'title_en' => 'required',
+            'text_ar'  => 'required',
+            'text_en'  => 'required',
+        ]);
+
+        $content = PageContent::where('page', 'blog')->first();
+        $content->update($request->all());
+
+        return redirect()->back()->with('success', 'تم تحديث بيانات صفحة المدونة بنجاح');
     }
 }

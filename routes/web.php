@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\SEOSettingController;
 ////Home
@@ -26,6 +27,9 @@ use App\Http\Controllers\Admin\Home\ProcessSectionController;
 use App\Http\Controllers\Admin\Home\WhyChooseController;
 use App\Http\Controllers\Admin\Home\OrderTimelineController;
 use App\Http\Controllers\Admin\Home\ReadyToFurnishController;
+
+use App\Http\Controllers\Admin\AboutPageController;
+
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
@@ -159,42 +163,37 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
     Route::resource('faqs', adminFaqController::class);
 
 
+    //////Home
     Route::resource('hero-sliders', HeroSliderController::class);
     Route::resource('steps', StepController::class);
-
     Route::get('/home-about', [HomeAboutController::class, 'edit'])->name('home-about.edit');
     Route::put('/home-about', [HomeAboutController::class, 'update'])->name('home-about.update');
-
     Route::get('/process-section', [ProcessSectionController::class, 'edit'])->name('process.edit');
     Route::put('/process-section', [ProcessSectionController::class, 'update'])->name('process.update');
-
-
-    Route::get('/why-choose', [WhyChooseController::class, 'edit'])
-        ->name('why-choose.edit');
-    // تحديث السيكشن + العناصر مع بعض
-    Route::put('/why-choose', [WhyChooseController::class, 'update'])
-        ->name('why-choose.update');
-    // التحكم في العناصر لوحدها (لو عايز تضيف/تعدل/تحذف مستقل)
-    Route::post('/why-choose/items', [WhyChooseController::class, 'storeItem'])
-        ->name('why-choose.items.store');
-    Route::put('/why-choose/items/{item}', [WhyChooseController::class, 'updateItem'])
-        ->name('why-choose.items.update');
-    Route::delete('/why-choose/items/{item}', [WhyChooseController::class, 'destroyItem'])
-        ->name('why-choose.items.destroy');
-
+    Route::get('/why-choose', [WhyChooseController::class, 'edit'])->name('why-choose.edit');
+    Route::put('/why-choose', [WhyChooseController::class, 'update'])->name('why-choose.update');
+    Route::post('/why-choose/items', [WhyChooseController::class, 'storeItem'])->name('why-choose.items.store');
+    Route::put('/why-choose/items/{item}', [WhyChooseController::class, 'updateItem'])->name('why-choose.items.update');
+    Route::delete('/why-choose/items/{item}', [WhyChooseController::class, 'destroyItem'])->name('why-choose.items.destroy');
     Route::get('/order-timeline', [OrderTimelineController::class, 'edit'])->name('order-timeline.edit');
     Route::put('/order-timeline', [OrderTimelineController::class, 'update'])->name('order-timeline.update');
-
-
     Route::get('/ready-to-furnish', [ReadyToFurnishController::class, 'edit'])->name('ready-to-furnish.edit');
     Route::put('/ready-to-furnish', [ReadyToFurnishController::class, 'update'])->name('ready-to-furnish.update');
 
 
+    Route::resource('about', AboutPageController::class);
+
+    ///SEO
     Route::get('admin/seo', [SEOSettingController::class, 'index'])->name('seo.index');
     Route::post('admin/seo', [SEOSettingController::class, 'update'])->name('seo.update');
 
 
     Route::resource('blogs', AdminBlogController::class);
+    Route::resource('blog_categories', BlogCategoryController::class);
+    Route::get('/admin/blog/content', [BlogCategoryController::class, 'editBlog'])->name('blog.content.edit');
+    Route::post('/admin/blog/content', [BlogCategoryController::class, 'updateBlog'])->name('blog.content.update');
+
+
     Route::resource('contacts', AdminContactController::class);
 
 

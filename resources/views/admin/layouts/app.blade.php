@@ -338,6 +338,12 @@
 #stepsTable_filter {
     text-align: left !important; /* يحرك البحث لليسار */
 }
+#aboutTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+#categoriesTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
@@ -365,15 +371,15 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*')? 'active' : '' }}"
-                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*')? 'true' : 'false' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'active' : '' }}"
+                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'true' : 'false' }}"
                                class="dropdown-toggle">
                                 <i class="fas fa-cogs me-2"></i>
                                 إدارة المحتوى
                             </a>
 
                             <!-- Sub-menu رئيسي -->
-                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') ? 'show' : '' }}"
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'show' : '' }}"
                                 id="contentMenu">
 
                                 <!-- Sub-menu الصفحة الرئيسية -->
@@ -447,9 +453,17 @@
                                     </ul>
                                 </li>
 
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}"
+                                       href="{{ route('admin.about.index') }}">
+                                       <i class="fas fa-info-circle me-2"></i>
+                                       من نحن
+                                    </a>
+                                </li>
+
                                 <!-- Sub-menu صفحة "من نحن"
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'active' : '' }}"
+                                    <a class="nav-link {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about.*') ? 'active' : '' }}"
                                        href="#aboutSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'true' : 'false' }}"
                                        class="dropdown-toggle">
                                         <i class="fas fa-info-circle me-2"></i>
@@ -542,13 +556,44 @@
                             </a>
                         </li>
                     -->
-                        <li class="nav-item">
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.blogs.*') || request()->routeIs('admin.blog_categories.*') ? 'active' : '' }}"
+                        href="#blogsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-blog me-2"></i>
+                            إدارة المدونات
+                        </a>
+
+                        <!-- Sub-menu -->
+                        <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.blogs.*') || request()->routeIs('admin.blog_categories.*') ? 'show' : '' }}"
+                            id="blogsSubmenu">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.blog_categories.*') ? 'active' : '' }}"
+                                href="{{ route('admin.blog_categories.index') }}">
+                                    <i class="fas fa-boxes me-2"></i>
+                                    أقسام المدونة
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}"
+                                href="{{ route('admin.blogs.index') }}">
+                                    <i class="fas fa-palette me-2"></i>
+                                    المدونة
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+                        <!--<li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}"
                                href="{{ route('admin.blogs.index') }}">
                                 <i class="fas fa-blog me-2"></i>
                                 المدونات
                             </a>
-                        </li>
+                        </li>-->
 
 
 

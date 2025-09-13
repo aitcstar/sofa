@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
+use App\Models\SeoSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,7 +12,9 @@ class HeroSliderController extends Controller
     public function index()
     {
         $sliders = HeroSlider::latest()->paginate(10);
-        return view('admin.home.hero-sliders.index', compact('sliders'));
+        $page = 'home';
+        $seoSettings = SeoSetting::all()->keyBy('page');
+        return view('admin.home.hero-sliders.index', compact('sliders','page','seoSettings'));
     }
 
     public function create()

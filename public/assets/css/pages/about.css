@@ -455,8 +455,8 @@ html[dir="ltr"] .ready-to-furnish-your-unit-container .ready-to-furnish-your-uni
 }
 
 .why-do-we-serve-image {
-    width: 180px;
-    height: 200px;
+    width: 450px;
+    height: 500px;
     overflow: hidden;
     border-radius: var(--radius-small-box);
     box-shadow: var(--shadow-card);

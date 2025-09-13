@@ -31,7 +31,9 @@
                         </div>
                         <div class="blog-details-tag d-flex gap-sm-6">
                             <img src="{{ asset('assets/images/icons/book-mark.svg') }}" alt="tag" />
-                            <p class="mb-0" style="white-space: nowrap;">{{ $post->category }}</p>
+                            <p class="mb-0">
+                                {{ app()->getLocale() == 'ar' ? $post->category->name_ar : $post->category->name_en }}
+                            </p>
                         </div>
                     </div>
                     <p class="heading-h6 mb-0">{{ $post->title }}</p>
@@ -205,32 +207,35 @@
             <h6 class="heading-h6 mb-0">مقالات ذات صلة</h6>
             <div class="blog-grid">
                 @forelse($relatedPosts as $related)
-                    <div class="blog-item d-flex flex-column gap-sm-2">
-                        <div class="blog-image">
-                            <div class="blog-widget">
-                                <p class="body-4 text-white mb-0">{{ $related->category }}</p>
-                            </div>
-                            <img src="{{ $related->image ? asset('storage/'.$related->image) : asset('assets/images/blog/blog-01.jpg') }}" alt="{{ $related->title }}">
+                <div class="blog-item d-flex flex-column gap-sm-2">
+                    <div class="blog-image">
+                        <div class="blog-widget">
+                            <p class="body-4 text-white mb-0">
+                                {{ app()->getLocale() == 'ar' ? $related->category->name_ar : $related->category->name_en }}
+                            </p>
                         </div>
-                        <div class="blog-content d-flex flex-column gap-sm-5">
-                            <div class="blog-content-item">
-                                <p class="body-4 text-secondary mb-0">تاريخ النشر: {{ $related->created_at->format('d M Y') }}</p>
-                            </div>
-                            <div class="blog-content-item d-flex flex-column gap-sm-6">
-                                <p class="sub-heading-3 mb-0">{{ $related->title }}</p>
-                                <p class="caption-5 mb-0">{{ $related->excerpt }}</p>
-                            </div>
-                            <div class="blog-content-item">
-                                <a href="{{ app()->getLocale() == 'ar' ? route('blog.details', [$related->slug]) : route('blog.details.en', [$related->slug]) }}" class="d-flex align-items-center gap-sm-5 cursor-pointer" style="height: 40px;">
-                                    <p class="sub-heading-5 mb-0">إقرأ المزيد</p>
-                                    <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-subheading"></i>
-                                </a>
-                            </div>
+                        <img src="{{ $related->image ? asset('storage/'.$related->image) : asset('assets/images/blog/blog-01.jpg') }}" alt="{{ $related->title }}">
+                    </div>
+                    <div class="blog-content d-flex flex-column gap-sm-5">
+                        <div class="blog-content-item">
+                            <p class="body-4 text-secondary mb-0">{{ __('site.published_at', ['date' => $related->created_at->format('d M Y')]) }}</p>
+                        </div>
+                        <div class="blog-content-item d-flex flex-column gap-sm-6">
+                            <p class="sub-heading-3 mb-0">{{ $related->title }}</p>
+                            <p class="caption-5 mb-0">{{ $related->excerpt }}</p>
+                        </div>
+                        <div class="blog-content-item">
+                            <a href="{{ app()->getLocale() == 'ar' ? route('blog.details', [$related->slug]) : route('blog.details.en', [$related->slug]) }}" class="d-flex align-items-center gap-sm-5 cursor-pointer">
+                                <p class="sub-heading-5 mb-0">{{ __('site.read_more') }}</p>
+                                <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }}"></i>
+                            </a>
                         </div>
                     </div>
-                @empty
-                    <p class="body-2 text-caption">لا توجد مقالات ذات صلة</p>
-                @endforelse
+                </div>
+            @empty
+                <p class="body-2 text-caption">{{ __('site.no_related_posts') }}</p>
+            @endforelse
+
             </div>
         </div>
 

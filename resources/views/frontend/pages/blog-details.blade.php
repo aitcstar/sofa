@@ -77,14 +77,13 @@
                     <hr class="divider" />
 
                     <!-- item 7 -->
+                    @if($post->faqs->count())
                     <div class="blog-details-details-item">
                         <p class="sub-heading-3 mb-0">{{ __('site.faq_post', ['title' => $post->title]) }}</p>
-
-                        <!-- accordion -->
                                     <!-- Accordion -->
                                     <div class="faq-section-content">
                                         <div class="accordion" id="accordionFaq">
-                                            @foreach($faqs as $index => $faq)
+                                            @foreach($post->faqs as $index => $faq)
                                             <div class="accordion-item">
                                                 <div class="accordion-header">
                                                     <button class="accordion-button @if($index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
@@ -105,9 +104,8 @@
                                             @endforeach
                                         </div>
                                     </div>
-
                     </div>
-
+                    @endif
                     <!-- divider -->
                     <hr class="divider" />
 
@@ -165,7 +163,7 @@
                     <!-- divider -->
                     <hr class="divider" />
 
-                    <!-- Item 8 -->
+                    <!-- Item 8
                     <div class="blog-details-details-item">
                         <p class="sub-heading-3 mb-0">شاركنا رأيك</p>
                         <p class="caption-5">نحن نهتم برأيك! اترك تعليقك حول المقال أو التجربة وسنكون سعداء بقراءته
@@ -173,30 +171,67 @@
 
                         <form action="" class="d-flex flex-column gap-sm-3">
                             <div class="d-flex gap-sm-3" style="width: 100%;">
-                                <!-- name -->
                                 <div class="form-group" style="flex: 0.5;">
                                     <input type="text" class="form-control" id="name" placeholder="الاسم الكامل" />
                                 </div>
 
-                                <!-- email -->
                                 <div class="form-group" style="flex: 0.5;">
                                     <input type="email" class="form-control" id="email"
                                         placeholder="البريد الإلكتروني" />
                                 </div>
                             </div>
 
-                            <!-- message -->
                             <div class="form-group">
                                 <textarea class="form-control" id="message" placeholder="اكتب تعليقك هنا..."
                                     rows="4"></textarea>
                             </div>
 
-                            <!-- submit -->
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-custom-primary">إرسال التعليق</button>
+                            </div>
+                        </form>
+                    </div>-->
+
+                    <div class="comments mt-4">
+                        <h4>التعليقات</h4>
+                        @forelse ($post->comments()->where('status','approved')->latest()->get() as $comment)
+                            <div class="comment p-3 border rounded mb-2">
+                                <strong>{{ $comment->name }}</strong> <small>({{ $comment->email }})</small>
+                                <p class="mb-0">{{ $comment->message }}</p>
+                            </div>
+                        @empty
+                            <p>لا توجد تعليقات بعد.</p>
+                        @endforelse
+                    </div>
+
+
+
+                    <div class="blog-details-details-item">
+                        <p class="sub-heading-3 mb-0">شاركنا رأيك</p>
+                        <p class="caption-5">نحن نهتم برأيك! اترك تعليقك حول المقال أو التجربة وسنكون سعداء بقراءته</p>
+
+                        <form action="{{ app()->getLocale() == 'ar' ? route('blog.comments.store', $post->id) : route('blog.comments.store.en', $post->id) }}" method="POST" class="d-flex flex-column gap-sm-3">
+                            @csrf
+                            <div class="d-flex gap-sm-3" style="width: 100%;">
+                                <div class="form-group" style="flex: 0.5;">
+                                    <input type="text" name="name" class="form-control" placeholder="الاسم الكامل" required />
+                                </div>
+
+                                <div class="form-group" style="flex: 0.5;">
+                                    <input type="email" name="email" class="form-control" placeholder="البريد الإلكتروني" required />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <textarea name="message" class="form-control" placeholder="اكتب تعليقك هنا..." rows="4" required></textarea>
+                            </div>
+
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-custom-primary">إرسال التعليق</button>
                             </div>
                         </form>
                     </div>
+
 
 
             </div>

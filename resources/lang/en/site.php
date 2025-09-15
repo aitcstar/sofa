@@ -152,6 +152,7 @@ return [
     // FAQ
     'faq_title' => 'Your questions... we answer them clearly',
     'faq_subtitle' => 'Everything you need to know before ordering, we\'ve gathered it here briefly and transparently',
+    'faq' => 'FAQ',
 
     'footer_vision' => 'Part of Saudi Vision 2030',
     'footer_quick_links' => 'Quick Links',

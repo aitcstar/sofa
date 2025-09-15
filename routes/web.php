@@ -17,8 +17,10 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogCommentController as AdminBlogCommentController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\SEOSettingController;
+use App\Http\Controllers\Admin\ContactSectionController;
 ////Home
 use App\Http\Controllers\Admin\Home\HeroSliderController;
 use App\Http\Controllers\Admin\Home\StepController;
@@ -38,6 +40,7 @@ use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\GalleryController;
 use App\Http\Controllers\Frontend\GalleryDetailsController;
 use App\Http\Controllers\Frontend\BlogController;
+use App\Http\Controllers\Frontend\BlogCommentController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HelpController;
 use App\Http\Controllers\Frontend\FaqController;
@@ -97,6 +100,8 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
     Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
+    Route::post('/blog/{blog}/comment', [BlogCommentController::class, 'store'])->name('blog.comments.store');
+
     Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
     Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
     Route::get('/help', [HelpController::class, 'index'])->name('help.index');
@@ -116,6 +121,7 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
     Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details.en');
     Route::get('/blog', [BlogController::class, 'index'])->name('blog.index.en');
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details.en');
+    Route::post('/blog/{blog}/comment', [BlogCommentController::class, 'store'])->name('blog.comments.store.en');
     Route::get('/contact', [ContactController::class, 'index'])->name('contact.index.en');
     Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit.en');
     Route::get('/help', [HelpController::class, 'index'])->name('help.index.en');
@@ -161,6 +167,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
 
     Route::resource('testimonials', TestimonialController::class);
     Route::resource('faqs', adminFaqController::class);
+    Route::post('/admin/faqs/content', [adminFaqController::class, 'updateFaq'])->name('faq.content.update');
 
 
     //////Home
@@ -192,9 +199,13 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
     Route::resource('blog_categories', BlogCategoryController::class);
     Route::get('/admin/blog/content', [BlogCategoryController::class, 'editBlog'])->name('blog.content.edit');
     Route::post('/admin/blog/content', [BlogCategoryController::class, 'updateBlog'])->name('blog.content.update');
+    Route::put('/admin/comments/{id}/approve', [AdminBlogCommentController::class, 'approve'])->name('comments.approve');
+    Route::put('/admin/comments/{id}/reject', [AdminBlogCommentController::class, 'reject'])->name('comments.reject');
 
 
     Route::resource('contacts', AdminContactController::class);
+    Route::get('contact-section/edit', [ContactSectionController::class, 'edit'])->name('contact.edit');
+    Route::put('contact-section/update', [ContactSectionController::class, 'update'])->name('contact.update');
 
 
     Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');

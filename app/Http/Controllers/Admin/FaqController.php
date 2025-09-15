@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faq;
+use App\Models\SeoSetting;
+use App\Models\PageContent;
 
 class FaqController extends Controller
 {
     public function index()
     {
+        $page = 'faq';
+        $seoSettings = SeoSetting::all()->keyBy('page');
+
         $faqs = Faq::orderBy('sort', 'asc')->get();
-        return view('admin.faqs.index', compact('faqs'));
+        $content = PageContent::where('page', 'faq')->first();
+
+        return view('admin.faqs.index', compact('faqs','page','seoSettings','content'));
     }
 
     public function create()
@@ -87,4 +94,20 @@ class FaqController extends Controller
         $faq->delete();
         return redirect()->route('admin.faqs.index')->with('success', 'تم حذف السؤال بنجاح');
     }
+
+    public function updatefaq(Request $request)
+    {
+        $request->validate([
+            'title_ar' => 'required',
+            'title_en' => 'required',
+            'text_ar'  => 'required',
+            'text_en'  => 'required',
+        ]);
+
+        $content = PageContent::where('page', 'faq')->first();
+        $content->update($request->all());
+
+        return redirect()->back()->with('success', 'تم تحديث بيانات صفحة المدونة بنجاح');
+    }
+
 }

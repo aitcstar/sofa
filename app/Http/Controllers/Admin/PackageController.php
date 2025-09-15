@@ -95,69 +95,80 @@ class PackageController extends Controller
     }
 
     public function update(Request $request, Package $package)
-{
-    // التحقق من البيانات
-    $validated = $request->validate([
-        'name_ar' => 'required|string|max:255',
-        'name_en' => 'required|string|max:255',
-        'price'   => 'required|numeric',
-        'description_ar' => 'nullable|string',
-        'description_en' => 'nullable|string',
-        'units'   => 'nullable|array',
-        'units.*.name_ar' => 'required|string|max:255',
-        'units.*.name_en' => 'required|string|max:255',
-        'units.*.type' => 'required|string|in:bedroom,living_room,kitchen,bathroom',
-        'units.*.description_ar' => 'nullable|string',
-        'units.*.description_en' => 'nullable|string',
-    ]);
+    {
+        // التحقق من البيانات
+        $validated = $request->validate([
+            'name_ar' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'price'   => 'required|numeric',
+            'description_ar' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'units'   => 'nullable|array',
+            'units.*.name_ar' => 'required|string|max:255',
+            'units.*.name_en' => 'required|string|max:255',
+            'units.*.type' => 'required|string|in:bedroom,living_room,kitchen,bathroom',
+            'units.*.description_ar' => 'nullable|string',
+            'units.*.description_en' => 'nullable|string',
+        ]);
 
-    // تحديث بيانات الباكج
-    $package->update([
-        'name_ar'        => $validated['name_ar'],
-        'name_en'        => $validated['name_en'],
-        'price'          => $validated['price'],
-        'description_ar' => $validated['description_ar'] ?? null,
-        'description_en' => $validated['description_en'] ?? null,
-    ]);
+        // تحديث بيانات الباكج
+        $package->update([
+            'name_ar'        => $validated['name_ar'],
+            'name_en'        => $validated['name_en'],
+            'price'          => $validated['price'],
+            'description_ar' => $validated['description_ar'] ?? null,
+            'description_en' => $validated['description_en'] ?? null,
+        ]);
 
-    // تحديث الصورة
-    if ($request->hasFile('image')) {
-        if ($package->image && \Storage::disk('public')->exists($package->image)) {
-            \Storage::disk('public')->delete($package->image);
+        // تحديث الصورة
+        if ($request->hasFile('image')) {
+            if ($package->image && \Storage::disk('public')->exists($package->image)) {
+                \Storage::disk('public')->delete($package->image);
+            }
+
+            $path = $request->file('image')->store('packages', 'public');
+            $package->update([
+                'image' => $path,
+            ]);
         }
 
-        $path = $request->file('image')->store('packages', 'public');
-        $package->update([
-            'image' => $path,
-        ]);
-    }
+        $unitsData = $validated['units'] ?? [];
+        $existingUnitIds = [];
 
-    $unitsData = $validated['units'] ?? [];
-    $existingUnitIds = [];
+        foreach ($unitsData as $unit) {
+            $existingItemIds = []; // 👈 لازم تبدأ فاضية لكل وحدة
 
-    foreach ($unitsData as $unit) {
-        $existingItemIds = []; // 👈 لازم تبدأ فاضية لكل وحدة
+            if (!empty($unit['id'])) {
+                $packageUnit = Unit::find($unit['id']);
+                if ($packageUnit) {
+                    $packageUnit->update([
+                        'name_ar'        => $unit['name_ar'],
+                        'name_en'        => $unit['name_en'],
+                        'type'           => $unit['type'],
+                        'description_ar' => $unit['description_ar'] ?? null,
+                        'description_en' => $unit['description_en'] ?? null,
+                    ]);
 
-        if (!empty($unit['id'])) {
-            $packageUnit = Unit::find($unit['id']);
-            if ($packageUnit) {
-                $packageUnit->update([
-                    'name_ar'        => $unit['name_ar'],
-                    'name_en'        => $unit['name_en'],
-                    'type'           => $unit['type'],
-                    'description_ar' => $unit['description_ar'] ?? null,
-                    'description_en' => $unit['description_en'] ?? null,
-                ]);
+                    $existingUnitIds[] = $packageUnit->id;
 
-                $existingUnitIds[] = $packageUnit->id;
-
-                // ✅ تحديث أو إضافة items الخاصة بالوحدة
-                if (!empty($unit['items'])) {
-                    foreach ($unit['items'] as $itemData) {
-                        if (!empty($itemData['id'])) {
-                            $item = Item::find($itemData['id']);
-                            if ($item) {
-                                $item->update([
+                    // ✅ تحديث أو إضافة items الخاصة بالوحدة
+                    if (!empty($unit['items'])) {
+                        foreach ($unit['items'] as $itemData) {
+                            if (!empty($itemData['id'])) {
+                                $item = Item::find($itemData['id']);
+                                if ($item) {
+                                    $item->update([
+                                        'item_name_ar' => $itemData['item_name_ar'],
+                                        'item_name_en' => $itemData['item_name_en'],
+                                        'quantity'     => $itemData['quantity'],
+                                        'dimensions'   => $itemData['dimensions'] ?? null,
+                                        'material'     => $itemData['material'] ?? null,
+                                        'color'        => $itemData['color'] ?? null,
+                                    ]);
+                                    $existingItemIds[] = $item->id;
+                                }
+                            } else {
+                                $newItem = $packageUnit->items()->create([
                                     'item_name_ar' => $itemData['item_name_ar'],
                                     'item_name_en' => $itemData['item_name_en'],
                                     'quantity'     => $itemData['quantity'],
@@ -165,58 +176,47 @@ class PackageController extends Controller
                                     'material'     => $itemData['material'] ?? null,
                                     'color'        => $itemData['color'] ?? null,
                                 ]);
-                                $existingItemIds[] = $item->id;
+                                $existingItemIds[] = $newItem->id;
                             }
-                        } else {
-                            $newItem = $packageUnit->items()->create([
-                                'item_name_ar' => $itemData['item_name_ar'],
-                                'item_name_en' => $itemData['item_name_en'],
-                                'quantity'     => $itemData['quantity'],
-                                'dimensions'   => $itemData['dimensions'] ?? null,
-                                'material'     => $itemData['material'] ?? null,
-                                'color'        => $itemData['color'] ?? null,
-                            ]);
-                            $existingItemIds[] = $newItem->id;
                         }
                     }
+
+                    // ✅ حذف العناصر الغير موجودة في الفورم
+                    //$packageUnit->items()->whereNotIn('id', $existingItemIds)->delete();
                 }
+            } else {
+                // وحدة جديدة
+                $newUnit = $package->units()->create([
+                    'name_ar'        => $unit['name_ar'],
+                    'name_en'        => $unit['name_en'],
+                    'type'           => $unit['type'],
+                    'description_ar' => $unit['description_ar'] ?? null,
+                    'description_en' => $unit['description_en'] ?? null,
+                ]);
 
-                // ✅ حذف العناصر الغير موجودة في الفورم
-                $packageUnit->items()->whereNotIn('id', $existingItemIds)->delete();
-            }
-        } else {
-            // وحدة جديدة
-            $newUnit = $package->units()->create([
-                'name_ar'        => $unit['name_ar'],
-                'name_en'        => $unit['name_en'],
-                'type'           => $unit['type'],
-                'description_ar' => $unit['description_ar'] ?? null,
-                'description_en' => $unit['description_en'] ?? null,
-            ]);
+                $existingUnitIds[] = $newUnit->id;
 
-            $existingUnitIds[] = $newUnit->id;
-
-            // لو فيه عناصر جديدة
-            if (!empty($unit['items'])) {
-                foreach ($unit['items'] as $itemData) {
-                    $newUnit->items()->create([
-                        'item_name_ar' => $itemData['item_name_ar'],
-                        'item_name_en' => $itemData['item_name_en'],
-                        'quantity'     => $itemData['quantity'],
-                        'dimensions'   => $itemData['dimensions'] ?? null,
-                        'material'     => $itemData['material'] ?? null,
-                        'color'        => $itemData['color'] ?? null,
-                    ]);
+                // لو فيه عناصر جديدة
+                if (!empty($unit['items'])) {
+                    foreach ($unit['items'] as $itemData) {
+                        $newUnit->items()->create([
+                            'item_name_ar' => $itemData['item_name_ar'],
+                            'item_name_en' => $itemData['item_name_en'],
+                            'quantity'     => $itemData['quantity'],
+                            'dimensions'   => $itemData['dimensions'] ?? null,
+                            'material'     => $itemData['material'] ?? null,
+                            'color'        => $itemData['color'] ?? null,
+                        ]);
+                    }
                 }
             }
         }
+
+        // ✅ حذف الوحدات الغير موجودة
+        $package->units()->whereNotIn('id', $existingUnitIds)->delete();
+
+        return redirect()->route('admin.packages.index')->with('success', 'تم تحديث الباكج بنجاح');
     }
-
-    // ✅ حذف الوحدات الغير موجودة
-    $package->units()->whereNotIn('id', $existingUnitIds)->delete();
-
-    return redirect()->route('admin.packages.index')->with('success', 'تم تحديث الباكج بنجاح');
-}
 
 
 

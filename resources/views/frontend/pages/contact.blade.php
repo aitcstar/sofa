@@ -19,10 +19,13 @@
         <div class="contact-form">
             <!-- heading -->
             <div class="contact-form-heading">
-                <h2 class="heading-h7">{{ __('site.contact_us') }}</h2>
+                <h2 class="heading-h7">
+                    {{ app()->getLocale() == 'ar' ? $section->title_ar : $section->title_en }}
+                </h2>
                 <p class="caption-5">
-                    {{ __('site.contact_description') }}
+                    {{ app()->getLocale() == 'ar' ? $section->desc_ar : $section->desc_en }}
                 </p>
+
             </div>
 
             <!-- form -->
@@ -103,12 +106,16 @@
             <!-- Item 2 -->
             <div class="contact-info-item d-flex flex-column gap-sm-5">
                 <h6 class="sub-heading-4 mb-0">{{ __('site.main_showroom') }}</h6>
-                <p class="caption-4 mb-0">{{ __('site.main_showroom_address') }}</p>
+                <p class="caption-4 mb-0">
+                    {{ app()->getLocale() == 'ar' ? $section->main_showroom_ar : $section->main_showroom_en }}
+                </p>
             </div>
 
             <div class="contact-info-item d-flex flex-column gap-sm-5">
                 <h6 class="sub-heading-4 mb-0">{{ __('site.work_hours') }}</h6>
-                <p class="caption-4 mb-0">{{ __('site.work_hours_time') }}</p>
+                <p class="caption-4 mb-0">
+                    {{ app()->getLocale() == 'ar' ? $section->work_hours_ar : $section->work_hours_en }}
+                </p>
             </div>
 
 
@@ -156,9 +163,11 @@
 
             <!-- heading -->
             <div class="cta-button-heading d-flex flex-column gap-sm-3">
-                <h2 class="heading-h7 mb-0 text-white">{{ __('site.cta_heading') }}</h2>
+                <h2 class="heading-h7 mb-0 text-white">
+                    {{ app()->getLocale() == 'ar' ? $section->cta_heading_ar : $section->cta_heading_en }}
+                </h2>
                 <p class="caption-5 mb-0 text-white" style="max-width: 592px; opacity: 0.8;">
-                    {{ __('site.cta_text') }}
+                    {{ app()->getLocale() == 'ar' ? $section->cta_text_ar : $section->cta_text_en }}
                 </p>
             </div>
 
@@ -185,8 +194,12 @@
     <div class="container d-flex flex-column gap-sm">
         <!-- heading -->
         <div class="contact-map-heading d-flex flex-column gap-sm-5">
-            <h2 class="heading-h7 mb-0">{{ __('site.city') }}</h2>
-            <p class="caption-5 mb-0">{{ __('site.address') }}</p>
+            <h2 class="heading-h7 mb-0">
+                {{ app()->getLocale() == 'ar' ? $section->city_ar : $section->city_en }}
+            </h2>
+            <p class="caption-5 mb-0">
+                {{ app()->getLocale() == 'ar' ? $section->address_ar : $section->address_en }}
+            </p>
         </div>
 
 
@@ -196,6 +209,7 @@
         </div>
     </div>
 </section>
+
 @endsection
 
 @push('styles')

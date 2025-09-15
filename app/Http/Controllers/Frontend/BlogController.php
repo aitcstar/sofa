@@ -41,7 +41,7 @@ class BlogController extends Controller
         $seo = SeoSetting::where('page', 'blog')->first();
 
         // البحث في كلا الحقلين (slug_en و slug_ar)
-        $post = Blog::with('category')
+        $post = Blog::with(['category','faqs'])
             ->where('slug_en', $slug)
             ->orWhere('slug_ar', $slug)
             ->firstOrFail();
@@ -66,7 +66,7 @@ class BlogController extends Controller
 
         $faqs = Faq::where('page', 'blog')->latest()->take(10)->get();
 
-        return view('frontend.pages.blog-details', compact('post', 'relatedPosts', 'seo', 'faqs'));
+        return view('frontend.pages.blog-details', compact('post', 'relatedPosts', 'seo','faqs'));
     }
 
 

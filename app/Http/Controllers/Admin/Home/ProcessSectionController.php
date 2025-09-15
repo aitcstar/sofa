@@ -23,6 +23,7 @@ class ProcessSectionController extends Controller
             'name','units','status','progress'
         ]);
 
+        // الصورة الرئيسية
         if ($request->hasFile('avatar')) {
             $data['avatar'] = $request->file('avatar')->store('process', 'public');
         }
@@ -31,8 +32,19 @@ class ProcessSectionController extends Controller
 
         // تحديث الخطوات
         if ($request->has('steps')) {
+            $existingStepIds = $process->steps()->pluck('id')->toArray(); // الخطوات الحالية
+            $submittedStepIds = collect($request->steps)->pluck('id')->filter()->toArray(); // اللي جاي من الفورم
+
+            // 1️⃣ مسح الخطوات اللي اتشالت
+            $stepsToDelete = array_diff($existingStepIds, $submittedStepIds);
+            if (!empty($stepsToDelete)) {
+                ProcessStep::whereIn('id', $stepsToDelete)->delete();
+            }
+
+            // 2️⃣ تحديث أو إضافة الخطوات
             foreach ($request->steps as $stepData) {
                 if (isset($stepData['id'])) {
+                    // تحديث
                     $step = ProcessStep::find($stepData['id']);
                     if ($step) {
                         if (isset($stepData['icon']) && $stepData['icon'] instanceof \Illuminate\Http\UploadedFile) {
@@ -41,6 +53,7 @@ class ProcessSectionController extends Controller
                         $step->update($stepData);
                     }
                 } else {
+                    // إضافة جديد
                     if (isset($stepData['icon']) && $stepData['icon'] instanceof \Illuminate\Http\UploadedFile) {
                         $stepData['icon'] = $stepData['icon']->store('process_steps', 'public');
                     }
@@ -51,4 +64,5 @@ class ProcessSectionController extends Controller
 
         return redirect()->back()->with('success','تم تحديث بيانات خطوات العملية بنجاح');
     }
+
 }

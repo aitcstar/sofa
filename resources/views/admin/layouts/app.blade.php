@@ -371,15 +371,15 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'active' : '' }}"
-                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'true' : 'false' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') ? 'active' : '' }}"
+                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*')? 'true' : 'false' }}"
                                class="dropdown-toggle">
                                 <i class="fas fa-cogs me-2"></i>
                                 إدارة المحتوى
                             </a>
 
                             <!-- Sub-menu رئيسي -->
-                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*')? 'show' : '' }}"
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') ? 'show' : '' }}"
                                 id="contentMenu">
 
                                 <!-- Sub-menu الصفحة الرئيسية -->
@@ -460,6 +460,17 @@
                                        من نحن
                                     </a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.contact.*') ? 'active' : '' }}"
+                                       href="{{ route('admin.contact.edit') }}">
+                                       <i class="fas fa-phone-alt me-2"></i>
+                                       اتصل بنا
+                                    </a>
+                                </li>
+
+
+
 
                                 <!-- Sub-menu صفحة "من نحن"
                                 <li class="nav-item">

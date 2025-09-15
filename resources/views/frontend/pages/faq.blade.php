@@ -1,6 +1,6 @@
 @extends('frontend.layouts.pages')
 
-@section('title', 'الأسئلة الشائعة - SOFA Experience')
+@section('title', __('site.faq') . ' - SOFA Experience')
 @section('description', 'كل ما تحتاج معرفته قبل الطلب، جمعناه لك هنا باختصار وشفافية')
 
 @section('content')
@@ -8,7 +8,7 @@
 <div class="breadcrumb-container container">
     <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ app()->getLocale() == 'ar' ? route('faq') : route('faq.en') }}" class="body-2 text-primary">الأسئلة الشائعة</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('faq') : route('faq.en') }}" class="body-2 text-primary">{{ __('site.faq') }}</a>
 </div>
 
 <!-- ===== FAQ SECTION ===== -->
@@ -16,11 +16,14 @@
     <div class="container">
         <!-- Heading -->
         <div class="d-flex flex-column gap-sm-5 mx-auto text-center mb-5">
-            <h1 class="heading-h6 mb-0">أسئلتك… نُجيب عليها بكل وضوح</h1>
+            <h2 class="heading-h6 mb-0">
+                {{ app()->getLocale() == 'ar' ? $content->title_ar : $content->title_en }}
+            </h2>
             <p class="body-2 mb-0">
-                كل ما تحتاج معرفته قبل الطلب، جمعناه لك هنا باختصار وشفافية
+                {{ app()->getLocale() == 'ar' ? $content->text_ar : $content->text_en }}
             </p>
         </div>
+
 
         <!-- Content -->
         <div class="faq-content">

@@ -24,6 +24,17 @@ class Blog extends Model
         return $this->belongsTo(BlogCategory::class, 'category_id');
     }
 
+    public function faqs()
+    {
+        return $this->hasMany(Faq::class, 'blog_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(BlogComment::class, 'blog_id');
+    }
+
+
     /**
      * لوكالايز للعنوان
      */

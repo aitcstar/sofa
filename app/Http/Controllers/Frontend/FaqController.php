@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faq;
 use App\Models\SeoSetting;
-
+use App\Models\PageContent;
 class FaqController extends Controller
 {
     public function index()
@@ -38,7 +38,10 @@ class FaqController extends Controller
         ];
     }
 
-    return view('frontend.pages.faq', compact('seo','faqCategories'));
+    $content = PageContent::where('page','faq')->first();
+
+
+    return view('frontend.pages.faq', compact('seo','faqCategories','content'));
 }
 
 }

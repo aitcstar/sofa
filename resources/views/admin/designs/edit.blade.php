@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="row mb-4">
+       <!-- <div class="row mb-4">
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="description_ar" class="form-label">الوصف (عربي)</label>
@@ -43,7 +43,7 @@
                     <textarea name="description_en" id="description_en" class="form-control" rows="3">{{ old('description_en', $design->description_en) }}</textarea>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <div class="row mb-4">
             <div class="col-md-12">
@@ -55,12 +55,13 @@
                         <option value="living_room" {{ $design->category == 'living_room' ? 'selected' : '' }}>معيشة</option>
                         <option value="kitchen" {{ $design->category == 'kitchen' ? 'selected' : '' }}>مطبخ</option>
                         <option value="bathroom" {{ $design->category == 'bathroom' ? 'selected' : '' }}>حمام</option>
+                        <option value="external" {{ $design->category == 'external' ? 'selected' : '' }}>الملحقات الخارجية والإضافية</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div class="row mb-4">
+        {{--<div class="row mb-4">
             <div class="col-md-12">
                 <div class="mb-3">
                     <label for="image" class="form-label">صورة التصميم</label>
@@ -75,7 +76,7 @@
                     </div>
                 @endif
             </div>
-        </div>
+        </div>--}}
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">

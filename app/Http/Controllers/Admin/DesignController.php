@@ -22,9 +22,11 @@ class DesignController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
             'category' => 'nullable|string|max:100',
-            'description' => 'nullable|string',
+            'description_ar' => 'nullable|string',
+            'description_en' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 

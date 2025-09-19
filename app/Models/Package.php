@@ -19,6 +19,14 @@ class Package extends Model
         'description_ar',
         'description_en',
         'image',
+        'period_ar',
+        'period_en',
+        'service_includes_ar',
+        'service_includes_en',
+        'payment_plan_ar',
+        'payment_plan_en',
+        'decoration_ar',
+        'decoration_en',
         'is_active',
         'sort_order'
     ];

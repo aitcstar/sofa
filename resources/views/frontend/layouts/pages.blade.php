@@ -57,8 +57,8 @@
                 <li class="header-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
                     <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="header-nav-link">{{ __('site.home') }}</a>
                 </li>
-                <li class="header-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                    <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="header-nav-link">{{ __('site.categories') }}</a>
+                <li class="header-nav-item {{ request()->routeIs('packages.*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="header-nav-link">{{ __('site.categories') }}</a>
                 </li>
                 <li class="header-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
                     <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="header-nav-link">{{ __('site.about_us') }}</a>
@@ -158,8 +158,8 @@
           <li class="nav-mobile-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
             <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.home') }}</a>
           </li>
-          <li class="nav-mobile-nav-item {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-            <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
+          <li class="nav-mobile-nav-item {{ request()->routeIs('packages.*') ? 'active' : '' }}">
+            <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
             <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }}</a>
@@ -268,7 +268,7 @@
                         <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_home') }}
                         </a>
-                        <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="body-2 text-white" style="opacity: 0.8">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_packages') }}
                         </a>
                         <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="body-2 text-white" style="opacity: 0.8">

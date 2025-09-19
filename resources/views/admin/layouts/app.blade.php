@@ -502,7 +502,16 @@
                         </li>
 
 
-                        <!-- إدارة الباكجات مع Sub-menu -->
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
+                            href="{{ route('admin.packages.index') }}">
+                                <i class="fas fa-boxes me-2"></i>
+                                الباكجات
+                            </a>
+                        </li>
+
+
+                        <!-- إدارة الباكجات مع Sub-menu
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'active' : '' }}"
                             href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -510,7 +519,6 @@
                                 إدارة الباكجات
                             </a>
 
-                            <!-- Sub-menu -->
                             <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'show' : '' }}"
                                 id="packagesSubmenu">
                                 <li class="nav-item">
@@ -536,7 +544,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
 
 
 

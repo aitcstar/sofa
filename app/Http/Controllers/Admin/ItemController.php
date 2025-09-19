@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Design;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -35,6 +36,7 @@ class ItemController extends Controller
     {
         $request->validate([
             'unit_id' => 'required|exists:units,id',
+            'design_id' => 'required|exists:designs,id',
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
             'dimensions' => 'nullable|string|max:100',
@@ -65,6 +67,7 @@ class ItemController extends Controller
     {
         $request->validate([
             'unit_id' => 'required|exists:units,id',
+            'design_id' => 'required|exists:designs,id',
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
             'dimensions' => 'nullable|string|max:100',
@@ -82,17 +85,41 @@ class ItemController extends Controller
             $data['image_path'] = $request->file('image')->store('items', 'public');
         }
 
+        $data['design_id'] = $design->id;
+
         $item->update($data);
 
         return redirect()->route('admin.designs.items.index', $design)->with('success', 'تم تحديث القطعة بنجاح.');
     }
 
-    public function destroy(Design $design, Item $item)
+   /* public function destroy(Design $design, Item $item)
     {
         if ($item->image_path) {
             \Storage::disk('public')->delete($item->image_path);
         }
         $item->delete();
         return redirect()->route('admin.designs.items.index', $design)->with('success', 'تم حذف القطعة بنجاح.');
+    }*/
+
+    public function destroyImage(Item $item)
+{
+    if ($item->image_path && \Storage::disk('public')->exists($item->image_path)) {
+        \Storage::disk('public')->delete($item->image_path);
     }
+    $item->update(['image_path' => null]);
+
+    return response()->json(['success' => true]);
+}
+
+public function destroy(Item $item)
+{
+    if ($item->image_path) {
+        \Storage::disk('public')->delete($item->image_path);
+    }
+    $item->delete();
+
+    return response()->json(['success' => true]);
+}
+
+
 }

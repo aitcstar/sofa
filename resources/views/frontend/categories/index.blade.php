@@ -1,14 +1,12 @@
 @extends('frontend.layouts.pages')
 
-@section('title', 'التصنيفات - SOFA Experience')
-@section('description', 'تصفح جميع تصنيفات الأثاث الفندقي المتاحة في SOFA Experience')
 
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
-    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">الرئيسية</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="#" class="body-2 text-primary">التصنيفات</a>
+    <a href="#" class="body-2 text-primary">{{ __('site.categories') }}</a>
 </div>
 
 <!-- ===== FILTER & ROOMS SECTION ===== -->
@@ -19,124 +17,98 @@
             id="mobileFilterToggle">
             <!-- Title -->
             <div class="d-flex gap-sm-3 align-items-center">
-                <p class="body-1 text-subheading mb-0">فرز وتصنيف</p>
+                <p class="body-1 text-subheading mb-0">{{ __('site.Sort and classify') }}</p>
                 <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="Filter" />
             </div>
 
             <!-- Quantity -->
-            <span class="body-4 text-caption mb-0">{{ $categories->count() }} باكجات</span>
+            <span class="body-4 text-caption mb-0">{{ $packages->count() }} {{ __('site.categories') }}</span>
         </div>
 
         <!-- ===== FILTER SECTION ===== -->
         <div class="filter-section-container">
             <!-- Filter -->
             <div class="filter-section">
-                <h3 class="filter-title heading-h8 mb-0">فلتر</h3>
+                <h3 class="filter-title heading-h8 mb-0">{{ __('site.filter') }}</h3>
 
-                <!-- Unit Type -->
                 <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">نوع الوحدة</h4>
-
+                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.Package_type') }} </h4>
                     <div class="filter-options">
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="unit-type" data-value="studio"></div>
-                            <span class="body-2 text-body">استوديو</span>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox checked" data-filter="unit-type" data-value="three-rooms"></div>
-                            <span class="body-2 text-body">ثلاث غرف</span>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="unit-type" data-value="two-rooms"></div>
-                            <span class="body-2 text-body">غرفتين</span>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="unit-type" data-value="one-room"></div>
-                            <span class="body-2 text-body">غرفة</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Finishing Style -->
-                <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">نمط التشطيب</h4>
-
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="finishing-style" data-value="luxury-plus"></div>
-                            <span class="body-2 text-body">فاخر بلس</span>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="finishing-style" data-value="luxury"></div>
-                            <span class="body-2 text-body">فاخر</span>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="finishing-style" data-value="standard"></div>
-                            <span class="body-2 text-body">قياسي</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Color Style -->
-                <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">ستايل الألوان</h4>
-
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="color-style" data-value="beige"></div>
-                            <div class="filter-option-content">
-                                <span class="body-2 text-body">درجات البيج</span>
-                                <div class="color-swatch beige"></div>
+                        @foreach($packageTypes as $type)
+                            <div class="filter-option">
+                                <div class="filter-checkbox" data-filter="package-name" data-value="{{ $type }}"></div>
+                                <span class="body-2 text-body">{{ $type }}</span>
                             </div>
-                        </div>
-                        <div class="filter-option">
-                            <div class="filter-checkbox" data-filter="color-style" data-value="gray"></div>
-                            <div class="filter-option-content">
-                                <span class="body-2 text-body">درجات الرمادي</span>
-                                <div class="color-swatch gray"></div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+
+                <div class="filter-group">
+                    <h4 class="sub-heading-4 text-subheading mb-0" >{{ __('site.Color_style') }}</h4>
+                    <div class="filter-options">
+                        @foreach($colors as $color)
+                            <div class="filter-option">
+                                <div class="filter-checkbox"
+                                     data-filter="color-style"
+                                     data-value="{{ $color['background_color'] }}"
+                                     data-label="{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}">
+                                </div>
+                                <div class="filter-option-content">
+                                    <span class="body-2 text-body">
+                                        {{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}
+                                    </span>
+                                    <div class="color-swatch" style="background-color: {{ $color['background_color'] }}"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
 
             <!-- Rooms -->
-            <div class="rooms-container">
+            <div class="rooms-container" style="width: 100%;s">
                 <div class="row">
-                    @foreach($categories as $category)
-                    <!-- Item {{ $loop->iteration }} -->
-                    <div class="col-sm-12 col-md-6 mb-sm-4">
+                    @foreach($packages as $package)
+                    <!-- Package Item -->
+                    <div class="col-sm-12 col-md-6 mb-sm-4 package-cards"
+                    data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
+                    data-colors="{{ $package->units->flatMap->items->pluck('background_color')->filter()->unique()->implode(',') }}">
+
                         <div class="room-item">
                             <!-- image & widget -->
                             <div class="image">
-                                <div class="widget text-center">
+                                <!--<div class="widget text-center">
                                     <span class="body-4 text-white">جاهز للتسليم السريع</span>
-                                </div>
-                                <img src="{{ asset($category->image ?? 'assets/images/category/category-01.jpg') }}" class="w-100 h-100" alt="{{ $category->name }}" />
+                                </div>-->
+                                @if($package->image)
+                                    <img src="{{ asset('storage/' . $package->image) }}" class="w-100 h-100" alt="{{ $package->{'name_'.app()->getLocale()} }}" />
+                                @else
+                                    <img src="{{ asset('assets/images/category/category-01.jpg') }}" class="w-100 h-100" alt="{{ $package->{'name_'.app()->getLocale()} }}" />
+                                @endif
                             </div>
 
                             <!-- Content -->
                             <div class="content d-flex flex-column gap-sm-3">
-
                                 <!-- Title & Quantity & Description -->
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex flex-column gap-sm-6">
-                                        <h5 class="sub-heading-3">
-                                            {{ $category->name }}
-                                        </h5>
+                                        <h5 class="sub-heading-3">  {{ __('site.package') }} {{ $package->{'name_'.app()->getLocale()} }}</h5>
                                         <p class="body-3 mb-0">
-                                            {{ $category->description ?? 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
+                                            {{ $package->{'description_'.app()->getLocale()}  ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                                         </p>
                                     </div>
-                                    <p class="body-2" style="color: var(--secondary);">{{ $category->items_count }} قطعة</p>
+                                    <p class="body-2" style="color: var(--secondary);">
+                                        {{ $package->units->sum(fn($u) => $u->items->count()) }} {{ __('site.piece') }}
+                                    </p>
                                 </div>
 
                                 <!-- Price -->
                                 <div class="d-flex align-items-center gap-sm-5 mb-2">
-                                    <p class="body-2 text-caption mb-0">ابتداءً من</p>
+                                    <p class="body-2 text-caption mb-0">  {{ __('site.Starting_from') }}</p>
                                     <h4 class="heading-h6 mb-0">
-                                        {{ number_format($category->price) }}
-                                        <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
+                                        {{ number_format($package->price)  }}
+                                        <img src="{{ asset('assets/images/hero/Platform Subtitle.png') }}" alt="" />
                                     </h4>
                                 </div>
 
@@ -144,80 +116,96 @@
                                 <div class="d-flex flex-column gap-sm-4">
                                     <!-- Including -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;">يشمل:</p>
-                                      <div class="d-flex gap-sm-5">
-                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                          <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
-                                          <span class="body-4">غرفة نوم</span>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Includes') }}</p>
+                                        <div class="d-flex flex-wrap gap-sm-3">
+                                            @foreach($package->units as $unit)
+                                                <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                                    @if($unit->type == "bedroom")
+                                                        <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+                                                    @elseif($unit->type == "living_room")
+                                                        <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
+                                                    @elseif($unit->type == "kitchen")
+                                                        <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
+                                                    @elseif($unit->type == "external")
+                                                        <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
+                                                    @else
+                                                        <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+                                                    @endif
+                                                    <span class="body-4">{{ $unit->{'name_'.app()->getLocale()} }}</span>
+
+                                                </div>
+
+                                            @endforeach
                                         </div>
-                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                          <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
-                                          <span class="body-4">مجلس</span>
-                                        </div>
-                                        <span class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                          <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
-                                          <span class="body-4">طاولة طعام</span>
-                                        </span>
-                                      </div>
                                     </div>
+
+                                    @php
+                                        $colors = $package->units
+                                            ->flatMap->items
+                                            ->pluck('background_color')
+                                            ->filter()
+                                            ->unique()
+                                            ->take(4);
+                                    @endphp
 
                                     <!-- Colors -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;">الألوان المتاحة:</p>
-                                      <div class="d-flex gap-sm-5">
-                                        <span class="rounded-pill" style="width: 34px; height: 16px;background-color: #f5f1e6"></span>
-                                        <span class="rounded-pill" style="width: 34px; height: 16px;background-color: #aaaaaa"></span>
-                                        <span class="rounded-pill" style="width: 34px; height: 16px;background-color: #a1866f"></span>
-                                        <span class="rounded-pill" style="width: 34px; height: 16px;background-color: #8b5e3c"></span>
-                                      </div>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
+                                        <div class="d-flex gap-sm-5">
+                                            @forelse($colors as $color)
+                                            <span class="rounded-pill" style="width: 34px; height: 16px; background-color: {{ $color }}"></span>
+                                        @empty
+                                            <span>لا توجد ألوان</span>
+                                        @endforelse
+                                        </div>
                                     </div>
 
                                     <!-- Time implementation -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;">مدة التنفيذ:</p>
-                                      <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                        <img src="{{ asset('assets/images/icons/clock-watch.png') }}" alt="" />
-                                        <span class="body-4">15–20 يوم عمل</span>
-                                      </div>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Duration') }}</p>
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            <img src="{{ asset('assets/images/icons/clock-watch.png') }}" alt="" />
+                                            <span class="body-4">{{ $package->{'period_'.app()->getLocale()} }}</span>
+                                        </div>
                                     </div>
 
                                     <!-- Service -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;">الخدمة</p>
-                                      <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                        <img src="{{ asset('assets/images/icons/tools-wench-ruler.png') }}" alt="" />
-                                        <span class="body-4">يشمل التركيب والتوصيل الكامل</span>
-                                      </div>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Service') }}</p>
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            <img src="{{ asset('assets/images/icons/tools-wench-ruler.png') }}" alt="" />
+                                            <span class="body-4">{{ $package->{'service_includes_'.app()->getLocale()} }}</span>
+                                        </div>
                                     </div>
 
                                     <!-- Payment Plan -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;"> خطة الدفع :</p>
-                                      <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                        <img src="{{ asset('assets/images/icons/wallet-2.png') }}" alt="" />
-                                        <span class="body-4">50٪ مقدم – 50٪ قبل التسليم</span>
-                                      </div>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Payment_plan') }}</p>
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            <img src="{{ asset('assets/images/icons/wallet-2.png') }}" alt="" />
+                                            <span class="body-4">{{ $package->{'payment_plan_'.app()->getLocale()} }}</span>
+                                        </div>
                                     </div>
 
                                     <!-- Decoration -->
                                     <div class="d-flex gap-sm-3 align-items-center">
-                                      <p class="body-2 text-caption mb-0" style="width: 90px;"> الديكور :</p>
-                                      <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface">
-                                        <img src="{{ asset('assets/images/icons/brush-ruler.png') }}" alt="" />
-                                        <span class="body-4"> ديكور أساسي بسيط</span>
-                                      </div>
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Decoration') }}</p>
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            <img src="{{ asset('assets/images/icons/brush-ruler.png') }}" alt="" />
+                                            <span class="body-4">{{ $package->{'decoration_'.app()->getLocale()} }}</span>
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
 
                             <!-- Actions Buttons -->
                             <div class="actions d-flex gap-sm-2">
-                                <a href="https://wa.me/{{$siteSettings->whatsapp}}" target="_blank" class="btn btn-custom-primary w-100">
-                                    <p class="text-nowrap mb-0">أرسل لي عرض السعر</p>
+                                <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
+                                    <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
                                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                                 </a>
-                                 <a href="{{ app()->getLocale() == 'ar' ? route('categories.show', [$category->slug]) : route('categories.show.en', [$category->slug]) }}" class="btn btn-custom-secondary">
-                                    <span style="white-space: nowrap;">عرض التفاصيل</span>
+                                </a>
+                                <a href="{{ app()->getLocale() == 'ar' ? route('packages.show', ['id' => $package->id]) : route('packages.show.en', ['id' => $package->id]) }}" class="btn btn-custom-secondary w-100">
+                                    <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
                                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
                                 </a>
                             </div>
@@ -238,74 +226,56 @@
     <!-- Close Button -->
     <div class="mobile-filter-header" id="mobileFilterClose">
         <i class="fas fa-times" style="font-size: 18px;"></i>
-        <p class="body-1 text-subheading mb-0">اغلاق</p>
+        <p class="body-1 text-subheading mb-0">{{ __('site.close') }}</p>
     </div>
 
     <!-- Content -->
     <div class="mobile-filter-content">
         <!-- Title -->
-        <h3 class="heading-h8 mb-0">فلتر</h3>
+        <h3 class="heading-h8 mb-0">{{ __('site.filter') }}</h3>
 
         <!-- Unit Type -->
         <div class="mobile-filter-group">
-            <h4 class="sub-heading-4 mb-0">نوع الوحدة</h4>
+            <h4 class="sub-heading-4 mb-0"> {{ __('site.Package_type') }} </h4>
             <div class="mobile-filter-options">
+                @foreach($packageTypes as $type)
                 <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="unit-type" data-value="studio"></div>
-                    <span class="body-2 text-body">استوديو</span>
+                    <div class="mobile-filter-checkbox" data-filter="package-name"  data-value="{{ $type }}"></div>
+                    <span class="body-2 text-body">{{ $type }}</span>
                 </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox checked" data-filter="unit-type" data-value="three-rooms"></div>
-                    <span class="body-2 text-body">ثلاث غرف</span>
-                </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="unit-type" data-value="two-rooms"></div>
-                    <span class="body-2 text-body">غرفتين</span>
-                </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="unit-type" data-value="one-room"></div>
-                    <span class="body-2 text-body">غرفة</span>
-                </div>
+                @endforeach
             </div>
         </div>
 
-        <!-- Finishing Style -->
-        <div class="mobile-filter-group">
-            <h4 class="sub-heading-4 mb-0">نمط التشطيب</h4>
-            <div class="mobile-filter-options">
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="finishing-style" data-value="luxury-plus"></div>
-                    <span class="body-2 text-body">فاخر بلس</span>
-                </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="finishing-style" data-value="luxury"></div>
-                    <span class="body-2 text-body">فاخر</span>
-                </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="finishing-style" data-value="standard"></div>
-                    <span class="body-2 text-body">قياسي</span>
-                </div>
-            </div>
-        </div>
 
         <!-- Color Style -->
         <div class="mobile-filter-group">
-            <h4 class="sub-heading-4 mb-0">ستايل الألوان</h4>
+            <h4 class="sub-heading-4 mb-0"> {{ __('site.Color_style') }}</h4>
             <div class="mobile-filter-options">
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="color-style" data-value="beige"></div>
-                    <div class="mobile-filter-option-content">
-                        <span class="body-2 text-body">درجات البيج</span>
-                        <div class="mobile-color-swatch beige"></div>
+
+
+
+                @foreach($mobileColors as $color)
+                @if(is_array($color) && isset($color['background_color']))
+                    <div class="mobile-filter-option">
+                        <div class="mobile-filter-checkbox"
+                             data-filter="color-style"
+                             data-value="{{ $color['background_color'] }}"
+                             data-label="{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}">
+
+                        </div>
+                        <div class="mobile-filter-option-content">
+                            <span class="body-2 text-body">
+                                {{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}
+                            </span>
+
+                            <div class="mobile-color-swatch" style="background-color: {{ $color['background_color'] }};"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="color-style" data-value="gray"></div>
-                    <div class="mobile-filter-option-content">
-                        <span class="body-2 text-body">درجات الرمادي</span>
-                        <div class="mobile-color-swatch gray"></div>
-                    </div>
-                </div>
+                @endif
+            @endforeach
+
+
             </div>
         </div>
     </div>
@@ -313,7 +283,7 @@
     <!-- Apply Button -->
     <div class="flex-grow-1 d-flex">
         <button class="btn btn-custom-primary mt-auto" id="applyFilters">
-            تطبيق
+            {{ __('site.apply') }}
         </button>
     </div>
 </div>
@@ -403,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // فلترة التصنيفات
-    function filterCategories() {
+    /*function filterCategories() {
         const selectedFilters = {
             'unit-type': [],
             'finishing-style': [],
@@ -432,7 +402,117 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // تطبيق الفلاتر عند النقر على زر التطبيق
-    applyFilters.addEventListener('click', filterCategories);
+    applyFilters.addEventListener('click', filterCategories);*/
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // SELECTORS
+    const desktopCheckboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
+    const mobileCheckboxes  = Array.from(document.querySelectorAll('.mobile-filter-checkbox'));
+    const cards             = Array.from(document.querySelectorAll('.package-cards'));
+    const applyBtn          = document.getElementById('applyFilters');
+    const mobileDrawer      = document.getElementById('mobileFilterDrawer');
+    const mobileOverlay     = document.getElementById('mobileFilterOverlay'); // لو موجود
+
+    // debug quick info
+    if (!cards.length) {
+        console.warn('No package cards found. تأكد أن العناصر تحمل class="package-cards" وأنها موجودة في الصفحة.');
+    }
+
+    // helper: collect active filters from a NodeList (desktop or mobile)
+    function getActiveFiltersFrom(nodeList) {
+        const active = { "package-name": [], "color-style": [] };
+        nodeList.forEach(cb => {
+            if (cb.classList && cb.classList.contains('checked')) {
+                const f = cb.dataset.filter;
+                const v = (cb.dataset.value || '').toString().trim();
+                if (f && v) {
+                    active[f] = active[f] || [];
+                    active[f].push(v);
+                }
+            }
+        });
+        return active;
+    }
+
+    // helper: normalize colors from data-colors attribute into array (lowercase, trimmed)
+    function normalizeCardColors(str) {
+        if (!str) return [];
+        return str.split(',')
+                  .map(s => s.trim().toLowerCase())
+                  .filter(Boolean);
+    }
+
+    // apply filters to DOM cards
+    function applyFilters(activeFilters) {
+        cards.forEach(card => {
+            let show = true;
+
+            const pkgName = (card.dataset.packageName || '').toString().trim();
+            // name filter
+            if (activeFilters["package-name"] && activeFilters["package-name"].length > 0) {
+                // compare trimmed strings (case-sensitive as your values likely exact)
+                const selectedNames = activeFilters["package-name"].map(v => v.toString().trim());
+                if (!selectedNames.includes(pkgName)) show = false;
+            }
+
+            // color filter
+            if (activeFilters["color-style"] && activeFilters["color-style"].length > 0) {
+                const cardColors = normalizeCardColors(card.dataset.colors || '');
+                const selectedColors = activeFilters["color-style"].map(v => v.toString().trim().toLowerCase());
+                // if no intersection => hide
+                const intersection = selectedColors.some(sc => cardColors.includes(sc));
+                if (!intersection) show = false;
+            }
+
+            // show/hide the whole column (keeps grid intact)
+            card.style.display = show ? '' : 'none';
+        });
+    }
+
+    // DESKTOP: toggle immediately
+    desktopCheckboxes.forEach(cb => {
+        cb.addEventListener('click', function () {
+            cb.classList.toggle('checked');
+            const active = getActiveFiltersFrom(desktopCheckboxes);
+            applyFilters(active);
+        });
+    });
+
+    // MOBILE: only toggle UI on clicks, apply on button press
+    mobileCheckboxes.forEach(cb => {
+        cb.addEventListener('click', function () {
+            cb.classList.toggle('checked');
+        });
+    });
+
+    if (applyBtn) {
+        applyBtn.addEventListener('click', function () {
+            const active = getActiveFiltersFrom(mobileCheckboxes);
+            applyFilters(active);
+
+            // اختياري: اغلاق الدروير بعد التطبيق (تأكد أن لديك overlay)
+            if (mobileDrawer) {
+                mobileDrawer.classList.remove('active');
+                mobileDrawer.style.display = 'none';
+            }
+            if (mobileOverlay) {
+                mobileOverlay.classList.remove('active');
+                mobileOverlay.style.display = 'none';
+            }
+            document.body.style.overflow = '';
+        });
+    } else {
+        console.warn('applyFilters button not found (id="applyFilters").');
+    }
+
+    // initial show all
+    applyFilters({ "package-name": [], "color-style": [] });
+});
+
+
+
+
 </script>
 @endpush

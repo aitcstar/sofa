@@ -19,22 +19,28 @@
                         <tr>
                             <th>الاسم</th>
                             <th>الفئة</th>
-                            <th>الصورة</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($designs as $design)
                         <tr>
-                            <td>{{ $design->name_ar }} / {{ $design->name_en }}</td>
-                            <td>{{ $design->category ?? 'غير محدد' }}</td>
+                            <td>{{ $design->name_ar }} </td>
                             <td>
-                                @if($design->image_path)
-                                    <img src="{{ asset('storage/' . $design->image_path) }}" width="50" height="50" class="rounded">
-                                @else
-                                    <span class="text-muted">لا يوجد</span>
+                                @if($design->category  == 'bedroom')
+                                غرفة نوم
+                                @elseif ($design->category  == 'living_room')
+                                معيشة
+                                @elseif ($design->category  == 'kitchen')
+                                مطبخ
+                                @elseif ($design->category  == 'bathroom')
+                                حمام
+                                @elseif ($design->category  == 'external')
+                                الملحقات الخارجية والإضافية
                                 @endif
+
                             </td>
+
                             <td>
                                 <a href="{{ route('admin.designs.edit', $design) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>

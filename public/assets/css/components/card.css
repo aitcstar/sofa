@@ -108,7 +108,7 @@
   .card-footer {
     padding: var(--spacing-md);
   }
-  
+
   .package-card .content,
   .package-card .actions {
     padding: var(--spacing-md);
@@ -122,15 +122,15 @@
   .card-footer {
     padding: var(--mobile-spacing-md);
   }
-  
+
   .card-title {
     font-size: var(--font-size-base);
   }
-  
+
   .package-card .image {
     height: 150px;
   }
-  
+
   .package-card .content,
   .package-card .actions {
     padding: var(--mobile-spacing-md);
@@ -144,7 +144,7 @@
   .card-footer {
     padding: var(--mobile-spacing-sm);
   }
-  
+
   .package-card .content,
   .package-card .actions {
     padding: var(--mobile-spacing-sm);
@@ -158,9 +158,9 @@
   .card-footer {
     padding: var(--mobile-spacing-xs);
   }
-  
+
   .package-card .content,
   .package-card .actions {
     padding: var(--mobile-spacing-xs);
   }
-} 
+}

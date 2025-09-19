@@ -10,7 +10,7 @@ return [
     'order_now' => 'اطلب الان',
 
     'home' => 'الرئيسية',
-    'categories' => 'التصنيفات',
+    'categories' => 'الباكجات',
     'about_us' => 'من نحن',
     'mgallery' => 'المعرض',
     'blog' => 'المدونة',
@@ -311,4 +311,44 @@ return [
     'iran' => 'إيران',
     'close' => 'اغلاق',
     'Log in / Create an account' => ' تسجيل دخول / انشاء حساب',
+
+
+    /////
+    'package' => 'باكدج',
+    'piece' => 'قطعة',
+    'Starting_from' => 'ابتداءً من',
+    'Includes' => 'يشمل',
+    'Available_colors' => 'الألوان المتاحة',
+    'Duration' => 'مدة التنفيذ',
+    'Service' => 'الخدمة',
+    'Payment_plan' => 'خطة الدفع ',
+    'Decoration' => 'الديكور',
+    'Sort and classify' => 'فرز وتصنيف',
+    'filter' => 'فلتر',
+    'Package_type' => 'نوع الباكج',
+    'Color_style' => ' ستايل الألوان',
+    'apply' => 'تطبيق',
+    'Classification details' => ' تفاصيل التصنيف',
+
+    'Delivery' => 'التوصيل',
+    'Base price' => 'السعر الأساسي',
+    'Tax' => 'الضريبة',
+    'Final price' => 'السعر النهائي',
+    'Add to order' => ' أضف إلى الطلب ',
+    'Table of quantities' => 'جدول الكميات',
+    'Pictures of table of quantities' => 'صور جدول الكميات',
+
+    'Widget' => 'القطعة',
+    'Size' => 'المقاس',
+    'Material' => 'الخامة',
+    'the color' => 'اللون',
+    'Quantity' => 'الكمية',
+    'image' => 'الصورة',
+
+
+
+
+
+
+
 ];

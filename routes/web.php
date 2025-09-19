@@ -34,7 +34,7 @@ use App\Http\Controllers\Admin\AboutPageController;
 
 
 use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
+use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\GalleryController;
@@ -62,8 +62,8 @@ use App\Http\Controllers\LocaleController;
 Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
-    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/categories', [FrontendPackageController::class, 'index'])->name('categories.index');
+    Route::get('/category/{id}', [FrontendPackageController::class, 'show'])->name('categories.show');
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
 
     // صفحة من نحن
@@ -92,8 +92,8 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], functi
 // روتات بدون prefix للعربية (الافتراضية)
 Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index');
-    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show');
+    Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index');
+    Route::get('/package/{id}', [FrontendPackageController::class, 'show'])->name('packages.show');
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
@@ -107,14 +107,15 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/help', [HelpController::class, 'index'])->name('help.index');
     Route::post('/help', [HelpController::class, 'submit'])->name('help.submit');
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+
 });
 
 
 // روتات مع prefix للإنجليزية
 Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ أضف middleware هنا أيضاً
     Route::get('/', [HomeController::class, 'index'])->name('home.en');
-    Route::get('/categories', [FrontendCategoryController::class, 'index'])->name('categories.index.en');
-    Route::get('/category/{id}', [FrontendCategoryController::class, 'show'])->name('categories.show.en');
+    Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index.en');
+    Route::get('/package/{id}', [FrontendPackageController::class, 'show'])->name('packages.show.en');
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show.en');
     Route::get('/about', [AboutController::class, 'index'])->name('about.en');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index.en');
@@ -153,13 +154,29 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('packages', PackageController::class);
-    Route::delete('/package-images/{imageId}', [PackageController::class, 'destroyImage'])->name('package-images.destroy');
+
+    // حذف الباكدج كامل
+    Route::delete('packages/{package}', [PackageController::class, 'destroy'])
+    ->name('packages.destroy');
+
+    // حذف صورة واحدة من الباكدج
+    Route::delete('packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])
+    ->name('packages.images.destroy');
+    Route::post('/admin/package/content', [PackageController::class, 'updatePackage'])->name('package.content.update');
+
+
+   // Route::delete('/packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])->name('packages.images.destroy');
+
+
+   // Route::delete('/package-images/{imageId}', [PackageController::class, 'destroyImage'])->name('package-images.destroy');
     Route::delete('units/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
     Route::resource('designs', DesignController::class);
     Route::resource('designs.items', ItemController::class)->scoped(['design' => 'id']);
 
     Route::get('admin/items', [ItemController::class, 'allItems'])->name('items.all');
+    Route::delete('items/{item}/image', [ItemController::class, 'destroyImage'])->name('items.image.destroy');
+    Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 
     Route::resource('products', ProductController::class);
     Route::resource('orders', OrderController::class);

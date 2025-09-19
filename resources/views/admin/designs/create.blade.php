@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 
-@section('title', 'إنشاء تصميم جديد / Create New Design')
+@section('title', 'إنشاء تصميم جديد')
 
 @section('content')
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">إنشاء تصميم جديد / Create New Design</h1>
+        <h1 class="h3">إنشاء تصميم جديد </h1>
         <a href="{{ route('admin.designs.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> العودة / Back
+            <i class="fas fa-arrow-left"></i> العودة
         </a>
     </div>
 
@@ -36,20 +36,21 @@
             <!-- الفئة -->
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="category" class="form-label">الفئة / Category</label>
+                    <label for="category" class="form-label">الفئة</label>
                     <select name="category" id="category" class="form-control">
-                        <option value="">اختر الفئة / Select Category</option>
-                        <option value="bedroom">غرفة نوم / Bedroom</option>
-                        <option value="living_room">معيشة / Living Room</option>
-                        <option value="kitchen">مطبخ / Kitchen</option>
-                        <option value="bathroom">حمام / Bathroom</option>
+                        <option value="">اختر الفئة</option>
+                        <option value="bedroom">غرفة نوم</option>
+                        <option value="living_room">معيشة</option>
+                        <option value="kitchen">مطبخ</option>
+                        <option value="bathroom">حمام</option>
+                        <option value="external">الملحقات الخارجية والإضافية</option>
                     </select>
                 </div>
             </div>
         </div>
 
+        <!--
         <div class="row mb-4">
-            <!-- الوصف عربي -->
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="description_ar" class="form-label">الوصف (عربي)</label>
@@ -57,7 +58,6 @@
                 </div>
             </div>
 
-            <!-- الوصف انجليزي -->
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="description_en" class="form-label">Description (English)</label>
@@ -74,13 +74,14 @@
                 </div>
             </div>
         </div>
+    -->
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> حفظ التصميم / Save Design
+                <i class="fas fa-save"></i> حفظ التصميم
             </button>
             <a href="{{ route('admin.designs.index') }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> إلغاء / Cancel
+                <i class="fas fa-times"></i> إلغاء
             </a>
         </div>
     </form>

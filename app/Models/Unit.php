@@ -24,10 +24,18 @@ class Unit extends Model
         return $this->belongsTo(Package::class);
     }
 
-    public function designs()
+    /*public function designs()
     {
         return $this->belongsToMany(Design::class, 'unit_designs');
-    }
+    }*/
+    public function designs()
+{
+    return $this->belongsToMany(Design::class, 'unit_designs')
+                ->withPivot('is_default')
+                ->withTimestamps();
+}
+
+
 
     public function items()
     {

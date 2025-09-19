@@ -16,8 +16,11 @@ class Item extends Model
         'item_name_en',
         'quantity',
         'dimensions',
-        'material',
-        'color',
+        'material_ar',
+        'material_en',
+        'color_ar',
+        'color_en',
+        'background_color',
         'image_path',
     ];
 

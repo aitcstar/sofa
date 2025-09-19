@@ -9,7 +9,7 @@ return [
     'order_now' => 'Order Now',
 
     'home' => 'Home',
-    'categories' => 'Categories',
+    'categories' => 'Packages',
     'about_us' => 'About Us',
     'mgallery' => 'Gallery',
     'blog' => 'Blog',
@@ -309,5 +309,37 @@ return [
     'iran' => 'Iran',
     'close' => 'close',
     'Log in / Create an account' => ' Log in / Create an account',
+
+    ///
+    'package' => 'Package',
+    'piece' => 'Piece',
+    'Starting_from' => 'Starting from',
+    'Includes' => 'Includes',
+    'Available_colors' => 'Colors',
+    'Duration' => 'Duration',
+    'Service' => 'Service',
+    'Payment_plan' => 'Payment plan',
+    'Decoration' => 'Decoration',
+    'Sort and classify' => 'Sort and classify',
+    'filter' => 'Filter',
+    'Package_type' => 'Package type',
+    'Color_style' => 'Color style',
+    'apply' => 'apply',
+    'Classification details' => 'Classification details',
+    'Delivery' => 'Delivery',
+    'Base price' => 'Base price',
+    'Tax' => 'Tax',
+    'Final price' => 'Final price',
+    'Add to order' => 'Add to order',
+    'Table of quantities' => 'Table of quantities',
+    'Pictures of table of quantities' => 'Pictures of table of quantities',
+
+    'Widget' => 'Widget',
+    'Size' => 'Size',
+    'Material' => 'Material',
+    'the color' => 'The color',
+    'Quantity' => 'Quantity',
+    'image' => 'Image',
+
 
 ];

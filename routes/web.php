@@ -58,36 +58,6 @@ use App\Http\Controllers\LocaleController;
 */
 
 // Frontend Routes
-/*
-Route::group(['prefix' => '{locale?}', 'where' => ['locale' => 'ar|en']], function () {
-
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/categories', [FrontendPackageController::class, 'index'])->name('categories.index');
-    Route::get('/category/{id}', [FrontendPackageController::class, 'show'])->name('categories.show');
-    Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
-
-    // صفحة من نحن
-    Route::get('/about', [AboutController::class, 'index'])->name('about');
-
-    // صفحة المعرض
-    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-    Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
-
-    // صفحة المدونة
-    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.details');
-
-    // صفحة اتصل بنا
-    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
-
-    // صفحة المساعدة
-    Route::get('/help', [HelpController::class, 'index'])->name('help.index');
-    Route::post('/help', [HelpController::class, 'submit'])->name('help.submit');
-
-    Route::get('/faq', [FaqController::class, 'index'])->name('faq');
-});
-*/
 
 // روتات بدون prefix للعربية (الافتراضية)
 Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا

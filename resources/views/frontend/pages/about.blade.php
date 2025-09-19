@@ -149,7 +149,7 @@
                     </ul>
                     <!-- start button -->
                     <div class="our-smart-steps-start-button">
-                        <a href="{{ app()->getLocale() == 'ar' ? route('categories.index') : route('categories.index.en') }}" class="btn btn-custom-secondary w-100">
+                        <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="btn btn-custom-secondary w-100">
                             {{ __('site.smart_steps_start_button') }}
                         </a>
                     </div>

@@ -282,7 +282,7 @@
 
     <!-- Apply Button -->
     <div class="flex-grow-1 d-flex">
-        <button class="btn btn-custom-primary mt-auto" id="applyFilters">
+        <button class="btn btn-custom-primary mt-auto" id="applyFiltersMobile">
             {{ __('site.apply') }}
         </button>
     </div>
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const desktopCheckboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
     const mobileCheckboxes  = Array.from(document.querySelectorAll('.mobile-filter-checkbox'));
     const cards             = Array.from(document.querySelectorAll('.package-cards'));
-    const applyBtn          = document.getElementById('applyFilters');
+    const applyBtn          = document.getElementById('applyFiltersMobile');
     const mobileDrawer      = document.getElementById('mobileFilterDrawer');
     const mobileOverlay     = document.getElementById('mobileFilterOverlay'); // لو موجود
 

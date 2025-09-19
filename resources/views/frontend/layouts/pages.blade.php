@@ -269,7 +269,7 @@
                             {{ __('site.footer_home') }}
                         </a>
                         <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="body-2 text-white" style="opacity: 0.8">
-                            {{ __('site.footer_packages') }}
+                            {{ __('site.categories') }}
                         </a>
                         <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="body-2 text-white" style="opacity: 0.8">
                             {{ __('site.footer_about') }}

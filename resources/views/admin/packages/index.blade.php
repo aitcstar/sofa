@@ -5,12 +5,7 @@
 @section('content')
 <div class="container">
     <!-- Header -->
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">إدارة الباكجات</h1>
-        <!--<a href="{{ route('admin.packages.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> إضافة باكج جديد
-        </a>-->
-    </div>
+
     <form action="{{ route('admin.seo.update') }}" method="POST">
         @csrf
 
@@ -111,6 +106,12 @@
     </form>
 
         <br><hr> <br>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">إدارة الباكجات</h1>
+            <a href="{{ route('admin.packages.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> إضافة باكج جديد
+            </a>
+        </div>
     <!-- Table Card -->
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">

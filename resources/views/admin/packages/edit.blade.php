@@ -95,50 +95,57 @@
                     <input type="number" step="0.01" name="price" class="form-control" value="{{ old('price', $package->price) }}" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">الصورة الرئيسية</label>
-                    <input type="file" name="image" class="form-control" accept="image/*">
-                    @if($package->image)
-                    <div class="mb-3">
-                        <h6>الصورة الحالية</h6>
-                        <img src="{{ asset('storage/' . $package->image) }}" class="img-fluid rounded" width="150">
-                    </div>
-                @endif
+                    <label class="form-label">الترتيب</label>
+                    <input type="number" name="sort_order" class="form-control"value="{{ old('sort_order', $package->sort_order) }}" required >
                 </div>
-
             </div>
 
 
 
                 <!-- صورة الباكج الرئيسية -->
 
-
-
-
-           <!-- صور إضافية -->
-            <div class="mb-3">
-                <label class="form-label">صور إضافية</label>
-                <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
-            </div>
-
-            <div class="mb-3">
-                <h6>الصور الحالية</h6>
-                <div class="d-flex flex-wrap gap-2">
-                    @foreach($package->images as $img)
-                        <div class="position-relative img-container" style="width:120px" id="img-{{ $img->id }}">
-                            <img src="{{ asset('storage/' . $img->image_path) }}"
-                                 class="img-thumbnail rounded" width="120">
-
-                            <button type="button"
-                                    class="btn btn-sm btn-danger rounded-circle p-1 d-flex align-items-center justify-content-center delete-image"
-                                    style="width: 24px; height: 24px; position:absolute; top:5px; right:5px;"
-                                    data-url="{{ route('admin.packages.images.destroy', [$package->id, $img->id]) }}"
-                                    data-id="{{ $img->id }}">
-                                <i class="fas fa-times"></i>
-                            </button>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">الصورة الرئيسية</label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                        @if($package->image)
+                        <div class="mb-3">
+                            <h6>الصورة الحالية</h6>
+                            <img src="{{ asset('storage/' . $package->image) }}" class="img-fluid rounded" width="150">
                         </div>
-                    @endforeach
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">صور إضافية</label>
+                    <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
+
+                    <h6>الصور الحالية</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($package->images as $img)
+                            <div class="position-relative img-container" style="width:120px" id="img-{{ $img->id }}">
+                                <img src="{{ asset('storage/' . $img->image_path) }}"
+                                     class="img-thumbnail rounded" width="120">
+
+                                <button type="button"
+                                        class="btn btn-sm btn-danger rounded-circle p-1 d-flex align-items-center justify-content-center delete-image"
+                                        style="width: 24px; height: 24px; position:absolute; top:5px; right:5px;"
+                                        data-url="{{ route('admin.packages.images.destroy', [$package->id, $img->id]) }}"
+                                        data-id="{{ $img->id }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
+
+           <!-- صور إضافية -->
+
+
+
+
+
+
 
 
 

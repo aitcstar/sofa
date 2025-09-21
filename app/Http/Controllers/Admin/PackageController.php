@@ -39,61 +39,110 @@ class PackageController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'number_of_units' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'price'   => 'required|numeric',
             'description_ar' => 'nullable|string',
             'description_en' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
+            'period_ar'=> 'nullable|string',
+            'period_en'=> 'nullable|string',
+            'sort_order'=> 'nullable|string',
+            'service_includes_ar'=> 'nullable|string',
+            'service_includes_en'=> 'nullable|string',
+            'payment_plan_ar'=> 'nullable|string',
+            'payment_plan_en'=> 'nullable|string',
+            'decoration_ar'=> 'nullable|string',
+            'decoration_en'=> 'nullable|string',
+            'units'   => 'nullable|array',
+            'units.*.name_ar' => 'required|string|max:255',
+            'units.*.name_en' => 'required|string|max:255',
+            'units.*.type' => 'required|string|in:bedroom,living_room,kitchen,bathroom,external',
+            'units.*.items' => 'nullable|array',
+            'units.*.items.*.item_name_ar' => 'nullable|string',
+            'units.*.items.*.item_name_en' => 'nullable|string',
+            'units.*.items.*.quantity'     => 'nullable|integer',
+            'units.*.items.*.dimensions'   => 'nullable|string',
+            'units.*.items.*.material_ar'     => 'nullable|string',
+            'units.*.items.*.material_en'     => 'nullable|string',
+            'units.*.items.*.color_ar'        => 'nullable|string',
+            'units.*.items.*.color_en'        => 'nullable|string',
+            'units.*.items.*.background_color'    => 'nullable|string',
+            'units.*.items.*.image'        => 'nullable|image',
+            'image'  => 'nullable|image|mimes:jpg,jpeg,png,webp',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);
 
+        // ✅ إنشاء الباكج
         $package = Package::create([
-            'name' => [
-                'ar' => $request->name_ar,
-                'en' => $request->name_en,
-            ],
-            'price' => $request->price,
-            'description' => [
-                'ar' => $request->description_ar,
-                'en' => $request->description_en,
-            ],
-            'number_of_units' => $request->number_of_units,
+            'name_ar' => $validated['name_ar'],
+            'name_en' => $validated['name_en'],
+            'price'   => $validated['price'],
+            'description_ar' => $validated['description_ar'] ?? null,
+            'description_en' => $validated['description_en'] ?? null,
+            'period_ar' => $validated['period_ar'] ?? null,
+            'period_en' => $validated['period_en'] ?? null,
+            'service_includes_ar' => $validated['service_includes_ar'] ?? null,
+            'service_includes_en' => $validated['service_includes_en'] ?? null,
+            'payment_plan_ar' => $validated['payment_plan_ar'] ?? null,
+            'payment_plan_en' => $validated['payment_plan_en'] ?? null,
+            'decoration_ar' => $validated['decoration_ar'] ?? null,
+            'decoration_en' => $validated['decoration_en'] ?? null,
+            'sort_order' => $validated['sort_order'] ?? null,
         ]);
 
+        // ✅ حفظ الصورة الرئيسية
+        if ($request->hasFile('image')) {
+            $package->update([
+                'image' => $request->file('image')->store('packages', 'public'),
+            ]);
+        }
+
+        // ✅ حفظ صور إضافية
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $image) {
-                $path = $image->store('packages', 'public');
-                PackageImage::create([
-                    'package_id' => $package->id,
-                    'image_path' => $path,
-                    'is_primary' => $index == 0,
-                    'sort_order' => $index + 1,
+            foreach ($request->file('images') as $img) {
+                $package->images()->create([
+                    'image_path' => $img->store('packages', 'public'),
                 ]);
             }
         }
 
-        // حفظ الوحدات
-        if ($request->has('units')) {
-            foreach ($request->units as $unitData) {
-                $unit = Unit::create([
-                    'package_id' => $package->id,
-                    'name' => $unitData['name'],
-                    'type' => $unitData['type'],
-                    'description' => $unitData['description'] ?? null,
+        // ✅ حفظ الوحدات والعناصر
+        if (!empty($validated['units'])) {
+            foreach ($validated['units'] as $unitData) {
+                $unit = $package->units()->create([
+                    'name_ar' => $unitData['name_ar'],
+                    'name_en' => $unitData['name_en'],
+                    'type'    => $unitData['type'],
                 ]);
 
-                // ربط التصاميم
-                if (isset($unitData['design_ids']) && is_array($unitData['design_ids'])) {
-                    $unit->designs()->attach($unitData['design_ids']);
+                if (!empty($unitData['items'])) {
+                    foreach ($unitData['items'] as $itemData) {
+                        $item = $unit->items()->create([
+                            'item_name_ar' => $itemData['item_name_ar'] ?? null,
+                            'item_name_en' => $itemData['item_name_en'] ?? null,
+                            'quantity'     => $itemData['quantity'] ?? null,
+                            'dimensions'   => $itemData['dimensions'] ?? null,
+                            'material_ar'  => $itemData['material_ar'] ?? null,
+                            'material_en'  => $itemData['material_en'] ?? null,
+                            'color_ar'     => $itemData['color_ar'] ?? null,
+                            'color_en'     => $itemData['color_en'] ?? null,
+                            'background_color' => $itemData['background_color'] ?? null,
+                        ]);
+
+                        if (isset($itemData['image'])) {
+                            $item->update([
+                                'image_path' => $itemData['image']->store('items', 'public'),
+                            ]);
+                        }
+                    }
                 }
             }
         }
 
-        return redirect()->route('admin.packages.index')->with('success', 'تم إنشاء الباكج بنجاح.');
+        return redirect()->route('admin.packages.index')->with('success', 'تم إنشاء الباكج بنجاح');
     }
+
 
     public function edit(Package $package)
     {
@@ -113,6 +162,7 @@ class PackageController extends Controller
         'description_en' => 'nullable|string',
         'period_ar'=> 'nullable|string',
         'period_en'=> 'nullable|string',
+        'sort_order'=> 'nullable|string',
         'service_includes_ar'=> 'nullable|string',
         'service_includes_en'=> 'nullable|string',
         'payment_plan_ar'=> 'nullable|string',
@@ -155,6 +205,7 @@ class PackageController extends Controller
         'payment_plan_en' => $validated['payment_plan_en'] ?? null,
         'decoration_ar' => $validated['decoration_ar'] ?? null,
         'decoration_en' => $validated['decoration_en'] ?? null,
+        'sort_order' => $validated['sort_order'] ?? null,
     ]);
 
     // ✅ تحديث الصورة الرئيسية

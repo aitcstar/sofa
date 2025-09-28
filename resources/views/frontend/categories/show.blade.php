@@ -64,24 +64,15 @@
                             @endif
 
                             <!-- Images -->
-                            <!-- Images -->
-                            @if($loop->first && ($package->image || $package->images?->count()))
+                           <!-- Images -->
+                            @if($unit->images->count())
                             <div class="category-details-images">
-                                <div class="category-details-images-grid">
-
+                                <div class="category-details-images-grid" data-unit-id="{{ $unit->id }}">
                                     <!-- العمود الأول (الصور الصغيرة) -->
                                     <div class="category-details-images-grid-col-one">
-                                        {{-- الصورة الأساسية أولاً --}}
-                                        @if($package->image)
-                                            <div class="category-details-images-grid-col-one-item active">
-                                                <img src="{{ asset('storage/' . $package->image) }}" alt="main-image" />
-                                            </div>
-                                        @endif
-
-                                        {{-- باقي الصور --}}
-                                        @foreach($package->images as $pIndex => $img)
-                                            <div class="category-details-images-grid-col-one-item">
-                                                <img src="{{ asset('storage/' . $img->image_path) }}" alt="image" />
+                                        @foreach($unit->images as $uIndexImg => $uImg)
+                                            <div class="category-details-images-grid-col-one-item {{ $uIndexImg == 0 ? 'active' : '' }}">
+                                                <img src="{{ asset('storage/' . $uImg->image_path) }}" alt="unit-image" />
                                             </div>
                                         @endforeach
                                     </div>
@@ -90,28 +81,29 @@
                                     <div class="category-details-images-grid-col-two">
                                         <!-- زر التكبير -->
                                         <div class="category-details-images-grid-col-two-resize">
-                                            <button class="btn">
+                                            <button class="btn maximizeBtn">
                                                 <i class="fa-solid fa-maximize"></i>
                                             </button>
                                         </div>
 
-                                        {{-- الصورة الرئيسية --}}
-                                        <img src="{{ asset('storage/' . ($package->image ?? $package->images->first()->image_path ?? 'assets/images/no-image.png')) }}"
-                                            alt="image" id="mainImage" />
+                                        <img src="{{ asset('storage/' . ($unit->images->first()->image_path ?? 'assets/images/no-image.png')) }}"
+                                            alt="unit-main-image" class="mainUnitImage" />
 
                                         <!-- أزرار السلايدر -->
                                         <div class="category-details-images-grid-col-two-button">
-                                            <button class="btn" id="prevBtn">
+                                            <button class="btn prevUnitBtn">
                                                 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
-                                            <button class="btn" id="nextBtn">
+                                            <button class="btn nextUnitBtn">
                                                 <i class="fa-solid fa-chevron-left"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             @endif
+
 
                         </div>
                     </div>
@@ -303,9 +295,17 @@
                       </td>
                       <td class="image-box">
                         <div class="img-box">
-                          <img src="{{ $item->image_path ? asset('storage/'.$item->image_path) : asset('assets/images/no-image.png') }}" alt="item-image" />
+                            <img
+                                src="{{ $item->image_path ? asset('storage/'.$item->image_path) : asset('assets/images/no-image.png') }}"
+                                alt="item-image"
+                                class="popup-image"
+                                data-bs-toggle="modal"
+                                data-bs-target="#imageModal"
+                                data-image="{{ $item->image_path ? asset('storage/'.$item->image_path) : asset('assets/images/no-image.png') }}"
+                            />
                         </div>
-                      </td>
+                    </td>
+
                       <td class="body-2">{{ $item->quantity }}</td>
                     </tr>
                     @endforeach
@@ -316,6 +316,20 @@
             @endforeach
           </div>
         </div>
+
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-body p-0">
+                  <img src="" id="modalImage" class="img-fluid w-100" alt="Popup Image">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
       </div>
     </div>
@@ -462,106 +476,86 @@
 @endpush
 
 @push('scripts')
+<script>
+    const imageModal = document.getElementById('imageModal')
+    const modalImage = document.getElementById('modalImage');
+
+    document.querySelectorAll('.popup-image').forEach(img => {
+        img.addEventListener('click', function() {
+            modalImage.src = this.dataset.image;
+        });
+    });
+</script>
+
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // current image index
-    let currentImageIndex = 0;
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.category-details-images-grid').forEach(grid => {
+        let thumbnails = grid.querySelectorAll('.category-details-images-grid-col-one-item img');
+        let mainImage = grid.querySelector('.mainUnitImage');
+        let prevBtn = grid.querySelector('.prevUnitBtn');
+        let nextBtn = grid.querySelector('.nextUnitBtn');
+        let maximizeBtn = grid.querySelector('.maximizeBtn');
 
-    // get elements
-    const mainImage = document.getElementById('mainImage');
-    const thumbnails = document.querySelectorAll('.category-details-images-grid-col-one-item img');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const maximizeBtn = document.querySelector('.fa-maximize').closest('button');
+        let currentIndex = 0;
 
-    // enable click on thumbnails
-    thumbnails.forEach((thumb, index) => {
-        thumb.addEventListener('click', function() {
-            // change main image
-            mainImage.src = this.src;
-            currentImageIndex = index;
+        // عند الضغط على الصورة الصغيرة
+        thumbnails.forEach((thumb, index) => {
+            thumb.addEventListener('click', function () {
+                mainImage.src = this.src;
+                currentIndex = index;
 
-            // remove active class from all thumbnails
-            thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
-
-            // add active class to the selected thumbnail
-            this.closest('.category-details-images-grid-col-one-item').classList.add('active');
+                thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+                this.closest('.category-details-images-grid-col-one-item').classList.add('active');
+            });
         });
-    });
 
-    // next button
-    nextBtn.addEventListener('click', function() {
-        currentImageIndex = (currentImageIndex + 1) % thumbnails.length;
-        mainImage.src = thumbnails[currentImageIndex].src;
+        // زر التالي
+        nextBtn.addEventListener('click', function () {
+            currentIndex = (currentIndex + 1) % thumbnails.length;
+            mainImage.src = thumbnails[currentIndex].src;
+            thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+            thumbnails[currentIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
+        });
 
-        // update active image
-        thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
-        thumbnails[currentImageIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
-    });
+        // زر السابق
+        prevBtn.addEventListener('click', function () {
+            currentIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+            mainImage.src = thumbnails[currentIndex].src;
+            thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
+            thumbnails[currentIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
+        });
 
-    // previous button
-    prevBtn.addEventListener('click', function() {
-        currentImageIndex = (currentImageIndex - 1 + thumbnails.length) % thumbnails.length;
-        mainImage.src = thumbnails[currentImageIndex].src;
-
-        // update active image
-        thumbnails.forEach(t => t.closest('.category-details-images-grid-col-one-item').classList.remove('active'));
-        thumbnails[currentImageIndex].closest('.category-details-images-grid-col-one-item').classList.add('active');
-    });
-
-    // maximize button
-    maximizeBtn.addEventListener('click', function() {
-        // create modal
-        const modalHTML = `
-            <div class="modal fade" id="imageModal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-xl p-2">
-                    <div class="modal-content">
-                        <div class="d-flex justify-content-end p-2">
-                            <button type="button" data-bs-dismiss="modal" style="width: 36px; height: 36px; border-radius: 50%; background-color: #33415C; color: #fff !important;">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
+        // زر التكبير
+        maximizeBtn.addEventListener('click', function () {
+            const modalHTML = `
+                <div class="modal fade" id="unitImageModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-xl p-2">
+                        <div class="modal-content">
+                            <div class="d-flex justify-content-end p-2">
+                                <button type="button" data-bs-dismiss="modal"
+                                    style="width: 36px; height: 36px; border-radius: 50%; background-color: #33415C; color: #fff !important;">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center p-4">
+                                <img src="${mainImage.src}" alt="صورة مكبرة"
+                                    style="max-width: 100%; max-height: 450px; object-fit: contain; border-radius: 8px;">
+                            </div>
                         </div>
-                        <div class="modal-body text-center p-4">
-                             <img src="${mainImage.src}" alt="صورة مكبرة" style="max-width: 100%; max-height: 350px; object-fit: contain; border-radius: 8px;">
-                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-
-        // add modal to page
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-        // show modal
-        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-        modal.show();
-
-        // delete modal after close
-        document.getElementById('imageModal').addEventListener('hidden.bs.modal', function() {
-            this.remove();
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            const modal = new bootstrap.Modal(document.getElementById('unitImageModal'));
+            modal.show();
+            document.getElementById('unitImageModal').addEventListener('hidden.bs.modal', function () {
+                this.remove();
+            });
         });
     });
-
-    // Initialize Owl Carousel
-    $('#testimonial-carousel-category-details').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        rtl: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            992: {
-                items: 3
-            }
-        }
-    });
 });
+
 
 
   document.querySelectorAll(".tab-option").forEach(tab => {

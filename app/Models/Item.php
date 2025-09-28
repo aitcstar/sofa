@@ -38,4 +38,10 @@ class Item extends Model
     {
         return $this->belongsTo(Design::class);
     }
+
+    public function images()
+{
+    return $this->hasMany(PackageImage::class, 'package_id', 'package_id');
+}
+
 }

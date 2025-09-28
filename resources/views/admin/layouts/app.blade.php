@@ -344,6 +344,10 @@
 #categoriesTable_filter {
     text-align: left !important; /* يحرك البحث لليسار */
 }
+
+#exhibitionsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
@@ -600,10 +604,39 @@
                                     المدونة
                                 </a>
                             </li>
-
-
                         </ul>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.exhibitions.*') || request()->routeIs('admin.exhibition-categories.*') ? 'active' : '' }}"
+                           href="#exhibitionsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fas fa-store-alt me-2"></i> {{-- أيقونة رئيسية للمعارض --}}
+                            إدارة المعارض
+                        </a>
+
+                        <!-- Sub-menu -->
+                        <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.exhibitions.*') || request()->routeIs('admin.exhibition-categories.*') ? 'show' : '' }}"
+                            id="exhibitionsSubmenu">
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.exhibition-categories.*') ? 'active' : '' }}"
+                                   href="{{ route('admin.exhibition-categories.index') }}">
+                                    <i class="fas fa-th-list me-2"></i> {{-- أيقونة للأقسام --}}
+                                    أقسام المعرض
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.exhibitions.*') ? 'active' : '' }}"
+                                   href="{{ route('admin.exhibitions.index') }}">
+                                    <i class="fas fa-images me-2"></i> {{-- أيقونة للمعارض نفسها --}}
+                                    المعرض
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
 
 
                         <!--<li class="nav-item">

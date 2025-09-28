@@ -115,6 +115,7 @@
                         </div>
                     @endif
                 </div>
+                {{--
                 <div class="col-md-6">
                     <label class="form-label">صور إضافية</label>
                     <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
@@ -136,7 +137,7 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
+                </div>--}}
             </div>
 
            <!-- صور إضافية -->
@@ -185,6 +186,36 @@
                                           <option value="external" {{ $unit->type == 'external' ? 'selected' : '' }}>الملحقات الخارجية والإضافية</option>
                                         </select>
                                   </div>
+
+                                  <!-- صور الوحدة -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        <label class="form-label">صور الوحدة</label>
+        <input type="file" name="units[{{ $uIndex }}][images][]" class="form-control" accept="image/*" multiple>
+
+        @if($unit->images && $unit->images->count())
+        <h6>الصور الحالية للوحدة</h6>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach($unit->images as $img)
+                <div class="position-relative img-container" style="width:120px" id="unit-img-{{ $img->id }}">
+                    <img src="{{ asset('storage/' . $img->image_path) }}"
+                         class="img-thumbnail rounded" width="120">
+
+                    <button type="button"
+                            class="btn btn-sm btn-danger rounded-circle p-1 d-flex align-items-center justify-content-center delete-unit-image"
+                            style="width: 24px; height: 24px; position:absolute; top:5px; right:5px;"
+                            data-url="{{ route('admin.units.images.destroy', [$unit->id, $img->id]) }}"
+                            data-id="{{ $img->id }}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+    </div>
+</div>
+
 
                                   <!-- عناصر الوحدة -->
                                   <div class="mt-3">
@@ -327,6 +358,12 @@ window.addUnit = function () {
                 </select>
             </div>
 
+            <div class="mb-3">
+    <label class="form-label">صور الوحدة</label>
+    <input type="file" name="units[${unitIndex}][images][]" class="form-control" accept="image/*" multiple>
+</div>
+
+
             <!-- عناصر الوحدة -->
             <div class="mt-3">
                 <h6>العناصر</h6>
@@ -343,6 +380,30 @@ window.addUnit = function () {
     unitIndex++;
 }
 
+
+
+$(document).on('click', '.delete-unit-image', function () {
+    if (!confirm('هل تريد حذف الصورة؟')) return;
+
+    let button = $(this);
+    let url = button.data('url');
+    let id = button.data('id');
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            _method: 'DELETE',
+            _token: '{{ csrf_token() }}'
+        },
+        success: function () {
+            $('#unit-img-' + id).fadeOut(300, function () { $(this).remove(); });
+        },
+        error: function () {
+            alert('حدث خطأ أثناء الحذف');
+        }
+    });
+});
 
 
     function removeUnit(btn) {

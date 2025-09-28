@@ -41,7 +41,10 @@ class Package extends Model
     return $this->hasMany(Unit::class);
 }
 
-
+    public function exhibitions()
+    {
+        return $this->hasMany(Exhibition::class, 'package_id');
+    }
     public function images()
     {
         return $this->hasMany(PackageImage::class)->orderBy('sort_order');

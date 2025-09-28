@@ -57,6 +57,7 @@ class PackageController extends Controller
             'units'   => 'nullable|array',
             'units.*.name_ar' => 'required|string|max:255',
             'units.*.name_en' => 'required|string|max:255',
+            'units.*.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp',
             'units.*.type' => 'required|string|in:bedroom,living_room,kitchen,bathroom,external',
             'units.*.items' => 'nullable|array',
             'units.*.items.*.item_name_ar' => 'nullable|string',
@@ -139,6 +140,15 @@ class PackageController extends Controller
                 }
             }
         }
+        // حفظ صور الوحدات
+        if ($request->hasFile("units.{$loop->index}.images")) {
+            foreach ($request->file("units.{$loop->index}.images") as $uImg) {
+                $unit->images()->create([
+                    'image_path' => $uImg->store('units', 'public'),
+                ]);
+            }
+        }
+
 
         return redirect()->route('admin.packages.index')->with('success', 'تم إنشاء الباكج بنجاح');
     }
@@ -173,6 +183,9 @@ class PackageController extends Controller
         'units.*.id' => 'nullable|integer|exists:units,id',
         'units.*.name_ar' => 'required|string|max:255',
         'units.*.name_en' => 'required|string|max:255',
+        'units.*.images' => 'nullable|array', // مصفوفة صور الوحدة
+        'units.*.images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+
         'units.*.type' => 'required|string|in:bedroom,living_room,kitchen,bathroom,external',
         'units.*.items' => 'nullable|array',
         'units.*.items.*.id' => 'nullable|integer|exists:items,id',
@@ -348,8 +361,25 @@ class PackageController extends Controller
         }
     }
 
+
     // ❌ حذف الوحدات اللي مش راجعة من الفورم
     $package->units()->whereNotIn('id', $existingUnitIds)->delete();
+// رفع صور الوحدة
+if ($request->has('units')) {
+    foreach ($request->units as $uIndex => $unitData) {
+        $unit = Unit::find($unitData['id']);
+        if (isset($unitData['images'])) {
+            foreach ($unitData['images'] as $file) {
+                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $unit->images()->create([
+                        'image_path' => $file->store('units', 'public')
+                    ]);
+                }
+            }
+        }
+    }
+}
+
 
     return redirect()->route('admin.packages.index')->with('success', 'تم تحديث الباكج بنجاح');
 }

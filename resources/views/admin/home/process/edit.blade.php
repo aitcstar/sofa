@@ -133,7 +133,8 @@
             <button type="submit" class="btn btn-primary">حفظ</button>
         </div>
     </form>
-</div><script>
+</div>
+<script>
     document.getElementById('add-step').addEventListener('click', function () {
         const wrapper = document.getElementById('steps-wrapper');
         const index = wrapper.querySelectorAll('.step-row').length;

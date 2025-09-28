@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
 
-@section('title', 'إدارة الباكجات')
+@section('title', 'المعارض')
 
 @section('content')
 <div class="container">
-    <!-- Header -->
+
 
     <form action="{{ route('admin.seo.update') }}" method="POST">
         @csrf
@@ -12,7 +12,7 @@
             @php $seo = $seoSettings[$page] ?? null; @endphp
             <div class="card mb-4">
                 <div class="card-header bg-primary text-white">
-                     إعدادات SEO
+                     إعدادات SEO المعارض
                 </div>
                 <div class="card-body">
                     {{-- العنوان --}}
@@ -66,14 +66,14 @@
             </div>
         <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
     </form>
+    <br><hr> <br>
 
-    <hr><br>
-    <form action="{{ route('admin.package.content.update') }}" method="POST">
+    <form action="{{ route('admin.exhibitions.content.update') }}" method="POST">
         @csrf
 
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
-                إعدادات محتوى  الباكدجات
+                إعدادات محتوى المعرض
             </div>
             <div class="card-body">
                 {{-- العنوان --}}
@@ -106,61 +106,83 @@
     </form>
 
         <br><hr> <br>
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">إدارة الباكجات</h1>
-            <a href="{{ route('admin.packages.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> إضافة باكج جديد
-            </a>
-        </div>
-    <!-- Table Card -->
+
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">المعارض</h1>
+        <a href="{{ route('admin.exhibitions.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> إضافة معرض جديد
+        </a>
+    </div>
+
+
+
+    <!-- Exhibitions Table Card -->
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table id="packagesTable" class="table table-hover w-100 text-end">
-                    <thead>
+                <table id="exhibitionsTable" class="table table-hover table-bordered align-middle mb-0 text-center">
+                    <thead class="table-dark">
                         <tr>
-                            <th>الصورة</th>
-                            <th>الاسم</th>
-                            <th>السعر</th>
-                            <th>عدد الوحدات</th>
-                            <th>عدد القطع</th>
-                            <th>الترتيب</th>
-                            <th>الإجراءات</th>
+                            <th>#</th>
+                            <th>العنوان</th>
+                            <th>التصنيف</th>
+                            <th>الباقة</th>
+                            <th>تاريخ التسليم</th>
+                            <th>الحالة</th>
+                            <th>خيارات</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($packages as $package)
+                        @forelse($exhibitions as $exhibition)
                         <tr>
+                            <td>{{ $exhibition->id }}</td>
+                            <td>{{ $exhibition->name_ar }}</td>
+                            <td>{{ $exhibition->category->name_ar ?? '-' }}</td>
+                            <td>{{ $exhibition->packages->name_ar ?? '-' }}</td>
+                            <td>{{ $exhibition->delivery_date }}</td>
                             <td>
-                                <img src="{{ asset('storage/' . $package->image) }}" width="50" height="50" class="rounded">
+                                @if($exhibition->is_active)
+                                    <span class="badge bg-success">مفعل</span>
+                                @else
+                                    <span class="badge bg-danger">غير مفعل</span>
+                                @endif
                             </td>
-                            <td>{{ $package->name }}</td>
-                            <td>{{ number_format($package->price, 2) }} ريال</td>
-                            <td><span class="badge bg-info">{{ $package->units->count() }}</span></td>
-                            <td><span class="badge bg-secondary">{{ $package->units->sum(fn($unit) => $unit->items->count()) }}</span></td>
-                            <td>{{ $package->sort_order }}</td>
-                            <td class="d-flex gap-1">
-                               <!-- <a href="{{ route('admin.packages.show', $package->id) }}" class="btn btn-sm btn-outline-info">
-                                    <i class="fas fa-eye"></i>عرض
-                                </a>-->
-                                <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit me-1"></i> تعديل
-                                </a>
-                                <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"  class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash"></i>حذف
-                                    </button>
-                                </form>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ route('admin.exhibitions.edit', $exhibition) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit me-1"></i> تعديل
+                                    </a>
+                                    <form action="{{ route('admin.exhibitions.destroy', $exhibition) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                            <i class="fas fa-trash me-1"></i> حذف
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fas fa-exhibition fa-2x mb-2"></i>
+                                <p>لا توجد معارض حتى الآن</p>
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="mt-3">
+        {{ $exhibitions->links() }}
+    </div>
+
 </div>
 @endsection
 
@@ -170,22 +192,22 @@
 @endpush
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#packagesTable').DataTable({
+    $('#exhibitionsTable').DataTable({
         responsive: true,
-        order: [[5, 'asc']],
+        order: [[0, 'desc']],
         pageLength: 10,
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "الكل"]],
         dom: '<"row"<"col-md-6"l><"col-md-6 text-start"f>>rt<"row"<"col-md-6"i><"col-md-6"p>>',
         columnDefs: [
-            { orderable: false, targets: [1, 6] },
-            { searchable: false, targets: [1, 6] }
+            { orderable: false, targets: [6] },
+            { searchable: false, targets: [6] }
         ],
         language: {
             emptyTable: "لا توجد بيانات متاحة في الجدول",
@@ -197,16 +219,8 @@ $(document).ready(function() {
             processing: "جارٍ المعالجة...",
             search: "بحث:",
             zeroRecords: "لم يتم العثور على سجلات مطابقة",
-            paginate: {
-                first: "الأول",
-                last: "الأخير",
-                next: "التالي",
-                previous: "السابق"
-            },
-            aria: {
-                sortAscending: ": تفعيل لترتيب العمود تصاعدياً",
-                sortDescending: ": تفعيل لترتيب العمود تنازلياً"
-            }
+            paginate: { first: "الأول", last: "الأخير", next: "التالي", previous: "السابق" },
+            aria: { sortAscending: ": تفعيل لترتيب العمود تصاعدياً", sortDescending: ": تفعيل لترتيب العمود تنازلياً" }
         }
     });
 });

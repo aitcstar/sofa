@@ -21,6 +21,10 @@ use App\Http\Controllers\Admin\BlogCommentController as AdminBlogCommentControll
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\SEOSettingController;
 use App\Http\Controllers\Admin\ContactSectionController;
+use App\Http\Controllers\Admin\ExhibitionCategoryController;
+use App\Http\Controllers\Admin\ExhibitionController;
+use App\Http\Controllers\Admin\ExhibitionStepController;
+
 ////Home
 use App\Http\Controllers\Admin\Home\HeroSliderController;
 use App\Http\Controllers\Admin\Home\StepController;
@@ -138,8 +142,10 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
    // Route::delete('/packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])->name('packages.images.destroy');
 
 
-   // Route::delete('/package-images/{imageId}', [PackageController::class, 'destroyImage'])->name('package-images.destroy');
     Route::delete('units/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
+
+    Route::delete('units/{unit}/images/{image}', [UnitController::class, 'destroy'])
+    ->name('units.images.destroy');
 
     Route::resource('designs', DesignController::class);
     Route::resource('designs.items', ItemController::class)->scoped(['design' => 'id']);
@@ -188,6 +194,17 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
     Route::post('/admin/blog/content', [BlogCategoryController::class, 'updateBlog'])->name('blog.content.update');
     Route::put('/admin/comments/{id}/approve', [AdminBlogCommentController::class, 'approve'])->name('comments.approve');
     Route::put('/admin/comments/{id}/reject', [AdminBlogCommentController::class, 'reject'])->name('comments.reject');
+
+    //
+
+    Route::resource('exhibition-categories', ExhibitionCategoryController::class);
+    Route::resource('exhibitions', ExhibitionController::class);
+    Route::post('exhibitions/{exhibition}/images/{image}/set-primary', [ExhibitionController::class, 'setPrimaryImage'])->name('exhibitions.setPrimaryImage');
+    Route::delete('exhibitions/{exhibition}/images/{image}', [ExhibitionController::class, 'deleteImage'])->name('exhibitions.deleteImage');
+    Route::post('/admin/exhibitions/content', [ExhibitionController::class, 'updateExhibitions'])->name('exhibitions.content.update');
+
+
+    Route::resource('exhibitions.steps', ExhibitionStepController::class)->shallow();
 
 
     Route::resource('contacts', AdminContactController::class);

@@ -17,7 +17,7 @@
                 <table id="itemsTable" class="table table-hover w-100 text-end">
                     <thead>
                         <tr>
-                            <th>اسم القطعة (عربي/English)</th>
+                            <th>اسم القطعة</th>
                             <th>الوحدة</th>
                             <th>الكمية</th>
                             <th>المقاس</th>
@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach($items as $item)
                         <tr>
-                            <td>{{ $item->item_name_ar }} / {{ $item->item_name_en }}</td>
+                            <td>{{ $item->item_name }}</td>
                             <td>{{ $item->unit->name ?? 'غير محدد' }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->dimensions ?? '-' }}</td>

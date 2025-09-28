@@ -32,14 +32,20 @@
                 <h3 class="filter-title heading-h8 mb-0">{{ __('site.filter') }}</h3>
 
                 <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.Package_type') }} </h4>
+                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.unit_type') }} </h4>
                     <div class="filter-options">
-                        @foreach($packageTypes as $type)
-                            <div class="filter-option">
-                                <div class="filter-checkbox" data-filter="package-name" data-value="{{ $type }}"></div>
-                                <span class="body-2 text-body">{{ $type }}</span>
-                            </div>
-                        @endforeach
+                        @foreach($unitTypes as $type)
+    <div class="filter-option">
+        <div class="filter-checkbox"
+             data-filter="unit-type"
+             data-value="{{ $type['name_'.app()->getLocale()] }}">
+        </div>
+        <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
+    </div>
+@endforeach
+
+
+
                     </div>
                 </div>
 
@@ -72,8 +78,9 @@
                     @foreach($packages as $package)
                     <!-- Package Item -->
                     <div class="col-sm-12 col-md-6 mb-sm-4 package-cards"
-                    data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
-                    data-colors="{{ $package->units->flatMap->items->pluck('background_color')->filter()->unique()->implode(',') }}">
+                        data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
+                        data-colors="{{ $package->units->flatMap->items->pluck('background_color')->filter()->unique()->implode(',') }}"
+                        data-unit-types="{{ $package->units->pluck('name_'.app()->getLocale())->implode(',') }}">
 
                         <div class="room-item">
                             <!-- image & widget -->
@@ -238,12 +245,17 @@
         <div class="mobile-filter-group">
             <h4 class="sub-heading-4 mb-0"> {{ __('site.Package_type') }} </h4>
             <div class="mobile-filter-options">
-                @foreach($packageTypes as $type)
+                @foreach($unitTypes as $type)
                 <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox" data-filter="package-name"  data-value="{{ $type }}"></div>
-                    <span class="body-2 text-body">{{ $type }}</span>
+                    <div class="mobile-filter-checkbox"
+                         data-filter="unit-type"
+                         data-value="{{ $type['name_'.app()->getLocale()] }}">
+                    </div>
+                    <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
                 </div>
-                @endforeach
+            @endforeach
+
+
             </div>
         </div>
 
@@ -422,19 +434,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // helper: collect active filters from a NodeList (desktop or mobile)
     function getActiveFiltersFrom(nodeList) {
-        const active = { "package-name": [], "color-style": [] };
-        nodeList.forEach(cb => {
-            if (cb.classList && cb.classList.contains('checked')) {
-                const f = cb.dataset.filter;
-                const v = (cb.dataset.value || '').toString().trim();
-                if (f && v) {
-                    active[f] = active[f] || [];
-                    active[f].push(v);
-                }
+    const active = { "package-name": [], "color-style": [], "unit-type": [] }; // ✅ ضفت unit-type
+    nodeList.forEach(cb => {
+        if (cb.classList && cb.classList.contains('checked')) {
+            const f = cb.dataset.filter;
+            const v = (cb.dataset.value || '').toString().trim();
+            if (f && v) {
+                active[f] = active[f] || [];
+                active[f].push(v);
             }
-        });
-        return active;
-    }
+        }
+    });
+    return active;
+}
+
 
     // helper: normalize colors from data-colors attribute into array (lowercase, trimmed)
     function normalizeCardColors(str) {
@@ -446,30 +459,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // apply filters to DOM cards
     function applyFilters(activeFilters) {
-        cards.forEach(card => {
-            let show = true;
+    cards.forEach(card => {
+        let show = true;
 
-            const pkgName = (card.dataset.packageName || '').toString().trim();
-            // name filter
-            if (activeFilters["package-name"] && activeFilters["package-name"].length > 0) {
-                // compare trimmed strings (case-sensitive as your values likely exact)
-                const selectedNames = activeFilters["package-name"].map(v => v.toString().trim());
-                if (!selectedNames.includes(pkgName)) show = false;
-            }
+        const pkgName = (card.dataset.packageName || '').toString().trim();
 
-            // color filter
-            if (activeFilters["color-style"] && activeFilters["color-style"].length > 0) {
-                const cardColors = normalizeCardColors(card.dataset.colors || '');
-                const selectedColors = activeFilters["color-style"].map(v => v.toString().trim().toLowerCase());
-                // if no intersection => hide
-                const intersection = selectedColors.some(sc => cardColors.includes(sc));
-                if (!intersection) show = false;
-            }
+        // package-name filter
+        if (activeFilters["package-name"] && activeFilters["package-name"].length > 0) {
+            const selectedNames = activeFilters["package-name"].map(v => v.toString().trim());
+            if (!selectedNames.includes(pkgName)) show = false;
+        }
 
-            // show/hide the whole column (keeps grid intact)
-            card.style.display = show ? '' : 'none';
-        });
-    }
+        // color filter
+        if (activeFilters["color-style"] && activeFilters["color-style"].length > 0) {
+            const cardColors = normalizeCardColors(card.dataset.colors || '');
+            const selectedColors = activeFilters["color-style"].map(v => v.toString().trim().toLowerCase());
+            const intersection = selectedColors.some(sc => cardColors.includes(sc));
+            if (!intersection) show = false;
+        }
+
+        // ✅ unit-type filter
+        if (activeFilters["unit-type"] && activeFilters["unit-type"].length > 0) {
+            const cardUnits = (card.dataset.unitTypes || '').split(',').map(u => u.trim());
+            const selectedUnits = activeFilters["unit-type"].map(v => v.toString().trim());
+            const match = selectedUnits.some(u => cardUnits.includes(u));
+            if (!match) show = false;
+        }
+
+        card.style.display = show ? '' : 'none';
+    });
+}
 
     // DESKTOP: toggle immediately
     desktopCheckboxes.forEach(cb => {

@@ -18,11 +18,19 @@ class PackageController extends Controller
 
         $packages = Package::with(['images', 'units.designs','units.items'])->get();
 
-        // أنواع الباكجات (حسب الاسم)
-        $packageTypes = $packages->pluck('name_'.app()->getLocale())->unique();
+        // 👈 استخراج أنواع الوحدات بدون تكرار
+        $unitTypes = $packages
+        ->flatMap(fn($package) => $package->units->map(fn($unit) => [
+            'name_ar' => $unit->name_ar,
+            'name_en' => $unit->name_en,
+        ]))
+        ->unique(function ($item) {
+            return $item['name_ar'] . '-' . $item['name_en'];
+        })
+        ->values();
+
 
         // الألوان من كل العناصر
-
         $locale = app()->getLocale();
         $uniqueKey = $locale === 'ar' ? 'color_ar' : 'color_en';
 
@@ -39,20 +47,21 @@ class PackageController extends Controller
                 'color_en' => $item->color_en,
                 'background_color' => $item->background_color,
             ])
-            ->keyBy(fn($item) => $item[$uniqueKey]) // 👈 هذا هو الحل السحري
-            ->values(); // 👈 بيحوله لـ indexed array تاني — بدون keys
+            ->keyBy(fn($item) => $item[$uniqueKey]) // يضمن التميّز
+            ->values();
 
-            $mobileColors = $colors;
+        $mobileColors = $colors;
 
-        return view('frontend.categories.index', compact('seo','packages','packageTypes','colors','mobileColors'));
+        return view('frontend.categories.index', compact('seo','packages','unitTypes','colors','mobileColors'));
     }
+
 
     public function show($id)
 {
     $seo = SeoSetting::where('page','category')->first();
 
     //dd($id);
-    $package = Package::where('id',$id)->with(['images', 'units.designs','units.items'])->first();
+    $package = Package::where('id',$id)->with(['images', 'units.designs','units.images','units.items'])->first();
 
     //$package->load(['images', 'units.designs', 'units.items']);
 

@@ -105,10 +105,10 @@
                     <label class="form-label">الصورة الرئيسية</label>
                     <input type="file" name="image" class="form-control" accept="image/*">
                 </div>
-                <div class="col-md-6">
+               <!-- <div class="col-md-6">
                     <label class="form-label">صور إضافية</label>
                     <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
-                </div>
+                </div>-->
             </div>
 
               <!-- الوحدات -->
@@ -166,6 +166,11 @@ window.addUnit = function () {
                     <option value="external">الملحقات الخارجية والإضافية</option>
                 </select>
             </div>
+            <div class="mb-2">
+                <label class="form-label">صور الوحدة</label>
+                <input type="file" name="units[${unitIndex}][images][]" class="form-control" multiple accept="image/*">
+            </div>
+
             <div class="mt-3">
                 <h6>العناصر</h6>
                 <div class="items-container" style="background-color: #fdf8eb;"></div>

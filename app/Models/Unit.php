@@ -41,4 +41,17 @@ class Unit extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    public function itemsLimited()
+{
+    return $this->hasMany(Item::class)->take(6);
+}
+
+public function images()
+{
+    return $this->hasMany(UnitImage::class);
+}
+
+
+
 }

@@ -18,6 +18,7 @@ class Faq extends Model
         'answer_en',
         'sort',
         'page',
+        'blog_id',
     ];
 
 

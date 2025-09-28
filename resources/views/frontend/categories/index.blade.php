@@ -243,7 +243,7 @@
 
         <!-- Unit Type -->
         <div class="mobile-filter-group">
-            <h4 class="sub-heading-4 mb-0"> {{ __('site.Package_type') }} </h4>
+            <h4 class="sub-heading-4 mb-0"> {{ __('site.unit_type') }} </h4>
             <div class="mobile-filter-options">
                 @foreach($unitTypes as $type)
                 <div class="mobile-filter-option">

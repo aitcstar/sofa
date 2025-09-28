@@ -1084,6 +1084,8 @@
 }
 });
 function changeLanguage(locale) {
+    let currentUrl = window.location.href.replace('/public', ''); // 👈 يشيل public
+
     fetch("{{ route('setLocale') }}", {
         method: "POST",
         headers: {
@@ -1092,41 +1094,21 @@ function changeLanguage(locale) {
         },
         body: JSON.stringify({
             locale: locale,
-            current_url: window.location.href
+            current_url: currentUrl
         })
     })
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
-            // تأكد من أن الرابط لا يحتوي على public/en
-            let redirectUrl = data.redirect;
-
-            // إصلاح المسار - إزالة public/en إذا كان موجوداً
-            redirectUrl = redirectUrl.replace('/public/en', '');
-            redirectUrl = redirectUrl.replace('public/en', '');
-
-            // إذا كان الرابط يحتوي على /en/ بالفعل، تأكد من تنظيفه
             if (locale === 'ar') {
-                redirectUrl = redirectUrl.replace('/en', '');
+                window.location.href = data.redirect.replace('/ar', '');
             } else {
-                // للإنجليزية، تأكد من وجود /en في المسار
-                if (!redirectUrl.includes('/en')) {
-                    // أضف /en إلى المسار بعد النطاق
-                    const domain = window.location.origin;
-                    const path = redirectUrl.replace(domain, '');
-                    redirectUrl = domain + '/en' + path;
-                }
+                window.location.href = data.redirect;
             }
-
-            window.location.href = redirectUrl;
         }
-    })
-    .catch(error => {
-        console.error('Error changing language:', error);
-        // السقوط إلى التحديث البسيط
-        window.location.href = '/' + locale + window.location.pathname;
     });
 }
+
 </script>
   @stack('scripts')
 </body>

@@ -1102,13 +1102,33 @@ function changeLanguage(locale) {
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
-            // لو العربية — امسح /ar لو موجود
+            // تأكد من أن الرابط لا يحتوي على public/en
+            let redirectUrl = data.redirect;
+
+            // إصلاح المسار - إزالة public/en إذا كان موجوداً
+            redirectUrl = redirectUrl.replace('/public/en', '');
+            redirectUrl = redirectUrl.replace('public/en', '');
+
+            // إذا كان الرابط يحتوي على /en/ بالفعل، تأكد من تنظيفه
             if (locale === 'ar') {
-                window.location.href = data.redirect.replace('/ar', '');
+                redirectUrl = redirectUrl.replace('/en', '');
             } else {
-                window.location.href = data.redirect;
+                // للإنجليزية، تأكد من وجود /en في المسار
+                if (!redirectUrl.includes('/en')) {
+                    // أضف /en إلى المسار بعد النطاق
+                    const domain = window.location.origin;
+                    const path = redirectUrl.replace(domain, '');
+                    redirectUrl = domain + '/en' + path;
+                }
             }
+
+            window.location.href = redirectUrl;
         }
+    })
+    .catch(error => {
+        console.error('Error changing language:', error);
+        // السقوط إلى التحديث البسيط
+        window.location.href = '/' + locale + window.location.pathname;
     });
 }
 </script>

@@ -1,5 +1,8 @@
 /* ===== HOMEPAGE STYLES ===== */
-
+html[dir="ltr"] body {
+    direction: ltr;
+    text-align: left;
+}
 /* ==== Header ==== */
 header {
   position: relative !important;

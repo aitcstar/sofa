@@ -151,7 +151,7 @@
                                     name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
                                     value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
                                     id="q{{ $question->id }}_{{ $option->id }}"
-                                    @if($question->type === 'radio' && $question->is_required) required @endif>
+                                    @if($question->type === 'radio' || $question->type === 'checkbox' && $question->is_required) required @endif>
                                 <label for="q{{ $question->id }}_{{ $option->id }}">
                                     {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
                                 </label>

@@ -127,104 +127,68 @@
   <!-- ===== PACKAGE SELECTION SECTION ===== -->
   <section id="package-selection" class="package-selection-section">
     <div class="container d-flex flex-column gap-xl">
-      <!-- Heading -->
-      <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
-        <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-            {{ __('site.package_desc') }}
-        </p>
-    </div>
-
-
-      <!-- Form -->
-      <form class="package-selection-form padding-box-normal d-flex flex-column gap-md border border-surface radius-small-box mx-auto">
-        <!-- Body -->
-        <div class="d-flex flex-column gap-sm">
-          <!-- Unit Type Selection -->
-          <div class="d-flex flex-column gap-sm-5 mb-2">
-            <label class="form-label body-1">نوع الوحدة</label>
-            <div class="d-flex gap-sm-3">
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="unit-type" id="studio" value="studio" checked />
-                <label class="form-check-label body-1 text-nowrap" for="studio">استوديو</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="unit-type" id="one-bedroom" value="one-bedroom" />
-                <label class="form-check-label body-1 text-nowrap" for="one-bedroom">غرفة نوم واحدة</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="unit-type" id="two-bedroom" value="two-bedroom" />
-                <label class="form-check-label body-1 text-nowrap" for="two-bedroom">غرفتين نوم</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Area Selection -->
-          <div class="d-flex flex-column gap-sm-5 mb-2">
-            <label class="form-label body-1">المساحة (متر مربع)</label>
-            <div class="d-flex gap-sm-3">
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="area" id="area-30-50" value="30-50" checked />
-                <label class="form-check-label body-1 text-nowrap" for="area-30-50">30-50</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="area" id="area-50-80" value="50-80" />
-                <label class="form-check-label body-1 text-nowrap" for="area-50-80">50-80</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="area" id="area-80-120" value="80-120" />
-                <label class="form-check-label body-1 text-nowrap" for="area-80-120">80-120</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="area" id="area-120+" value="120+" />
-                <label class="form-check-label body-1 text-nowrap" for="area-120+">120+</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Budget Selection -->
-          <div class="d-flex flex-column gap-sm-5 mb-2">
-            <label class="form-label body-1">الميزانية المتوقعة</label>
-            <div class="d-flex gap-sm-3">
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="budget" id="budget-low" value="low" checked />
-                <label class="form-check-label body-1 text-nowrap" for="budget-low">أقل من 50,000 ر.س</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="budget" id="budget-medium" value="medium" />
-                <label class="form-check-label body-1 text-nowrap" for="budget-medium">50,000 - 100,000 ر.س</label>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Electric Installation -->
-          <div class="d-flex flex-column gap-sm-5 mb-2">
-            <label class="form-label body-1">هل تحتاج تمديدات كهربائية؟</label>
-            <div class="d-flex gap-sm-3">
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="electric" id="electric-yes" value="yes" checked />
-                <label class="form-check-label body-1 text-nowrap" for="electric-yes">نعم</label>
-              </div>
-              <div class="d-flex align-items-center gap-sm-5">
-                <input class="form-check-input" type="radio" name="electric" id="electric-no" value="no" />
-                <label class="form-check-label body-1 text-nowrap" for="electric-no">لا</label>
-              </div>
-            </div>
-          </div>
+        <div class="heading text-center d-flex flex-column gap-sm-5">
+            <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
+            <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
+                {{ __('site.package_desc') }}
+            </p>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-custom-primary w-100">
-            {{ __('site.show_packages') }}
-        </button>
-      </form>
+        <form id="package-filter-form" class="package-selection-form padding-box-normal d-flex flex-column gap-md border border-surface radius-small-box mx-auto">
+            @csrf
+            @foreach($questions as $question)
+                <div class="d-flex flex-column gap-sm-5 mb-2">
+                    @php $locale = app()->getLocale(); @endphp
+                    <label class="form-label body-1"> {{ $locale === 'ar' ? $question->title_ar : $question->title_en }}</label>
+
+                    @if(in_array($question->type, ['radio', 'checkbox']))
+                        <div class="d-flex gap-sm-3 flex-wrap">
+                            @foreach($question->options as $option)
+                                <div class="d-flex align-items-center gap-sm-5">
+                                    <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
+                                        name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
+                                        value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
+                                        id="q{{ $question->id }}_{{ $option->id }}"
+                                        @if($question->is_required) required @endif>
+                                    <label for="q{{ $question->id }}_{{ $option->id }}">
+                                        {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    @elseif($question->type === 'select')
+                        <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
+                            <option value="">{{ __('اختر...') }}</option> {{-- عشان يظهر انه مطلوب --}}
+                            @foreach($question->options as $option)
+                                <option value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}">
+                                    {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @elseif($question->type === 'text')
+                        <input type="text" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
+                    @elseif($question->type === 'number')
+                        <input type="number" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
+                    @endif
+
+                </div>
+            @endforeach
+
+            <button type="submit" class="btn btn-custom-primary w-100">
+                {{ __('site.show_packages') }}
+            </button>
+        </form>
     </div>
-  </section>
+</section>
 
   <!-- ===== PACKAGES SECTION ===== -->
+
+
+<!-- مكان عرض الباكجات -->
+
   <section class="package-section">
     <div class="container d-flex flex-column gap-xl">
+
         <!-- Heading -->
         <div class="heading text-center d-flex flex-column gap-sm-5">
             <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
@@ -233,151 +197,12 @@
             </p>
         </div>
 
-        <!-- Packages -->
-        <div class="rooms-container">
-            <div class="row">
-                @foreach($packages as $package)
-                <!-- Package Item -->
-                <div class="col-sm-12 col-md-6 mb-sm-4">
-                    <div class="room-item">
-                        <!-- image & widget -->
-                        <div class="image">
-                            <!--<div class="widget text-center">
-                                <span class="body-4 text-white">جاهز للتسليم السريع</span>
-                            </div>-->
-                            @if($package->image)
-                                <img src="{{ asset('storage/' . $package->image) }}" class="w-100 h-100" alt="{{ $package->name }}" />
-                            @else
-                                <img src="{{ asset('assets/images/category/category-01.jpg') }}" class="w-100 h-100" alt="{{ $package->name }}" />
-                            @endif
-                        </div>
-
-                        <!-- Content -->
-                        <div class="content d-flex flex-column gap-sm-3">
-                            <!-- Title & Quantity & Description -->
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex flex-column gap-sm-6">
-                                    <h5 class="sub-heading-3">{{ __('site.package') }} {{ $package->name }}</h5>
-                                    <p class="body-3 mb-0">
-                                        {{ $package->description ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
-                                    </p>
-                                </div>
-                                <p class="body-2" style="color: var(--secondary);">
-                                    {{ $package->units->sum(fn($u) => $u->items->count()) }}  {{ __('site.piece') }}
-                                </p>
-                            </div>
-
-                            <!-- Price -->
-                            <div class="d-flex align-items-center gap-sm-5 mb-2">
-                                <p class="body-2 text-caption mb-0">{{ __('site.Starting_from') }}</p>
-                                <h4 class="heading-h6 mb-0">
-                                    {{ number_format($package->price)  }}
-                                    <img src="{{ asset('assets/images/hero/Platform Subtitle.png') }}" alt="" />
-                                </h4>
-                            </div>
-
-                            <!-- Options -->
-                            <div class="d-flex flex-column gap-sm-4">
-                                <!-- Including -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Includes') }}</p>
-                                    <div class="d-flex flex-wrap gap-sm-3">
-                                        @foreach($package->units as $unit)
-                                            <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                                @if($unit->type == "bedroom")
-                                                    <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
-                                                @elseif($unit->type == "living_room")
-                                                    <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
-                                                @elseif($unit->type == "kitchen")
-                                                    <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
-                                                @elseif($unit->type == "external")
-                                                    <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
-                                                @else
-                                                    <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
-                                                @endif
-                                                <span class="body-4">{{ $unit->{'name_'.app()->getLocale()} }}</span>
-
-                                            </div>
-
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                @php
-                                    $colors = $package->units
-                                        ->flatMap->items
-                                        ->pluck('background_color')
-                                        ->filter()
-                                        ->unique()
-                                        ->take(4);
-                                @endphp
-
-                                <!-- Colors -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
-                                    <div class="d-flex gap-sm-5">
-                                        @forelse($colors as $color)
-                                        <span class="rounded-pill" style="width: 34px; height: 16px; background-color: {{ $color }}"></span>
-                                    @empty
-                                        <span>لا توجد ألوان</span>
-                                    @endforelse
-                                    </div>
-                                </div>
-
-                                <!-- Time implementation -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Duration') }}</p>
-                                    <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                        <img src="{{ asset('assets/images/icons/clock-watch.png') }}" alt="" />
-                                        <span class="body-4">{{ $package->{'period_'.app()->getLocale()} }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Service -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Service') }}</p>
-                                    <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                        <img src="{{ asset('assets/images/icons/tools-wench-ruler.png') }}" alt="" />
-                                        <span class="body-4">{{ $package->{'service_includes_'.app()->getLocale()} }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Payment Plan -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Payment_plan') }}</p>
-                                    <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                        <img src="{{ asset('assets/images/icons/wallet-2.png') }}" alt="" />
-                                        <span class="body-4">{{ $package->{'payment_plan_'.app()->getLocale()} }}</span>
-                                    </div>
-                                </div>
-
-                                <!-- Decoration -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Decoration') }}</p>
-                                    <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                        <img src="{{ asset('assets/images/icons/brush-ruler.png') }}" alt="" />
-                                        <span class="body-4">{{ $package->{'decoration_'.app()->getLocale()} }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Actions Buttons -->
-                        <div class="actions d-flex gap-sm-2">
-                            <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
-                                <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
-                                <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                            </a>
-                            <a href="{{ app()->getLocale() == 'ar' ? route('packages.show', ['id' => $package->id]) : route('packages.show.en', ['id' => $package->id]) }}" class="btn btn-custom-secondary w-100">
-                                <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
-                                <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
+        <!-- Packages Wrapper -->
+        <div id="packages-wrapper">
+            {{-- سيتم تحميل الباكجات هنا عن طريق AJAX --}}
+            @include('frontend.categories._section', ['packages' => $packages ?? []])
         </div>
+
     </div>
 </section>
 
@@ -644,69 +469,88 @@
   <!-- ===== GALLERY SECTION ===== -->
   <section class="gallery-section bg-primary-light">
     <div class="container d-flex flex-column gap-l">
-      <!-- Heading -->
-      <div class="heading text-center d-flex flex-column gap-sm-5">
-        <h3 class="heading-h6 mb-0">
-            {{ __('site.gallery_heading') }}
-        </h3>
-        <p class="body-2 text-caption mb-0">
-            {{ __('site.gallery_desc') }}
-        </p>
-    </div>
 
-
-      <!-- images -->
-      <div class="gallery-details-images">
-        <div class="gallery-details-image-grid">
-          <div class="gallery-details-image-item">
-            <div class="gallery-details-image-sub-item gallery-large-img">
-              <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
-              <div class="image-overlay">
-                <span class="sub-heading-2">Bedroom</span>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-details-image-item d-flex gap-sm">
-            <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
-              <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
-              <div class="image-overlay">
-                <span class="sub-heading-2">Bedroom</span>
-              </div>
-            </div>
-            <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
-              <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
-              <div class="image-overlay">
-                <span class="sub-heading-2">Bedroom</span>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-details-image-item">
-            <div class="gallery-details-image-sub-item gallery-large-img">
-              <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
-              <div class="image-overlay">
-                <span class="sub-heading-2">Bedroom</span>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-details-image-item">
-            <div class="gallery-details-image-sub-item gallery-large-img">
-              <img src="../assets/images/gallery/gallery-01.jpg" alt="Gallery Image" />
-              <div class="image-overlay">
-                <span class="sub-heading-2">Bedroom</span>
-              </div>
-            </div>
-          </div>
+        <!-- Heading -->
+        <div class="heading text-center d-flex flex-column gap-sm-5">
+            <h3 class="heading-h6 mb-0">
+                {{ __('site.gallery_heading') }}
+            </h3>
+            <p class="body-2 text-caption mb-0">
+                {{ __('site.gallery_desc') }}
+            </p>
         </div>
-      </div>
 
-      <!-- CTA Button -->
-      <div class="w-100">
-        <button class="btn btn-custom-primary mx-auto">
-            {{ __('site.view_gallery') }}
-        </button>
-      </div>
+        <!-- images -->
+        <div class="gallery-details-images">
+            <div class="gallery-details-image-grid d-flex gap-sm">
+
+                @php
+                    $randomImages = $exhibitions->flatMap->images->shuffle()->take(5);
+                @endphp
+
+                {{-- العمود الأول --}}
+                <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
+                    @foreach($randomImages->take(2) as $image)
+                        <div class="gallery-details-image-item">
+                            <div class="gallery-details-image-sub-item gallery-large-img">
+                                <img src="{{ asset('storage/' . $image->image) }}"
+                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">
+                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- العمود الثاني --}}
+                <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
+                    <div class="d-flex gap-sm">
+                        @foreach($randomImages->slice(2, 2) as $image)
+                            <div class="gallery-details-image-sub-item gallery-small-img" style="flex:0.5;">
+                                <img src="{{ asset('storage/' . $image->image) }}"
+                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">
+                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if($randomImages->count() > 4)
+                        @php $image = $randomImages[4]; @endphp
+                        <div class="gallery-details-image-item mt-sm">
+                            <div class="gallery-details-image-sub-item gallery-large-img">
+                                <img src="{{ asset('storage/' . $image->image) }}"
+                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">
+                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- CTA Button -->
+        <div class="w-100 text-center">
+            <button onclick="window.location.href='{{ route('gallery.index') }}'" class="btn btn-custom-primary mx-auto">
+                {{ __('site.view_gallery') }}
+            </button>
+        </div>
+
     </div>
-  </section>
+</section>
+
 
   <!-- ===== FAQ SECTION ===== -->
   <section class="faq-section">
@@ -798,6 +642,42 @@
       }
     });
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const packagesWrapper = document.getElementById('packages-wrapper');
+    const filterForm = document.getElementById('package-filter-form');
+
+    function fetchPackages(formData = null) {
+        let url = "{{ route('packages.filter') }}";
+
+        // اجبار POST حتى بدون فلتر
+        const data = formData || new FormData();
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: data
+        })
+        .then(res => res.text())
+        .then(html => {
+            packagesWrapper.innerHTML = html;
+        })
+        .catch(err => console.error(err));
+    }
+
+    // أول تحميل الصفحة
+    fetchPackages();
+
+    // عند الضغط على فلتر
+    filterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetchPackages(formData);
+    });
+});
+
 
 
 </script>

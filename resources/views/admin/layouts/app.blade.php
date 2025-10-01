@@ -348,6 +348,10 @@
 #exhibitionsTable_filter {
     text-align: left !important; /* يحرك البحث لليسار */
 }
+#questionsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+
     </style>
 
     @stack('styles')
@@ -505,6 +509,14 @@
                             </ul>
                         </li>
 
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.survey-questions.*') ? 'active' : '' }}"
+                               href="{{ route('admin.survey-questions.index') }}">
+                               <i class="fas fa-info-circle me-2"></i>
+                               إدارة أسئلة الاستبيان
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"

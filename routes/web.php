@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\SurveyQuestionController
+;
+
 
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\FaqController as adminFaqController;
@@ -69,6 +72,8 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index');
     Route::get('/package/{id}', [FrontendPackageController::class, 'show'])->name('packages.show');
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
+    Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter');
+
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
     Route::get('/gallery/{id}', [GalleryDetailsController::class, 'show'])->name('gallery.details');
@@ -90,6 +95,8 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
     Route::get('/', [HomeController::class, 'index'])->name('home.en');
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index.en');
     Route::get('/package/{id}', [FrontendPackageController::class, 'show'])->name('packages.show.en');
+    Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter.en');
+
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show.en');
     Route::get('/about', [AboutController::class, 'index'])->name('about.en');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index.en');
@@ -202,6 +209,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
     Route::post('exhibitions/{exhibition}/images/{image}/set-primary', [ExhibitionController::class, 'setPrimaryImage'])->name('exhibitions.setPrimaryImage');
     Route::delete('exhibitions/{exhibition}/images/{image}', [ExhibitionController::class, 'deleteImage'])->name('exhibitions.deleteImage');
     Route::post('/admin/exhibitions/content', [ExhibitionController::class, 'updateExhibitions'])->name('exhibitions.content.update');
+
+    Route::resource('survey-questions', SurveyQuestionController::class);
 
 
     Route::resource('exhibitions.steps', ExhibitionStepController::class)->shallow();

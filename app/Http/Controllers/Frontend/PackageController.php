@@ -79,4 +79,58 @@ class PackageController extends Controller
     }
     return view('frontend.categories.show', compact('seo','package', 'testimonials', 'faqs'));
 }
+public function filter(Request $request)
+{
+    $query = Package::query()->with('units.items');
+
+    $answers = $request->answers ?? [];
+
+    // فلترة حسب اسم الوحدة
+    if (!empty($answers[5][0])) {
+        $unitName = $answers[5][0];
+        $query->whereHas('units', function ($q) use ($unitName) {
+            $q->where('name_ar', 'LIKE', "%{$unitName}%")
+              ->orWhere('name_en', 'LIKE', "%{$unitName}%");
+        });
+    }
+
+    // فلترة حسب الألوان
+    if (!empty($answers[6][0])) {
+        $color = $answers[6][0];
+        $query->whereHas('units.items', function ($q) use ($color) {
+            $q->where('background_color', $color)
+              ->orWhere('color_ar', 'LIKE', "%{$color}%")
+              ->orWhere('color_en', 'LIKE', "%{$color}%");
+        });
+    }
+
+    // فلترة حسب عدد القطع
+    if (!empty($answers[7][0])) {
+        $pieces = $answers[7][0];
+        $query->whereHas('units.items', function ($q) use ($pieces) {
+            $q->where('quantity', $pieces);
+        });
+    }
+
+    // فلترة بالسعر
+    if (!empty($request->price_min) && !empty($request->price_max)) {
+        $query->whereBetween('price', [$request->price_min, $request->price_max]);
+    }
+
+    // إذا لم يكن هناك فلتر (أي عند أول تحميل الصفحة) نجيب أول 4 باكجات فقط
+    if (empty($request->all())) {
+        $packages = $query->take(4)->get();
+    } else {
+        $packages = $query->get();
+    }
+
+    return view('frontend.categories._section', compact('packages'));
+}
+
+
+
+
+
+
+
 }

@@ -89,4 +89,10 @@ class Package extends Model
      {
          return $query->orderBy('sort_order')->orderBy('name_ar');
      }
+
+public function surveyAnswers()
+{
+    return $this->hasMany(SurveyQuestion::class, 'package_id');
+}
+
 }

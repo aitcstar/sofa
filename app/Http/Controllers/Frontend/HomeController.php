@@ -17,7 +17,8 @@ use App\Models\ReadyToFurnishSection;
 use App\Models\SeoSetting;
 use App\Models\OrderTimelineSection;
 use App\Models\Package;
-
+use App\Models\Exhibition;
+use App\Models\SurveyQuestion;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $seo = SeoSetting::where('page','home')->first();
-        $packages = Package::with(['images', 'units.designs','units.items'])->get();
+        $packages = Package::with(['images', 'units.designs','units.items'])->take(4)->get();
 
 
         $featured_products = Product::active()->featured()->take(8)->get();
@@ -53,7 +54,10 @@ class HomeController extends Controller
         $timelines = OrderTimelineSection::with('items')->first();
         $readyToFurnish = ReadyToFurnishSection::first();
 
+        $exhibitions = Exhibition::with(['images'])->where('is_active', 1)->get();
+        $questions = SurveyQuestion::with('options')->orderBy('order')->get();
+
         return view('frontend.home', compact('seo','packages', 'featured_products','testimonials','faqs','sliders'
-                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish'));
+                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish','exhibitions','questions'));
     }
 }

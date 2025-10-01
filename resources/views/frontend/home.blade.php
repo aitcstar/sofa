@@ -143,21 +143,21 @@
 
                     @if(in_array($question->type, ['radio', 'checkbox']))
                     <div class="d-flex gap-sm-3 flex-wrap question"
-                        data-type="{{ $question->type }}"
-                        data-required="{{ $question->is_required ? 1 : 0 }}">
-                        @foreach($question->options as $option)
-                            <div class="d-flex align-items-center gap-sm-5">
-                                <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
-                                    name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
-                                    value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
-                                    id="q{{ $question->id }}_{{ $option->id }}"
-                                    @if($question->type === 'radio' || $question->type === 'checkbox' && $question->is_required) required @endif>
-                                <label for="q{{ $question->id }}_{{ $option->id }}">
-                                    {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
+                    data-type="{{ $question->type }}"
+                    data-required="{{ $question->is_required ? 1 : 0 }}">
+                   @foreach($question->options as $option)
+                       <div class="d-flex align-items-center gap-sm-5">
+                           <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
+                                  name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
+                                  value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
+                                  id="q{{ $question->id }}_{{ $option->id }}"
+                                  @if($question->type === 'radio' && $question->is_required) required @endif>
+                           <label for="q{{ $question->id }}_{{ $option->id }}">
+                               {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
+                           </label>
+                       </div>
+                   @endforeach
+               </div>
 
                 @elseif($question->type === 'select')
                     <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
@@ -682,6 +682,32 @@
     });
 });
 
+
+document.getElementById('package-filter-form').addEventListener('submit', function(e) {
+    let valid = true;
+    let firstInvalid = null;
+
+    // تحقق لكل سؤال
+    document.querySelectorAll('.question').forEach(function(questionDiv) {
+        const type = questionDiv.dataset.type;
+        const required = questionDiv.dataset.required === '1';
+
+        if (type === 'checkbox' && required) {
+            const checkboxes = questionDiv.querySelectorAll('input[type="checkbox"]');
+            const checked = Array.from(checkboxes).some(cb => cb.checked);
+            if (!checked) {
+                valid = false;
+                if (!firstInvalid) firstInvalid = questionDiv;
+            }
+        }
+    });
+
+    if (!valid) {
+        e.preventDefault();
+        alert('يرجى اختيار خيار واحد على الأقل لكل سؤال مطلوب.');
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
 
 
 </script>

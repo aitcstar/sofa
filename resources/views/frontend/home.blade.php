@@ -142,34 +142,35 @@
                     <label class="form-label body-1"> {{ $locale === 'ar' ? $question->title_ar : $question->title_en }}</label>
 
                     @if(in_array($question->type, ['radio', 'checkbox']))
-                        <div class="d-flex gap-sm-3 flex-wrap">
-                            @foreach($question->options as $option)
-                                <div class="d-flex align-items-center gap-sm-5">
-                                    <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
-                                        name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
-                                        value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
-                                        id="q{{ $question->id }}_{{ $option->id }}"
-                                        @if($question->is_required) required @endif>
-                                    <label for="q{{ $question->id }}_{{ $option->id }}">
-                                        {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    @elseif($question->type === 'select')
-                        <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
-                            <option value="">{{ __('اختر...') }}</option> {{-- عشان يظهر انه مطلوب --}}
-                            @foreach($question->options as $option)
-                                <option value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}">
+                    <div class="d-flex gap-sm-3 flex-wrap">
+                        @foreach($question->options as $option)
+                            <div class="d-flex align-items-center gap-sm-5">
+                                <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
+                                       name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
+                                       value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
+                                       id="q{{ $question->id }}_{{ $option->id }}"
+                                       @if($question->is_required && $question->type !== 'checkbox') required @endif>
+                                <label for="q{{ $question->id }}_{{ $option->id }}">
                                     {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
-                                </option>
-                            @endforeach
-                        </select>
-                    @elseif($question->type === 'text')
-                        <input type="text" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
-                    @elseif($question->type === 'number')
-                        <input type="number" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
-                    @endif
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                @elseif($question->type === 'select')
+                    <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
+                        <option value="">{{ __('اختر...') }}</option>
+                        @foreach($question->options as $option)
+                            <option value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}">
+                                {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
+                            </option>
+                        @endforeach
+                    </select>
+                @elseif($question->type === 'text')
+                    <input type="text" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
+                @elseif($question->type === 'number')
+                    <input type="number" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
+                @endif
+
 
                 </div>
             @endforeach

@@ -147,7 +147,7 @@
                     data-required="{{ $question->is_required ? 1 : 0 }}">
                    @foreach($question->options as $option)
                        <div class="d-flex align-items-center gap-sm-5">
-                           <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
+                           <input class="filter-checkbox checked" type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
                                   name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
                                   value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
                                   id="q{{ $question->id }}_{{ $option->id }}"

@@ -142,20 +142,23 @@
                     <label class="form-label body-1"> {{ $locale === 'ar' ? $question->title_ar : $question->title_en }}</label>
 
                     @if(in_array($question->type, ['radio', 'checkbox']))
-                    <div class="d-flex gap-sm-3 flex-wrap">
+                    <div class="d-flex gap-sm-3 flex-wrap question"
+                        data-type="{{ $question->type }}"
+                        data-required="{{ $question->is_required ? 1 : 0 }}">
                         @foreach($question->options as $option)
                             <div class="d-flex align-items-center gap-sm-5">
                                 <input type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
-                                       name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
-                                       value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
-                                       id="q{{ $question->id }}_{{ $option->id }}"
-                                       @if($question->is_required && $question->type !== 'checkbox') required @endif>
+                                    name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
+                                    value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
+                                    id="q{{ $question->id }}_{{ $option->id }}"
+                                    @if($question->type === 'radio' && $question->is_required) required @endif>
                                 <label for="q{{ $question->id }}_{{ $option->id }}">
                                     {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
                                 </label>
                             </div>
                         @endforeach
                     </div>
+
                 @elseif($question->type === 'select')
                     <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
                         <option value="">{{ __('اختر...') }}</option>

@@ -157,6 +157,10 @@
                            </label>
                        </div>
                    @endforeach
+                    <!-- مكان رسالة الخطأ -->
+                <div class="error-message text-danger" style="display:none; margin-top:5px;">
+                    يرجى اختيار خيار واحد على الأقل
+                </div>
                </div>
 
                 @elseif($question->type === 'select')
@@ -685,27 +689,29 @@
 
 document.getElementById('package-filter-form').addEventListener('submit', function(e) {
     let valid = true;
-    let firstInvalid = null;
 
-    // تحقق لكل سؤال
     document.querySelectorAll('.question').forEach(function(questionDiv) {
         const type = questionDiv.dataset.type;
         const required = questionDiv.dataset.required === '1';
+        const errorMessage = questionDiv.querySelector('.error-message');
 
         if (type === 'checkbox' && required) {
             const checkboxes = questionDiv.querySelectorAll('input[type="checkbox"]');
             const checked = Array.from(checkboxes).some(cb => cb.checked);
+
             if (!checked) {
                 valid = false;
-                if (!firstInvalid) firstInvalid = questionDiv;
+                errorMessage.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'none';
             }
         }
     });
 
     if (!valid) {
         e.preventDefault();
-        alert('يرجى اختيار خيار واحد على الأقل لكل سؤال مطلوب.');
-        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const firstInvalid = document.querySelector('.error-message[style*="block"]');
+        if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });
 

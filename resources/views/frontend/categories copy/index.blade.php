@@ -1,47 +1,56 @@
 @extends('frontend.layouts.pages')
 
+
 @section('content')
+<!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">
     <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
     <a href="#" class="body-2 text-primary">{{ __('site.categories') }}</a>
 </div>
 
+<!-- ===== FILTER & ROOMS SECTION ===== -->
 <section class="filter-rooms-container">
     <div class="container">
-        <!-- Mobile Filter Toggle -->
-        <div class="mobile-filter-toggle padding-box-small-4 d-flex justify-content-between align-items-center" id="mobileFilterToggle">
+        <!-- ===== MOBILE FILTER TOGGLE ===== -->
+        <div class="mobile-filter-toggle padding-box-small-4 d-flex justify-content-between align-items-center"
+            id="mobileFilterToggle">
+            <!-- Title -->
             <div class="d-flex gap-sm-3 align-items-center">
                 <p class="body-1 text-subheading mb-0">{{ __('site.Sort and classify') }}</p>
                 <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="Filter" />
             </div>
+
+            <!-- Quantity -->
             <span class="body-4 text-caption mb-0">{{ $packages->count() }} {{ __('site.categories') }}</span>
         </div>
 
+        <!-- ===== FILTER SECTION ===== -->
         <div class="filter-section-container">
-            <!-- Filters -->
+            <!-- Filter -->
             <div class="filter-section">
                 <h3 class="filter-title heading-h8 mb-0">{{ __('site.filter') }}</h3>
 
-                <!-- Unit Types -->
                 <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.unit_type') }}</h4>
+                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.unit_type') }} </h4>
                     <div class="filter-options">
                         @foreach($unitTypes as $type)
-                            <div class="filter-option">
-                                <div class="filter-checkbox"
-                                     data-filter="unit-type"
-                                     data-value="{{ $type['name_'.app()->getLocale()] }}">
-                                </div>
-                                <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
-                            </div>
-                        @endforeach
+    <div class="filter-option">
+        <div class="filter-checkbox"
+             data-filter="unit-type"
+             data-value="{{ $type['name_'.app()->getLocale()] }}">
+        </div>
+        <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
+    </div>
+@endforeach
+
+
+
                     </div>
                 </div>
 
-                <!-- Colors -->
                 <div class="filter-group">
-                    <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.Color_style') }}</h4>
+                    <h4 class="sub-heading-4 text-subheading mb-0" >{{ __('site.Color_style') }}</h4>
                     <div class="filter-options">
                         @foreach($colors as $color)
                             <div class="filter-option">
@@ -51,27 +60,34 @@
                                      data-label="{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}">
                                 </div>
                                 <div class="filter-option-content">
-                                    <span class="body-2 text-body">{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}</span>
+                                    <span class="body-2 text-body">
+                                        {{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}
+                                    </span>
                                     <div class="color-swatch" style="background-color: {{ $color['background_color'] }}"></div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
             </div>
 
-            <!-- Packages -->
-            <div class="rooms-container">
+            <!-- Rooms -->
+            <div class="rooms-container" style="width: 100%;s">
                 <div class="row">
                     @foreach($packages as $package)
+                    <!-- Package Item -->
                     <div class="col-sm-12 col-md-6 mb-sm-4 package-cards"
                         data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
-                        data-colors="{{ $package->packageUnitItems->pluck('item.background_color')->filter()->unique()->implode(',') }}"
-                        data-unit-types="{{ $package->packageUnitItems->pluck('unit.name_'.app()->getLocale())->unique()->implode(',') }}">
+                        data-colors="{{ $package->units->flatMap->items->pluck('background_color')->filter()->unique()->implode(',') }}"
+                        data-unit-types="{{ $package->units->pluck('name_'.app()->getLocale())->implode(',') }}">
 
                         <div class="room-item">
-                            <!-- الصورة -->
+                            <!-- image & widget -->
                             <div class="image">
+                                <!--<div class="widget text-center">
+                                    <span class="body-4 text-white">جاهز للتسليم السريع</span>
+                                </div>-->
                                 @if($package->image)
                                     <img src="{{ asset('storage/' . $package->image) }}" class="w-100 h-100" alt="{{ $package->{'name_'.app()->getLocale()} }}" />
                                 @else
@@ -79,17 +95,18 @@
                                 @endif
                             </div>
 
-                            <!-- المحتوى -->
+                            <!-- Content -->
                             <div class="content d-flex flex-column gap-sm-3">
+                                <!-- Title & Quantity & Description -->
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex flex-column gap-sm-6">
-                                        <h5 class="sub-heading-3"> {{ __('site.package') }} {{ $package->{'name_'.app()->getLocale()} }}</h5>
+                                        <h5 class="sub-heading-3">  {{ __('site.package') }} {{ $package->{'name_'.app()->getLocale()} }}</h5>
                                         <p class="body-3 mb-0">
-                                            {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
+                                            {{ $package->{'description_'.app()->getLocale()}  ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                                         </p>
                                     </div>
                                     <p class="body-2" style="color: var(--secondary);">
-                                        {{ $package->packageUnitItems->count() }} {{ __('site.piece') }}
+                                        {{ $package->units->sum(fn($u) => $u->items->count()) }} {{ __('site.piece') }}
                                     </p>
                                 </div>
 
@@ -102,25 +119,31 @@
                                     </h4>
                                 </div>
 
+                                <!-- Options -->
                                 <div class="d-flex flex-column gap-sm-4">
-                                    <div class="d-flex flex-wrap gap-sm-3">
+                                    <!-- Including -->
+                                    <div class="d-flex gap-sm-3 align-items-center">
                                         <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Includes') }}</p>
+                                        <div class="d-flex flex-wrap gap-sm-3">
+                                            @foreach($package->units as $unit)
+                                                <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                                    @if($unit->type == "bedroom")
+                                                        <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+                                                    @elseif($unit->type == "living_room")
+                                                        <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
+                                                    @elseif($unit->type == "kitchen")
+                                                        <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
+                                                    @elseif($unit->type == "external")
+                                                        <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
+                                                    @else
+                                                        <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+                                                    @endif
+                                                    <span class="body-4">{{ $unit->{'name_'.app()->getLocale()} }}</span>
 
-                                        @foreach($package->packageUnitItems as $pui)
-                                            <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                                @php
-                                                    $icon = match($pui->unit->type) {
-                                                        'bedroom' => 'caricone.png',
-                                                        'living_room' => 'sofa.png',
-                                                        'kitchen' => 'foot.png',
-                                                        'external' => 'Group.png',
-                                                        default => 'caricone.png',
-                                                    };
-                                                @endphp
-                                                <img src="{{ asset('assets/images/icons/'.$icon) }}" alt="" />
-                                                <span class="body-4">{{ $pui->unit->{'name_'.app()->getLocale()} }}</span>
-                                            </div>
-                                        @endforeach
+                                                </div>
+
+                                            @endforeach
+                                        </div>
                                     </div>
 
                                     @php
@@ -133,17 +156,16 @@
                                     @endphp
 
                                     <!-- Colors -->
-                                       <!-- الألوان المتاحة -->
-                                <div class="d-flex gap-sm-3 align-items-center">
-                                    <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
-                                    <div class="d-flex gap-sm-5">
-                                        @forelse($package->packageUnitItems->pluck('item.background_color')->filter()->unique()->take(4) as $color)
+                                    <div class="d-flex gap-sm-3 align-items-center">
+                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
+                                        <div class="d-flex gap-sm-5">
+                                            @forelse($colors as $color)
                                             <span class="rounded-pill" style="width: 34px; height: 16px; background-color: {{ $color }}"></span>
                                         @empty
                                             <span>لا توجد ألوان</span>
                                         @endforelse
+                                        </div>
                                     </div>
-                                </div>
 
                                     <!-- Time implementation -->
                                     <div class="d-flex gap-sm-3 align-items-center">
@@ -181,13 +203,9 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <!-- باقي المحتوى يظل نفسه مع استبدال $unit->items بـ $packageUnitItems -->
-                                <!-- مثال للوحدات -->
-
                             </div>
 
+                            <!-- Actions Buttons -->
                             <div class="actions d-flex gap-sm-2">
                                 <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
                                     <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
@@ -201,7 +219,6 @@
                         </div>
                     </div>
                     @endforeach
-
                 </div>
             </div>
         </div>
@@ -282,8 +299,11 @@
         </button>
     </div>
 </div>
-
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/pages/categories.css') }}">
+@endpush
 
 @push('scripts')
 <script>

@@ -17,24 +17,28 @@ class GalleryDetailsController extends Controller
 
         $exhibition = Exhibition::with([
             'images',
-            'packages.units.items',
-            'packages.images',  // نضيف علاقة الصور هنا
+            'package.packageUnitItems.unit',
+            'package.packageUnitItems.item',
+            'package.images',
             'steps'
         ])->findOrFail($id);
-        $firstPackage = $exhibition->packages->first();
+
+        $package = $exhibition->package; // افتراض أن كل معرض مرتبط بباكج واحد
 
         $project = [
-            'name_ar' => $exhibition?->name_ar ?? '',
-            'name_en' => $exhibition?->name_en ?? '',
-            'colors' => $exhibition->packages?->units->flatMap(fn($unit) => $unit->items)->pluck('color_ar')->implode(', ') ?? '',
-            'delivery_date' => $exhibition->delivery_date ? \Carbon\Carbon::parse($exhibition->delivery_date)->format('F Y') : '—',
+            'name_ar' => $exhibition->name_ar ?? '',
+            'name_en' => $exhibition->name_en ?? '',
+            'colors' => $package?->packageUnitItems->pluck('item.color_ar')->implode(', ') ?? '',
+            'delivery_date' => $exhibition->delivery_date
+                ? \Carbon\Carbon::parse($exhibition->delivery_date)->format('F Y')
+                : '—',
             'type_ar' => $exhibition->category?->name_ar ?? '',
             'type_en' => $exhibition->category?->name_en ?? '',
-            'area_ar' => $exhibition->packages?->description_ar ?? '',
-            'area_en' => $exhibition->packages?->description_en ?? '',
-            'kitchen_ar' => $exhibition->packages?->description_ar ?? '',
-            'kitchen_en' => $exhibition->packages?->description_en ?? '',
-            'pieces_count' => $exhibition->packages?->units->flatMap(fn($unit) => $unit->items)->count() ?? 0,
+            'area_ar' => $package?->description_ar ?? '',
+            'area_en' => $package?->description_en ?? '',
+            'kitchen_ar' => $package?->description_ar ?? '',
+            'kitchen_en' => $package?->description_en ?? '',
+            'pieces_count' => $package?->packageUnitItems->count() ?? 0,
             'tv_design' => 'تصميم خشبي كلاسيكي',
             'images' => $exhibition->images->pluck('image')->toArray() ?? [],
             'steps' => $exhibition->steps->map(fn($step) => [
@@ -42,33 +46,24 @@ class GalleryDetailsController extends Controller
                 'title_ar' => $step->title_ar ?? '',
                 'title_en' => $step->title_en ?? ''
             ])->toArray() ?? [],
-// صور الباكج نفسها
-'details_images' => $firstPackage->images->toArray(),
-
-
-
-
-
-
+            'details_images' => $package?->images->map(fn($img) => [
+                'image_path' => $img->image_path
+            ])->toArray() ?? [],
             'steps_images' => [],
-            'packages' => $exhibition->packages?->units->map(fn($unit) => [
-                'icon' => $unit->icon ?? '',
-                'title_ar' => $unit->name_ar ?? '',
-                'title_en' => $unit->name_en ?? '',
-
-                'items' => $unit->items->map(fn($item) => [
-                    'name_ar' => $item->item_name_ar ?? '',
-                    'name_en' => $item->item_name_en ?? '',
-                    'size' => $item->dimensions ?? '',
-                    'material_ar' => $item->material_ar ?? '',
-                    'material_en' => $item->material_en ?? '',
-                    'color_ar' => $item->color_ar ?? '',
-                    'color_en' => $item->color_en ?? '',
-                    'color_code' => $item->background_color ?? '',
-                    // هنا بدل 'image_path' لو الصورة الرئيسية موجودة
-                    'image' => $item->image_path ?? '',
-                    'quantity' => $item->quantity ?? 1,
-                ])->toArray()
+            'packages' => $package?->packageUnitItems->map(fn($pui) => [
+                'unit_id' => $pui->unit->id,
+                'title_ar' => $pui->unit->name_ar ?? '',
+                'title_en' => $pui->unit->name_en ?? '',
+                'name_ar' => $pui->item->item_name_ar ?? '',
+                'name_en' => $pui->item->item_name_en ?? '',
+                'size' => $pui->item->dimensions ?? '',
+                'material_ar' => $pui->item->material_ar ?? '',
+                'material_en' => $pui->item->material_en ?? '',
+                'color_ar' => $pui->item->color_ar ?? '',
+                'color_en' => $pui->item->color_en ?? '',
+                'color_code' => $pui->item->background_color ?? '',
+                'image' => $pui->item->image_path ?? '',
+                'quantity' => $pui->item->quantity ?? 1,
             ])->toArray() ?? []
         ];
 

@@ -133,7 +133,9 @@
         <div class="gallery-details-container d-flex flex-column text-center gap-md">
             <!-- Heading -->
             <div class="gallery-details-title d-flex flex-column gap-sm-5">
-                <h2 class="heading-h7 text-heading">{{ app()->getLocale() == 'ar' ? 'تفاصيل الباكج' : 'Package Details' }}</h2>
+                <h2 class="heading-h7 text-heading">
+                    {{ app()->getLocale() == 'ar' ? 'تفاصيل الباكج' : 'Package Details' }}
+                </h2>
                 <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">
                     {{ app()->getLocale() == 'ar'
                         ? "الباكج المستخدم يحتوي على {$pageData['project']['pieces_count']} قطعة، ويشمل الأثاث الكامل لغرفة نوم واحدة، المعيشة، والمطبخ. تم اختيار {$pageData['project']['tv_design']} للتلفزيون وتصميم عمراني مفتوح لطاولة الطعام"
@@ -142,31 +144,21 @@
                 </p>
             </div>
 
-
-            <!-- images -->
+            <!-- Images -->
             <div class="gallery-details-images">
                 <div class="gallery-details-image-grid">
                     @foreach($pageData['project']['details_images'] as $detail)
-    <div class="gallery-details-image-item">
-        <div class="gallery-details-image-sub-item">
-            <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="Gallery Image" />
-           {{--- <div class="image-overlay">
-                <span class="sub-heading-2">
-                    {{ app()->getLocale() == 'ar' ? $detail['title_ar'] : $detail['title_en'] }}
-                </span>
-            </div>--}}
-        </div>
-    </div>
-@endforeach
-
-
+                        <div class="gallery-details-image-item">
+                            <div class="gallery-details-image-sub-item">
+                                <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="Gallery Image" />
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-
 <!-- ===== STEPS IMPLEMENT PROJECT SECTION ===== -->
 <section class="steps-implement-project-section">
     <div class="container">
@@ -217,19 +209,31 @@
 </section>
 
 <!-- ===== PACKAGE CONTAIN SECTION ===== -->
+
 <section class="package-contain-section">
     <div class="container">
         <div class="package-contain-container d-flex flex-column gap-sm-4">
-            <h2 class="heading-h7 text-heading">{{ app()->getLocale() == 'ar' ? 'مكونات وصور الباكج' : 'Package Contents & Images' }}</h2>
+            <h2 class="heading-h7 text-heading">
+                {{ app()->getLocale() == 'ar' ? 'مكونات وصور الباكج' : 'Package Contents & Images' }}
+            </h2>
 
-            <!-- details -->
+            <!-- Details -->
             <div class="package-contain-details-grid">
-                @foreach($pageData['project']['packages'] as $package)
-                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
-                        <!-- heading -->
-                        <div class="d-flex align-items-center gap-sm-5">
+                @php
+                    // تجميع العناصر حسب الوحدة
+                    $groupedItems = collect($pageData['project']['packages'])->groupBy('unit_id');
+                @endphp
 
-                            <p class="heading-h9 mb-0">{{ app()->getLocale() == 'ar' ? $package['title_ar'] : $package['title_en'] }}</p>
+                @foreach($groupedItems as $unitId => $items)
+                    @php
+                        $unit = $items->first();
+                    @endphp
+                    <div class="package-contain-detail-item d-flex flex-column gap-sm-4">
+                        <!-- Heading -->
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <p class="heading-h9 mb-0">
+                                {{ app()->getLocale() == 'ar' ? $unit['title_ar'] : $unit['title_en'] }}
+                            </p>
                         </div>
 
                         <!-- Table -->
@@ -247,19 +251,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($package['items'] as $item)
+                                        @foreach($items as $item)
                                             <tr>
-                                                <td class="body-2">{{ app()->getLocale() == 'ar' ? $item['name_ar'] : $item['name_en'] }}</td>
+                                                <td class="body-2">
+                                                    {{ app()->getLocale() == 'ar' ? $item['name_ar'] : $item['name_en'] }}
+                                                </td>
                                                 <td class="body-2">{{ $item['size'] }}</td>
-                                                <td class="body-2">{{ app()->getLocale() == 'ar' ? $item['material_ar'] : $item['material_en'] }}</td>
+                                                <td class="body-2">
+                                                    {{ app()->getLocale() == 'ar' ? $item['material_ar'] : $item['material_en'] }}
+                                                </td>
                                                 <td class="color-box">
                                                     <p class="body-2 text-subheading mb-0" style="background-color: {{ $item['color_code'] }};">
-
+                                                        {{ app()->getLocale() == 'ar' ? $item['color_ar'] : $item['color_en'] }}
                                                     </p>
                                                 </td>
                                                 <td class="image-box">
                                                     <div class="img-box">
-                                                        <img src="{{ asset('storage/' .$item['image']) }}" alt="Gallery Image" />
+                                                        <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('assets/images/no-image.png') }}"
+                                                             alt="Item Image" />
                                                     </div>
                                                 </td>
                                                 <td class="body-2">{{ $item['quantity'] }}</td>

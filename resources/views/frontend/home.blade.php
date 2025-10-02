@@ -147,7 +147,7 @@
                     data-required="{{ $question->is_required ? 1 : 0 }}">
                    @foreach($question->options as $option)
                        <div class="d-flex align-items-center gap-sm-5">
-                           <input class="filter-checkbox checked" type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
+                           <input  type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
                                   name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
                                   value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
                                   id="q{{ $question->id }}_{{ $option->id }}"
@@ -654,9 +654,10 @@
   document.addEventListener('DOMContentLoaded', function() {
     const packagesWrapper = document.getElementById('packages-wrapper');
     const filterForm = document.getElementById('package-filter-form');
+    const filterUrl = "{{ app()->getLocale() === 'en' ? route('packages.filter.en') : route('packages.filter') }}";
 
     function fetchPackages(formData = null) {
-        let url = "{{ route('packages.filter') }}";
+        let url = filterUrl;
 
         // اجبار POST حتى بدون فلتر
         const data = formData || new FormData();

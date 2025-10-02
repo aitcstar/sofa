@@ -146,19 +146,46 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'auth:admin', 'admin'
     Route::post('/admin/package/content', [PackageController::class, 'updatePackage'])->name('package.content.update');
 
 
-   // Route::delete('/packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])->name('packages.images.destroy');
+    Route::delete('/packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])->name('packages.images.destroy');
 
+   Route::resource('units', UnitController::class);
 
     Route::delete('units/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
-    Route::delete('units/{unit}/images/{image}', [UnitController::class, 'destroy'])
-    ->name('units.images.destroy');
+   /* Route::delete('units/{unit}/images/{image}', [UnitController::class, 'destroyimage'])
+    ->name('units.images.destroy');*/
+
+   /* Route::delete('/admin/units/{unit}/images/{image}', [UnitController::class, 'destroy'])
+    ->name('units.images.destroy');*/
+
+    Route::delete('units/{unit}/images/{image}', [UnitController::class, 'destroyImage'])
+    ->name('unit-images.destroy');
+
+
+    Route::get('/units/{unit}/details', [UnitController::class, 'details'])->name('units.details');
+
+    Route::get('/items/by-unit/{unitId}', [ItemController::class, 'getByUnit'])->name('items.by-unit');
+/*Route::delete('admin/units/{unit}/images/{image}', [UnitController::class, 'destroyImage'])
+    ->name('admin.unit-images.destroy');*/
+
+
+
+    //Route::delete('unit-images/{unitImage}', [UnitController::class, 'destroyimage'])->name('unit-images.destroy');
+
 
     Route::resource('designs', DesignController::class);
     Route::resource('designs.items', ItemController::class)->scoped(['design' => 'id']);
 
+
+    Route::resource('items', ItemController::class);
+    Route::delete('admin/items/images/{image}', [ItemImageController::class, 'destroy'])->name('item-images.destroy');
+
+    Route::delete('admin/items/{item}/destroy-image', [ItemController::class, 'destroyImage'])
+    ->name('items.destroy-image');
+
+
     Route::get('admin/items', [ItemController::class, 'allItems'])->name('items.all');
-    Route::delete('items/{item}/image', [ItemController::class, 'destroyImage'])->name('items.image.destroy');
+    //Route::delete('items/{item}/image', [ItemController::class, 'destroyImage'])->name('items.image.destroy');
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
 
     Route::resource('products', ProductController::class);

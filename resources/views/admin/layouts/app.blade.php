@@ -352,6 +352,11 @@
     text-align: left !important; /* يحرك البحث لليسار */
 }
 
+#unitsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+
+
     </style>
 
     @stack('styles')
@@ -518,24 +523,24 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
                             href="{{ route('admin.packages.index') }}">
                                 <i class="fas fa-boxes me-2"></i>
                                 الباكجات
                             </a>
-                        </li>
+                        </li>-->
 
 
-                        <!-- إدارة الباكجات مع Sub-menu
+                        <!-- إدارة الباكجات مع Sub-menu-->
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.packages.*') ||  request()->routeIs('admin.units.*') || request()->routeIs('admin.items.*') ? 'active' : '' }}"
                             href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                 <i class="fas fa-tags me-2"></i>
                                 إدارة الباكجات
                             </a>
 
-                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') || request()->routeIs('admin.items.all') ? 'show' : '' }}"
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') ||   request()->routeIs('admin.units.*') || request()->routeIs('admin.items.*') ? 'show' : '' }}"
                                 id="packagesSubmenu">
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
@@ -545,22 +550,30 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.units.*') ? 'active' : '' }}"
+                                    href="{{ route('admin.units.index') }}">
+                                        <i class="fas fa-palette me-2"></i>
+                                        الوحدات
+                                    </a>
+                                </li>
+                                <!--
+                                <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
                                     href="{{ route('admin.designs.index') }}">
                                         <i class="fas fa-palette me-2"></i>
                                         التصاميم
                                     </a>
-                                </li>
+                                </li>-->
 
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('admin.items.all') ? 'active' : '' }}"
-                                    href="{{ route('admin.items.all') }}">
+                                    <a class="nav-link {{ request()->routeIs('admin.items.*') ? 'active' : '' }}"
+                                    href="{{ route('admin.items.index') }}">
                                         <i class="fas fa-box me-2"></i>
-                                        جميع العناصر
+                                         القطع
                                     </a>
                                 </li>
                             </ul>
-                        </li> -->
+                        </li>
 
 
 

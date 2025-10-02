@@ -11,6 +11,7 @@ class Item extends Model
 
     protected $fillable = [
         'unit_id',
+        'package_id',
         'design_id',
         'item_name_ar',
         'item_name_en',
@@ -43,5 +44,10 @@ class Item extends Model
 {
     return $this->hasMany(PackageImage::class, 'package_id', 'package_id');
 }
+public function packageUnitItems()
+{
+    return $this->hasMany(PackageUnitItem::class);
+}
+
 
 }

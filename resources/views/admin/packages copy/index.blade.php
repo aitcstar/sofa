@@ -136,17 +136,8 @@
                             </td>
                             <td>{{ $package->name }}</td>
                             <td>{{ number_format($package->price, 2) }} ريال</td>
-                            <td>
-                                <span class="badge bg-info">
-                                    {{ $package->packageUnitItems->groupBy('unit_id')->count() }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary">
-                                    {{ $package->packageUnitItems->count() }}
-                                </span>
-                            </td>
-
+                            <td><span class="badge bg-info">{{ $package->units->count() }}</span></td>
+                            <td><span class="badge bg-secondary">{{ $package->units->sum(fn($unit) => $unit->items->count()) }}</span></td>
                             <td>{{ $package->sort_order }}</td>
                             <td class="d-flex gap-1">
                                <!-- <a href="{{ route('admin.packages.show', $package->id) }}" class="btn btn-sm btn-outline-info">

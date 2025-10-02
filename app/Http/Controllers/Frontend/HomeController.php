@@ -26,8 +26,12 @@ class HomeController extends Controller
     public function index()
     {
         $seo = SeoSetting::where('page','home')->first();
-        $packages = Package::with(['images', 'units.designs','units.items'])->take(4)->get();
-
+        //$packages = Package::with(['images', 'units.designs','units.items'])->take(4)->get();
+        $packages = Package::with([
+            'images',
+            'packageUnitItems.unit',
+            'packageUnitItems.item'
+        ])->active()->ordered()->take(4)->get();
 
         $featured_products = Product::active()->featured()->take(8)->get();
         $testimonials = Testimonial::latest()->take(10)->get();

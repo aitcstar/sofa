@@ -95,4 +95,10 @@ public function surveyAnswers()
     return $this->hasMany(SurveyQuestion::class, 'package_id');
 }
 
+public function packageUnitItems()
+{
+    return $this->hasMany(PackageUnitItem::class)->with(['unit.images', 'item']);
+}
+
+
 }

@@ -129,72 +129,86 @@
 
                     </div>
 
-                    {{-- محتوى المعرض --}}
                     <div class="gallery-item-content d-flex flex-column gap-sm-5">
-                        {{-- الباكج المرتبط --}}
-                        @if($exhibition->packages)
+                        @if($exhibition->package)
+                            <!-- اسم المعرض واسم الباكج -->
                             <div class="d-flex flex-column gap-sm-6">
-                                <a class="sub-heading-4" href="{{ route('gallery.details', $exhibition->id) }}">
+                                <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+                                    ? route('gallery.details', $exhibition->id)
+                                    : route('gallery.details.en', $exhibition->id) }}">
                                     {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
                                 </a>
-                                <a class="sub-heading-4" href="{{ route('gallery.details', $exhibition->id) }}">
-                                    {{ app()->getLocale() === 'ar' ? $exhibition->packages->name_ar : $exhibition->packages->name_en }}
+                                <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+                                    ? route('packages.show', $exhibition->package->id)
+                                    : route('packages.show.en', $exhibition->package->id) }}">
+                                    {{ app()->getLocale() === 'ar' ? $exhibition->package->name_ar : $exhibition->package->name_en }}
                                 </a>
 
+                                <!-- الوصف وعدد القطع -->
                                 <div class="d-flex gap-sm-5 align-items-center">
                                     <p class="body-3 text-subheading mb-0">
-                                        {{ app()->getLocale() === 'ar' ? $exhibition->packages->description_ar : $exhibition->packages->description_en }}
+                                        {{ app()->getLocale() === 'ar'
+                                            ? ($exhibition->package->description_ar ?: 'وصف الباكج غير متوفر')
+                                            : ($exhibition->package->description_en ?: 'Package description not available') }}
                                     </p>
                                     <div class="d-flex gap-sm-6 align-items-center"
                                          style="border: 1px solid var(--surface-border); border-radius: var(--radius-small-box-2); padding: 2px 14px;">
-                                        <p class="body-4 text-subheading mb-0"> {{ $exhibition->packages->units->sum(fn($unit) => $unit->items->count()) }} قطعه</p>
+                                        <p class="body-4 text-subheading mb-0">
+                                            {{ $exhibition->package->packageUnitItems->count() }}
+                                            {{ __('site.piece') }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
 
-                            {{-- الوحدات --}}
+                            <!-- عرض أول 6 قطع من الباكج -->
                             @php
-                                // جمع كل العناصر من جميع الوحدات داخل الباكج
-                                $allItems = $exhibition->packages->units->flatMap(fn($unit) => $unit->items)->take(6);
+                                $itemsToShow = $exhibition->package->packageUnitItems->take(6);
                             @endphp
 
-                            @foreach($allItems as $item)
-                                <div class="gallery-item-feature-item d-flex gap-sm-5 align-items-center">
-                                    -
-                                    <div class="d-flex gap-sm-5">
-                                        <p class="body-3 mb-0">
-                                            {{ app()->getLocale() === 'ar' ? $item->item_name_ar : $item->item_name_en }}
-                                        </p>
-                                        <p class="body-4 text-subheading mb-0">
-                                            {{ $item->color_ar }} - {{ $item->material_ar }} - {{ $item->dimensions }}
-                                        </p>
+                            @foreach($itemsToShow as $pui)
+                                @if($pui->item)
+                                    <div class="gallery-item-feature-item d-flex gap-sm-5 align-items-center">
+                                        <img src="{{ asset('assets/images/gallery/icon-01.svg') }}" alt="Item" />
+                                        <div class="d-flex flex-column">
+                                            <p class="body-3 mb-0">
+                                                {{ app()->getLocale() === 'ar'
+                                                    ? $pui->item->item_name_ar
+                                                    : $pui->item->item_name_en }}
+                                            </p>
+                                            <p class="body-4 text-subheading mb-0">
+                                                {{ app()->getLocale() === 'ar'
+                                                    ? ($pui->item->color_ar . ' - ' . $pui->item->material_ar . ' - ' . $pui->item->dimensions)
+                                                    : ($pui->item->color_en . ' - ' . $pui->item->material_en . ' - ' . $pui->item->dimensions) }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
-
-
-
-
                         @endif
-
                     </div>
                 </div>
             @endforeach
         </div>
 
-
-
-    </div>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $exhibitions->appends(request()->query())->links() }}
+        </div>
     </div>
 </section>
 @endsection
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/pages/gallery.css') }}">
-<style>
-
-</style>
 @endpush
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Gallery page loaded');
+});
+</script>
 
 @push('scripts')
 <!--<script src="{{ asset('assets/js/pages/gallery.js') }}"></script>-->

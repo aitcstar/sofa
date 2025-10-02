@@ -59,4 +59,9 @@ public function primaryImage()
     {
         return app()->getLocale() === 'ar' ? $this->description_ar : $this->description_en;
     }
+
+    public function package()
+{
+    return $this->belongsTo(Package::class, 'package_id');
+}
 }

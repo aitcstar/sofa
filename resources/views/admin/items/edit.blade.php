@@ -1,92 +1,157 @@
 @extends('admin.layouts.app')
 
-@section('title', 'تعديل القطعة')
+@section('title', isset($item) ? 'تعديل القطعة' : 'إضافة قطعة جديدة')
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">تعديل القطعة: {{ $item->item_name }}</h1>
-        <a href="{{ route('admin.designs.items.index', $design) }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> العودة
+    <!-- Header -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">{{ isset($item) ? 'تعديل القطعة' : 'إضافة قطعة جديدة' }}</h1>
+        <a href="{{ route('admin.items.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-right me-1"></i> رجوع
         </a>
     </div>
 
-    <form action="{{ route('admin.designs.items.update', [$design, $item]) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="unit_id" class="form-label">الوحدة</label>
-                    <select name="unit_id" id="unit_id" class="form-control" required>
-                        <option value="">اختر الوحدة</option>
-                        @foreach($design->units as $unit)
-                            <option value="{{ $unit->id }}" {{ $item->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="item_name" class="form-label">اسم القطعة</label>
-                    <input type="text" name="item_name" id="item_name" class="form-control" value="{{ old('item_name', $item->item_name) }}" required>
-                </div>
-            </div>
+    <!-- Card -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">معلومات القطعة</h5>
         </div>
+        <div class="card-body">
+            <form action="{{ isset($item) ? route('admin.items.update',$item) : route('admin.items.store') }}"
+                  method="POST" enctype="multipart/form-data">
+                @csrf
+                @if(isset($item)) @method('PUT') @endif
 
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">الكمية</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="{{ old('quantity', $item->quantity) }}" required>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>اسم القطعة (AR)</label>
+                        <input type="text" name="item_name_ar" class="form-control" value="{{ $item->item_name_ar ?? old('item_name_ar') }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>اسم القطعة (EN)</label>
+                        <input type="text" name="item_name_en" class="form-control" value="{{ $item->item_name_en ?? old('item_name_en') }}" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="dimensions" class="form-label">المقاس</label>
-                    <input type="text" name="dimensions" id="dimensions" class="form-control" value="{{ old('dimensions', $item->dimensions) }}" placeholder="مثال: 200x100x50">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="material" class="form-label">الخامة</label>
-                    <input type="text" name="material" id="material" class="form-control" value="{{ old('material', $item->material) }}" required>
-                </div>
-            </div>
-        </div>
 
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="color" class="form-label">اللون</label>
-                    <input type="text" name="color" id="color" class="form-control" value="{{ old('color', $item->color) }}" required>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>الوحدة</label>
+                        <select name="unit_id" class="form-select" required>
+                            <option value="">اختر الوحدة</option>
+                            @foreach($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $item->unit_id == $unit->id ? 'selected' : '' }}>
+                                    {{ $unit->name_ar }} / {{ $unit->name_en }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>الكمية</label>
+                        <input type="number" name="quantity" class="form-control" value="{{ $item->quantity ?? old('quantity') }}" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="image" class="form-label">صورة القطعة</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>المقاس</label>
+                        <input type="text" name="dimensions" class="form-control" value="{{ $item->dimensions ?? old('dimensions') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>الخامة (AR)</label>
+                        <input type="text" name="material_ar" class="form-control" value="{{ $item->material_ar ?? old('material_ar') }}">
+                    </div>
                 </div>
-                @if($item->image_path)
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>الخامة (EN)</label>
+                        <input type="text" name="material_en" class="form-control" value="{{ $item->material_en ?? old('material_en') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>اللون (AR)</label>
+                        <input type="text" name="color_ar" class="form-control" value="{{ $item->color_ar ?? old('color_ar') }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>اللون (EN)</label>
+                        <input type="text" name="color_en" class="form-control" value="{{ $item->color_en ?? old('color_en') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>  درجه اللون</label>
+                        <input type="color" name="background_color" class="form-control" value="{{ $item->background_color ?? old('background_color') }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>رفع صورة للقطعة</label>
+                        <input type="file" name="image_path" class="form-control">
+                    </div>
+                </div>
+
+                @if(isset($item) && $item->image_path)
                     <div class="mb-3">
                         <label>الصورة الحالية</label>
-                        <div>
-                            <img src="{{ asset('storage/' . $item->image_path) }}" width="150" class="rounded">
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ asset('storage/'.$item->image_path) }}" class="img-fluid border rounded" style="max-width: 200px;">
+                            <button type="button" class="btn btn-sm btn-danger delete-image-btn"
+                                    data-url="{{ route('admin.items.destroy-image', $item) }}">
+                                ✕
+                            </button>
+
+
                         </div>
                     </div>
                 @endif
-            </div>
-        </div>
 
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> تحديث القطعة
-            </button>
-            <a href="{{ route('admin.designs.items.index', $design) }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> إلغاء
-            </a>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> {{ isset($item) ? 'تحديث القطعة' : 'إضافة القطعة' }}
+                    </button>
+                    <a href="{{ route('admin.items.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i> إلغاء
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.delete-image-btn').click(function() {
+            if(!confirm('هل تريد حذف الصورة؟')) return;
+
+            var url = $(this).data('url'); // استخدام الـ URL مباشرة
+            var button = $(this);
+
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if(response.success) {
+                        button.closest('.position-relative').remove();
+                    } else {
+                        alert('حدث خطأ أثناء الحذف.');
+                    }
+                },
+                error: function() {
+                    alert('حدث خطأ أثناء الحذف.');
+                }
+            });
+        });
+    });
+    </script>
+
+@endpush

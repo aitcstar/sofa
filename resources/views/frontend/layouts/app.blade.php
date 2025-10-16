@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
 {{-- Title --}}
 <title>
   @if(  app()->getLocale() === 'ar')
@@ -39,12 +41,28 @@
   <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.0/css/flag-icons.min.css" />
+
   <!-- ===== FAVICON ===== -->
   <link rel="shortcut icon" href="{{ asset('assets/images/logos/Logo.png') }}" type="image/x-icon" />
   <style>
     .process-section .step-icon.no-after::after {
         display: none;
     }
+    .btn:hover {
+    color: var(--bs-btn-hover-color);
+    background-color: #6c757d2e;
+    border-color: #6c757d82;
+}
+.dropdown-toggle {
+border: none !important;
+}
+
+
+.dropdown-menu {
+
+    min-width: 245px;
+}
         </style>
   @stack('styles')
 </head>
@@ -84,11 +102,23 @@
         <!-- Auth -->
         @auth
           <div class="dropdown">
-            <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User"
-                 class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User" class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
+                <span class="selected-code" style="color: white">{{auth()->user()->name}}</span>
+              </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('profile.edit') : route('profile.edit.en') }}">{{ __('site.my_account') }}</a></li>
-              <li><a class="dropdown-item" href="#">{{ __('site.my_orders') }}</a></li>
+              <li>
+                <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('profile.index') : route('profile.index.en') }}">
+                    <img src="{{ asset('assets/images/icons/user.svg') }}" />
+                    {{ __('site.my_account') }}
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('order.my') : route('order.my.en') }}">
+                    <img src="{{ asset('assets/images/icons/Profile_IconAcount.png') }}" />
+                    {{ __('site.my_orders') }}
+                </a>
+            </li>
               @if(auth()->user()->isAdmin())
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('admin.dashboard') : route('admin.dashboard.en') }}">{{ __('site.dashboard') }}</a></li>
@@ -97,8 +127,8 @@
               <li>
                 <form method="POST" action="{{ route('logout') }}">
                   @csrf
-                  <a class="dropdown-item" href="#"
-                     onclick="event.preventDefault(); this.closest('form').submit();">
+                  <a class="dropdown-item" href="#" onclick="event.preventDefault(); this.closest('form').submit();" style="color: #d4342b">
+                    <img src="{{ asset('assets/images/icons/logout.svg') }}" />
                     {{ __('site.logout') }}
                   </a>
                 </form>
@@ -106,8 +136,7 @@
             </ul>
           </div>
         @else
-          <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User"
-               data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
+          <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User" data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
         @endauth
         <!-- Language Dropdown -->
         <div class="dropdown language-dropdown">
@@ -360,682 +389,200 @@
           <!-- Body -->
           <div class="tab-content mt-4" id="myTabContent">
             <!-- Sign In -->
-            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel"
-              aria-labelledby="home-tab" style="display: flex;">
-              <!-- Phone -->
-              <div class="form-group">
-                <label class="form-label mb-0"> @lang('site.phone_number')</label>
-                <div class="input-phone">
-                  <!-- Country Select -->
-                  <div class="country-select" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="flag fi fi-sa" id="selected-flag"></span>
-                    <span class="code" id="selected-code">+966</span>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
-                  </div>
-                  <!-- Dropdown Menu -->
-                  <ul class="dropdown-menu">
-                    <li>
-                      <div class="input-with-icon" style="min-height: 45px;">
-                        <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
-                        <i class="input-icon">
-                          <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
-                        </i>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sa"
-                        data-code="+966">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sa"></span>
-                          <span class="body-2">السعودية</span>
-                        </span>
-                        <span class="body-2">+966</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ae"
-                        data-code="+971">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ae"></span>
-                          <span class="body-2">الإمارات</span>
-                        </span>
-                        <span class="body-2">+971</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="kw"
-                        data-code="+965">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-kw"></span>
-                          <span class="body-2">الكويت</span>
-                        </span>
-                        <span class="body-2">+965</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="qa"
-                        data-code="+974">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-qa"></span>
-                          <span class="body-2">قطر</span>
-                        </span>
-                        <span class="body-2">+974</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="bh"
-                        data-code="+973">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-bh"></span>
-                          <span class="body-2">البحرين</span>
-                        </span>
-                        <span class="body-2">+973</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="om"
-                        data-code="+968">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-om"></span>
-                          <span class="body-2">عمان</span>
-                        </span>
-                        <span class="body-2">+968</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="jo"
-                        data-code="+962">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-jo"></span>
-                          <span class="body-2">الأردن</span>
-                        </span>
-                        <span class="body-2">+962</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="lb"
-                        data-code="+961">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-lb"></span>
-                          <span class="body-2">لبنان</span>
-                        </span>
-                        <span class="body-2">+961</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="eg"
-                        data-code="+20">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-eg"></span>
-                          <span class="body-2">مصر</span>
-                        </span>
-                        <span class="body-2">+20</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ma"
-                        data-code="+212">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ma"></span>
-                          <span class="body-2">المغرب</span>
-                        </span>
-                        <span class="body-2">+212</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="dz"
-                        data-code="+213">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-dz"></span>
-                          <span class="body-2">الجزائر</span>
-                        </span>
-                        <span class="body-2">+213</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="tn"
-                        data-code="+216">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-tn"></span>
-                          <span class="body-2">تونس</span>
-                        </span>
-                        <span class="body-2">+216</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ly"
-                        data-code="+218">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ly"></span>
-                          <span class="body-2">ليبيا</span>
-                        </span>
-                        <span class="body-2">+218</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sd"
-                        data-code="+249">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sd"></span>
-                          <span class="body-2">السودان</span>
-                        </span>
-                        <span class="body-2">+249</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="iq"
-                        data-code="+964">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-iq"></span>
-                          <span class="body-2">العراق</span>
-                        </span>
-                        <span class="body-2">+964</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sy"
-                        data-code="+963">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sy"></span>
-                          <span class="body-2">سوريا</span>
-                        </span>
-                        <span class="body-2">+963</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ye"
-                        data-code="+967">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ye"></span>
-                          <span class="body-2">اليمن</span>
-                        </span>
-                        <span class="body-2">+967</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ps"
-                        data-code="+970">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ps"></span>
-                          <span class="body-2">فلسطين</span>
-                        </span>
-                        <span class="body-2">+970</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="us"
-                        data-code="+1">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-us"></span>
-                          <span class="body-2">الولايات المتحدة</span>
-                        </span>
-                        <span class="body-2">+1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="gb"
-                        data-code="+44">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-gb"></span>
-                          <span class="body-2">المملكة المتحدة</span>
-                        </span>
-                        <span class="body-2">+44</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="de"
-                        data-code="+49">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-de"></span>
-                          <span class="body-2">ألمانيا</span>
-                        </span>
-                        <span class="body-2">+49</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="fr"
-                        data-code="+33">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-fr"></span>
-                          <span class="body-2">فرنسا</span>
-                        </span>
-                        <span class="body-2">+33</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="it"
-                        data-code="+39">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-it"></span>
-                          <span class="body-2">إيطاليا</span>
-                        </span>
-                        <span class="body-2">+39</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="es"
-                        data-code="+34">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-es"></span>
-                          <span class="body-2">إسبانيا</span>
-                        </span>
-                        <span class="body-2">+34</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ca"
-                        data-code="+1">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ca"></span>
-                          <span class="body-2">كندا</span>
-                        </span>
-                        <span class="body-2">+1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="au"
-                        data-code="+61">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-au"></span>
-                          <span class="body-2">أستراليا</span>
-                        </span>
-                        <span class="body-2">+61</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="in"
-                        data-code="+91">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-in"></span>
-                          <span class="body-2">الهند</span>
-                        </span>
-                        <span class="body-2">+91</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="pk"
-                        data-code="+92">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-pk"></span>
-                          <span class="body-2">باكستان</span>
-                        </span>
-                        <span class="body-2">+92</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="tr"
-                        data-code="+90">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-tr"></span>
-                          <span class="body-2">تركيا</span>
-                        </span>
-                        <span class="body-2">+90</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ir"
-                        data-code="+98">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ir"></span>
-                          <span class="body-2">إيران</span>
-                        </span>
-                        <span class="body-2">+98</span>
-                      </a>
-                    </li>
-                  </ul>
-                  <!-- Phone Number Input -->
-                  <input type="tel" class="phone-number" dir="rtl" placeholder="@lang('site.example_number')" style="height: 44px" />
-                </div>
-              </div>
-              <!-- Submit Button -->
-              <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
+                <form action="{{ route('login.check') }}" method="POST">
+                    @csrf
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label class="form-label mb-0">@lang('site.phone_number')</label>
+                        <div class="input-phone position-relative">
+                            <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
+                                <span class="flag fi fi-sa selected-flag-login"></span>
+                                <span class="code selected-code-login">+966</span>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="input-with-icon" style="min-height: 45px;">
+                                      <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
+                                      <i class="input-icon">
+                                        <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
+                                      </i>
+                                    </div>
+                                  </li>
+                                @foreach($countries as $country)
+                                    <li>
+                                        <a class="dropdown-item country-item-login d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="{{ $country['code'] }}" data-code="{{ $country['dial_code'] }}">
+                                            <span class="d-flex align-items-center gap-sm-3">
+                                                <span class="flag fi fi-{{ $country['code'] }}"></span>
+                                                <span>{{ app()->getLocale() == 'ar' ? $country['name_ar'] : $country['name_en'] }}</span>
+                                            </span>
+                                            <span>{{ $country['dial_code'] }}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
+                            <input type="tel" name="phone"  value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
+
+                        </div>
+                        @error('phone')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                    @enderror
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                </form>
             </div>
             <!-- Register -->
-            <div class="tab-pane fade d-flex flex-column gap-sm-3" id="register" role="tabpanel"
-              aria-labelledby="register-tab" style="display: none;">
-              <!-- Name -->
-              <div class="form-group">
-                <label class="form-label mb-0">@lang('site.name')</label>
-                <input type="text" class="form-control" placeholder="@lang('site.name')" />
-              </div>
-              <!-- Phone -->
-              <div class="form-group">
-                <label class="form-label mb-0">@lang('site.phone_number')</label>
-                <div class="input-phone">
-                  <!-- Country Select -->
-                  <div class="country-select" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="flag fi fi-sa" id="selected-flag"></span>
-                    <span class="code" id="selected-code">+966</span>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
-                  </div>
-                  <!-- Dropdown Menu -->
-                  <ul class="dropdown-menu">
-                    <li>
-                      <div class="input-with-icon" style="min-height: 45px;">
-                        <input type="text" class="form-control" placeholder="@lang('site.search_here')" />
-                        <i class="input-icon">
-                          <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
-                        </i>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sa"
-                        data-code="+966">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sa"></span>
-                          <span class="body-2">السعودية</span>
-                        </span>
-                        <span class="body-2">+966</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ae"
-                        data-code="+971">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ae"></span>
-                          <span class="body-2">الإمارات</span>
-                        </span>
-                        <span class="body-2">+971</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="kw"
-                        data-code="+965">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-kw"></span>
-                          <span class="body-2">الكويت</span>
-                        </span>
-                        <span class="body-2">+965</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="qa"
-                        data-code="+974">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-qa"></span>
-                          <span class="body-2">قطر</span>
-                        </span>
-                        <span class="body-2">+974</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="bh"
-                        data-code="+973">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-bh"></span>
-                          <span class="body-2">البحرين</span>
-                        </span>
-                        <span class="body-2">+973</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="om"
-                        data-code="+968">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-om"></span>
-                          <span class="body-2">عمان</span>
-                        </span>
-                        <span class="body-2">+968</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="jo"
-                        data-code="+962">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-jo"></span>
-                          <span class="body-2">الأردن</span>
-                        </span>
-                        <span class="body-2">+962</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="lb"
-                        data-code="+961">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-lb"></span>
-                          <span class="body-2">لبنان</span>
-                        </span>
-                        <span class="body-2">+961</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="eg"
-                        data-code="+20">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-eg"></span>
-                          <span class="body-2">مصر</span>
-                        </span>
-                        <span class="body-2">+20</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ma"
-                        data-code="+212">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ma"></span>
-                          <span class="body-2">المغرب</span>
-                        </span>
-                        <span class="body-2">+212</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="dz"
-                        data-code="+213">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-dz"></span>
-                          <span class="body-2">الجزائر</span>
-                        </span>
-                        <span class="body-2">+213</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="tn"
-                        data-code="+216">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-tn"></span>
-                          <span class="body-2">تونس</span>
-                        </span>
-                        <span class="body-2">+216</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ly"
-                        data-code="+218">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ly"></span>
-                          <span class="body-2">ليبيا</span>
-                        </span>
-                        <span class="body-2">+218</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sd"
-                        data-code="+249">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sd"></span>
-                          <span class="body-2">السودان</span>
-                        </span>
-                        <span class="body-2">+249</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="iq"
-                        data-code="+964">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-iq"></span>
-                          <span class="body-2">العراق</span>
-                        </span>
-                        <span class="body-2">+964</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="sy"
-                        data-code="+963">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-sy"></span>
-                          <span class="body-2">سوريا</span>
-                        </span>
-                        <span class="body-2">+963</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ye"
-                        data-code="+967">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ye"></span>
-                          <span class="body-2">اليمن</span>
-                        </span>
-                        <span class="body-2">+967</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ps"
-                        data-code="+970">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ps"></span>
-                          <span class="body-2">فلسطين</span>
-                        </span>
-                        <span class="body-2">+970</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="us"
-                        data-code="+1">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-us"></span>
-                          <span class="body-2">الولايات المتحدة</span>
-                        </span>
-                        <span class="body-2">+1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="gb"
-                        data-code="+44">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-gb"></span>
-                          <span class="body-2">المملكة المتحدة</span>
-                        </span>
-                        <span class="body-2">+44</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="de"
-                        data-code="+49">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-de"></span>
-                          <span class="body-2">ألمانيا</span>
-                        </span>
-                        <span class="body-2">+49</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="fr"
-                        data-code="+33">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-fr"></span>
-                          <span class="body-2">فرنسا</span>
-                        </span>
-                        <span class="body-2">+33</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="it"
-                        data-code="+39">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-it"></span>
-                          <span class="body-2">إيطاليا</span>
-                        </span>
-                        <span class="body-2">+39</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="es"
-                        data-code="+34">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-es"></span>
-                          <span class="body-2">إسبانيا</span>
-                        </span>
-                        <span class="body-2">+34</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ca"
-                        data-code="+1">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ca"></span>
-                          <span class="body-2">كندا</span>
-                        </span>
-                        <span class="body-2">+1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="au"
-                        data-code="+61">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-au"></span>
-                          <span class="body-2">أستراليا</span>
-                        </span>
-                        <span class="body-2">+61</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="in"
-                        data-code="+91">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-in"></span>
-                          <span class="body-2">الهند</span>
-                        </span>
-                        <span class="body-2">+91</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="pk"
-                        data-code="+92">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-pk"></span>
-                          <span class="body-2">باكستان</span>
-                        </span>
-                        <span class="body-2">+92</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="tr"
-                        data-code="+90">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-tr"></span>
-                          <span class="body-2">تركيا</span>
-                        </span>
-                        <span class="body-2">+90</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" data-flag="ir"
-                        data-code="+98">
-                        <span class="d-flex align-items-center gap-sm-3">
-                          <span class="flag fi fi-ir"></span>
-                          <span class="body-2">إيران</span>
-                        </span>
-                        <span class="body-2">+98</span>
-                      </a>
-                    </li>
-                  </ul>
-                  <!-- Phone Number Input -->
-                  <input type="tel" class="phone-number" dir="rtl" placeholder="@lang('site.example_number')" style="height: 44px" />
-                </div>
-              </div>
-              <!-- Email -->
-              <div class="form-group">
-                <label class="form-label mb-0">@lang('site.email')</label>
-                <input type="email" class="form-control" placeholder="@lang('site.email')" />
-              </div>
-              <!-- Submit Button -->
-              <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+
+            <!-- التسجيل -->
+            <div class="tab-pane fade d-flex flex-column gap-sm-3" id="register" role="tabpanel" aria-labelledby="register-tab">
+                <form action="{{ route('auth.register') }}" method="POST" class="register-form">
+                    @csrf
+                    <!-- الاسم -->
+                    <div class="form-group">
+                        <label class="form-label mb-0">@lang('site.name')</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="@lang('site.name')" required />
+                        @error('name')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- رقم الهاتف + اختيار الدولة -->
+                    <div class="form-group">
+                        <label class="form-label mb-0">@lang('site.phone_number')</label>
+                        <div class="input-phone position-relative">
+                            <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
+                                <span class="flag fi fi-sa selected-flag"></span>
+                                <span class="code selected-code">+966</span>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="input-with-icon" style="min-height: 45px;">
+                                      <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
+                                      <i class="input-icon">
+                                        <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
+                                      </i>
+                                    </div>
+                                  </li>
+                                @foreach($countries as $country)
+                                    <li>
+                                        <a class="dropdown-item country-item d-flex justify-content-between align-items-center" href="#"
+                                        data-flag="{{ $country['code'] }}" data-code="{{ $country['dial_code'] }}">
+                                            <span class="d-flex align-items-center gap-sm-3">
+                                                <span class="flag fi fi-{{ $country['code'] }}"></span>
+                                                <span>{{ app()->getLocale() == 'ar' ? $country['name_ar'] : $country['name_en'] }}</span>
+                                            </span>
+                                            <span>{{ $country['dial_code'] }}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <input type="hidden" name="country_code" class="country_code" value="{{ old('country_code', '+966') }}"/>
+                            <input type="tel" name="phone"  value="{{ old('phone') }}"  class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
+                        </div>
+                        @error('phone')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                    @enderror
+                    </div>
+
+                    <!-- البريد الإلكتروني -->
+                    <div class="form-group">
+                        <label class="form-label mb-0">@lang('site.email')</label>
+                        <input type="email"  value="{{ old('email') }}"  name="email" class="form-control" placeholder="@lang('site.email')" required/>
+                        @error('email')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <br>
+                    <button type="submit" id="registerSubmit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                </form>
             </div>
+
+
+
+
+
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
+    <!-- ✅ مودال OTP منفصل (خارج authModal) -->
+    <div class="modal fade" id="codeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 p-3">
+        <h3 class="mb-3 text-center">@lang('site.verification code')</h3>
+        <h6 class="mb-3 text-center">@lang('site.mailsend')</h6>
+        <form method="POST" action="{{ route('verify.code') }}">
+            @csrf
+            <div class="d-flex gap-2 justify-content-center mb-3">
+            <input type="text" name="code[0]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <input type="text" name="code[1]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <input type="text" name="code[2]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <input type="text" name="code[3]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            </div>
+
+            @if(session('otp_error'))
+            <div class="text-danger text-center mb-2">{{ session('otp_error') }}</div>
+            @endif
+
+            <button type="submit" class="btn btn-custom-primary w-100"> @lang('site.verification')</button>
+        </form>
+        </div>
+    </div>
+    </div>
+
+
+    @if(session('open_login_tab'))
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+        authModal.show();
+        const loginTab = document.querySelector('#home-tab');
+        if (loginTab) {
+            const tab = new bootstrap.Tab(loginTab);
+            tab.show();
+        }
+    });
+    </script>
+    @endif
+
+    @if(session('open_register_tab'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerTab = document.getElementById('profile-tab'); // زر التسجيل
+            if (registerTab) {
+                const authModal = new bootstrap.Modal(document.getElementById('authModal'));
+                authModal.show();
+                // تفعيل تاب التسجيل
+                const tab = new bootstrap.Tab(registerTab);
+                tab.show();
+            }
+        });
+    </script>
+    @endif
+
+    <!-- في نهاية الصفحة (قبل </body>) -->
+    @if(session('show_otp_modal'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // إغلاق مودال التسجيل أولًا
+            const authModal = bootstrap.Modal.getInstance(document.getElementById('authModal'));
+            if (authModal) authModal.hide();
+
+            // فتح مودال OTP بعد تأخير بسيط
+            setTimeout(function() {
+                const otpModal = new bootstrap.Modal(document.getElementById('codeModal'));
+                otpModal.show();
+            }, 300);
+        });
+    </script>
+     @endif
   @endguest
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <!-- Scripts -->
@@ -1045,75 +592,138 @@
     <script src="{{ asset('assets/js/language.js') }}"></script>
     <script src="{{ asset('assets/js/nav-bar.js') }}"></script>
   <!-- Custom Scripts -->
+
   <script>
-    // Mobile Menu Toggle
-    document.getElementById('mobileMenuToggle').addEventListener('click', function() {
-      document.getElementById('navMobileOverlay').classList.add('active');
-      document.getElementById('navMobileDrawer').classList.add('active');
-    });
-    document.getElementById('navMobileClose').addEventListener('click', function() {
-      document.getElementById('navMobileOverlay').classList.remove('active');
-      document.getElementById('navMobileDrawer').classList.remove('active');
-    });
-    document.getElementById('navMobileOverlay').addEventListener('click', function() {
-      document.getElementById('navMobileOverlay').classList.remove('active');
-      document.getElementById('navMobileDrawer').classList.remove('active');
-    });
-    // Language Dropdown
-    document.querySelectorAll('.language-option').forEach(function(option) {
-      option.addEventListener('click', function() {
-        const language = this.getAttribute('data-language');
-        // Handle language change logic here
-        console.log('Language changed to:', language);
-      });
-    });
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ===== Mobile Menu Toggle =====
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const navOverlay = document.getElementById('navMobileOverlay');
+        const navDrawer = document.getElementById('navMobileDrawer');
+
+        if (mobileToggle && navOverlay && navDrawer) {
+            mobileToggle.addEventListener('click', function() {
+                navOverlay.classList.add('active');
+                navDrawer.classList.add('active');
+            });
+            document.getElementById('navMobileClose').addEventListener('click', function() {
+                navOverlay.classList.remove('active');
+                navDrawer.classList.remove('active');
+            });
+            navOverlay.addEventListener('click', function() {
+                navOverlay.classList.remove('active');
+                navDrawer.classList.remove('active');
+            });
+        }
+
+        // ===== Language Dropdown =====
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const language = this.getAttribute('data-language');
+                console.log('Language changed to:', language);
+            });
+        });
+
+        // ===== Owl Carousel =====
         if ($("#testimonial-carousel-homepage").length > 0) {
             $("#testimonial-carousel-homepage").owlCarousel({
-  rtl: true,
-  loop: true,
-  margin: 0, // مهم جداً: شيل المارجن من هنا
-  stagePadding: 0,
-  dots: true,
-  autoplay: true,
-  autoplayTimeout: 4000,
-  responsive: {
-    0: { items: 1 },
-    576: { items: 1 },
-    768: { items: 2 },
-    992: { items: 3 },
-    1200: { items: 3 }
-  }
-});
-}
-});
-function changeLanguage(locale) {
-    let currentUrl = window.location.href.replace('/public', ''); // 👈 يشيل public
+                rtl: true,
+                loop: true,
+                margin: 0,
+                stagePadding: 0,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 4000,
+                responsive: {
+                    0: { items: 1 },
+                    576: { items: 1 },
+                    768: { items: 2 },
+                    992: { items: 3 },
+                    1200: { items: 3 }
+                }
+            });
+        }
 
-    fetch("{{ route('setLocale') }}", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-        },
-        body: JSON.stringify({
-            locale: locale,
-            current_url: currentUrl
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            if (locale === 'ar') {
-                window.location.href = data.redirect.replace('/ar', '');
-            } else {
-                window.location.href = data.redirect;
-            }
+        // ===== Change Language (AJAX) =====
+        window.changeLanguage = function(locale) {
+            let currentUrl = window.location.href.replace('/public', '');
+            fetch("{{ route('setLocale') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ locale: locale, current_url: currentUrl })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (locale === 'ar') {
+                        window.location.href = data.redirect.replace('/ar', '');
+                    } else {
+                        window.location.href = data.redirect;
+                    }
+                }
+            });
+        };
+
+
+        // ===== اختيار الدولة =====
+    const countryItems = document.querySelectorAll('.country-item');
+    const countryCodeInput = document.querySelector('.country_code');
+    const selectedCode = document.querySelector('.selected-code');
+    const selectedFlag = document.querySelector('.selected-flag');
+
+    countryItems.forEach(item => {
+        item.addEventListener('click', function(e){
+            //e.preventDefault();
+            const code = this.dataset.code;
+            const flag = this.dataset.flag;
+
+            if (countryCodeInput) countryCodeInput.value = code;
+            if (selectedCode) selectedCode.textContent = code;
+            if (selectedFlag) selectedFlag.className = 'flag fi fi-' + flag + ' selected-flag';
+        });
+    });
+
+
+    // ===== اختيار الدولة في تاب تسجيل الدخول =====
+const countryItemsLogin = document.querySelectorAll('.country-item-login');
+const countryCodeInputLogin = document.querySelector('.country_code_login');
+const selectedCodeLogin = document.querySelector('.selected-code-login');
+const selectedFlagLogin = document.querySelector('.selected-flag-login');
+
+countryItemsLogin.forEach(item => {
+    item.addEventListener('click', function(e){
+        e.preventDefault();
+        const code = this.dataset.code;
+        const flag = this.dataset.flag;
+        if (countryCodeInputLogin) countryCodeInputLogin.value = code;
+        if (selectedCodeLogin) selectedCodeLogin.textContent = code;
+        if (selectedFlagLogin) selectedFlagLogin.className = 'flag fi fi-' + flag + ' selected-flag-login';
+    });
+});
+
+   // دعم التنقل بين حقول OTP
+const otpInputs = document.querySelectorAll('.otp-input');
+otpInputs.forEach((input, index) => {
+    input.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 1);
+        if (this.value && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
         }
     });
-}
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Backspace' && !this.value && index > 0) {
+            otpInputs[index - 1].focus();
+        }
+    });
+});
 
-</script>
+
+    });
+    </script>
+
   @stack('scripts')
 </body>
 </html>

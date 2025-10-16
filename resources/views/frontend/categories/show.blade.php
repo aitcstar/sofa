@@ -164,9 +164,10 @@
             </div>
 
             <!-- Order Button -->
-            <a href="#" class="btn btn-custom-primary">
+            <a href="{{ route('order.confirm', $package->id) }}" class="btn btn-custom-primary">
                 {{ __('site.Add to order') }}
             </a>
+
         </div>
     </div>
 </section>

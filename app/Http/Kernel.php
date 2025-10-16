@@ -68,8 +68,11 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'locale' => \App\Http\Middleware\LocaleMiddleware::class, // ✅ غير الاسم هنا
+        'locale' => \App\Http\Middleware\LocaleMiddleware::class,
+        'employee' => \App\Http\Middleware\EmployeeAuth::class,
+        'permission' => \App\Http\Middleware\CheckPermission::class,
+        'any.permission' => \App\Http\Middleware\CheckAnyPermission::class,
+        'admin_or_employee' => \App\Http\Middleware\AdminOrEmployeeAuth::class,
 
     ];
 }

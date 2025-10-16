@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+       /* Schema::table('orders', function (Blueprint $table) {
             $table->integer('expected_duration')->nullable()->comment('Expected duration in hours');
-        });
+        });*/
     }
 
     /**

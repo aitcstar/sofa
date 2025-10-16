@@ -12,7 +12,43 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // تشغيل المهام المجدولة كل دقيقة
+        $schedule->command('scheduled-tasks:run')
+                 ->everyMinute()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+
+        // تنظيف السجلات القديمة يومياً
+        $schedule->command('logs:cleanup')
+                 ->daily()
+                 ->at('02:00');
+
+        // إرسال تقارير يومية
+        $schedule->command('reports:daily')
+                 ->dailyAt('08:00');
+
+        // تحديث الإحصائيات كل ساعة
+        $schedule->command('analytics:update')
+                 ->hourly();
+
+        // فحص الطلبات المتأخرة كل ساعتين
+        $schedule->command('orders:check-delayed')
+                 ->cron('0 */2 * * *');
+
+        // إرسال تذكيرات المتابعة
+        $schedule->command('leads:send-reminders')
+                 ->hourly();
+
+        // تنظيف الملفات المؤقتة أسبوعياً
+        $schedule->command('files:cleanup')
+                 ->weekly()
+                 ->sundays()
+                 ->at('03:00');
+
+        // نسخ احتياطي من قاعدة البيانات يومياً
+        $schedule->command('backup:run')
+                 ->daily()
+                 ->at('01:00');
     }
 
     /**

@@ -355,14 +355,24 @@
 #unitsTable_filter {
     text-align: left !important; /* يحرك البحث لليسار */
 }
-
-
+#helpRequestsTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+#orderStagesTable_filter {
+    text-align: left !important; /* يحرك البحث لليسار */
+}
+#leadsTable_filter{
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
 </head>
 
 <body>
+    @php
+        $user = auth('admin')->user() ?? auth('employee')->user();
+    @endphp
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -374,6 +384,7 @@
 
 
                     <ul class="nav flex-column">
+                        @if($user && ($user->hasPermission('home.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
                                href="{{ route('admin.dashboard') }}">
@@ -381,8 +392,9 @@
                                 الرئيسية
                             </a>
                         </li>
+                        @endif
 
-
+                        @if($user && ($user->hasPermission('content.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') ? 'active' : '' }}"
                                href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*')? 'true' : 'false' }}"
@@ -485,36 +497,12 @@
 
 
 
-                                <!-- Sub-menu صفحة "من نحن"
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about.*') ? 'active' : '' }}"
-                                       href="#aboutSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'true' : 'false' }}"
-                                       class="dropdown-toggle">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        من نحن
-                                    </a>
 
-                                    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.about.*') || request()->routeIs('admin.about-team.*') ? 'show' : '' }}" id="aboutSubmenu">
-                                        <li class="nav-item">
-                                            <a class="nav-link {{ request()->routeIs('admin.about.*') ? 'active' : '' }}"
-                                               href="#">
-                                               الصفحة
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link {{ request()->routeIs('admin.about-team.*') ? 'active' : '' }}"
-                                               href="#">
-                                               فريق العمل
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li> -->
-
-                                <!-- يمكن إضافة صفحات أخرى بنفس الطريقة -->
                             </ul>
                         </li>
+                        @endif
 
-
+                        @if($user && ($user->hasPermission('surveys.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.survey-questions.*') ? 'active' : '' }}"
                                href="{{ route('admin.survey-questions.index') }}">
@@ -522,16 +510,9 @@
                                إدارة أسئلة الاستبيان
                             </a>
                         </li>
+                        @endif
 
-                        <!--<li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
-                            href="{{ route('admin.packages.index') }}">
-                                <i class="fas fa-boxes me-2"></i>
-                                الباكجات
-                            </a>
-                        </li>-->
-
-
+                        @if($user && ($user->hasPermission('packages.view') || $user->role === 'admin'))
                         <!-- إدارة الباكجات مع Sub-menu-->
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.packages.*') ||  request()->routeIs('admin.units.*') || request()->routeIs('admin.items.*') ? 'active' : '' }}"
@@ -574,37 +555,9 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
 
-
-
-
-
-
-
-                        <!--
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}"
-                               href="#">
-                                <i class="fas fa-couch me-2"></i>
-                                المنتجات
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"
-                               href="#">
-                                <i class="fas fa-shopping-cart me-2"></i>
-                                الطلبات
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-                               href="#">
-                                <i class="fas fa-users me-2"></i>
-                                المستخدمين
-                            </a>
-                        </li>
-                    -->
-
+                    @if($user && ($user->hasPermission('blogs.view') || $user->role === 'admin'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.blogs.*') || request()->routeIs('admin.blog_categories.*') ? 'active' : '' }}"
                         href="#blogsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -631,7 +584,9 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
 
+                    @if($user && ($user->hasPermission('exhibitions.view') || $user->role === 'admin'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.exhibitions.*') || request()->routeIs('admin.exhibition-categories.*') ? 'active' : '' }}"
                            href="#exhibitionsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -660,22 +615,234 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
 
-
-
-
-                        <!--<li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}"
-                               href="{{ route('admin.blogs.index') }}">
-                                <i class="fas fa-blog me-2"></i>
-                                المدونات
+                    <!-- Orders Management -->
+                    @if($user && $user->hasPermission('orders.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"
+                            href="#ordersSubmenu" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('admin.orders.*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                إدارة الطلبات
                             </a>
-                        </li>-->
+
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.orders.*') ? 'show' : '' }}" id="ordersSubmenu">
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.orders.enhanced.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.orders.enhanced.index') }}">
+                                        جميع الطلبات
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.orders.enhanced.create') ? 'active' : '' }}"
+                                    href="{{ route('admin.orders.enhanced.create') }}">
+                                        إضافة طلب جديد
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.order_stages.index') ? 'active' : '' }}"
+                                       href="{{ route('admin.order_stages.index') }}">
+                                        مراحل الطلب
+                                    </a>
+                                </li>
 
 
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.orders.enhanced.reports*') ? 'active' : '' }}"
+                                    href="{{ route('admin.orders.enhanced.reports') }}">
+                                        تقارير الطلبات
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    @endif
 
 
+                    <!-- Financial Management -->
+                    @if($user && $user->hasPermission('financial.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.financial*') ? 'active' : '' }}"
+                            href="#financialSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.financial*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            النظام المالي
+                            </a>
 
+                            <!-- Sub-menu -->
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.financial*') ? 'show' : '' }}" id="financialSubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.financial.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.financial.index') }}">
+                                        لوحة التحكم المالية
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.financial.invoices*') ? 'active' : '' }}"
+                                    href="{{ route('admin.financial.invoices.index') }}">
+                                        إدارة الفواتير
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.financial.payments*') ? 'active' : '' }}"
+                                    href="{{ route('admin.financial.payments.index') }}">
+                                        إدارة المدفوعات
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if($user && $user->hasPermission('crm.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.crm*') ? 'active' : '' }}"
+                            href="#crmSubmenu" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('admin.crm*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                                <i class="fas fa-users me-2"></i>
+                                إدارة العملاء
+                            </a>
+
+                            <!-- Sub-menu -->
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.crm*') ? 'show' : '' }}" id="crmSubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.crm.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.crm.index') }}">
+                                        لوحة تحكم
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.crm.leads*') ? 'active' : '' }}"
+                                    href="{{ route('admin.crm.leads.index') }}">
+                                        إدارة العملاء المحتملين
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.crm.quotes*') ? 'active' : '' }}"
+                                    href="{{ route('admin.crm.quotes.index') }}">
+                                        إدارة العروض
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.crm.funnel*') ? 'active' : '' }}"
+                                    href="{{ route('admin.crm.funnel') }}">
+                                    المبيعات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.crm.activities*') ? 'active' : '' }}"
+                                    href="{{ route('admin.crm.activities') }}">
+                                    سجل الأنشطة
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if($user && $user->hasPermission('marketing.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.marketing*') ? 'active' : '' }}"
+                            href="#marketingSubmenu" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('admin.marketing*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                            <i class="fas fa-chart-pie me-2"></i>
+
+                                التسويق والحملات
+                            </a>
+
+                            <!-- Sub-menu -->
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.marketing*') ? 'show' : '' }}" id="marketingSubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.marketing.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.marketing.index') }}">
+                                        لوحة التسويق
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.marketing.campaigns*') ? 'active' : '' }}"
+                                    href="{{ route('admin.marketing.campaigns.index') }}">
+                                        إدارة الحملات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.marketing.coupons*') ? 'active' : '' }}"
+                                    href="{{ route('admin.marketing.coupons.index') }}">
+                                        إدارة الكوبونات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.marketing.analytics') ? 'active' : '' }}"
+                                    href="{{ route('admin.marketing.analytics') }}">
+                                        تحليلات التسويق
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if($user && $user->hasPermission('employees.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.employees*') || request()->routeIs('admin.permissions*') ||  request()->routeIs('admin.roles*') ? 'active' : '' }}"
+                            href="#employeeSubmenu" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('admin.employees*') || request()->routeIs('admin.permissions*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                                <i class="fas fa-user-check me-2"></i>
+                                إدارة الموظفين
+                            </a>
+
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.employees*') || request()->routeIs('admin.permissions*') ||  request()->routeIs('admin.roles*')? 'show' : '' }}" id="employeeSubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.employees*') ? 'active' : '' }}"
+                                    href="{{ route('admin.employees.index') }}"> الموظفين</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.roles*') ? 'active' : '' }}"
+                                    href="{{ route('admin.roles.index') }}">الأدوار والصلاحيات</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.permissions.matrix') ? 'active' : '' }}"
+                                    href="{{ route('admin.employees.permissions.matrix') }}">مصفوفة الصلاحيات</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if($user && $user->hasPermission('security.view'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.security*') ? 'active' : '' }}"
+                            href="#securitySubmenu" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('admin.security*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                                <i class="fas fa-shield-alt me-2"></i>
+                                الأمان والحماية
+                            </a>
+
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.security*') ? 'show' : '' }}" id="securitySubmenu">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.security.index') ? 'active' : '' }}"
+                                    href="{{ route('admin.security.index') }}">لوحة الأمان</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.security.logs') ? 'active' : '' }}"
+                                    href="{{ route('admin.security.logs') }}">سجلات الأمان</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.security.failed-logins') ? 'active' : '' }}"
+                                    href="{{ route('admin.security.failed-logins') }}">محاولات الدخول الفاشلة</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.security.analytics') ? 'active' : '' }}"
+                                    href="{{ route('admin.security.analytics') }}">تحليلات الأمان</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+                        @if($user && ($user->hasPermission('faqs.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}"
                             href="{{ route('admin.faqs.index') }}">
@@ -683,7 +850,19 @@
                                 الأسئلة الشائعة
                             </a>
                         </li>
+                        @endif
 
+                        @if($user && ($user->hasPermission('help.view') || $user->role === 'admin'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.help.*') ? 'active' : '' }}"
+                            href="{{ route('admin.help.index') }}">
+                            <i class="fas fa-headset me-2"></i>
+                                    طلب بمساعدة
+                            </a>
+                        </li>
+                        @endif
+
+                        @if($user && ($user->hasPermission('contacts.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"
                                href="{{ route('admin.contacts.index') }}">
@@ -691,9 +870,11 @@
                                رسائل اتصل بنا
                             </a>
                         </li>
+                        @endif
 
                         <hr>
 
+                        @if($user && ($user->hasPermission('settings.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}"
                                href="{{ route('admin.seo.index') }}">
@@ -702,7 +883,6 @@
                             </a>
                         </li>
 
-
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}"
                                href="{{ route('admin.settings.edit') }}">
@@ -710,6 +890,7 @@
                                 إعدادات الموقع
                             </a>
                         </li>
+                        @endif
 
 
                         <li class="nav-item">

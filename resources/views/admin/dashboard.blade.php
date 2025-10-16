@@ -7,7 +7,10 @@
     <h1 class="h2">لوحة التحكم الرئيسية</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <span class="badge bg-primary">مرحباً {{ auth()->user()->name }}</span>
+            @php
+            $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+            @endphp
+            <span class="badge bg-primary">مرحباً {{  $user->name }}</span>
         </div>
     </div>
 </div>
@@ -138,7 +141,7 @@
             <div class="card-body text-center">
                 <h5 class="card-title text-primary">الطلبات المعلقة</h5>
                 <h2 class="text-warning">0</h2>
-                <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-primary btn-sm">عرض الطلبات</a>
+                <a href="{{ route('admin.orders.enhanced.index') }}" class="btn btn-outline-primary btn-sm">عرض الطلبات</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,89 @@
+/* ===== INVOICE PRICING SECTION ===== */
+.invoice-pricing-container {
+    padding-top: var(--padding-box-small);
+    padding-bottom: var(--padding-box-small);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.logo-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm-5);
+}
+
+.logo-details .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-details .details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.customer-data {
+    padding: var(--padding-box-small-3);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box-3);
+    background-color: var(--surface-gray-box);
+}
+
+.customer-data-item-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.studio-package-details-item {
+    min-height: 68px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--padding-box-small-5) var(--padding-box-small-3);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box-3);
+    background-color: var(--surface-gray-box);
+}
+
+.studio-package-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap-sm-3);
+}
+
+.summary {
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box-3);
+    background-color: var(--surface-gray-box);
+}
+
+.payment-methods {
+    overflow: hidden;
+    padding: var(--padding-box-small-4);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-small-box-3);
+    background-color: var(--surface-gray-box);
+}
+
+.invoice-footer-pattern {
+    position: absolute;
+    max-width: 397px;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.signature p {
+    border-top: 2px dashed var(--text-subheading);
+    padding-top: var(--padding-box-small-5);
+}
+
+@media (max-width: 768px) {
+    .logo-details .details {
+        flex-direction: column;
+        gap: var(--gap-mobile-sm-4);
+    }
+}

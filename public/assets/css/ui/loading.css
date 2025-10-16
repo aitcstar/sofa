@@ -41,9 +41,14 @@
 }
 
 .alert-success {
-    background-color: #ad996f;
+    /*background-color: #ad996f;
     color: #ffffff;
+    border-left: 4px solid #ad996f;*/
+
+    background-color: #ad996ff5;
+    color: #07203e;
     border-left: 4px solid #ad996f;
+    text-align: center;
 }
 .alert-danger {
   background-color: var(--danger-light);

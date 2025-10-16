@@ -20,13 +20,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'role',
+        //'password',
         'phone',
-        'address',
-        'city',
-        'country',
-        'is_active',
+        'code',
+        'otpcode',
+       // 'is_active',
     ];
 
     /**
@@ -35,7 +33,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        //'password',
         'remember_token',
     ];
 
@@ -46,8 +44,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'is_active' => 'boolean',
+        //'password' => 'hashed',
+        //'is_active' => 'boolean',
     ];
 
     // Relationships
@@ -87,4 +85,17 @@ class User extends Authenticatable
     {
         return $this->role === 'customer';
     }
+
+    public function assignedOrders()
+{
+    return $this->hasMany(Order::class, 'employee_id'); // أو 'assigned_to' حسب اسم العمود عندك
+}
+
+
+public function assignedLeads()
+{
+    return $this->hasMany(Lead::class, 'assigned_to');
+}
+
+
 }

@@ -8,7 +8,9 @@
 <div class="breadcrumb-container container">
     <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="body-2 text-primary">المعرض</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="body-2 text-primary">
+        {{ app()->getLocale() == 'ar' ? 'المعرض' : 'Gallery' }}
+    </a>
 </div>
 
 <!-- ===== GALLERY SECTION ===== -->
@@ -123,13 +125,16 @@
                                 تم التسليم: {{ $exhibition->delivery_date ? \Carbon\Carbon::parse($exhibition->delivery_date)->format('F Y') : '—' }}
                             </p>
                         </div>
-                        <a href="{{ route('gallery.details', $exhibition->id) }}">
+                        <a href="{{ app()->getLocale() === 'ar'
+                            ? route('gallery.details', $exhibition->id)
+                            : route('gallery.details.en', $exhibition->id) }}">
+                            {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
                             <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}" alt="Exhibition Image" />
                         </a>
 
                     </div>
 
-                    <div class="gallery-item-content d-flex flex-column gap-sm-5">
+                    <div class="gallery-item-content d-flex flex-column gap-sm-5" style="margin: 23px;">
                         @if($exhibition->package)
                             <!-- اسم المعرض واسم الباكج -->
                             <div class="d-flex flex-column gap-sm-6">

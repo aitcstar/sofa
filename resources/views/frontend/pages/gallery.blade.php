@@ -205,6 +205,11 @@
 @endsection
 
 @push('styles')
+<style>
+.gallery-item-image img {
+    margin: -25px auto;
+}
+    </style>
 <link rel="stylesheet" href="{{ asset('assets/css/pages/gallery.css') }}">
 @endpush
 

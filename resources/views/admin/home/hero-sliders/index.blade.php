@@ -3,7 +3,9 @@
 @section('title', 'سلايدر الصفحة الرئيسية')
 
 @section('content')
-
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
 
     <form action="{{ route('admin.seo.update') }}" method="POST">
@@ -64,15 +66,19 @@
                     </div>
                 </div>
             </div>
+            @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
         <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
 
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">سلايدر الصفحة الرئيسية</h1>
+        @if($user && ($user->hasPermission('content.create') || $user->role === 'admin'))
         <a href="{{ route('admin.hero-sliders.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة سلايد جديد
         </a>
+        @endif
     </div>
 
     <!-- Table Card -->
@@ -108,16 +114,20 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('admin.hero-sliders.edit', $slider->id) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-edit me-1"></i> تعديل
-                                    </a>
-                                    <form action="{{ route('admin.hero-sliders.destroy', $slider->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
-                                            <i class="fas fa-trash me-1"></i> حذف
-                                        </button>
-                                    </form>
+                                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
+                                        <a href="{{ route('admin.hero-sliders.edit', $slider->id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-1"></i> تعديل
+                                        </a>
+                                    @endif
+                                    @if($user && ($user->hasPermission('content.delete') || $user->role === 'admin'))
+                                        <form action="{{ route('admin.hero-sliders.destroy', $slider->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                                <i class="fas fa-trash me-1"></i> حذف
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

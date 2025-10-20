@@ -3,6 +3,9 @@
 @section('title', 'إدارة الباكجات')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <!-- Header -->
 
@@ -64,7 +67,9 @@
                     </div>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @if($user && ($user->hasPermission('packages.edit') || $user->role === 'admin'))
+                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @endif
     </form>
 
     <hr><br>
@@ -101,16 +106,19 @@
                 </div>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @if($user && ($user->hasPermission('packages.edit') || $user->role === 'admin'))
+            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
 
         <br><hr> <br>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">إدارة الباكجات</h1>
+            @if($user && ($user->hasPermission('packages.create') || $user->role === 'admin'))
             <a href="{{ route('admin.packages.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-1"></i> إضافة باكج جديد
             </a>
+            @endif
         </div>
     <!-- Table Card -->
     <div class="card shadow-sm border-0">
@@ -149,19 +157,20 @@
 
                             <td>{{ $package->sort_order }}</td>
                             <td class="d-flex gap-1">
-                               <!-- <a href="{{ route('admin.packages.show', $package->id) }}" class="btn btn-sm btn-outline-info">
-                                    <i class="fas fa-eye"></i>عرض
-                                </a>-->
+                                @if($user && ($user->hasPermission('packages.edit') || $user->role === 'admin'))
                                 <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-sm btn-outline-primary">
                                     <i class="fas fa-edit me-1"></i> تعديل
                                 </a>
-                                <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"  class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash"></i>حذف
-                                    </button>
-                                </form>
+                                @endif
+                                @if($user && ($user->hasPermission('packages.delete') || $user->role === 'admin'))
+                                    <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من الحذف؟')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"  class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>حذف
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

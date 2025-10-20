@@ -3,20 +3,19 @@
 @section('title', 'الحملات التسويقية')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">الحملات التسويقية</h2>
-        <a href="{{ route('admin.marketing.campaigns.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> حملة جديدة
-        </a>
+        @if($user && ($user->hasPermission('marketing.campaigns.create') || $user->role === 'admin'))
+            <a href="{{ route('admin.marketing.campaigns.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> حملة جديدة
+            </a>
+        @endif
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
 
     <!-- Filters -->
     <div class="card mb-4">
@@ -154,13 +153,16 @@
                                        class="btn btn-sm btn-info" title="عرض">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    @if($user && ($user->hasPermission('marketing.campaigns.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.marketing.campaigns.edit', $campaign) }}"
                                        class="btn btn-sm btn-warning" title="تعديل">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    @endif
 
 
 
+                                    @if($user && ($user->hasPermission('marketing.campaigns.delete') || $user->role === 'admin'))
                                     @if($campaign->status !== 'active')
                                     <form action="{{ route('admin.marketing.campaigns.destroy', $campaign) }}"
                                           method="POST" class="d-inline"
@@ -171,6 +173,7 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
+                                    @endif
                                     @endif
                                 </div>
                             </td>

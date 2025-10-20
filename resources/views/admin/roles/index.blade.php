@@ -3,12 +3,17 @@
 @section('title', 'إدارة الأدوار والصلاحيات')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">إدارة الأدوار والصلاحيات</h2>
+        @if($user && ($user->hasPermission('employees.roles') || $user->role === 'admin'))
         <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> إضافة دور جديد
         </a>
+        @endif
     </div>
 
 

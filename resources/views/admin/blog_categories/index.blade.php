@@ -3,14 +3,19 @@
 @section('title', 'إدارة أقسام المدونة')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
 
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">أقسام المدونة</h1>
+        @if($user && ($user->hasPermission('blogs.create') || $user->role === 'admin'))
         <a href="{{ route('admin.blog_categories.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة قسم جديد
         </a>
+        @endif
     </div>
 
     <!-- Table Card -->
@@ -34,15 +39,20 @@
                             <td>{{ $category->name_en }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    @if($user && ($user->hasPermission('blogs.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.blog_categories.edit', $category->id) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit me-1"></i> تعديل
                                     </a>
+                                    @endif
+
+                                    @if($user && ($user->hasPermission('blogs.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.blog_categories.destroy', $category->id) }}" method="POST" class="d-inline">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
                                             <i class="fas fa-trash me-1"></i> حذف
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

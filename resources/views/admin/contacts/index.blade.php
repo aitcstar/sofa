@@ -3,13 +3,13 @@
 @section('title', 'رسائل اتصل بنا')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">رسائل اتصل بنا</h1>
-        <!--<a href="{{ route('admin.contacts.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> إرسال رسالة جديدة
-        </a>-->
     </div>
 
 
@@ -45,10 +45,12 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    @if($user && ($user->hasPermission('contacts.show') || $user->role === 'admin'))
                                     <a href="{{ route('admin.contacts.show', $msg) }}" class="btn btn-sm btn-outline-info">
                                         <i class="fas fa-eye me-1"></i> عرض
                                     </a>
-
+                                    @endif
+                                    @if($user && ($user->hasPermission('contacts.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.contacts.destroy', $msg) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -56,6 +58,7 @@
                                             <i class="fas fa-trash me-1"></i> حذف
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

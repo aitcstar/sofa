@@ -3,13 +3,18 @@
 @section('title', ' الأسئلة الشائعة')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2"> الأسئلة الشائعة</h1>
+        @if($user && ($user->hasPermission('faqs.create') || $user->role === 'admin'))
         <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة سؤال جديد
         </a>
+        @endif
     </div>
 
     <form action="{{ route('admin.seo.update') }}" method="POST">
@@ -70,7 +75,9 @@
                     </div>
                 </div>
             </div>
+            @if($user && ($user->hasPermission('faqs.edit') || $user->role === 'admin'))
         <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
     <br>
 
@@ -107,8 +114,9 @@
                 </div>
             </div>
         </div>
-
+        @if($user && ($user->hasPermission('faqs.edit') || $user->role === 'admin'))
         <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
 
         <br><hr> <br>
@@ -153,9 +161,12 @@
                             <td>{{ $faq->sort }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    @if($user && ($user->hasPermission('faqs.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit me-1"></i> تعديل
                                     </a>
+                                    @endif
+                                    @if($user && ($user->hasPermission('faqs.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.faqs.destroy', $faq->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -163,6 +174,7 @@
                                             <i class="fas fa-trash me-1"></i> حذف
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

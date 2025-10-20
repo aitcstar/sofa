@@ -8,6 +8,7 @@ use App\Models\SeoSetting;
 use App\Models\AboutPage;
 use App\Models\OrderStage;
 use App\Models\OrderLog;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -270,15 +271,25 @@ class OrderController extends Controller
     return view('frontend.pages.my-orders', compact('seo', 'sections','orders'));
 }
 
-public function showInvoice(Order $order)
+public function showInvoice(Request $request,Order $order)
 {
     // تأكد أن الطلب يخص المستخدم الحالي
     if (auth()->id() !== $order->user_id && !auth()->user()->isAdmin()) {
         abort(403);
     }
 
-    $order->load(['package', 'package.packageUnitItems.unit.images', 'package.packageUnitItems.item']);
+    //$order->load(['package', 'package.packageUnitItems.unit.images', 'package.packageUnitItems.item']);
 
-    return view('frontend.pages.order-invoice', compact('order'));
+    $invoice = Invoice::with([
+        'customer',
+        'assignedEmployee',
+        'payments',
+        'package.packageUnitItems.unit',
+        'package.packageUnitItems.item',
+        'package.images',
+    ])->where('order_id', $order->id)->first();
+
+
+    return view('frontend.pages.order-invoice', compact('invoice'));
 }
 }

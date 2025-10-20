@@ -1,9 +1,15 @@
 @extends('admin.layouts.app')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
+
+@if($user && ($user->hasPermission('crm.quotes.create') || $user->role === 'admin'))
 <a href="{{ route('admin.crm.quotes.create') }}" class="btn btn-success">
     <i class="fas fa-file-invoice me-2"></i>إنشاء عرض سعر
 </a>
+@endif
 <form method="GET" class="row g-2 mb-3">
     <div class="col-md-3">
         <input type="text" name="search" class="form-control" placeholder="بحث عن رقم أو عميل" value="{{ request('search') }}">

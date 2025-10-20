@@ -3,6 +3,9 @@
 @section('title', 'تعديل قسم خطوات تأثيث وحدتك')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <h1 class="h3 mb-4">تعديل خطوات تأثيث وحدتك</h1>
 
@@ -126,11 +129,15 @@
                     </div>
                 @endforeach
             </div>
+            @if($user && ($user->hasPermission('content.create') || $user->role === 'admin'))
             <button type="button" id="add-step" class="btn btn-secondary mt-2">إضافة خطوة</button>
+            @endif
         </div>
 
         <div class="mt-4">
+            @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
             <button type="submit" class="btn btn-primary">حفظ</button>
+            @endif
         </div>
     </form>
 </div>

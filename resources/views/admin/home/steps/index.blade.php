@@ -3,13 +3,18 @@
 @section('title', 'مراحل تجهيز وحدتك')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">مراحل تجهيز وحدتك</h1>
+        @if($user && ($user->hasPermission('content.create') || $user->role === 'admin'))
         <a href="{{ route('admin.steps.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة خطوة جديدة
         </a>
+        @endif
     </div>
 
     <!-- Table Card -->
@@ -39,9 +44,12 @@
                             <td>{{ $step->order }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.steps.edit', $step) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit me-1"></i> تعديل
                                     </a>
+                                    @endif
+                                    @if($user && ($user->hasPermission('content.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.steps.destroy', $step) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -49,6 +57,7 @@
                                             <i class="fas fa-trash me-1"></i> حذف
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

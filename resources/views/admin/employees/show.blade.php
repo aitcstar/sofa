@@ -3,6 +3,9 @@
 @section('title', 'تفاصيل الموظف - ' . $employee->name)
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Page Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -19,13 +22,16 @@
             </h1>
         </div>
         <div class="d-flex gap-2">
+            @if($user && ($user->hasPermission('employees.edit') || $user->role === 'admin'))
             <a href="{{ route('admin.employees.edit', $employee) }}" class="btn btn-warning">
                 <i class="fas fa-edit"></i> تعديل
             </a>
-
+            @endif
+            @if($user && ($user->hasPermission('employees.permissions') || $user->role === 'admin'))
             <a href="{{ route('admin.employees.permissions.matrix', $employee) }}" class="btn btn-info">
                 <i class="fas fa-key"></i> الصلاحيات
             </a>
+            @endif
         </div>
     </div>
 
@@ -196,9 +202,9 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">الطلبات الحديثة</h6>
-                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assignOrdersModal">
+                   <!-- <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#assignOrdersModal">
                         <i class="fas fa-plus"></i> تعيين طلبات
-                    </button>
+                    </button>-->
                 </div>
                 <div class="card-body">
                     @if($employee->assignedOrders->count() > 0)
@@ -215,23 +221,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($employee->assignedOrders as $order)
+                                    @foreach($employee->assignedOrders->where('is_active',1) as $order)
                                         <tr>
                                             <td>
-                                                <a href="{{ route('admin.orders.show', $order) }}" class="text-primary">
-                                                    {{ $order->order_number }}
+                                                <a href="{{ route('admin.orders.enhanced.show', $order) }}" class="text-primary">
+                                                    {{ $order->order->order_number }}
                                                 </a>
                                             </td>
                                             <td>{{ $order->user->name }}</td>
-                                            <td>{{ $order->package->name ?? 'غير محدد' }}</td>
+                                            <td>{{ $order->order->package->name_ar ?? 'غير محدد' }}</td>
                                             <td>
-                                                <span class="badge badge-{{ $order->status_color }}">
-                                                    {{ $order->status_text }}
+                                                <span class="badge bg-{{ $order->order->getStatusColorAttribute() }}">
+                                                    {{ $order->order->getStatusTextAttribute() }}
                                                 </span>
                                             </td>
                                             <td>{{ $order->created_at->format('Y-m-d') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.orders.show', $order) }}"
+                                                <a href="{{ route('admin.orders.enhanced.show', $order) }}"
                                                    class="btn btn-sm btn-outline-primary">
                                                     <i class="fas fa-eye"></i>
                                                 </a>

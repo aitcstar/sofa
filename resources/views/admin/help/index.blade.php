@@ -3,6 +3,9 @@
 @section('title', 'طلبات المساعدة')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
 
     <form action="{{ route('admin.seo.update') }}" method="POST">
@@ -63,7 +66,9 @@
                     </div>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @if($user && ($user->hasPermission('help.edit') || $user->role === 'admin'))
+                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @endif
     </form>
     <br><hr> <br>
 
@@ -100,8 +105,9 @@
                 </div>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @if($user && ($user->hasPermission('help.edit') || $user->role === 'admin'))
+            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
 
         <br><hr> <br>
@@ -143,6 +149,7 @@
                             <td>{{ $req->message ?? '-' }}</td>
                             <td>{{ $req->created_at->format('d/m/Y H:i') }}</td>
                             <td>
+                                @if($user && ($user->hasPermission('help.edit') || $user->role === 'admin'))
                                 <form action="{{ route('admin.requests.destroy', $req) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -151,6 +158,7 @@
                                         <i class="fas fa-trash me-1"></i> حذف
                                     </button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @empty

@@ -10,6 +10,11 @@
     @include('admin.financial.payments.partials.table', ['payments' => $payments])
 
     <!-- Pagination -->
-    {{ $payments->links() }}
+    @if($payments->hasPages())
+    <div class="card-footer">
+        {{ $payments->links('pagination::bootstrap-4') }}
+    </div>
+    @endif
+
 </div>
 @endsection

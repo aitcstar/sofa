@@ -26,8 +26,11 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+
         if (Auth::guard('employee')->attempt($credentials, $request->filled('remember'))) {
+
             $request->session()->regenerate();
+            //dd($credentials);
             return redirect()->intended(route('admin.dashboard'));
         }
 

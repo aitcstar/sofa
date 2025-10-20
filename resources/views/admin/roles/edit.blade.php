@@ -85,7 +85,7 @@
                                                {{ in_array($permission->id, old('permissions', $rolePermissions)) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="permission_{{ $permission->id }}">
                                             {{ $permission->display_name }}
-                                            <small class="text-muted d-block">{{ $permission->name }}</small>
+                                            <small class="text-muted d-block">&nbsp;</small>
                                         </label>
                                     </div>
                                 </div>
@@ -107,8 +107,7 @@
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox"
                                        id="is_active" name="is_active"
-                                       {{ old('is_active', $role->is_active) ? 'checked' : '' }}
-                                       {{ $role->name === 'super_admin' ? 'disabled' : '' }}>
+                                       {{ old('is_active', $role->is_active) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="is_active">
                                     تفعيل الدور
                                 </label>

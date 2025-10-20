@@ -353,7 +353,7 @@ class EnhancedCRMController extends Controller
     {
         $leads = Lead::whereIn('status', ['contacted', 'interested'])->get();
 
-        return view('admin.crm.quote.create', compact('leads'));
+        return view('admin.crm.quotes.create', compact('leads'));
     }
 
     /**
@@ -374,7 +374,7 @@ class EnhancedCRMController extends Controller
             'valid_until' => 'required|date',
             'terms' => 'nullable|string',
         ]);
-dd($request->all());
+        //dd($request->all());
         //DB::beginTransaction();
 
         try {

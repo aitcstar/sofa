@@ -3,6 +3,9 @@
 @section('title', 'لوحة التحكم المالية')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -19,9 +22,11 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#dateRangeModal">
                 <i class="fas fa-calendar me-2"></i>تحديد الفترة
             </button>
+            @if($user && ($user->hasPermission('financial.export') || $user->role === 'admin'))
             <button type="button" class="btn btn-success" onclick="exportFinancialReport()">
                 <i class="fas fa-file-excel me-2"></i>تصدير التقرير
             </button>
+            @endif
         </div>
     </div>
 

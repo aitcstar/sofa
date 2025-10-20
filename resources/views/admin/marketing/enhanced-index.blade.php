@@ -3,6 +3,9 @@
 @section('title', 'لوحة التسويق')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -16,12 +19,17 @@
             </nav>
         </div>
         <div>
+            @if($user && ($user->hasPermission('marketing.campaigns.create') || $user->role === 'admin'))
             <a href="{{ route('admin.marketing.campaigns.create') }}" class="btn btn-primary me-2">
                 <i class="fas fa-plus me-2"></i>حملة جديدة
             </a>
+            @endif
+
+            @if($user && ($user->hasPermission('marketing.coupons.create') || $user->role === 'admin'))
             <a href="{{ route('admin.marketing.coupons.create') }}" class="btn btn-success">
                 <i class="fas fa-plus me-2"></i>كوبون جديد
             </a>
+            @endif
         </div>
     </div>
 
@@ -208,24 +216,34 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+
+                        @if($user && ($user->hasPermission('marketing.campaigns.view') || $user->role === 'admin'))
                         <div class="col-md-4 mb-3">
                             <a href="{{ route('admin.marketing.campaigns.index') }}" class="btn btn-outline-primary w-100 py-3">
                                 <i class="fas fa-list fa-2x mb-2"></i><br>
                                 <strong>إدارة الحملات</strong>
                             </a>
                         </div>
+                        @endif
+
+
+                        @if($user && ($user->hasPermission('marketing.coupons.view') || $user->role === 'admin'))
                         <div class="col-md-4 mb-3">
                             <a href="{{ route('admin.marketing.coupons.index') }}" class="btn btn-outline-success w-100 py-3">
                                 <i class="fas fa-tags fa-2x mb-2"></i><br>
                                 <strong>إدارة الكوبونات</strong>
                             </a>
                         </div>
+                        @endif
+
+                        @if($user && ($user->hasPermission('marketing.analytics') || $user->role === 'admin'))
                         <div class="col-md-4 mb-3">
                             <a href="{{ route('admin.marketing.analytics') }}" class="btn btn-outline-info w-100 py-3">
                                 <i class="fas fa-chart-line fa-2x mb-2"></i><br>
                                 <strong>التحليلات والتقارير</strong>
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

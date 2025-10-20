@@ -203,9 +203,21 @@ class EnhancedFinancialController extends Controller
      */
     public function showInvoice(Invoice $invoice)
     {
-        $invoice->load(['order.user', 'payments']);
+        //$invoice->load(['order.user', 'payments']);
 
-        return view('admin.financial.invoices.show', compact('invoice'));
+        $invoice->load([
+            'customer',
+            'assignedEmployee',
+            'payments',
+            'package.packageUnitItems.unit',
+            'package.packageUnitItems.item',
+            'package.images',
+        ]);
+
+        return view('admin.orders.invoice', compact('invoice'));
+
+
+        //return view('admin.financial.invoices.show', compact('invoice'));
     }
 
     /**
@@ -566,7 +578,7 @@ class EnhancedFinancialController extends Controller
 
         // Generate PDF using DomPDF
         $pdf = Pdf::loadView('admin.financial.invoices.pdf', compact('invoice'));
-        
+
         return $pdf->download('invoice-' . $invoice->invoice_number . '.pdf');
     }
 }

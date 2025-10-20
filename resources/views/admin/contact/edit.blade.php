@@ -3,6 +3,9 @@
 @section('title', 'إدارة صفحة اتصل بنا')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">إدارة صفحة اتصل بنا</h1>
@@ -67,7 +70,9 @@
                     </div>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
+                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @endif
     </form>
     <br>
 
@@ -174,9 +179,11 @@
 
                 <!-- أزرار الحفظ -->
                 <div class="d-flex gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i> حفظ التعديلات
-                    </button>
+                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> حفظ التعديلات
+                        </button>
+                    @endif
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-times me-1"></i> إلغاء
                     </a>

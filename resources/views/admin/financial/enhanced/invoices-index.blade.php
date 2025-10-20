@@ -3,6 +3,9 @@
 @section('title', 'إدارة الفواتير')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -17,9 +20,11 @@
             </nav>
         </div>
         <div>
+            @if($user && ($user->hasPermission('financial.invoices.create') || $user->role === 'admin'))
             <a href="{{ route('admin.financial.invoices.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>إنشاء فاتورة جديدة
             </a>
+            @endif
         </div>
     </div>
 
@@ -67,7 +72,7 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
+    <!-- Statistics Cards
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card border-primary">
@@ -129,7 +134,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Invoices Table -->
     <div class="card">
@@ -149,7 +154,7 @@
                             <th>المبلغ الإجمالي</th>
                             <th>المبلغ المدفوع</th>
                             <th>المتبقي</th>
-                            <th>الحالة</th>
+
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -181,42 +186,25 @@
                                 @endif
                             </td>
                             <td><strong>{{ number_format($invoice->total_amount, 2) }} ريال</strong></td>
-                            <td><span class="text-success">{{ number_format($invoice->paid_amount ?? 0, 2) }} ريال</span></td>
-                            <td><span class="text-danger">{{ number_format($invoice->total_amount - ($invoice->paid_amount ?? 0), 2) }} ريال</span></td>
-                            <td>
-                                @php
-                                    $statusColors = [
-                                        'unpaid' => 'warning',
-                                        'partial' => 'info',
-                                        'paid' => 'success',
-                                        'overdue' => 'danger',
-                                        'cancelled' => 'secondary'
-                                    ];
-                                    $statusTexts = [
-                                        'unpaid' => 'غير مدفوعه',
-                                        'partial' => 'دفعة أولى',
-                                        'paid' => 'مدفوع',
-                                        'overdue' => 'متأخر',
-                                        'cancelled' => 'ملغي'
-                                    ];
-                                @endphp
-                                <span class="badge bg-{{ $statusColors[$invoice->status] ?? 'secondary' }}">
-                                    {{ $statusTexts[$invoice->status] ?? $invoice->status }}
-                                </span>
-                            </td>
+                            <td><span class="text-success">{{ number_format($invoice->order->paid_amount ?? 0, 2) }} ريال</span></td>
+                            <td><span class="text-danger">{{ number_format($invoice->total_amount - ($invoice->order->paid_amount ?? 0), 2) }} ريال</span></td>
+
                             <td>
                                 <div class="btn-group btn-group-sm">
+                                    @if($user && ($user->hasPermission('financial.invoices.view') || $user->role === 'admin'))
+
                                     <a href="{{ route('admin.financial.invoices.show', $invoice->id) }}" class="btn btn-info" title="عرض">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    @endif
                                  {{-- @if($invoice->status !== 'paid')
                                     <a href="{{ route('admin.financial.invoices.edit', $invoice->id) }}" class="btn btn-warning" title="تعديل">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    @endif--}}
+                                    @endif
                                     <a href="{{ route('admin.financial.invoices.download', $invoice->id) }}" class="btn btn-secondary" title="تحميل PDF">
                                         <i class="fas fa-download"></i>
-                                    </a>
+                                    </a>--}}
                                 </div>
                             </td>
                         </tr>
@@ -234,7 +222,7 @@
         </div>
         @if($invoices->hasPages())
         <div class="card-footer">
-            {{ $invoices->links() }}
+            {{ $invoices->links('pagination::bootstrap-4') }}
         </div>
         @endif
     </div>

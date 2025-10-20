@@ -64,6 +64,7 @@ class Order extends Model
         'paid_amount' => 'decimal:2'
     ];
 
+
     // العلاقات
     public function user()
     {

@@ -3,6 +3,9 @@
 @section('title', 'المدونات')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
 
     <form action="{{ route('admin.seo.update') }}" method="POST">
@@ -63,7 +66,9 @@
                     </div>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @if($user && ($user->hasPermission('blogs.edit') || $user->role === 'admin'))
+                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+             @endif
     </form>
     <br><hr> <br>
 
@@ -100,8 +105,9 @@
                 </div>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @if($user && ($user->hasPermission('blogs.edit') || $user->role === 'admin'))
+            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        @endif
     </form>
 
         <br><hr> <br>
@@ -110,9 +116,11 @@
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">المدونات</h1>
+        @if($user && ($user->hasPermission('blogs.create') || $user->role === 'admin'))
         <a href="{{ route('admin.blogs.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة مدونة جديدة
         </a>
+        @endif
     </div>
 
     <!-- Table Card -->
@@ -150,9 +158,12 @@
                             <td>{{ $blog->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
+                                    @if($user && ($user->hasPermission('blogs.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.blogs.edit', $blog) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit me-1"></i> تعديل
                                     </a>
+                                    @endif
+                                    @if($user && ($user->hasPermission('blogs.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.blogs.destroy', $blog) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -160,6 +171,7 @@
                                             <i class="fas fa-trash me-1"></i> حذف
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

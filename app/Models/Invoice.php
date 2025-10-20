@@ -61,6 +61,19 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function package()
+    {
+        return $this->hasOneThrough(
+            Package::class,
+            Order::class,
+            'id',          // Foreign key on orders table
+            'id',          // Foreign key on packages table
+            'order_id',    // Local key on invoices table
+            'package_id'   // Local key on orders table
+        );
+    }
+
+
     // Helper Methods
 
 
@@ -124,6 +137,12 @@ class Invoice extends Model
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+
+    public function assignedEmployee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function createdBy()
@@ -328,7 +347,7 @@ class Invoice extends Model
         ]);
     }
 
-    public function getItemsAttribute(): array
+   /* public function getItemsAttribute(): array
     {
         if (!$this->order) {
             return [];
@@ -347,4 +366,31 @@ class Invoice extends Model
             ]
         ];
     }
+    */
+    public function getItemsAttribute()
+{
+    if (!$this->order) {
+        return collect();
+    }
+
+    // إذا كان الطلب مرتبط بباقة، نرجع عنصر يمثل الباقة
+    $items = collect();
+
+    if ($this->order->package) {
+        $items->push((object)[
+            'package' => $this->order->package,
+            'quantity' => $this->order->units_count ?? 1,
+            'unit_price' => $this->subtotal,
+            'total' => $this->subtotal,
+            'details' => (object)[
+                'colors' => $this->order->colors,
+                'specifications' => $this->order->specifications,
+            ],
+        ]);
+    }
+
+    // ممكن تضيف خدمات إضافية هنا لو عندك
+    return $items;
+}
+
 }

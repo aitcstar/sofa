@@ -3,14 +3,19 @@
 @section('title', 'أسئلة الاستبيان')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
 
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">أسئلة الاستبيان</h1>
+        @if($user && ($user->hasPermission('surveys.create') || $user->role === 'admin'))
         <a href="{{ route('admin.survey-questions.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة سؤال جديد
         </a>
+        @endif
     </div>
 
     <!-- Questions Table Card -->
@@ -42,9 +47,12 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
+                                        @if($user && ($user->hasPermission('surveys.edit') || $user->role === 'admin'))
                                         <a href="{{ route('admin.survey-questions.edit', $question) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-edit me-1"></i> تعديل
                                         </a>
+                                        @endif
+                                        @if($user && ($user->hasPermission('surveys.delete') || $user->role === 'admin'))
                                         <form action="{{ route('admin.survey-questions.destroy', $question) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
@@ -52,6 +60,7 @@
                                                 <i class="fas fa-trash me-1"></i> حذف
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

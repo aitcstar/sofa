@@ -36,7 +36,7 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name|max:255',
             'display_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'is_active' => 'boolean',
+            //'is_active' => 'boolean',
             'permissions' => 'array',
             'permissions.*' => 'exists:permissions,id',
         ]);
@@ -80,11 +80,13 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        //dd($request->all());
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
             'display_name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'is_active' => 'boolean',
+            //'is_active' => 'boolean',
             'permissions' => 'array',
             'permissions.*' => 'exists:permissions,id',
         ]);
@@ -97,6 +99,7 @@ class RoleController extends Controller
         ]);
 
         $role->permissions()->sync($validated['permissions'] ?? []);
+
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'تم تحديث الدور بنجاح');

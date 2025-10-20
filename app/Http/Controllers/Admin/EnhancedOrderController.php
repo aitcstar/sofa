@@ -29,6 +29,12 @@ class EnhancedOrderController extends Controller
     {
         $query = Order::with(['user', 'package', 'assignedEmployee', 'activeAssignments.user']);
 
+        // Filter orders by assigned employee if not admin
+        $user = auth('admin')->user() ?? auth('employee')->user();
+        if ($user && $user->role !== 'admin' && !$user->hasPermission('orders.view_all')) {
+            $query->where('assigned_to', $user->id);
+        }
+
         // Apply filters
         if ($request->filled('status')) {
             $query->where('status', $request->status);

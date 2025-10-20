@@ -3,6 +3,9 @@
 @section('title', 'لوحة تحكم CRM')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -16,9 +19,11 @@
             </nav>
         </div>
         <div>
+            @if($user && ($user->hasPermission('crm.leads.create') || $user->role === 'admin'))
             <a href="{{ route('admin.crm.leads.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>إضافة عميل محتمل
             </a>
+            @endif
         </div>
     </div>
 
@@ -213,9 +218,11 @@
                                     <td>{{ $lead->assignedTo->name ?? '-' }}</td>
                                     <td>{{ $lead->created_at->format('Y-m-d') }}</td>
                                     <td>
+                                        @if($user && ($user->hasPermission('crm.leads.view') || $user->role === 'admin'))
                                         <a href="{{ route('admin.crm.leads.show', $lead->id) }}" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
@@ -242,18 +249,29 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
+                        @if($user && ($user->hasPermission('crm.leads.create') || $user->role === 'admin'))
                         <a href="{{ route('admin.crm.leads.create') }}" class="btn btn-primary">
                             <i class="fas fa-user-plus me-2"></i>إضافة عميل محتمل
                         </a>
+                        @endif
+
+                        @if($user && ($user->hasPermission('crm.quotes.create') || $user->role === 'admin'))
                         <a href="{{ route('admin.crm.quotes.create') }}" class="btn btn-success">
                             <i class="fas fa-file-invoice me-2"></i>إنشاء عرض سعر
                         </a>
+                        @endif
+
+                        @if($user && ($user->hasPermission('crm.funnel') || $user->role === 'admin'))
                         <a href="{{ route('admin.crm.funnel') }}" class="btn btn-info">
                             <i class="fas fa-filter me-2"></i> المبيعات
                         </a>
+                        @endif
+
+                        @if($user && ($user->hasPermission('crm.activities') || $user->role === 'admin'))
                         <a href="{{ route('admin.crm.activities') }}" class="btn btn-warning">
                             <i class="fas fa-history me-2"></i>سجل الأنشطة
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>

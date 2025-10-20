@@ -3,6 +3,9 @@
 @section('title', 'تعديل تايم لاين الطلب')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">تعديل تايم لاين الطلب</h1>
@@ -74,17 +77,21 @@
                             @endforeach
                         </div>
 
+                        @if($user && ($user->hasPermission('content.create') || $user->role === 'admin'))
                         <button type="button" id="add-item" class="btn btn-secondary">
                             <i class="fas fa-plus"></i> إضافة عنصر
                         </button>
+                        @endif
                     </div>
                 </div>
 
                 <!-- أزرار الحفظ -->
                 <div class="d-flex gap-2 mt-4">
+                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-1"></i> حفظ التعديلات
                     </button>
+                    @endif
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-times me-1"></i> إلغاء
                     </a>

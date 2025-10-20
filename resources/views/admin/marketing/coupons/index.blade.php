@@ -3,6 +3,9 @@
 @section('title', 'إدارة الكوبونات')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -17,9 +20,11 @@
             </nav>
         </div>
         <div>
+            @if($user && ($user->hasPermission('marketing.coupons.create') || $user->role === 'admin'))
             <a href="{{ route('admin.marketing.coupons.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>إضافة كوبون جديد
             </a>
+            @endif
         </div>
     </div>
 
@@ -113,9 +118,13 @@
                                 @endif
                             </td>
                             <td>
+                                @if($user && ($user->hasPermission('marketing.coupons.edit') || $user->role === 'admin'))
                                 <a href="{{ route('admin.marketing.coupons.edit', $coupon) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                                @endif
+
+                                @if($user && ($user->hasPermission('marketing.coupons.delete') || $user->role === 'admin'))
                                 <form action="{{ route('admin.marketing.coupons.destroy', $coupon) }}" method="POST" class="d-inline" onsubmit="return confirm('هل أنت متأكد من حذف هذا الكوبون؟')">
                                     @csrf
                                     @method('DELETE')
@@ -123,6 +132,8 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+                                @endif
+
                             </td>
                         </tr>
                         @endforeach

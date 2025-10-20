@@ -3,12 +3,17 @@
 @section('title', 'إدارة العملاء المحتملين')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="h3">إدارة العملاء المحتملين</h1>
+        @if($user && ($user->hasPermission('crm.leads.create') || $user->role === 'admin'))
         <a href="{{ route('admin.crm.leads.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة عميل محتمل
         </a>
+        @endif
     </div>
 
     <!-- فلترة وبحث -->
@@ -134,8 +139,12 @@
                             <td>{{ $lead->created_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
+                                    @if($user && ($user->hasPermission('crm.leads.view') || $user->role === 'admin'))
                                     <a href="{{ route('admin.crm.leads.show', $lead) }}" class="btn btn-sm btn-primary">عرض</a>
+                                    @endif
+                                    @if($user && ($user->hasPermission('crm.leads.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.crm.leads.edit', $lead) }}" class="btn btn-sm btn-warning">تعديل</a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

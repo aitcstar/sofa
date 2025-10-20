@@ -21,6 +21,6 @@ class AdminOrEmployeeAuth
         }
 
         // لو مش أي واحد منهم → رجّعه لصفحة الدخول
-        return redirect()->route('login');
+        return redirect()->route('admin.login');
     }
 }

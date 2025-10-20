@@ -38,7 +38,7 @@
             <!-- actions -->
             <div class="order-details-action d-flex gap-sm-4">
                 <div class="d-flex gap-sm-4" style="background-color: #EEF1F5;">
-                    <a href="{{ app()->getLocale() == 'ar' ? route('order.invoice', $order) : route('order.invoice.en', $order) }} {{ route('order.invoice', $order) }}" target="_blank" class="d-flex gap-sm-4" >
+                    <a href="{{ app()->getLocale() == 'ar' ? route('order.invoice', $order) : route('order.invoice.en', $order) }}" target="_blank" class="d-flex gap-sm-4" >
                         <p class="body-3 mb-0">{{ __('site.download_invoice') }}</p>
                         <i class="fa-solid fa-download"></i>
                     </a>

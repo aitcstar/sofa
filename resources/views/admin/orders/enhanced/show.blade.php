@@ -3,6 +3,9 @@
 @section('title', 'تفاصيل الطلب - ' . $order->order_number)
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -253,9 +256,11 @@
                     <div class="mt-3">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h6 class="text-muted mb-0"><i class="fas fa-calendar-alt me-2"></i>جدول الدفعات:</h6>
-                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addPaymentScheduleModal">
-                                <i class="fas fa-plus me-1"></i>إضافة دفعة
-                            </button>
+                            @if($user && ($user->hasPermission('financial.payments.create') || $user->role === 'admin'))
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addPaymentScheduleModal">
+                                    <i class="fas fa-plus me-1"></i>إضافة دفعة
+                                </button>
+                            @endif
                         </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-bordered" id="paymentSchedulesTable">
@@ -280,14 +285,16 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if($schedule->status !== 'paid')
-                                            <button type="button" class="btn btn-sm btn-success mark-paid-btn" data-schedule-id="{{ $schedule->id }}">
-                                                <i class="fas fa-check"></i> تحديد كمدفوعة
-                                            </button>
+                                            @if($user && ($user->hasPermission('financial.payments.edit') || $user->role === 'admin'))
+                                                @if($schedule->status !== 'paid')
+                                                <button type="button" class="btn btn-sm btn-success mark-paid-btn" data-schedule-id="{{ $schedule->id }}">
+                                                    <i class="fas fa-check"></i> تحديد كمدفوعة
+                                                </button>
+                                                @endif
+                                                <button type="button" class="btn btn-sm btn-danger delete-schedule-btn" data-schedule-id="{{ $schedule->id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             @endif
-                                            <button type="button" class="btn btn-sm btn-danger delete-schedule-btn" data-schedule-id="{{ $schedule->id }}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
                                         </td>
                                     </tr>
                                     @empty
@@ -410,21 +417,36 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
+                        @if($user && ($user->hasPermission('orders.status') || $user->role === 'admin'))
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateStatusModal">
                             <i class="fas fa-sync me-2"></i>تحديث الحالة
                         </button>
+                        @endif
+
+                        @if($user && ($user->hasPermission('orders.assign') || $user->role === 'admin'))
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assignEmployeeModal">
                             <i class="fas fa-user-plus me-2"></i>تعيين موظف
                         </button>
+                        @endif
+
+                        @if($user && ($user->hasPermission('orders.note') || $user->role === 'admin'))
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addNoteModal">
                             <i class="fas fa-sticky-note me-2"></i>إضافة ملاحظة
                         </button>
+                        @endif
+
+                        @if($user && ($user->hasPermission('orders.updatetimeline') || $user->role === 'admin'))
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateTimelineModal">
                             <i class="fas fa-tasks me-2"></i>تحديث المراحل
                         </button>
+                        @endif
+
+                        @if($user && ($user->hasPermission('orders.invoice') || $user->role === 'admin'))
                         <a href="{{ route('admin.financial.invoices.create', ['order_id' => $order->id]) }}" class="btn btn-secondary">
                             <i class="fas fa-file-invoice me-2"></i>إنشاء فاتورة
                         </a>
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -444,9 +466,12 @@
                                     <h6 class="mb-1">{{ $assignment->user->name }}</h6>
                                     <small class="text-muted">{{ $assignment->user->job_title }}</small>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-danger" onclick="removeAssignment({{ $assignment->id }})">
-                                    <i class="fas fa-times"></i>
-                                </button>
+
+                                @if($user && ($user->hasPermission('orders.unassignment') || $user->role === 'admin'))
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="removeAssignment({{ $assignment->id }})">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                @endif
                             </div>
                         </div>
                         @endforeach
@@ -460,6 +485,7 @@
             </div>
 
             <!-- Internal Notes -->
+
             <div class="card mb-4">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0"><i class="fas fa-comment-dots me-2"></i>الملاحظات الداخلية</h5>
@@ -484,9 +510,11 @@
                     <div class="list-group">
                         @if($order->invoices && count($order->invoices) > 0)
                             @foreach($order->invoices as $invoice)
-                            <a href="{{ route('admin.financial.invoices.show', $invoice->id) }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-file-invoice me-2"></i>فاتورة #{{ $invoice->invoice_number }}
-                            </a>
+                            @if($user && ($user->hasPermission('financial.invoices.view') || $user->role === 'admin'))
+                                <a href="{{ route('admin.financial.invoices.show', $invoice->id) }}" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-file-invoice me-2"></i>فاتورة #{{ $invoice->invoice_number }}
+                                </a>
+                            @endif
                             @endforeach
                         @else
                             <div class="list-group-item text-muted">لا توجد مستندات</div>

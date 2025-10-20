@@ -360,33 +360,33 @@ class EnhancedEmployeeController extends Controller
     private function getEmployeeStats(Employee $employee): array
     {
         return [
-            'total_orders' => $employee->assignedOrders()->count(),
+            'total_orders' => $employee->assignedOrders()->where('is_active',1)->count(),
 
             'active_orders' => $employee->assignedOrders()
                 ->whereHas('order', function ($q) {
                     $q->whereNotIn('status', ['delivered', 'cancelled', 'archived']);
                 })
-                ->count(),
+                ->where('is_active',1)->count(),
 
             'completed_orders' => $employee->assignedOrders()
                 ->whereHas('order', function ($q) {
                     $q->where('status', 'delivered');
                 })
-                ->count(),
+                ->where('is_active',1)->count(),
 
             'overdue_orders' => $employee->assignedOrders()
                 ->whereHas('order', function ($q) {
                     $q->where('expected_delivery_date', '<', now())
                       ->whereNotIn('status', ['delivered', 'cancelled', 'archived']);
                 })
-                ->count(),
+                ->where('is_active',1)->count(),
 
             'this_month_completed' => $employee->assignedOrders()
                 ->whereHas('order', function ($q) {
                     $q->where('status', 'delivered')
                       ->whereMonth('delivered_at', now()->month);
                 })
-                ->count(),
+                ->where('is_active',1)->count(),
         ];
     }
 

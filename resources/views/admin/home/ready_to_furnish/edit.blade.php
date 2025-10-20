@@ -3,6 +3,9 @@
 @section('title', 'تعديل جاهز لتأثيث وحدتك')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">تعديل جاهز لتأثيث وحدتك</h1>
@@ -45,12 +48,6 @@
                     <input type="text" name="whatsapp" class="form-control" value="{{ $section->whatsapp ?? '' }}">
                 </div>
 
-                <!-- رابط البدء -->
-               {{-- <div class="mb-3">
-                    <label class="form-label">رابط البدء في الطلب</label>
-                    <input type="text" name="start_order_link" class="form-control" value="{{ $section->start_order_link ?? '' }}">
-                </div>--}}
-
                 <!-- الصورة -->
                 <div class="mb-3">
                     <label class="form-label">الصورة</label>
@@ -64,9 +61,11 @@
 
                 <!-- أزرار الحفظ -->
                 <div class="d-flex gap-2 mt-4">
+                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-1"></i> حفظ التعديلات
                     </button>
+                    @endif
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-times me-1"></i> إلغاء
                     </a>

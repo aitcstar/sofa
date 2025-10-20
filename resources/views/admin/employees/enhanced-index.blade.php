@@ -3,27 +3,18 @@
 @section('title', 'إدارة الموظفين')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">إدارة الموظفين</h2>
+        @if($user && ($user->hasPermission('employees.create') || $user->role === 'admin'))
         <a href="{{ route('admin.employees.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> إضافة موظف جديد
         </a>
+        @endif
     </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
 
     <!-- Filters -->
     <div class="card mb-4">
@@ -72,9 +63,6 @@
                             <th>الموظف</th>
                             <th>الدور</th>
                             <th>الوظيفة</th>
-                            <th>الطلبات</th>
-
-                            <th>آخر تسجيل دخول</th>
                             <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
@@ -103,21 +91,9 @@
                                 @endif
                             </td>
                             <td>{{ $employee->job_title ?? '-' }}</td>
-                            <td>
-                                <div>
-                                    <small><strong>إجمالي:</strong> {{ $employee->assigned_orders_count }}</small><br>
-                                    <small><strong>نشط:</strong> {{ $employee->active_orders_count }}</small><br>
-                                    <small><strong>مكتمل:</strong> {{ $employee->completed_orders_count }}</small>
-                                </div>
-                            </td>
 
-                            <td>
-                                @if($employee->last_login_at)
-                                    <small>{{ $employee->last_login_at->diffForHumans() }}</small>
-                                @else
-                                    <small class="text-muted">لم يسجل دخول</small>
-                                @endif
-                            </td>
+
+
                             <td>
                                 @if($employee->is_active)
                                     <span class="badge bg-success">نشط</span>
@@ -131,11 +107,14 @@
                                        class="btn btn-sm btn-info" title="عرض">
                                         <i class="fas fa-eye"></i>
                                     </a>
+
+                                    @if($user && ($user->hasPermission('employees.edit') || $user->role === 'admin'))
                                     <a href="{{ route('admin.employees.edit', $employee) }}"
                                        class="btn btn-sm btn-warning" title="تعديل">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                                    @endif
+                                    @if($user && ($user->hasPermission('employees.delete') || $user->role === 'admin'))
                                     <form action="{{ route('admin.employees.toggle', $employee) }}"
                                           method="POST" class="d-inline">
                                         @csrf
@@ -145,7 +124,7 @@
                                             <i class="fas fa-{{ $employee->is_active ? 'ban' : 'check' }}"></i>
                                         </button>
                                     </form>
-
+                                    @endif
                                 </div>
                             </td>
                         </tr>

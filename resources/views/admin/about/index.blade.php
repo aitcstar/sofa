@@ -3,6 +3,9 @@
 @section('title', 'إدارة صفحة من نحن')
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container">
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -69,7 +72,9 @@
                     </div>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
+                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+            @endif
     </form>
 <br>
     <!-- Table Card -->
@@ -106,9 +111,11 @@
                                         @endif
                                     </td>
                                     <td>
+                                        @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
                                         <a href="{{ route('admin.about.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-edit me-1"></i> تعديل
                                         </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

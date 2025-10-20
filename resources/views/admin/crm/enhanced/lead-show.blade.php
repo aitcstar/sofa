@@ -3,6 +3,9 @@
 @section('title', 'تفاصيل العميل المحتمل - ' . $lead->name)
 
 @section('content')
+@php
+$user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+@endphp
 <div class="container-fluid">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -21,9 +24,11 @@
             <a href="{{ route('admin.crm.leads.index') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-right me-2"></i>رجوع
             </a>
+            @if($user && ($user->hasPermission('crm.leads.edit') || $user->role === 'admin'))
             <a href="{{ route('admin.crm.leads.edit', $lead->id) }}" class="btn btn-warning">
                 <i class="fas fa-edit me-2"></i>تعديل
             </a>
+            @endif
         </div>
     </div>
 
@@ -181,9 +186,11 @@
                                     </td>
                                     <td>{{ $quote->created_at->format('Y-m-d') }}</td>
                                     <td>
+                                        @if($user && ($user->hasPermission('crm.leads.view') || $user->role === 'admin'))
                                         <a href="{{ route('admin.crm.quotes.show', $quote->id) }}" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -204,12 +211,20 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
+                        @if($user && ($user->hasPermission('crm.activities') || $user->role === 'admin'))
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addActivityModal">
                             <i class="fas fa-plus me-2"></i>إضافة نشاط
                         </button>
+                        @endif
+
+
+                        @if($user && ($user->hasPermission('crm.quotes.create') || $user->role === 'admin'))
                         <a href="{{ route('admin.crm.quotes.create', ['lead_id' => $lead->id]) }}" class="btn btn-outline-success">
                             <i class="fas fa-file-invoice me-2"></i>إنشاء عرض سعر
                         </a>
+                        @endif
+
+                        @if($user && ($user->hasPermission('crm.leads.convert') || $user->role === 'admin'))
                         @if($lead->status !== 'converted')
                         <form action="{{ route('admin.crm.leads.convert', $lead->id) }}" method="POST">
                             @csrf
@@ -217,6 +232,7 @@
                                 <i class="fas fa-exchange-alt me-2"></i>تحويل إلى طلب
                             </button>
                         </form>
+                        @endif
                         @endif
                     </div>
                 </div>

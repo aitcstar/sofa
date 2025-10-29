@@ -56,37 +56,43 @@
             <!-- Images -->
             <div class="gallery-heading-images-grid">
                 @php
-                    $images = $pageData['project']['images'] ?? [];
-                @endphp
+                $allImages = $pageData['project']['images'] ?? [];
+                $mainImage = null;
+                $otherImages = [];
 
-                <!-- العمود الأول: الصورة الكبيرة -->
-                <div class="grid-item grid-item-large">
-                    @if(isset($images[0]))
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Gallery Image">
-                    @endif
-                </div>
+                foreach ($allImages as $img) {
+                    if ($img['is_primary'] == 1) {
+                        $mainImage = $img['path'];
+                    } else {
+                        $otherImages[] = $img['path'];
+                    }
+                }
 
-                <!-- العمود الثاني: صورتين صغيرتين -->
-                <div class="grid-item grid-column-small">
-                    @if(isset($images[1]))
-                        <img src="{{ asset('storage/' . $images[1]) }}" alt="Gallery Image">
-                    @endif
-                    @if(isset($images[2]))
-                        <img src="{{ asset('storage/' . $images[2]) }}" alt="Gallery Image">
-                    @endif
-                </div>
+                // احتياطي: إذا لم توجد صورة رئيسية، خذ الأولى
+                if (!$mainImage && !empty($allImages)) {
+                    $mainImage = $allImages[0]['path'];
+                    $otherImages = array_column(array_slice($allImages, 1), 'path');
+                }
+            @endphp
 
-                <!-- العمود الثالث: صورتين صغيرتين -->
-                <div class="grid-item grid-column-small">
-                    @if(isset($images[3]))
-                        <img src="{{ asset('storage/' . $images[3]) }}" alt="Gallery Image">
-                    @endif
-                    @if(isset($images[4]))
-                        <img src="{{ asset('storage/' . $images[4]) }}" alt="Gallery Image">
-                    @endif
-                </div>
+            <!-- الصورة الرئيسية -->
+            <div class="grid-item grid-item-large">
+                @if($mainImage)
+                    <img src="{{ asset('storage/' . $mainImage) }}" alt="Main Image">
+                @endif
             </div>
 
+            <!-- الصور الصغيرة -->
+            <div class="grid-item grid-column-small">
+                @foreach(array_slice($otherImages, 0, 2) as $img)
+                    <img src="{{ asset('storage/' . $img) }}" alt="Gallery Image">
+                @endforeach
+            </div>
+            <div class="grid-item grid-column-small">
+                @foreach(array_slice($otherImages, 2, 2) as $img)
+                    <img src="{{ asset('storage/' . $img) }}" alt="Gallery Image">
+                @endforeach
+            </div>
 
 
 

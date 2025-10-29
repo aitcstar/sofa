@@ -111,8 +111,10 @@ public function update(Request $request, SurveyQuestion $survey_question)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SurveyQuestion $question)
     {
-        //
+        $question->delete();
+
+        return redirect()->back()->with('success', 'تم حذف السؤال بنجاح.');
     }
 }

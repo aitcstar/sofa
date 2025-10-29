@@ -122,7 +122,12 @@
                     <div class="gallery-item-image">
                         <div class="gallery-item-widget">
                             <p class="body-4 mb-0 text-white">
-                                تم التسليم: {{ $exhibition->delivery_date ? \Carbon\Carbon::parse($exhibition->delivery_date)->format('F Y') : '—' }}
+
+                                {{ app()->getLocale() === 'ar' ? ' تم التسليم: ' : 'Delivered:' }}
+                                {{ $exhibition->delivery_date
+                                    ? \Carbon\Carbon::parse($exhibition->delivery_date)->translatedFormat('F Y')
+                                    : '—'
+                                }}
                             </p>
                         </div>
                         <a href="{{ app()->getLocale() === 'ar'
@@ -143,18 +148,21 @@
                                     : route('gallery.details.en', $exhibition->id) }}">
                                     {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
                                 </a>
-                                <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+
+                                {{--<a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
                                     ? route('packages.show', $exhibition->package->id)
                                     : route('packages.show.en', $exhibition->package->id) }}">
                                     {{ app()->getLocale() === 'ar' ? $exhibition->package->name_ar : $exhibition->package->name_en }}
-                                </a>
+                                </a>--}}
 
                                 <!-- الوصف وعدد القطع -->
                                 <div class="d-flex gap-sm-5 align-items-center">
+
                                     <p class="body-3 text-subheading mb-0">
+                                        {{ app()->getLocale() == 'ar' ? 'باكج' : 'Package' }}
                                         {{ app()->getLocale() === 'ar'
-                                            ? ($exhibition->package->description_ar ?: 'وصف الباكج غير متوفر')
-                                            : ($exhibition->package->description_en ?: 'Package description not available') }}
+                                            ? ($exhibition->package->name_ar ?: 'وصف الباكج غير متوفر')
+                                            : ($exhibition->package->name_en ?: 'Package description not available') }}
                                     </p>
                                     <div class="d-flex gap-sm-6 align-items-center"
                                          style="border: 1px solid var(--surface-border); border-radius: var(--radius-small-box-2); padding: 2px 14px;">
@@ -180,12 +188,13 @@
                                                 {{ app()->getLocale() === 'ar'
                                                     ? $pui->item->item_name_ar
                                                     : $pui->item->item_name_en }}
+                                                    <span style="color: var(--text-subheading) !important;">
+                                                        {{ app()->getLocale() === 'ar'
+                                                            ? ($pui->item->color_ar . ' - ' . $pui->item->material_ar . ' - ' . $pui->item->dimensions)
+                                                            : ($pui->item->color_en . ' - ' . $pui->item->material_en . ' - ' . $pui->item->dimensions) }}
+                                                    </span>
                                             </p>
-                                            <p class="body-4 text-subheading mb-0">
-                                                {{ app()->getLocale() === 'ar'
-                                                    ? ($pui->item->color_ar . ' - ' . $pui->item->material_ar . ' - ' . $pui->item->dimensions)
-                                                    : ($pui->item->color_en . ' - ' . $pui->item->material_en . ' - ' . $pui->item->dimensions) }}
-                                            </p>
+
                                         </div>
                                     </div>
                                 @endif

@@ -40,8 +40,11 @@ class GalleryDetailsController extends Controller
             'kitchen_en' => $package?->description_en ?? '',
             'pieces_count' => $package?->packageUnitItems->count() ?? 0,
             'tv_design' => 'تصميم خشبي كلاسيكي',
-            'images' => $exhibition->images->pluck('image')->toArray() ?? [],
-            'steps' => $exhibition->steps->map(fn($step) => [
+            'images' => $exhibition->images->map(fn($img) => [
+                'path' => $img->image,
+                'is_primary' => $img->is_primary
+            ])->toArray() ?? [],
+                'steps' => $exhibition->steps->map(fn($step) => [
                 'icon' => $step->icon ?? '',
                 'title_ar' => $step->title_ar ?? '',
                 'title_en' => $step->title_en ?? ''

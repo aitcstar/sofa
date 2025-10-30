@@ -301,8 +301,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var mapData = {
         lat: <?php echo json_encode($section['lat']); ?>,
         lng: <?php echo json_encode($section['lng']); ?>,
-        title: <?php echo json_encode($section['title_ar']); ?>,
-        address: <?php echo json_encode($section['address_ar']); ?>
+        title: <?php echo json_encode($section['maptitle_ar']); ?>,
+        address: <?php echo json_encode($section['mapaddress_ar']); ?>
     };
 
     // تهيئة الخريطة

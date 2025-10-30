@@ -25,7 +25,6 @@
                 <div class="row">
                     <!-- Arabic -->
                     <div class="col-md-6">
-                        <h5 class="mb-3 text-primary">العربية</h5>
                         <div class="mb-3">
                             <label class="form-label">العنوان (عربي)</label>
                             <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar', $section->title_ar) }}">
@@ -36,27 +35,10 @@
                             <textarea name="text_ar" rows="3" class="form-control">{{ old('text_ar', $section->text_ar) }}</textarea>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">العناصر (عربي)</label>
-                            <div id="items-ar-wrapper">
-                                @forelse($section->items_ar ?? [] as $item)
-                                    <div class="d-flex mb-2">
-                                        <input type="text" name="items_ar[]" class="form-control" value="{{ $item }}">
-                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-item">X</button>
-                                    </div>
-                                @empty
-                                    <div class="d-flex mb-2">
-                                        <input type="text" name="items_ar[]" class="form-control" placeholder="أدخل عنصر">
-                                    </div>
-                                @endforelse
-                            </div>
-                            <button type="button" id="add-item-ar" class="btn btn-sm btn-outline-primary mt-2">+ إضافة عنصر</button>
-                        </div>
                     </div>
 
                     <!-- English -->
                     <div class="col-md-6">
-                        <h5 class="mb-3 text-primary">English</h5>
                         <div class="mb-3">
                             <label class="form-label">Title (English)</label>
                             <input type="text" name="title_en" class="form-control" value="{{ old('title_en', $section->title_en) }}">
@@ -67,25 +49,67 @@
                             <textarea name="text_en" rows="3" class="form-control">{{ old('text_en', $section->text_en) }}</textarea>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Items (English)</label>
-                            <div id="items-en-wrapper">
-                                @forelse($section->items_en ?? [] as $item)
-                                    <div class="d-flex mb-2">
-                                        <input type="text" name="items_en[]" class="form-control" value="{{ $item }}">
-                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-item">X</button>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <h5 class="mb-3 text-primary">العناصر (مع الصور)</h5>
+                        <div id="items-wrapper">
+                            @php
+                                $itemsAr = $section->items_ar ?? [];
+                                $itemsEn = $section->items_en ?? [];
+                                $itemIcons = $section->item_icons ?? [];
+                                $max = max(count($itemsAr), count($itemsEn), count($itemIcons));
+                            @endphp
+
+                            @for($i = 0; $i < $max; $i++)
+                                <div class="row mb-3 item-row align-items-center">
+                                    <div class="col-md-2">
+                                        <label class="form-label d-block">الصورة</label>
+                                        <input type="file" name="item_icons[{{ $i }}]" class="form-control">
+                                        @if(isset($itemIcons[$i]) && $itemIcons[$i])
+                                            <img src="{{ asset('storage/'.$itemIcons[$i]) }}" class="img-thumbnail mt-2" width="60">
+                                        @endif
                                     </div>
-                                @empty
-                                    <div class="d-flex mb-2">
-                                        <input type="text" name="items_en[]" class="form-control" placeholder="Enter item">
+                                    <div class="col-md-4">
+                                        <label class="form-label">العنوان (عربي)</label>
+                                        <input type="text" name="items_ar[{{ $i }}]" class="form-control" value="{{ $itemsAr[$i] ?? '' }}">
                                     </div>
-                                @endforelse
-                            </div>
-                            <button type="button" id="add-item-en" class="btn btn-sm btn-outline-primary mt-2">+ Add Item</button>
+                                    <div class="col-md-4">
+                                        <label class="form-label">العنوان (إنجليزي)</label>
+                                        <input type="text" name="items_en[{{ $i }}]" class="form-control" value="{{ $itemsEn[$i] ?? '' }}">
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm remove-item">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endfor
+
+                            @if($max == 0)
+                                <div class="row mb-3 item-row align-items-center">
+                                    <div class="col-md-2">
+                                        <input type="file" name="item_icons[0]" class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="items_ar[0]" class="form-control" placeholder="العنوان (عربي)">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="items_en[0]" class="form-control" placeholder="Title (English)">
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm remove-item">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
+                        <button type="button" id="add-item" class="btn btn-sm btn-outline-primary">+ إضافة عنصر</button>
                     </div>
                 </div>
-
+<br>
                 <!-- Image -->
                 <div class="mb-3">
                     <label class="form-label">الصورة الحالية</label>
@@ -159,12 +183,36 @@ document.addEventListener("DOMContentLoaded", function() {
         wrapper.appendChild(div);
     });
 
-    // Remove item
-    document.addEventListener('click', function(e) {
-        if(e.target.classList.contains('remove-item')) {
-            e.target.parentElement.remove();
-        }
-    });
+    document.getElementById('add-item')?.addEventListener('click', function() {
+    const wrapper = document.getElementById('items-wrapper');
+    const index = wrapper.querySelectorAll('.item-row').length;
+
+    const div = document.createElement('div');
+    div.classList.add('row', 'mb-3', 'item-row', 'align-items-center');
+    div.innerHTML = `
+        <div class="col-md-2">
+            <input type="file" name="item_icons[${index}]" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="items_ar[${index}]" class="form-control" placeholder="العنوان (عربي)">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="items_en[${index}]" class="form-control" placeholder="Title (English)">
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="button" class="btn btn-danger btn-sm remove-item">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    wrapper.appendChild(div);
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-item')) {
+        e.target.closest('.item-row').remove();
+    }
+});
 });
 </script>
 @endpush

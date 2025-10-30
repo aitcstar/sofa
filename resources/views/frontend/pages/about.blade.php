@@ -139,8 +139,16 @@
                         @foreach($section->{'items_'.app()->getLocale()} ?? [] as $i => $item)
                             <li class="d-flex gap-sm-3 align-items-center">
                                 <div class="our-smart-steps-step-icon">
+                                    @php
+                                    $iconPath = $section->item_icons[$i] ?? null;
+                                @endphp
+
+                                @if($iconPath)
+                                    <img src="{{ asset('storage/' . $iconPath) }}" alt="Step {{ $i+1 }}" />
+                                @else
+                                    {{-- صورة افتراضية احتياطية إذا لم تُرفع صورة --}}
                                     <img src="{{ asset('assets/images/about/step-0' . ($i+1) . '.svg') }}" alt="Step {{ $i+1 }}" />
-                                </div>
+                                @endif                                </div>
                                 <div class="our-smart-steps-step-content">
                                     <p class="sub-heading-5 mb-0">{{ $item }}</p>
                                 </div>

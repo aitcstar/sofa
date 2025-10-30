@@ -18,10 +18,12 @@ class AboutPage extends Model
         'items_ar',   // نخزنها كـ JSON
         'items_en',
         'image',
+        'item_icons',
     ];
 
     protected $casts = [
         'items_ar' => 'array',
         'items_en' => 'array',
+        'item_icons' => 'array', // <-- أضف هذا
     ];
 }

@@ -26,7 +26,7 @@ class ContactSectionController extends Controller
             'work_hours_ar','work_hours_en',
             'cta_heading_ar','cta_heading_en',
             'cta_text_ar','cta_text_en',
-            'city_ar','city_en','address_ar','address_en'
+            'city_ar','city_en','address_ar','address_en','lat','lng','maptitle_ar','maptitle_en','maptitle_en','mapaddress_ar','mapaddress_en'
         ]);
 
         $section = ContactSection::first();

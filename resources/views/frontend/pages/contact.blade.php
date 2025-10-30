@@ -298,36 +298,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    var mapData = {
+        lat: <?php echo json_encode($section['lat']); ?>,
+        lng: <?php echo json_encode($section['lng']); ?>,
+        title: <?php echo json_encode($section['title_ar']); ?>,
+        address: <?php echo json_encode($section['address_ar']); ?>
+    };
+
     // تهيئة الخريطة
     function initMap() {
-        var map = L.map('map').setView([24.7136, 46.6753], 13);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 14
-        }).addTo(map);
-
-        // إضافة علامة للموقع
-        L.marker([24.7136, 46.6753])
-            .addTo(map)
-            .bindPopup('مركز SOFA لتجربة التأثيث<br>الرياض – طريق الملك عبدالعزيز، حي الياسمين')
-            .openPopup();
-
-        // Remove controls
-        map.removeControl(map.zoomControl);
-        map.removeControl(map.attributionControl);
-
-        // Disable zoom and other interactions
-        map.scrollWheelZoom.disable();
-        map.doubleClickZoom.disable();
-        map.boxZoom.disable();
-        map.keyboard.disable();
-        map.dragging.disable();
+    // التأكد من وجود mapData
+    if (typeof mapData === 'undefined') {
+        console.error('mapData غير معرفة');
+        return;
     }
+
+    var lat = mapData.lat || 24.7136;
+    var lng = mapData.lng || 46.6753;
+    var title = mapData.title || '';
+    var address = mapData.address || '';
+
+    var popupContent = title ? title + '<br>' + address : address;
+
+    var map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 14
+    }).addTo(map);
+
+    // إضافة العلامة ديناميكيًا
+    L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(popupContent)
+        .openPopup();
+
+    // إزالة عناصر التحكم
+    map.removeControl(map.zoomControl);
+    map.removeControl(map.attributionControl);
+
+    // تعطيل التفاعل
+    map.scrollWheelZoom.disable();
+    map.doubleClickZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    map.dragging.disable();
+}
+
 
     // تهيئة الخريطة عند تحميل الصفحة
     initMap();
-
+    document.addEventListener('DOMContentLoaded', initMap);
 
 });
 

@@ -108,6 +108,27 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                         <textarea name="desc_en" class="form-control" rows="3">{{ old('desc_en', $section->desc_en ?? '') }}</textarea>
                     </div>
 
+                    <br>
+                    <hr>
+                    <label style="text-align: center;
+                    font-weight: bold;
+                    background-color: #ad996f;
+                    color: white;
+                    padding: 9px 6px;
+                ">للتواصل</label>
+                    <br>
+                    <hr>
+                    <br>
+                     <!-- CTA Text -->
+                     <div class="col-md-6 mb-3">
+                        <label class="form-label">نص الـ CTA (AR)</label>
+                        <textarea name="cta_text_ar" class="form-control" rows="3">{{ old('cta_text_ar', $section->cta_text_ar ?? '') }}</textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">CTA Text (EN)</label>
+                        <textarea name="cta_text_en" class="form-control" rows="3">{{ old('cta_text_en', $section->cta_text_en ?? '') }}</textarea>
+                    </div>
+
                     <!-- المعرض الرئيسي -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">المعرض الرئيسي (AR)</label>
@@ -132,6 +153,19 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                value="{{ old('work_hours_en', $section->work_hours_en ?? '') }}">
                     </div>
 
+
+                    <br>
+                    <hr>
+                    <label style="text-align: center;
+                    font-weight: bold;
+                    background-color: #ad996f;
+                    color: white;
+                    padding: 9px 6px;
+                ">الجزء الثاني</label>
+                    <br>
+                    <hr>
+                    <br>
+
                     <!-- CTA Heading -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">عنوان الـ CTA (AR)</label>
@@ -144,16 +178,18 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                value="{{ old('cta_heading_en', $section->cta_heading_en ?? '') }}">
                     </div>
 
-                    <!-- CTA Text -->
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">نص الـ CTA (AR)</label>
-                        <textarea name="cta_text_ar" class="form-control" rows="3">{{ old('cta_text_ar', $section->cta_text_ar ?? '') }}</textarea>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">CTA Text (EN)</label>
-                        <textarea name="cta_text_en" class="form-control" rows="3">{{ old('cta_text_en', $section->cta_text_en ?? '') }}</textarea>
-                    </div>
 
+                    <br>
+                    <hr>
+                    <label style="text-align: center;
+                    font-weight: bold;
+                    background-color: #ad996f;
+                    color: white;
+                    padding: 9px 6px;
+                "> العنوان </label>
+                    <br>
+                    <hr>
+                    <br>
                     <!-- المدينة -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">المدينة (AR)</label>
@@ -175,6 +211,51 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                         <label class="form-label">Address (EN)</label>
                         <textarea name="address_en" class="form-control" rows="2">{{ old('address_en', $section->address_en ?? '') }}</textarea>
                     </div>
+
+                    <br>
+                    <hr>
+                    <label style="text-align: center;
+                    font-weight: bold;
+                    background-color: #ad996f;
+                    color: white;
+                    padding: 9px 6px;
+                ">  الخريطه</label>
+                    <br>
+                    <hr>
+                    <br>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">خط العرض</label>
+                        <input type="text" name="lat" class="form-control"
+                               value="{{ old('lat', $section->lat ?? '') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">خط الطول</label>
+                        <input type="text" name="lng" class="form-control"
+                               value="{{ old('lng', $section->lng ?? '') }}">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">العنوان </label>
+                        <input type="text" name="maptitle_ar" class="form-control"
+                               value="{{ old('maptitle_ar', $section->maptitle_ar ?? '') }}">
+                    </div>
+                    <!--
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">العنوان (EN)</label>
+                        <input type="text" name="maptitle_en" class="form-control"
+                               value="{{ old('maptitle_en', $section->maptitle_en ?? '') }}">
+                    </div>-->
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">الموقع </label>
+                        <textarea name="mapaddress_ar" class="form-control" rows="2">{{ old('mapaddress_ar', $section->mapaddress_ar ?? '') }}</textarea>
+                    </div>
+                    <!--
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Address (EN)</label>
+                        <textarea name="mapaddress_en" class="form-control" rows="2">{{ old('mapaddress_en', $section->mapaddress_en ?? '') }}</textarea>
+                    </div>-->
                 </div>
 
                 <!-- أزرار الحفظ -->

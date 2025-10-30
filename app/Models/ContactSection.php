@@ -14,7 +14,7 @@ class ContactSection extends Model
         'cta_heading_ar','cta_heading_en',
         'cta_text_ar','cta_text_en',
         'city_ar','city_en',
-        'address_ar','address_en',
+        'address_ar','address_en','lat','lng','maptitle_ar','maptitle_en','maptitle_en','mapaddress_ar','mapaddress_en'
     ];
 }
 

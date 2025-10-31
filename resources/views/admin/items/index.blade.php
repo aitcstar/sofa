@@ -41,9 +41,10 @@
                                 <a href="{{ route('admin.items.edit', $item) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button class="btn btn-sm btn-danger delete-item" data-item="{{ $item->id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button class="btn btn-sm btn-danger delete-item"
+                                data-url="{{ route('admin.items.destroy', $item) }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
                             </td>
                         </tr>
                         @endforeach
@@ -56,6 +57,10 @@
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<!-- أو من مشروعك المحلي -->
 <script>
 $(document).ready(function() {
     $('#itemsTable').DataTable({
@@ -86,29 +91,33 @@ $(document).ready(function() {
     });
 
     // حذف القطعة باستخدام AJAX
-    $('#itemsTable').on('click', '.delete-item', function() {
+    $(document).on('click', '.delete-item', function() {
         if (!confirm('هل أنت متأكد من حذف هذه القطعة؟')) return;
 
         let button = $(this);
-        let itemId = button.data('item');
+        let url = button.data('url');
 
         $.ajax({
-            url: '/admin/items/' + itemId,
+            url: url,
             type: 'DELETE',
-            data: { _token: '{{ csrf_token() }}' },
+            data: { _token: '{{ csrf_token() }}' }, // ← هنا كان النقص!
             success: function(res) {
                 if (res.success) {
-                    button.closest('tr').fadeOut(300, function() { $(this).remove(); });
+                    button.closest('tr').fadeOut(300, function() {
+                        $(this).remove();
+                    });
                     alert('تم حذف القطعة بنجاح');
                 } else {
                     alert('حدث خطأ أثناء الحذف');
                 }
             },
-            error: function() {
-                alert('حدث خطأ أثناء الحذف');
+            error: function(xhr) {
+                console.error('خطأ AJAX:', xhr);
+                alert('فشل الحذف. تحقق من الاتصال.');
             }
         });
     });
 });
+
 </script>
 @endpush

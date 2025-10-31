@@ -128,17 +128,23 @@ public function update(Request $request, Item $item)
 }
 
 
-    public function destroy(Design $design, Item $item)
+    public function destroy(Item $item)
     {
+        //dd($item);
         if ($item->image_path) {
             \Storage::disk('public')->delete($item->image_path);
         }
         $item->delete();
+        if (request()->ajax()) {
+            return response()->json(['success' => true, 'message' => 'تم الحذف بنجاح']);
+        }
         return redirect()->route('admin.items.index')->with('success', 'تم حذف القطعة بنجاح.');
     }
 
+
     public function destroyImage(Item $item)
     {
+
         if ($item->image_path && \Storage::disk('public')->exists($item->image_path)) {
             \Storage::disk('public')->delete($item->image_path);
         }

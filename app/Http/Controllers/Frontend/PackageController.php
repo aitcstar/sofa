@@ -262,6 +262,15 @@ public function filter(Request $request)
 
     $answers = $request->answers ?? [];
 
+    // فلترة حسب اسم الباقة (عربي أو إنجليزي)
+    if (!empty($answers[4][0])) {
+        $packageName = $answers[4][0];
+        $query->where(function ($q) use ($packageName) {
+            $q->where('name_ar', 'LIKE', "%{$packageName}%")
+            ->orWhere('name_en', 'LIKE', "%{$packageName}%");
+        });
+    }
+
     // فلترة حسب اسم الوحدة
     if (!empty($answers[5][0])) {
         $unitName = $answers[5][0];

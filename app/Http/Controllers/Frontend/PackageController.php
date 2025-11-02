@@ -258,31 +258,34 @@ public function show($id)
 }
 public function filter(Request $request)
 {
+    //dd($request->all());
     $query = Package::query()->with(['packageUnitItems.unit','packageUnitItems.item']);
 
     $answers = $request->answers ?? [];
 
     // فلترة حسب اسم الباقة (عربي أو إنجليزي)
-    if (!empty($answers[4][0])) {
-        $packageName = $answers[4][0];
+    if (!empty($answers[5])) {
+        $packageName = $answers[5];
+        //dd($packageName);
         $query->where(function ($q) use ($packageName) {
             $q->where('name_ar', 'LIKE', "%{$packageName}%")
             ->orWhere('name_en', 'LIKE', "%{$packageName}%");
         });
     }
 
+
     // فلترة حسب اسم الوحدة
-    if (!empty($answers[5][0])) {
+    /*if (!empty($answers[5][0])) {
         $unitName = $answers[5][0];
         $query->whereHas('packageUnitItems.unit', function ($q) use ($unitName) {
             $q->where('name_ar', 'LIKE', "%{$unitName}%")
               ->orWhere('name_en', 'LIKE', "%{$unitName}%");
         });
-    }
+    }*/
 
     // فلترة حسب الألوان
-    if (!empty($answers[6][0])) {
-        $color = $answers[6][0];
+    if (!empty($answers[6])) {
+        $color = $answers[6];
         $query->whereHas('packageUnitItems.item', function ($q) use ($color) {
             $q->where('background_color', $color)
               ->orWhere('color_ar', 'LIKE', "%{$color}%")
@@ -291,8 +294,8 @@ public function filter(Request $request)
     }
 
     // فلترة حسب عدد القطع
-    if (!empty($answers[7][0])) {
-        $pieces = $answers[7][0];
+    if (!empty($answers[7])) {
+        $pieces = $answers[7];
         $query->whereHas('packageUnitItems.item', function ($q) use ($pieces) {
             $q->where('quantity', $pieces);
         });

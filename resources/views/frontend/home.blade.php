@@ -696,26 +696,39 @@ document.getElementById('package-filter-form').addEventListener('submit', functi
         const required = questionDiv.dataset.required === '1';
         const errorMessage = questionDiv.querySelector('.error-message');
 
-        if (type === 'checkbox' && required) {
-            const checkboxes = questionDiv.querySelectorAll('input[type="checkbox"]');
-            const checked = Array.from(checkboxes).some(cb => cb.checked);
+        if (!required) {
+            // إذا لم يكن مطلوبًا، لا داعي للتحقق
+            if (errorMessage) errorMessage.style.display = 'none';
+            return;
+        }
 
-            if (!checked) {
-                valid = false;
-                errorMessage.style.display = 'block';
-            } else {
-                errorMessage.style.display = 'none';
-            }
+        let hasValue = false;
+
+        if (type === 'checkbox') {
+            const checkboxes = questionDiv.querySelectorAll('input[type="checkbox"]:checked');
+            hasValue = checkboxes.length > 0;
+        }
+        else if (type === 'radio') {
+            const radios = questionDiv.querySelectorAll('input[type="radio"]:checked');
+            hasValue = radios.length > 0;
+        }
+
+        if (!hasValue) {
+            valid = false;
+            if (errorMessage) errorMessage.style.display = 'block';
+        } else {
+            if (errorMessage) errorMessage.style.display = 'none';
         }
     });
 
     if (!valid) {
         e.preventDefault();
         const firstInvalid = document.querySelector('.error-message[style*="block"]');
-        if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 });
-
 
 </script>
 @endpush

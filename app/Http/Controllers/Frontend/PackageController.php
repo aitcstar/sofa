@@ -294,12 +294,12 @@ public function filter(Request $request)
     }
 
     // فلترة حسب عدد القطع
-    if (!empty($answers[7])) {
+    /*if (!empty($answers[7])) {
         $pieces = $answers[7];
         $query->whereHas('packageUnitItems.item', function ($q) use ($pieces) {
             $q->where('quantity', $pieces);
         });
-    }
+    }*/
 
     // فلترة بالسعر
     if (!empty($request->price_min) && !empty($request->price_max)) {

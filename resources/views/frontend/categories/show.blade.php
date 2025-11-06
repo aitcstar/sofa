@@ -147,7 +147,8 @@
                     <div class="category-details-widget d-flex align-items-center gap-sm-6">
                         <img src="{{ asset('assets/images/category/layers.svg') }}" alt="layers" />
                         <p class="body-4 text-body mb-0">
-                            {{ $package->packageUnitItems->sum(fn($pui) => $pui->item->quantity) }} {{ __('site.piece') }}
+                            {{ $package->packageUnitItems->sum(fn($pui) => $pui->item?->quantity ?? 0) }} {{ __('site.piece') }}
+
                         </p>
                     </div>
                     <div class="category-details-widget d-flex align-items-center gap-sm-6">

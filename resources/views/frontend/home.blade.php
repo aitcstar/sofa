@@ -45,7 +45,8 @@
   <!-- ===== STEPS SECTION  ===== -->
   <section class="step-section">
     <div class="content mx-auto">
-        <h5 class="heading-h8 text-center">{{ __('site.steps_heading') }}</h5>
+        <h5 class="heading-h8 text-center">{{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }}
+        </h5>
 
         <div class="d-flex gap-sm-3 position-relative mx-auto">
             <div class="line"></div>

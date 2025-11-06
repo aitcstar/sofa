@@ -225,6 +225,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('packages', PackageController::class);
     Route::resource('order_stages', OrderStageController::class);
+    Route::post('/steps/update-title', [StepController::class, 'updateTitle'])->name('steps.updateTitle');
 
     // Roles & Permissions Management
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);

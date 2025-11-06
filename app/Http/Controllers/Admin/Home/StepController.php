@@ -20,6 +20,23 @@ public function create()
     return view('admin.home.steps.create');
 }
 
+public function updateTitle(Request $request)
+{
+    $request->validate([
+        'title_ar' => 'required|string|max:255',
+        'title_en' => 'required|string|max:255',
+    ]);
+
+    $step = Step::where('order', 0)->firstOrFail();
+    $step->update([
+        'title_ar' => $request->title_ar,
+        'title_en' => $request->title_en,
+    ]);
+
+    return back()->with('success', 'تم تحديث العنوانين بنجاح ✅');
+}
+
+
 public function store(Request $request)
 {
     $request->validate([

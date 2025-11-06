@@ -5,6 +5,7 @@
 @section('content')
 @php
 $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
+    $firstStep = $steps->where('order', 0)->first();
 @endphp
 <div class="container">
     <!-- Header -->
@@ -16,6 +17,33 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
         </a>
         @endif
     </div>
+
+     {{-- ✅ تعديل العنوان العربي والإنجليزي للخطوة رقم 0 --}}
+     @if($firstStep)
+     <div class="card mb-4 shadow-sm border-0">
+         <div class="card-header bg-light fw-bold">
+             تعديل العنوان الرئيسي
+         </div>
+         <div class="card-body">
+             <form action="{{ route('admin.steps.updateTitle') }}" method="POST" class="row g-3">
+                 @csrf
+                 <div class="col-md-6">
+                     <label class="form-label fw-semibold">العنوان بالعربية</label>
+                     <input type="text" name="title_ar" value="{{ $firstStep->title_ar }}" class="form-control" required>
+                 </div>
+                 <div class="col-md-6">
+                     <label class="form-label fw-semibold">العنوان بالإنجليزية</label>
+                     <input type="text" name="title_en" value="{{ $firstStep->title_en }}" class="form-control" required>
+                 </div>
+                 <div class="col-12 text-end mt-2">
+                     <button type="submit" class="btn btn-primary">
+                         <i class="fas fa-save me-1"></i> حفظ التعديلات
+                     </button>
+                 </div>
+             </form>
+         </div>
+     </div>
+     @endif
 
     <!-- Table Card -->
     <div class="card shadow-sm border-0">

@@ -317,8 +317,10 @@
                                                         class="popup-image"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"
-                                                        data-image="{{ $item->item->image_path ? asset('storage/'.$item->item->image_path) : asset('assets/images/no-image.png') }}"
-                                                    />
+                                                        data-image="{{ $item->item?->image_path
+                                                            ? asset('storage/'.$item->item->image_path)
+                                                            : asset('assets/images/no-image.png') }}"
+                                                                                                            />
                                                 </div>
                                             </td>
                                             <td class="body-2">{{ $item->item->quantity ?? 0}}</td>

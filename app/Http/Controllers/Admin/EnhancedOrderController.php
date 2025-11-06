@@ -408,12 +408,12 @@ class EnhancedOrderController extends Controller
                 'description' => "تم تعيين {$user->name} كـ {$request->role}",
             ]);
 
-            DB::commit();
+            //DB::commit();
 
             return redirect()->back()->with('success', 'تم تعيين الموظف بنجاح');
 
         } catch (\Exception $e) {
-            DB::rollback();
+            //DB::rollback();
             return redirect()->back()->with('error', 'حدث خطأ: ' . $e->getMessage());
         }
     }

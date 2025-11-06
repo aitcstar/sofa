@@ -27,11 +27,11 @@
     <meta name="robots" content="index, follow">
   @endif
   {{-- hreflang (علشان SEO متعدد اللغات) --}}
-  <link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
-  {{-- OpenGraph --}}
-  <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
-  <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
-  <meta property="og:url" content="{{  app()->getLocale() === 'ar' ? (url()->current() ?? url('/')) : (url()->current() ?? url('/')) }}">
+  <link rel="alternate" href="{{ url()->current() }}/" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
+{{-- OpenGraph --}}
+<meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
+<meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
+<meta property="og:url" content="{{  url()->current() }}/{{ $seo->slug_en }}">
   @endif
   <!-- ===== EXTERNAL LIBRARIES ===== -->
   <!-- Bootstrap CSS -->

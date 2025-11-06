@@ -56,8 +56,8 @@
                         <img src="{{ asset('storage/'.$step->icon) }}" alt="{{ $step->{'title_'.app()->getLocale()} }}" />
                     </div>
                     <div class="d-flex flex-column align-items-center gap-sm-7">
-                        <p class="sub-heading-4 mb-0">{{ $step->{'title_'.app()->getLocale()} }}</p>
-                        <div class="body-3 text-caption mb-0">
+                        <p class="sub-heading-4 mb-0" style="font-size: 13px">{{ $step->{'title_'.app()->getLocale()} }}</p>
+                        <div class="body-3 text-caption mb-0" style="font-size: 10px">
                             {{ $step->{'desc_'.app()->getLocale()} }}
                         </div>
                     </div>

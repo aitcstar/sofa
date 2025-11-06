@@ -52,6 +52,7 @@
             <div class="line"></div>
 
             @foreach($steps as $step)
+            @if($step->order != 0)
                 <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
                     <div class="step-item-icon">
                         <img src="{{ asset('storage/'.$step->icon) }}" alt="{{ $step->{'title_'.app()->getLocale()} }}" />
@@ -63,7 +64,9 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endif
+        @endforeach
+
         </div>
     </div>
 </section>

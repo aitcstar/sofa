@@ -59,45 +59,46 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <th width="180">الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @forelse($steps as $step)
-                        <tr>
-                            <td>
-                                @if($step->icon)
-                                    <img src="{{ asset('storage/' . $step->icon) }}" width="70" height="70" class="rounded border object-fit-cover">
+                    @forelse($steps as $step)
+                    @if($step->order != 0)
+                    <tr>
+                        <td>
+                            @if($step->icon)
+                                <img src="{{ asset('storage/' . $step->icon) }}" width="70" height="70" class="rounded border object-fit-cover">
+                            @endif
+                        </td>
+                        <td>{{ $step->title_ar }}</td>
+                        <td>{{ $step->desc_ar }}</td>
+                        <td>{{ $step->order }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
+                                <a href="{{ route('admin.steps.edit', $step) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit me-1"></i> تعديل
+                                </a>
                                 @endif
-                            </td>
-                            <td>{{ $step->title_ar }}</td>
-                            <td>{{ $step->desc_ar }}</td>
-                            <td>{{ $step->order }}</td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    @if($user && ($user->hasPermission('content.edit') || $user->role === 'admin'))
-                                    <a href="{{ route('admin.steps.edit', $step) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-edit me-1"></i> تعديل
-                                    </a>
-                                    @endif
-                                    @if($user && ($user->hasPermission('content.delete') || $user->role === 'admin'))
-                                    <form action="{{ route('admin.steps.destroy', $step) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
-                                            <i class="fas fa-trash me-1"></i> حذف
-                                        </button>
-                                    </form>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
-                                <i class="fas fa-list-ol fa-2x mb-3"></i>
-                                <p>لا توجد خطوات حتى الآن</p>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
+                                @if($user && ($user->hasPermission('content.delete') || $user->role === 'admin'))
+                                <form action="{{ route('admin.steps.destroy', $step) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                        <i class="fas fa-trash me-1"></i> حذف
+                                    </button>
+                                </form>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        <i class="fas fa-list-ol fa-2x mb-3"></i>
+                        <p>لا توجد خطوات حتى الآن</p>
+                    </td>
+                </tr>
+                @endforelse
+
                 </table>
             </div>
         </div>

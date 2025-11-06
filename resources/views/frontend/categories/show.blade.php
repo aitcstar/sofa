@@ -300,12 +300,12 @@
                                     <tbody>
                                         @foreach($items as $item)
                                         <tr>
-                                            <td class="body-2">{{ $item->item->{'item_name_'.app()->getLocale()} }}</td>
-                                            <td class="body-2">{{ $item->item->dimensions }}</td>
-                                            <td class="body-2">{{ $item->item->{'material_'.app()->getLocale()} }}</td>
+                                            <td class="body-2">{{ $item->item->{'item_name_'.app()->getLocale()} ?? ''}}</td>
+                                            <td class="body-2">{{ $item->item->dimensions ?? ''}}</td>
+                                            <td class="body-2">{{ $item->item->{'material_'.app()->getLocale()}?? '' }}</td>
                                             <td class="color-box">
-                                                <p class="body-2 text-subheading mb-0" style="background-color: {{ $item->item->background_color }}">
-                                                    {{ $item->item->{'color_'.app()->getLocale()} }}
+                                                <p class="body-2 text-subheading mb-0" style="background-color: {{ $item->item->background_color ?? ''}}">
+                                                    {{ $item->item->{'color_'.app()->getLocale()} ?? ''}}
                                                 </p>
                                             </td>
                                             <td class="image-box">
@@ -320,7 +320,7 @@
                                                     />
                                                 </div>
                                             </td>
-                                            <td class="body-2">{{ $item->item->quantity }}</td>
+                                            <td class="body-2">{{ $item->item->quantity ?? 0}}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

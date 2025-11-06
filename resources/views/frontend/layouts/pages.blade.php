@@ -19,19 +19,19 @@
   {{-- Description --}}
   <meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
   {{-- Canonical URL --}}
-  <link rel="canonical" href="{{ dirname(url()->current()) }}/{{ app()->getLocale() == 'ar' ? $seo->slug_ar : $seo->slug_en }}">
-  {{-- Index/NoIndex --}}
+  <link rel="canonical" href="{{  url()->current() }}{{ $seo->slug_en }}">
+س  {{-- Index/NoIndex --}}
   @if($seo && $seo->index_status === 'noindex')
     <meta name="robots" content="noindex, follow">
   @else
     <meta name="robots" content="index, follow">
   @endif
   {{-- hreflang (علشان SEO متعدد اللغات) --}}
-  <link rel="alternate" href="{{ url()->current() }}/" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
+  <link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
 {{-- OpenGraph --}}
 <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
 <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
-<meta property="og:url" content="{{  url()->current() }}/{{ $seo->slug_en }}">
+<meta property="og:url" content="{{  url()->current() }}{{ $seo->slug_en }}">
   @endif
   <!-- ===== EXTERNAL LIBRARIES ===== -->
   <!-- Bootstrap CSS -->

@@ -311,8 +311,9 @@
                                             <td class="image-box">
                                                 <div class="img-box">
                                                     <img
-                                                        src="{{ $item->item->image_path ? asset('storage/'.$item->item->image_path) : asset('assets/images/no-image.png') }}"
-                                                        alt="item-image"
+                                                    src="{{ $item->item?->image_path
+                                                        ? asset('storage/'.$item->item->image_path)
+                                                        : asset('assets/images/no-image.png') }}" alt="item-image"
                                                         class="popup-image"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"

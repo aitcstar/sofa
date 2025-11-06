@@ -187,6 +187,7 @@ public function index()
 
     $colors = $packages
         ->flatMap(fn($package) => $package->packageUnitItems)
+        ->filter(fn($pui) => $pui->item) // ← تأكد أن item ليس null
         ->map(fn($pui) => [
             'color_ar' => $pui->item->color_ar,
             'color_en' => $pui->item->color_en,

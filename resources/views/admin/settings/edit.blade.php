@@ -69,12 +69,21 @@
             <div class="card-header bg-primary text-white">إعدادات SEO العامه</div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label">Meta Title</label>
+                    <label class="form-label">Meta Title (AR)</label>
                     <input type="text" name="seo_title" class="form-control" value="{{ old('seo_title', $setting->seo_title ?? '') }}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Meta Description</label>
+                    <label class="form-label">Meta Description (AR)</label>
                     <textarea name="seo_description" class="form-control" rows="3">{{ old('seo_description', $setting->seo_description ?? '') }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Meta Title (EN)</label>
+                    <input type="text" name="seo_title_en" class="form-control" value="{{ old('seo_title_en', $setting->seo_title_en ?? '') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Meta Description (EN)</label>
+                    <textarea name="seo_description_en" class="form-control" rows="3">{{ old('seo_description_en', $setting->seo_description_en ?? '') }}</textarea>
                 </div>
             {{--<div class="mb-3">
                     <label class="form-label">Meta Keywords</label>

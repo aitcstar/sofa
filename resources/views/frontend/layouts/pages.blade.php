@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
+{{-- ✅ منطقة مخصصة للـ Meta Tags --}}
+@if (View::hasSection('meta'))
+    @yield('meta')
+@else
 {{-- Title --}}
 <title>
     @if(  app()->getLocale() === 'ar')
@@ -29,6 +32,7 @@
   <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
   <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
   <meta property="og:url" content="{{  app()->getLocale() === 'ar' ? (url()->current() ?? url('/')) : (url()->current() ?? url('/')) }}">
+  @endif
   <!-- ===== EXTERNAL LIBRARIES ===== -->
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" />

@@ -28,7 +28,13 @@ class Package extends Model
         'decoration_ar',
         'decoration_en',
         'is_active',
-        'sort_order'
+        'sort_order',
+        'meta_title_en',
+        'meta_title_ar',
+        'meta_description_en',
+        'meta_description_ar',
+        'slug_en',
+        'slug_ar'
     ];
 
     protected $casts = [

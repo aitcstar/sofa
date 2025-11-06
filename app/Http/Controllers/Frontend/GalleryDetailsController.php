@@ -28,6 +28,16 @@ class GalleryDetailsController extends Controller
         $project = [
             'name_ar' => $exhibition->name_ar ?? '',
             'name_en' => $exhibition->name_en ?? '',
+
+            'meta_title_en'=> $exhibition->meta_title_en ?? '',
+            'meta_title_ar'=> $exhibition->meta_title_ar ?? '',
+            'meta_description_en'=> $exhibition->meta_description_en ?? '',
+            'meta_description_ar'=> $exhibition->meta_description_ar ?? '',
+            'slug_en'=> $exhibition->slug_en ?? '',
+            'slug_ar' => $exhibition->slug_ar ?? '',
+            'summary_ar'=> $exhibition->summary_ar ?? '',
+            'summary_en'=> $exhibition->summary_en ?? '',
+
             'colors' => $package?->packageUnitItems->pluck('item.color_ar')->implode(', ') ?? '',
             'delivery_date' => $exhibition->delivery_date
                 ? \Carbon\Carbon::parse($exhibition->delivery_date)->format('F Y')

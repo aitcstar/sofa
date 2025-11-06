@@ -1,5 +1,23 @@
 @extends('frontend.layouts.pages')
 
+@section('meta')
+    <title>
+        @if(app()->getLocale() === 'ar')
+            {{  $pageData['project']['meta_title_ar']  ?? 'العنوان الافتراضي' }}
+        @else
+            {{ $pageData['project']['meta_title_en'] ?? 'Default Title' }}
+        @endif
+    </title>
+
+    <meta name="description" content="{{ app()->getLocale() === 'ar' ? ($pageData['project']['meta_description_ar'] ?? 'الوصف الافتراضي') : ( $pageData['project']['meta_description_en']  ?? 'Default description') }}">
+
+    <link rel="canonical" href="{{ url()->current() }}/{{ $pageData['project']['slug_en']}}">
+
+    <meta property="og:title" content="{{ app()->getLocale() === 'ar' ? ($pageData['project']['meta_title_ar'] ?? '') : ($pageData['project']['meta_title_en']  ?? '') }}">
+    <meta property="og:description" content="{{ app()->getLocale() === 'ar' ? ($pageData['project']['meta_description_ar']  ?? '') : ($pageData['project']['meta_description_en']  ?? '') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+@endsection
+
 
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
@@ -25,9 +43,7 @@
                     {{ app()->getLocale() == 'ar' ? $pageData['project']['name_ar'] : $pageData['project']['name_en'] }}
                 </h2>
                 <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">
-                    {{ app()->getLocale() == 'ar'
-                        ? "تم تنفيذ المشروع في فندق المها بمدينة الرياض باستخدام باكج جاهز لغرفة نوم واحدة من SOFA، مع تخصيصات بسيطة تناسب الطابع الفندقي. تنسيق الألوان المستخدم هو {$pageData['project']['colors'] }، وتم التسليم في {$pageData['project']['delivery_date']}"
-                        : "The project was implemented at Al Maha Hotel in Riyadh using a ready package for one bedroom from SOFA, with minor customizations to suit the hotel style. The color scheme used is {$pageData['project']['colors']}, and delivery was completed on {$pageData['project']['delivery_date']}"
+                    {{ app()->getLocale() == 'ar' ? $pageData['project']['summary_ar'] : $pageData['project']['summary_en']
                     }}
                 </p>
 

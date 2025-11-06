@@ -30,6 +30,8 @@ class SettingController extends Controller
             'youtube'         => 'nullable|url',
             'seo_title'      => 'nullable|string|max:255',
             'seo_description'=> 'nullable|string',
+            'seo_title_en'      => 'nullable|string|max:255',
+            'seo_description_en'=> 'nullable|string',
             'seo_keywords'   => 'nullable|string',
         ]);
 

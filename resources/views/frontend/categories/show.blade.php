@@ -1,5 +1,23 @@
 @extends('frontend.layouts.pages')
 
+@section('meta')
+    <title>
+        @if(app()->getLocale() === 'ar')
+            {{ $package->meta_title_ar ?? 'العنوان الافتراضي' }}
+        @else
+            {{ $package->meta_title_en ?? 'Default Title' }}
+        @endif
+    </title>
+
+    <meta name="description" content="{{ app()->getLocale() === 'ar' ? ($package->meta_description_ar ?? 'الوصف الافتراضي') : ($package->meta_description_en ?? 'Default description') }}">
+
+    <link rel="canonical" href="{{ url()->current() }}/{{ $package->slug_en }}">
+
+    <meta property="og:title" content="{{ app()->getLocale() === 'ar' ? ($package->meta_title_ar ?? '') : ($package->meta_title_en ?? '') }}">
+    <meta property="og:description" content="{{ app()->getLocale() === 'ar' ? ($package->meta_description_ar ?? '') : ($package->meta_description_en ?? '') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+@endsection
+
 @section('content')
 <!-- ===== BREADCRUMB ===== -->
 <div class="breadcrumb-container container">

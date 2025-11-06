@@ -12,12 +12,56 @@
     </div>
 
     <div class="card border-0 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">تفاصيل المدونة</h5>
-        </div>
+
         <div class="card-body">
             <form action="{{ route('admin.blogs.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                         إعدادات SEO
+                    </div>
+                    <div class="card-body">
+                        {{-- العنوان --}}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Title (AR)</label>
+                                <input type="text" name="meta_title_ar" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Title (EN)</label>
+                                <input type="text" name="meta_title_en" class="form-control">
+                            </div>
+                        </div>
+
+                        {{-- الوصف --}}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Description (AR)</label>
+                                <textarea name="meta_description_ar" class="form-control"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Description (EN)</label>
+                                <textarea name="meta_description_en" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        {{-- Slug --}}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Slug (AR)</label>
+                                <input type="text" name="slug_ar" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Slug (EN)</label>
+                                <input type="text" name="slug_en" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">تفاصيل المدونة</h5>
+                </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">

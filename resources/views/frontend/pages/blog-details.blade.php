@@ -1,8 +1,22 @@
 @extends('frontend.layouts.pages')
 
-@section('title', $post->title . ' - SOFA Experience')
-@section('description', $post->excerpt)
+@section('meta')
+    <title>
+        @if(app()->getLocale() === 'ar')
+            {{ $post->meta_title_ar ?? 'العنوان الافتراضي' }}
+        @else
+            {{ $post->meta_title_en ?? 'Default Title' }}
+        @endif
+    </title>
 
+    <meta name="description" content="{{ app()->getLocale() === 'ar' ? ($post->meta_description_ar ?? 'الوصف الافتراضي') : ($post->meta_description_en ?? 'Default description') }}">
+
+    <link rel="canonical" href="{{ url()->current() }}/{{ $post->slug_en }}">
+
+    <meta property="og:title" content="{{ app()->getLocale() === 'ar' ? ($post->meta_title_ar ?? '') : ($post->meta_title_en ?? '') }}">
+    <meta property="og:description" content="{{ app()->getLocale() === 'ar' ? ($post->meta_description_ar ?? '') : ($post->meta_description_en ?? '') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+@endsection
 @section('content')
 
 <div class="breadcrumb-container container">

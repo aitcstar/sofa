@@ -15,7 +15,13 @@ class Exhibition extends Model
         'description_ar',
         'description_en',
         'delivery_date',
-        'is_active'
+        'is_active',
+        'meta_title_en',
+        'meta_title_ar',
+        'meta_description_en',
+        'meta_description_ar',
+        'slug_en',
+        'slug_ar'
     ];
 
     public function category()

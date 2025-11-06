@@ -12,13 +12,59 @@
         </div>
 
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">معلومات الباكج</h5>
-            </div>
+
             <div class="card-body">
                 <form action="{{ route('admin.packages.update', $package) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+
+
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                             إعدادات SEO
+                        </div>
+                        <div class="card-body">
+                            {{-- العنوان --}}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Meta Title (AR)</label>
+                                    <input type="text" name="meta_title_ar" class="form-control" value="{{ old('meta_title_ar', $package->meta_title_ar) }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Meta Title (EN)</label>
+                                    <input type="text" name="meta_title_en" class="form-control" value="{{ old('meta_title_en', $package->meta_title_en) }}">
+                                </div>
+                            </div>
+
+                            {{-- الوصف --}}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Meta Description (AR)</label>
+                                    <textarea name="meta_description_ar" class="form-control">{{ old('meta_description_ar', $package->meta_description_ar) }}</textarea>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Meta Description (EN)</label>
+                                    <textarea name="meta_description_en" class="form-control">{{ old('meta_description_en', $package->meta_description_en) }}</textarea>
+                                </div>
+                            </div>
+
+                            {{-- Slug --}}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Slug (AR)</label>
+                                    <input type="text" name="slug_ar" class="form-control" value="{{ old('slug_ar', $package->slug_ar) }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Slug (EN)</label>
+                                    <input type="text" name="slug_en" class="form-control" value="{{ old('slug_en', $package->slug_en) }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">معلومات الباكج</h5>
+                    </div>
 
                     <!-- الاسم والسعر -->
                     <div class="row mb-3">

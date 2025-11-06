@@ -91,13 +91,20 @@ class BlogController extends Controller
         'category_id' => 'required|exists:blog_categories,id',
         'author_ar'=>'required|string|max:255',
         'author_en'=>'required|string|max:255',
+
+        'meta_title_en' => 'nullable|string',
+        'meta_title_ar' => 'nullable|string',
+        'meta_description_en' => 'nullable|string',
+        'meta_description_ar' => 'nullable|string',
+        'slug_en' => 'nullable|string',
+        'slug_ar' => 'nullable|string',
     ]);
 
     // استبعاد الـ faqs
     $data = $request->except('faqs');
 
     // slug العربي
-    $slugAr = Str::slug($request->title_ar, '-');
+    /*$slugAr = Str::slug($request->title_ar, '-');
     $originalSlugAr = $slugAr;
     $count = 1;
     while (Blog::where('slug_ar', $slugAr)->exists()) {
@@ -112,7 +119,7 @@ class BlogController extends Controller
     while (Blog::where('slug_en', $slugEn)->exists()) {
         $slugEn = $originalSlugEn . '-' . $count++;
     }
-    $data['slug_en'] = $slugEn;
+    $data['slug_en'] = $slugEn;*/
 
     // رفع الصورة لو موجودة
     if($request->hasFile('image')){
@@ -146,8 +153,7 @@ class BlogController extends Controller
         $request->validate([
             'title_ar'=>'required|string|max:255',
             'title_en'=>'required|string|max:255',
-            'slug_ar' => 'nullable|string|unique:blogs,slug_ar,'.$blog->id,
-            'slug_en' => 'nullable|string|unique:blogs,slug_en,'.$blog->id,
+
             'excerpt_ar'=>'required|string',
             'excerpt_en'=>'required|string',
             'content_ar'=>'required|string',
@@ -156,6 +162,13 @@ class BlogController extends Controller
             'category_id' => 'required|exists:blog_categories,id',
             'author_ar'=>'nullable|string|max:255',
             'author_en'=>'nullable|string|max:255',
+
+            'meta_title_en' => 'nullable|string',
+            'meta_title_ar' => 'nullable|string',
+            'meta_description_en' => 'nullable|string',
+            'meta_description_ar' => 'nullable|string',
+            'slug_en' => 'nullable|string',
+            'slug_ar' => 'nullable|string',
         ]);
 
         // استبعاد faqs من البيانات المحدثة للمدونة

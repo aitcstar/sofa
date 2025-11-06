@@ -190,6 +190,12 @@ public function store(Request $request)
         'decoration_ar',
         'decoration_en' ,
         'sort_order',
+        'meta_title_en',
+        'meta_title_ar',
+        'meta_description_en',
+        'meta_description_ar',
+        'slug_en',
+        'slug_ar'
     ]));
 
      // ✅ حفظ الصورة الرئيسية
@@ -267,6 +273,12 @@ public function update(Request $request, Package $package)
         'payment_plan_en'=> 'nullable|string',
         'decoration_ar'=> 'nullable|string',
         'decoration_en'=> 'nullable|string',
+        'meta_title_en'=> 'nullable|string',
+        'meta_title_ar'=> 'nullable|string',
+        'meta_description_en'=> 'nullable|string',
+        'meta_description_ar'=> 'nullable|string',
+        'slug_en'=> 'nullable|string',
+        'slug_ar'=> 'nullable|string',
         'units'   => 'nullable|array',
 
     ]);
@@ -287,7 +299,14 @@ public function update(Request $request, Package $package)
         'decoration_ar' => $validated['decoration_ar'] ?? null,
         'decoration_en' => $validated['decoration_en'] ?? null,
         'sort_order' => $validated['sort_order'] ?? null,
+        'meta_title_en' => $validated['meta_title_en'] ?? null,
+        'meta_title_ar' => $validated['meta_title_ar'] ?? null,
+        'meta_description_en' => $validated['meta_description_en'] ?? null,
+        'meta_description_ar' => $validated['meta_description_ar'] ?? null,
+        'slug_en' => $validated['slug_en'] ?? null,
+        'slug_ar' => $validated['slug_ar'] ?? null,
     ]);
+
 
     // ✅ تحديث الصورة الرئيسية
     if ($request->hasFile('image')) {

@@ -23,6 +23,9 @@ class Setting extends Model
         'youtube',
         'seo_title',
         'seo_description',
+        'seo_title_en',
+        'seo_description_en',
+
         'seo_keywords',
     ];
 }

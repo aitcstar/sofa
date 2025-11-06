@@ -12,13 +12,57 @@
     </div>
 
     <div class="card border-0 shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">معلومات الباكج</h5>
-        </div>
+
         <div class="card-body">
             <form action="{{ route('admin.packages.store') }}" method="POST" enctype="multipart/form-data">
               @csrf
 
+              <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                     إعدادات SEO
+                </div>
+                <div class="card-body">
+                    {{-- العنوان --}}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Meta Title (AR)</label>
+                            <input type="text" name="meta_title_ar" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Meta Title (EN)</label>
+                            <input type="text" name="meta_title_en" class="form-control">
+                        </div>
+                    </div>
+
+                    {{-- الوصف --}}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Meta Description (AR)</label>
+                            <textarea name="meta_description_ar" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Meta Description (EN)</label>
+                            <textarea name="meta_description_en" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    {{-- Slug --}}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Slug (AR)</label>
+                            <input type="text" name="slug_ar" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Slug (EN)</label>
+                            <input type="text" name="slug_en" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">معلومات الباكج</h5>
+            </div>
               <!-- الاسم -->
               <div class="row mb-3">
                   <div class="col-md-6">
@@ -107,13 +151,13 @@
             </div>
 
               <!-- الوحدات -->
-<div class="mb-3">
-    <h6>الوحدات الفرعية</h6>
-    <div id="units-container"></div>
-    <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addUnitFromList()">
-        <i class="fas fa-plus me-1"></i> إضافة وحدة من القائمة
-    </button>
-</div>
+            <div class="mb-3">
+                <h6>الوحدات الفرعية</h6>
+                <div id="units-container"></div>
+                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addUnitFromList()">
+                    <i class="fas fa-plus me-1"></i> إضافة وحدة من القائمة
+                </button>
+            </div>
 
               <!-- الأزرار -->
               <div class="d-flex gap-2 mt-4">

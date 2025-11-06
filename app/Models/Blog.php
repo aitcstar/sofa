@@ -14,6 +14,11 @@ class Blog extends Model
         'image',
         'author_ar', 'author_en',
         'category_id', // مفتاح أجنبي يربط مع blog_categories
+        'meta_title_en',
+        'meta_title_ar',
+        'meta_description_en',
+        'meta_description_ar',
+
     ];
 
     /**

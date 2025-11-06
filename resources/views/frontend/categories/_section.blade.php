@@ -1,5 +1,5 @@
 <!-- Packages -->
-<div class="rooms-container">
+<div class="rooms-container" style="width: 100%;">
     <div class="row">
         @foreach($packages as $package)
         <!-- Package Item -->

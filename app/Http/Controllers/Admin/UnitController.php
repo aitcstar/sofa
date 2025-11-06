@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Unit;
 use App\Models\UnitImage;
+use App\Models\PackageUnitItem;
 class UnitController extends Controller
 {
 
@@ -76,7 +77,7 @@ class UnitController extends Controller
         return redirect()->route('admin.units.index')->with('success', 'تم تحديث الوحدة بنجاح');
     }
 
-    public function destroy(Unit $unit)
+    /*public function destroy(Unit $unit)
     {
         foreach($unit->images as $image) {
             \Storage::disk('public')->delete($image->image_path);
@@ -85,7 +86,37 @@ class UnitController extends Controller
 
         $unit->delete();
         return redirect()->route('admin.units.index')->with('success', 'تم حذف الوحدة بنجاح');
+    }*/
+
+    public function destroy(Request $request, Unit $unit)
+    {
+        // تحقق أولاً إن كان هناك باكجات مرتبطة
+        $hasPackages = PackageUnitItem::where('unit_id', $unit->id)->exists();
+
+        // لو فيه باكجات و المستخدم لم يؤكد الحذف بعد
+        if ($hasPackages && !$request->has('force_delete')) {
+            return redirect()->route('admin.units.index')
+                ->with('confirm_delete', [
+                    'unit_id' => $unit->id,
+                    'message' => 'هذه الوحدة مرتبطة ببكاجات. هل تريد حذفها وجميع العلاقات المرتبطة بها؟'
+                ]);
+        }
+
+        // حذف الصور
+        foreach ($unit->images as $image) {
+            \Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+
+        // حذف العلاقات مع PackageUnitItem
+        PackageUnitItem::where('unit_id', $unit->id)->delete();
+
+        // حذف الوحدة نفسها
+        $unit->delete();
+
+        return redirect()->route('admin.units.index')->with('success', 'تم حذف الوحدة بنجاح');
     }
+
 
    /* public function destroyimage($unitId, $imageId)
     {

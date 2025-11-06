@@ -128,18 +128,34 @@ public function update(Request $request, Item $item)
 }
 
 
-    public function destroy(Item $item)
-    {
-        //dd($item);
-        if ($item->image_path) {
-            \Storage::disk('public')->delete($item->image_path);
-        }
-        $item->delete();
-        if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'تم الحذف بنجاح']);
-        }
-        return redirect()->route('admin.items.index')->with('success', 'تم حذف القطعة بنجاح.');
+public function destroy(Request $request, Item $item)
+{
+    // تحقق إن كانت القطعة مرتبطة ببكاجات
+    $hasPackages = \App\Models\PackageUnitItem::where('item_id', $item->id)->exists();
+
+    // لو فيه ارتباطات ولم يتم تأكيد الحذف بعد
+    if ($hasPackages && !$request->has('force_delete')) {
+        return redirect()->route('admin.items.index')
+            ->with('confirm_delete', [
+                'item_id' => $item->id,
+                'message' => 'هذه القطعة مرتبطة ببكاجات. هل تريد حذفها وجميع العلاقات المرتبطة بها؟'
+            ]);
     }
+
+    // حذف الصورة إن وجدت
+    if ($item->image_path) {
+        \Storage::disk('public')->delete($item->image_path);
+    }
+
+    // حذف العلاقات
+    \App\Models\PackageUnitItem::where('item_id', $item->id)->delete();
+
+    // حذف القطعة
+    $item->delete();
+
+    return redirect()->route('admin.items.index')->with('success', 'تم حذف القطعة بنجاح.');
+}
+
 
 
     public function destroyImage(Item $item)

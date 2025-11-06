@@ -68,6 +68,26 @@
                         @endforelse
                     </tbody>
                 </table>
+
+                {{-- رسالة تأكيد الحذف --}}
+                @if(session('confirm_delete'))
+                    @php $data = session('confirm_delete'); @endphp
+                    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                        <strong>تنبيه:</strong> {{ $data['message'] }}
+                        <form action="{{ route('admin.units.destroy', $data['unit_id']) }}" method="POST" class="d-inline ms-2">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="force_delete" value="1">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt me-1"></i> تأكيد الحذف
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" onclick="this.closest('.alert').remove();">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

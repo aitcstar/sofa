@@ -27,15 +27,16 @@
                 <div class="filter-group">
                     <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.unit_type') }}</h4>
                     <div class="filter-options">
-                        @foreach($unitTypes as $type)
-                            <div class="filter-option">
-                                <div class="filter-checkbox"
-                                     data-filter="unit-type"
-                                     data-value="{{ $type['name_'.app()->getLocale()] }}">
-                                </div>
-                                <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
+                        @foreach($packageNames as $package)
+                        <div class="filter-option">
+                            <div class="filter-checkbox"
+                                 data-filter="package-name"
+                                 data-value="{{ $package['name_'.app()->getLocale()] }}">
                             </div>
-                        @endforeach
+                            <span class="body-2 text-body">{{ $package['name_'.app()->getLocale()] }}</span>
+                        </div>
+                    @endforeach
+
                     </div>
                 </div>
 
@@ -228,15 +229,16 @@
         <div class="mobile-filter-group">
             <h4 class="sub-heading-4 mb-0"> {{ __('site.unit_type') }} </h4>
             <div class="mobile-filter-options">
-                @foreach($unitTypes as $type)
-                <div class="mobile-filter-option">
-                    <div class="mobile-filter-checkbox"
-                         data-filter="unit-type"
-                         data-value="{{ $type['name_'.app()->getLocale()] }}">
-                    </div>
-                    <span class="body-2 text-body">{{ $type['name_'.app()->getLocale()] }}</span>
-                </div>
-            @endforeach
+                @foreach($packageNames as $package)
+    <div class="filter-option">
+        <div class="filter-checkbox"
+             data-filter="package-name"
+             data-value="{{ $package['name_'.app()->getLocale()] }}">
+        </div>
+        <span class="body-2 text-body">{{ $package['name_'.app()->getLocale()] }}</span>
+    </div>
+@endforeach
+
 
 
             </div>

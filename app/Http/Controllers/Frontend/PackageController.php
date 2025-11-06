@@ -176,9 +176,13 @@ public function index()
         'packageUnitItems.item'
     ])->get();
 
-    $unitTypes = Unit::select('name_ar', 'name_en')
+    /*$unitTypes = Unit::select('name_ar', 'name_en')
+    ->distinct()
+    ->get();*/
+    $packageNames = Package::select('name_ar', 'name_en')
     ->distinct()
     ->get();
+
 
 
     // الألوان
@@ -199,7 +203,7 @@ public function index()
 
     $mobileColors = $colors;
 
-    return view('frontend.categories.index', compact('seo','packages','unitTypes','colors','mobileColors'));
+    return view('frontend.categories.index', compact('seo','packages','packageNames','colors','mobileColors'));
 }
 /*
 public function show($id)

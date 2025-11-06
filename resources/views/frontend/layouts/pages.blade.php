@@ -20,7 +20,7 @@
   <meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
   {{-- Canonical URL --}}
   <link rel="canonical" href="{{  url()->current() }}">
-س  {{-- Index/NoIndex --}}
+ {{-- Index/NoIndex --}}
   @if($seo && $seo->index_status === 'noindex')
     <meta name="robots" content="noindex, follow">
   @else

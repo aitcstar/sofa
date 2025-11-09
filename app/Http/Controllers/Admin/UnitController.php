@@ -12,7 +12,7 @@ class UnitController extends Controller
 
     public function index()
     {
-        $units = Unit::whereNull('package_id')->paginate(10);
+        $units = Unit::whereNull('package_id')->get();
         return view('admin.units.index', compact('units'));
     }
 

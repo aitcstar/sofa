@@ -24,17 +24,10 @@ class DesignController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'category' => 'nullable|string|max:100',
-            'description_ar' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $data = $request->except('image');
 
-        if ($request->hasFile('image')) {
-            $data['image_path'] = $request->file('image')->store('designs', 'public');
-        }
+        $data = $request->all();
 
         Design::create($data);
 
@@ -49,21 +42,12 @@ class DesignController extends Controller
     public function update(Request $request, Design $design)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'nullable|string|max:100',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'name_ar' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
         ]);
 
-        $data = $request->except('image');
+        $data = $request->all();
 
-        if ($request->hasFile('image')) {
-            // حذف الصورة القديمة إذا وجدت
-            if ($design->image_path) {
-                \Storage::disk('public')->delete($design->image_path);
-            }
-            $data['image_path'] = $request->file('image')->store('designs', 'public');
-        }
 
         $design->update($data);
 

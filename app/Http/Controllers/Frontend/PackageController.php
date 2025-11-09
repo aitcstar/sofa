@@ -235,6 +235,7 @@ public function show($id)
     $package = Package::with([
         'images',
         'packageUnitItems.unit.images', // صور الوحدات
+        'packageUnitItems.unit.designs', // ✅ أضفنا التصميمات هنا
         'packageUnitItems.item'         // القطع
     ])->findOrFail($id);
 

@@ -12,10 +12,6 @@ class Design extends Model
     protected $fillable = [
         'name_ar',
         'name_en',
-        'category',
-        'description_ar',
-        'description_en',
-        'image_path',
     ];
 
     // العلاقات

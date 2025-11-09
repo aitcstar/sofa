@@ -368,6 +368,10 @@
 #itemsTable_filter{
     text-align: left !important; /* يحرك البحث لليسار */
 }
+
+#designsTable_filter{
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')
@@ -517,13 +521,13 @@
                         @if($user && ($user->hasPermission('packages.view') || $user->role === 'admin'))
                         <!-- إدارة الباكجات مع Sub-menu-->
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.packages.*') ||  request()->routeIs('admin.units.*') || request()->routeIs('admin.items.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.packages.*') ||  request()->routeIs('admin.units.*') || request()->routeIs('admin.designs.*') || request()->routeIs('admin.items.*') ? 'active' : '' }}"
                             href="#packagesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                 <i class="fas fa-tags me-2"></i>
                                 إدارة الباكجات
                             </a>
 
-                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') ||   request()->routeIs('admin.units.*') || request()->routeIs('admin.items.*') ? 'show' : '' }}"
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.packages.*') ||   request()->routeIs('admin.units.*') ||  request()->routeIs('admin.designs.*') || request()->routeIs('admin.items.*') ? 'show' : '' }}"
                                 id="packagesSubmenu">
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
@@ -533,20 +537,20 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
+                                    href="{{ route('admin.designs.index') }}">
+                                        <i class="fas fa-palette me-2"></i>
+                                         انواع التصاميم
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.units.*') ? 'active' : '' }}"
                                     href="{{ route('admin.units.index') }}">
                                         <i class="fas fa-palette me-2"></i>
                                         الوحدات
                                     </a>
                                 </li>
-                                <!--
-                                <li class="nav-item">
-                                    <a class="nav-link {{ request()->routeIs('admin.designs.*') ? 'active' : '' }}"
-                                    href="{{ route('admin.designs.index') }}">
-                                        <i class="fas fa-palette me-2"></i>
-                                        التصاميم
-                                    </a>
-                                </li>-->
+
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.items.*') ? 'active' : '' }}"

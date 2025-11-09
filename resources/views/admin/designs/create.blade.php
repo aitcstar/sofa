@@ -32,50 +32,6 @@
             </div>
         </div>
 
-        <div class="row mb-4">
-            <!-- الفئة -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="category" class="form-label">الفئة</label>
-                    <select name="category" id="category" class="form-control">
-                        <option value="">اختر الفئة</option>
-                        <option value="bedroom">غرفة نوم</option>
-                        <option value="living_room">معيشة</option>
-                        <option value="kitchen">مطبخ</option>
-                        <option value="bathroom">حمام</option>
-                        <option value="external">الملحقات الخارجية والإضافية</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!--
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="description_ar" class="form-label">الوصف (عربي)</label>
-                    <textarea name="description_ar" id="description_ar" class="form-control" rows="3"></textarea>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="description_en" class="form-label">Description (English)</label>
-                    <textarea name="description_en" id="description_en" class="form-control" rows="3"></textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="mb-3">
-                    <label for="image" class="form-label">صورة التصميم / Design Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
-                </div>
-            </div>
-        </div>
-    -->
-
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-save"></i> حفظ التصميم

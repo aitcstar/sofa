@@ -58,6 +58,27 @@
                 </div>
 
                 <div class="mb-3">
+                    <label>أنواع التصميمات المرتبطة</label>
+                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                        @foreach($designs as $design)
+                            <div class="form-check">
+                                <input
+                                    type="checkbox"
+                                    name="design_ids[]"
+                                    value="{{ $design->id }}"
+                                    id="design_{{ $design->id }}"
+                                    class="form-check-input"
+                                    {{ isset($selectedDesigns) && in_array($design->id, $selectedDesigns) ? 'checked' : '' }}
+                                >
+                                <label for="design_{{ $design->id }}" class="form-check-label">
+                                    {{ $design->name_ar }} ({{ $design->name_en }})
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <label>رفع صور الوحدة</label>
                     <input type="file" name="images[]" class="form-control" multiple>
                 </div>

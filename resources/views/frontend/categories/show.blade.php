@@ -71,6 +71,20 @@
                             id="collapse{{ $loop->index }}"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body d-flex flex-column gap-sm-4">
+
+                                @if($unit->designs->count())
+                                <div class="accordion-body d-flex gap-sm-4 flex-wrap">
+                                     @foreach($unit->designs as $design)
+                                        <div class="accordion-details-content-item">
+                                            <p class="sub-heading-5 text-body mb-0">   {{ $design->{'name_'.app()->getLocale()} }}</p>
+                                        </div>
+                                        @endforeach
+                                </div>
+                                @endif
+
+
+
+
                                 <!-- Items -->
                                 @if($items->count())
                                 <div>

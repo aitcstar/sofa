@@ -7,18 +7,21 @@ use Illuminate\Http\Request;
 use App\Models\Unit;
 use App\Models\UnitImage;
 use App\Models\PackageUnitItem;
+use App\Models\Design;
 class UnitController extends Controller
 {
 
     public function index()
     {
+
         $units = Unit::whereNull('package_id')->get();
         return view('admin.units.index', compact('units'));
     }
 
     public function create()
     {
-        return view('admin.units.create');
+        $designs = Design::all(); // كل التصميمات
+        return view('admin.units.create', compact('designs'));
     }
 
     public function store(Request $request)
@@ -29,9 +32,14 @@ class UnitController extends Controller
             'name_en' => 'required|string|max:255',
             'type' => 'required|string|max:50',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'design_ids' => 'array',
         ]);
 
         $unit = Unit::create($request->all());
+
+        if ($request->has('design_ids')) {
+            $unit->designs()->sync($request->design_ids);
+        }
 
         if($request->hasFile('images')) {
             foreach($request->file('images') as $file) {
@@ -49,8 +57,11 @@ class UnitController extends Controller
 
     public function edit(Unit $unit)
     {
+        $designs = Design::all();
         $images = $unit->images()->orderBy('sort_order')->get();
-        return view('admin.units.edit', compact('unit', 'images'));
+        $selectedDesigns = $unit->designs->pluck('id')->toArray(); // <-- دي أهم سطر
+
+        return view('admin.units.edit', compact('unit', 'images','selectedDesigns','designs'));
     }
 
     public function update(Request $request, Unit $unit)
@@ -60,9 +71,14 @@ class UnitController extends Controller
             'name_en' => 'required|string|max:255',
             'type' => 'required|string|max:50',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'design_ids' => 'array',
         ]);
 
         $unit->update($request->all());
+
+        if ($request->has('design_ids')) {
+            $unit->designs()->sync($request->design_ids);
+        }
 
         if($request->hasFile('images')) {
             foreach($request->file('images') as $file) {

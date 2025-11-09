@@ -23,7 +23,7 @@
                     <!-- Title & Quantity & Description -->
                     <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column gap-sm-6">
-                            <h5 class="sub-heading-3">{{ __('site.package') }} {{ $package->{'name_'.app()->getLocale()} }}</h5>
+                            <h5 class="sub-heading-3"> {{ $package->{'name_'.app()->getLocale()} }}</h5>
                             <p class="body-3 mb-0">
                                 {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                             </p>

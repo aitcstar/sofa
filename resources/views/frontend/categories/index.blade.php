@@ -104,24 +104,37 @@
                                 </div>
 
                                 <div class="d-flex flex-column gap-sm-4">
-                                    <div class="d-flex flex-wrap gap-sm-3">
-                                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Includes') }}</p>
+                                    <div class="d-flex flex-wrap gap-sm-1">
+                                        <p class="body-2 text-caption mb-0">{{ __('site.Includes') }}</p>
 
-                                        @foreach($package->packageUnitItems as $pui)
-                                            <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
-                                                @php
-                                                    $icon = match($pui->unit->type) {
-                                                        'bedroom' => 'caricone.png',
-                                                        'living_room' => 'sofa.png',
-                                                        'kitchen' => 'foot.png',
-                                                        'external' => 'Group.png',
-                                                        default => 'caricone.png',
-                                                    };
-                                                @endphp
-                                                <img src="{{ asset('assets/images/icons/'.$icon) }}" alt="" />
-                                                <span class="body-4">{{ $pui->unit->{'name_'.app()->getLocale()} }}</span>
-                                            </div>
-                                        @endforeach
+                                        @php
+                                        $units = $package->packageUnitItems->pluck('unit')->unique('id')->values();
+                                    @endphp
+
+                                    @foreach($units->take(4) as $puiUnit)
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            @php
+                                                $icon = match($puiUnit->type) {
+                                                    'bedroom' => 'caricone.png',
+                                                    'living_room' => 'sofa.png',
+                                                    'kitchen' => 'foot.png',
+                                                    'external' => 'Group.png',
+                                                    default => 'caricone.png',
+                                                };
+                                            @endphp
+                                            <img src="{{ asset('assets/images/icons/'.$icon) }}" alt="" />
+                                            <span class="body-4">{{ $puiUnit->{'name_'.app()->getLocale()} }}</span>
+                                        </div>
+                                    @endforeach
+
+                                    {{-- لو فيه أكتر من 4 وحدات، أضف عنصر "أخرى" --}}
+                                    @if($units->count() > 4)
+                                        <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                            <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
+                                            <span class="body-4">{{ app()->getLocale() == 'ar' ? 'أخرى' : 'Other' }}</span>
+                                        </div>
+                                    @endif
+
                                     </div>
 
                                     @php

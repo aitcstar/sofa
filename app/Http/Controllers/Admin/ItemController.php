@@ -43,11 +43,11 @@ class ItemController extends Controller
             'item_name_en' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
             'dimensions' => 'nullable|string|max:100',
-            'material_ar' => 'required|string|max:255',
-            'material_en' => 'required|string|max:255',
-            'color_ar' => 'required|string|max:100',
-            'color_en' => 'required|string|max:100',
-            'background_color' => 'required|string|max:100',
+            'material_ar' => 'nullable|string|max:255',
+            'material_en' => 'nullable|string|max:255',
+            'color_ar' => 'nullable|string|max:100',
+            'color_en' => 'nullable|string|max:100',
+            'background_color' => 'nullable|string|max:100',
             'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
@@ -93,11 +93,11 @@ public function update(Request $request, Item $item)
         'item_name_en' => 'required|string|max:255',
         'quantity' => 'required|integer|min:1',
         'dimensions' => 'nullable|string|max:100',
-        'material_ar' => 'required|string|max:255',
-        'material_en' => 'required|string|max:255',
-        'color_ar' => 'required|string|max:100',
-        'color_en' => 'required|string|max:100',
-        'background_color' => 'required|string|max:100',
+        'material_ar' => 'nullable|string|max:255',
+        'material_en' => 'nullable|string|max:255',
+        'color_ar' => 'nullable|string|max:100',
+        'color_en' => 'nullable|string|max:100',
+        'background_color' => 'nullable|string|max:100',
         'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
     ]);
 

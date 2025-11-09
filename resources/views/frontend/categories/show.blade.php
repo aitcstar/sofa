@@ -88,7 +88,7 @@
                                 <!-- Items -->
                                 @if($items->count())
                                 <div>
-                                    <ul class="d-flex flex-wrap gap-md p-0 m-0" style="margin-right: 20px !important;">
+                                    <ul class="d-flex flex-wrap  gap-sm-2 p-0 m-0" style="margin-right: 14px !important;">
                                         @foreach($items as $item)
                                         <li class="body-4 mb-0">
                                             {{ $item->item?->{'item_name_'.app()->getLocale()} ?? '—' }} ×{{ $item->item?->quantity ?? 0 }}

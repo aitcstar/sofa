@@ -25,7 +25,7 @@
     <span class="body-2 text-body">/</span>
     <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="body-2 text-body">{{ __('site.package') }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="#" class="body-2 text-primary">{{ app()->getLocale() == 'ar' ? $package->title_ar : $package->title_en }}</a><br>
+    <a href="#" class="body-2 text-primary">{{ app()->getLocale() == 'ar' ? $package->name_ar : $package->name_en }}</a><br>
 </div>
 
 <section class="category-details">

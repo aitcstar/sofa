@@ -364,6 +364,10 @@
 #leadsTable_filter{
     text-align: left !important; /* يحرك البحث لليسار */
 }
+
+#itemsTable_filter{
+    text-align: left !important; /* يحرك البحث لليسار */
+}
     </style>
 
     @stack('styles')

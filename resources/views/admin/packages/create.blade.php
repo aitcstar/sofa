@@ -357,7 +357,7 @@ function addItemToUnit(btn, uIndex) {
         let optionsHtml = '<option value="">-- اختر قطعة --</option>';
         items.forEach(item => {
             optionsHtml += `<option value="${item.id}" data-item='${JSON.stringify(item).replace(/'/g, "\\'")}'>
-                ${item.item_name_ar} / ${item.item_name_en}
+                ${item.item_name_ar} / ${item.item_name_en} / ${item.color_ar}
             </option>`;
         });
 
@@ -395,7 +395,7 @@ function addItemToUnit(btn, uIndex) {
                 <input type="hidden" name="units[${uIndex}][items][${itemIndex}][material_ar]" class="item-material-ar">
                 <input type="hidden" name="units[${uIndex}][items][${itemIndex}][material_en]" class="item-material-en">
                 <input type="hidden" name="units[${uIndex}][items][${itemIndex}][color_ar]" class="item-color-ar">
-                <input type="hidden" name="units[${uIndex}][items][${itemIndex}][color_en]" class="item-color-en">
+                <input type="hidden" name="units[${uIndex}][items][${itemIndex}][color_ar]" class="item-color-en">
                 <input type="hidden" name="units[${uIndex}][items][${itemIndex}][background_color]" class="item-bg-color">
                 <input type="hidden" name="units[${uIndex}][items][${itemIndex}][image_path]" class="item-image-path">
 
@@ -458,7 +458,7 @@ function addItemToUnit(btn, uIndex) {
         div.querySelector('.item-material-ar').value = itemData.material_ar || '';
         div.querySelector('.item-material-en').value = itemData.material_en || '';
         div.querySelector('.item-color-ar').value = itemData.color_ar || '';
-        div.querySelector('.item-color-en').value = itemData.color_en || '';
+        div.querySelector('.item-color-en').value = itemData.color_ar || '';
         div.querySelector('.item-bg-color').value = itemData.background_color || '';
         div.querySelector('.item-image-path').value = itemData.image_path || '';
 
@@ -468,7 +468,7 @@ function addItemToUnit(btn, uIndex) {
         div.querySelector('.item-material-ar-display').textContent = itemData.material_ar || '—';
         div.querySelector('.item-material-en-display').textContent = itemData.material_en || '—';
         div.querySelector('.item-color-ar-display').textContent = itemData.color_ar || '—';
-        div.querySelector('.item-color-en-display').textContent = itemData.color_en || '—';
+        div.querySelector('.item-color-en-display').textContent = itemData.color_ar || '—';
 
         // عرض لون الخلفية
         const bgColorPreview = div.querySelector('.item-bg-color-preview');

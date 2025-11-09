@@ -263,7 +263,7 @@
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.item-card').remove()">حذف</button>
                                                         </div>
                                                         <select class="form-control select2-item" name="units[{{ $unitId }}][items][{{ $iIndex }}][item_id]" required>
-                                                            <option value="{{ $item->id }}" selected>{{ $item->item_name_ar }} / {{ $item->item_name_en }}</option>
+                                                            <option value="{{ $item->id }}" selected>{{ $item->item_name_ar }} / {{ $item->item_name_en }} / {{ $item->color_ar }}</option>
                                                         </select>
                                                     </div>
                                                 @endif
@@ -422,7 +422,7 @@ function fetchItemsByUnitId(unitId, callback) {
                     return;
                 }
                 let itemIndex = unitCard.find('.item-card').length;
-                let options = items.map(i=>`<option value="${i.id}">${i.item_name_ar} / ${i.item_name_en}</option>`).join('');
+                let options = items.map(i=>`<option value="${i.id}">${i.item_name_ar} / ${i.item_name_en}/ ${i.color_ar}</option>`).join('');
                 let html = `
                 <div class="border p-2 mb-2 item-card">
                     <div class="d-flex justify-content-between align-items-center mb-1">
@@ -455,7 +455,7 @@ function fetchItemsByUnitId(unitId, callback) {
         let optionsHtml = '<option value="">-- اختر قطعة --</option>';
         items.forEach(item => {
             optionsHtml += `<option value="${item.id}" data-item='${JSON.stringify(item).replace(/'/g, "\\'")}'>
-                ${item.item_name_ar} / ${item.item_name_en}
+                ${item.item_name_ar} / ${item.item_name_en} / ${item.color_ar}
             </option>`;
         });
 

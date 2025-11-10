@@ -315,7 +315,7 @@ public function filter(Request $request)
     // إذا لم يكن هناك فلتر (أي عند أول تحميل الصفحة) نجيب أول 4 باكجات فقط
     if (empty($request->all())) {
         // لو مفيش أي فلاتر في الطلب، هات فقط الباقات المعروضة في الرئيسية
-        $packages = $query->where('show_in_homepage', 1)->take(4)->get();
+        $packages = $query->where('show_in_home', 1)->take(4)->get();
     } else {
         // لو في فلاتر، هات الكل بناءً عليها
         $packages = $query->get();

@@ -12,6 +12,11 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
         <h1 class="h2">رسائل اتصل بنا</h1>
     </div>
 
+    <div class="mb-3 text-start">
+        <a href="{{ route('admin.contact.export') }}" class="btn btn-secondary">
+            <i class="fas fa-file-export"></i> تصدير البيانات
+        </a>
+    </div>
 
     <!-- Table Card -->
     <div class="card shadow-sm border-0">

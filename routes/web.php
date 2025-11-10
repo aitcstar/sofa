@@ -338,7 +338,9 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     //Route::resource('exhibitions.steps', ExhibitionStepController::class)->shallow();
 
 
+    Route::get('/contacts/export', [AdminContactController::class, 'export'])->name('contact.export');
     Route::resource('contacts', AdminContactController::class);
+
     Route::get('contact-section/edit', [ContactSectionController::class, 'edit'])->name('contact.edit');
     Route::put('contact-section/update', [ContactSectionController::class, 'update'])->name('contact.update');
 
@@ -346,6 +348,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::get('/help-requests', [HelpController::class, 'index'])->name('help.index');
     Route::post('/admin/help/content', [HelpController::class, 'updatehelp'])->name('help.content.update');
     Route::delete('/requests/{request}', [HelpController::class, 'destroy'])->name('requests.destroy');
+    Route::get('/help-requests/export', [HelpController::class, 'export'])->name('help.requests.export');
 
 
     Route::resource('users', UserController::class);

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\SeoSetting;
 use App\Models\PageContent;
 use App\Models\HelpRequest;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\HelpRequestsExport;
 use Illuminate\Support\Facades\Storage;
 
 class HelpController extends Controller
@@ -41,6 +42,11 @@ class HelpController extends Controller
 {
     $request->delete();
     return back()->with('success', 'تم حذف الطلب بنجاح');
+}
+
+public function export()
+{
+    return Excel::download(new HelpRequestsExport, 'help_requests.xlsx');
 }
 
 }

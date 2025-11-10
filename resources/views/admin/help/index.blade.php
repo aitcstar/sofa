@@ -117,6 +117,9 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">طلبات المساعدة</h1>
     </div>
+    <a href="{{ route('admin.help.requests.export') }}"  class="btn btn-secondary">
+        <i class="fas fa-file-excel"></i> تصدير Excel
+    </a>
 
     <!-- Table Card -->
     <div class="card shadow-sm border-0">

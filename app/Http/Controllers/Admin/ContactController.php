@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact;
+use App\Exports\ContactsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {
@@ -29,6 +31,11 @@ public function destroy(Contact $contact)
     $contact->delete();
     return redirect()->route('admin.contacts.index')
                      ->with('success', 'تم حذف الرسالة بنجاح.');
+}
+
+public function export()
+{
+    return Excel::download(new ContactsExport, 'contacts.xlsx');
 }
 }
 

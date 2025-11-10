@@ -34,7 +34,8 @@ class Package extends Model
         'meta_description_en',
         'meta_description_ar',
         'slug_en',
-        'slug_ar'
+        'slug_ar',
+        'show_in_home'
     ];
 
     protected $casts = [

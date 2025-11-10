@@ -314,15 +314,25 @@ public function filter(Request $request)
 
     // إذا لم يكن هناك فلتر (أي عند أول تحميل الصفحة) نجيب أول 4 باكجات فقط
     if (empty($request->all())) {
-        $packages = $query->take(4)->get();
+        // لو مفيش أي فلاتر في الطلب، هات فقط الباقات المعروضة في الرئيسية
+        $packages = $query->where('show_in_homepage', 1)->take(4)->get();
     } else {
+        // لو في فلاتر، هات الكل بناءً عليها
         $packages = $query->get();
     }
+
 
     return view('frontend.categories._section', compact('packages'));
 }
 
 
+public function toggleHome(Request $request, Package $package)
+{
+    $package->show_in_home = $request->show_in_home;
+    $package->save();
+
+    return response()->json(['success' => true]);
+}
 
 
 

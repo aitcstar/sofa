@@ -133,6 +133,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <th>عدد الوحدات</th>
                             <th>عدد القطع</th>
                             <th>الترتيب</th>
+                            <th>تظهر في الرئيسية</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -156,6 +157,12 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             </td>
 
                             <td>{{ $package->sort_order }}</td>
+                            <td>
+                                <input type="checkbox"
+                                       class="form-check-input toggle-home"
+                                       data-id="{{ $package->id }}"
+                                       {{ $package->show_in_home ? 'checked' : '' }}>
+                            </td>
                             <td class="d-flex gap-1">
                                 @if($user && ($user->hasPermission('packages.edit') || $user->role === 'admin'))
                                 <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-sm btn-outline-primary">
@@ -193,8 +200,39 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-home').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const packageId = this.dataset.id;
+                const showInHome = this.checked ? 1 : 0;
+
+                fetch(`/admin/packages/${packageId}/toggle-home`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ show_in_home: showInHome })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('تم التحديث بنجاح');
+                    } else {
+                        alert('حدث خطأ أثناء الحفظ');
+                    }
+                })
+                .catch(() => alert('تعذر الاتصال بالخادم'));
+            });
+        });
+    });
+    </script>
+
 <script>
 $(document).ready(function() {
+
     $('#packagesTable').DataTable({
         responsive: true,
         order: [[5, 'asc']],

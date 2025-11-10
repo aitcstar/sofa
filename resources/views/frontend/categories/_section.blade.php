@@ -28,7 +28,7 @@
                                 {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                             </p>
                         </div>
-                        <p class="body-2" style="color: var(--secondary);">
+                        <p class="body-2" style="color: var(--secondary);font-weight:700;">
                             {{ $package->packageUnitItems->count() }} {{ __('site.piece') }}
                         </p>
                     </div>

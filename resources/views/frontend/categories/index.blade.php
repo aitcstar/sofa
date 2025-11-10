@@ -62,7 +62,7 @@
             </div>
 
             <!-- Packages -->
-            <div class="rooms-container">
+            <div class="rooms-container" style="width: 100%;">
                 <div class="row">
                     @foreach($packages as $package)
                     <div class="col-sm-12 col-md-6 mb-sm-4 package-cards"
@@ -89,7 +89,7 @@
                                             {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                                         </p>
                                     </div>
-                                    <p class="body-2" style="color: var(--secondary);">
+                                    <p class="body-2" style="color: var(--secondary);font-weight:700;">
                                         {{ $package->packageUnitItems->count() }} {{ __('site.piece') }}
                                     </p>
                                 </div>

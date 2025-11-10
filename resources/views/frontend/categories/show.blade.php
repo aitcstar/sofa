@@ -285,9 +285,12 @@
 
             <!-- TAB بالصور -->
             <div class="tab-pane" id="with-images">
-                <div class="table-section-grid" style="width: 100%;">
-                    @foreach($groupedItems as $unitId => $items)
+                <div class="table-section-grid w-100">
+
+                    {{-- نرتب المجموعات حسب عدد العناصر (الأكثر أولاً) --}}
+                    @foreach($groupedItems->sortByDesc(fn($items) => $items->count()) as $unitId => $items)
                         @php $unit = $items->first()->unit; @endphp
+
                         <div class="table-section-item d-flex flex-column gap-sm-4">
                             <div class="d-flex align-items-center gap-sm-5">
                                 @if($unit->type == "bedroom")
@@ -318,40 +321,44 @@
                                     </thead>
                                     <tbody>
                                         @foreach($items as $item)
-                                        <tr>
-                                            <td class="body-2">{{ $item->item->{'item_name_'.app()->getLocale()} ?? ''}}</td>
-                                            <td class="body-2">{{ $item->item->dimensions ?? ''}}</td>
-                                            <td class="body-2">{{ $item->item->{'material_'.app()->getLocale()}?? '' }}</td>
-                                            <td class="color-box">
-                                                <p class="body-2 text-subheading mb-0" style="background-color: {{ $item->item->background_color ?? ''}}">
-                                                    {{ $item->item->{'color_'.app()->getLocale()} ?? ''}}
-                                                </p>
-                                            </td>
-                                            <td class="image-box">
-                                                <div class="img-box">
-                                                    <img
-                                                    src="{{ $item->item?->image_path
-                                                        ? asset('storage/'.$item->item->image_path)
-                                                        : asset('assets/images/no-image.png') }}" alt="item-image"
-                                                        class="popup-image"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#imageModal"
-                                                        data-image="{{ $item->item?->image_path
-                                                            ? asset('storage/'.$item->item->image_path)
-                                                            : asset('assets/images/no-image.png') }}"
-                                                                                                            />
-                                                </div>
-                                            </td>
-                                            <td class="body-2">{{ $item->item->quantity ?? 0}}</td>
-                                        </tr>
+                                            <tr>
+                                                <td class="body-2">{{ $item->item?->{'item_name_'.app()->getLocale()} ?? '' }}</td>
+                                                <td class="body-2">{{ $item->item->dimensions ?? '' }}</td>
+                                                <td class="body-2">{{ $item->item?->{'material_'.app()->getLocale()} ?? '' }}</td>
+                                                <td class="color-box">
+                                                    <p class="body-2 text-subheading mb-0"
+                                                       style="background-color: {{ $item->item->background_color ?? '' }}">
+                                                       {{ $item->item?->{'color_'.app()->getLocale()} ?? '' }}
+                                                    </p>
+                                                </td>
+                                                <td class="image-box">
+                                                    <div class="img-box">
+                                                        <img
+                                                            src="{{ $item->item?->image_path
+                                                                ? asset('storage/'.$item->item->image_path)
+                                                                : asset('assets/images/no-image.png') }}"
+                                                            alt="item-image"
+                                                            class="popup-image"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#imageModal"
+                                                            data-image="{{ $item->item?->image_path
+                                                                ? asset('storage/'.$item->item->image_path)
+                                                                : asset('assets/images/no-image.png') }}"
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td class="body-2">{{ $item->item->quantity ?? 0 }}</td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     @endforeach
+
                 </div>
             </div>
+
 
             <!-- Modal for image popup -->
             <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">

@@ -225,9 +225,8 @@
         <div class="tab-content">
             <!-- TAB بدون صور -->
             <div class="tab-pane active" id="quantities">
-                <div class="table-section-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; width: 100%;">
-                               @foreach($groupedItems as $unitId => $items)
+                <div class="table-section-grid" style="width: 100%;">
+                    @foreach($groupedItems as $unitId => $items)
                         @php $unit = $items->first()->unit; @endphp
                         <div class="table-section-item d-flex flex-column gap-sm-4">
                             <div class="d-flex align-items-center gap-sm-5">
@@ -280,9 +279,8 @@
 
             <!-- TAB بالصور -->
             <div class="tab-pane" id="with-images">
-                <div class="table-section-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; width: 100%;">
-                               @foreach($groupedItems as $unitId => $items)
+                <div class="table-section-grid" style="width: 100%;">
+                    @foreach($groupedItems as $unitId => $items)
                         @php $unit = $items->first()->unit; @endphp
                         <div class="table-section-item d-flex flex-column gap-sm-4">
                             <div class="d-flex align-items-center gap-sm-5">
@@ -484,39 +482,6 @@
         border: none;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
-
-    .table-section-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* أعمدة متجاوبة */
-    gap: 20px; /* المسافة بين الجداول */
-    width: 100%;
-}
-
-.table-section-item {
-    background: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.table-section-item table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table-section-item th,
-.table-section-item td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.table-section-item th {
-    background-color: #f8f8f8;
-}
-
 </style>
 @endpush
 

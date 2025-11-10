@@ -207,10 +207,16 @@
                                     <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
                                     <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
                                 </a>
-                                <a href="{{ app()->getLocale() == 'ar' ? route('packages.show', ['id' => $package->id]) : route('packages.show.en', ['id' => $package->id]) }}" class="btn btn-custom-secondary w-100">
+                                <a href="{{ app()->getLocale() == 'ar'
+                                    ? route('packages.show', ['slug' => $package->slug_ar ?? $package->id])
+                                    : route('packages.show.en', ['slug' => $package->slug_en ?? $package->id]) }}"
+                                    class="btn btn-custom-secondary w-100">
                                     <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
                                     <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
                                 </a>
+
+
+
                             </div>
                         </div>
                     </div>

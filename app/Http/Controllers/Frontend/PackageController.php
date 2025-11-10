@@ -227,41 +227,47 @@ $unitTypes = Unit::select('name_ar', 'name_en')
     return view('frontend.categories.show', compact('seo','package', 'testimonials', 'faqs','unitTypes'));
 }*/
 
-public function show($id)
+public function show($slug)
 {
     $seo = SeoSetting::where('page', 'category')->first();
 
-    // تحميل الباكج مع العلاقات عبر الجدول الوسيط
+    // حدد أي slug تستخدمه حسب اللغة الحالية
+    $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
+
+    // تحميل الباقة حسب الـ slug مع العلاقات
     $package = Package::with([
         'images',
-        'packageUnitItems.unit.images', // صور الوحدات
-        'packageUnitItems.unit.designs', // ✅ أضفنا التصميمات هنا
-        'packageUnitItems.item'         // القطع
-    ])->findOrFail($id);
+        'packageUnitItems.unit.images',
+        'packageUnitItems.unit.designs',
+        'packageUnitItems.item'
+    ])->where($slugColumn, $slug)->firstOrFail();
 
+    // التقييمات
     $testimonials = Testimonial::latest()->take(10)->get();
 
+    // الأسئلة الشائعة
     $faqs = Faq::where('page', 'category')
                 ->orderBy('sort', 'asc')
                 ->get();
 
     // استخراج أنواع الوحدات الفريدة من الجدول الوسيط
     $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
-    ->where('package_id', $id)
-    ->get()
-    ->pluck('unit')
-    ->unique('id')
-    ->values()
-    ->map(function ($unit) {
-        return [
-            'type' => $unit->type,
-            'name_ar' => $unit->name_ar,
-            'name_en' => $unit->name_en,
-        ];
-    });
+        ->where('package_id', $package->id)
+        ->get()
+        ->pluck('unit')
+        ->unique('id')
+        ->values()
+        ->map(function ($unit) {
+            return [
+                'type' => $unit->type,
+                'name_ar' => $unit->name_ar,
+                'name_en' => $unit->name_en,
+            ];
+        });
 
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
+
 public function filter(Request $request)
 {
     //dd($request->all());

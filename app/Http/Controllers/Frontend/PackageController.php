@@ -326,14 +326,6 @@ public function filter(Request $request)
 }
 
 
-public function toggleHome(Request $request, Package $package)
-{
-    $package->show_in_home = $request->show_in_home;
-    $package->save();
-
-    return response()->json(['success' => true]);
-}
-
 
 
 }

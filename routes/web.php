@@ -245,8 +245,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     ->name('packages.images.destroy');
     Route::post('/admin/package/content', [PackageController::class, 'updatePackage'])->name('package.content.update');
 
-    Route::post('/packages/{package}/toggle-home', [PackageController::class, 'toggleHome'])
-    ->name('packages.toggle-home');
+    Route::post('/packages/{package}/toggle-home', [PackageController::class, 'toggleHome'])->name('packages.toggle-home');
 
     Route::delete('/packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])->name('packages.images.destroy');
 

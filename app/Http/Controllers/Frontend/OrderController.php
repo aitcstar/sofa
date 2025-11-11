@@ -168,7 +168,7 @@ class OrderController extends Controller
             'client_type' => 'required|string|in:individual,company',
             'commercial_register' => 'nullable|string|max:255',
             'tax_number' => 'nullable|string|max:255',
-            'diagrams_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:4096',
+            'diagrams_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:4096',
         ]);
 
         // ✅ حساب السعر والضريبة والإجمالي

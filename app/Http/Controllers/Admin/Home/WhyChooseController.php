@@ -36,7 +36,7 @@ class WhyChooseController extends Controller
             'items.*.title_ar' => 'nullable|string|max:255',
             'items.*.desc_en'  => 'nullable|string',
             'items.*.desc_ar'  => 'nullable|string',
-            'items.*.icon'     => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'items.*.icon'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
         ]);
 
         $section = WhyChooseSection::first();

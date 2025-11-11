@@ -48,7 +48,7 @@ class ItemController extends Controller
             'color_ar' => 'nullable|string|max:100',
             'color_en' => 'nullable|string|max:100',
             'background_color' => 'nullable|string|max:100',
-            'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
         ]);
 
         // تحضير البيانات
@@ -98,7 +98,7 @@ public function update(Request $request, Item $item)
         'color_ar' => 'nullable|string|max:100',
         'color_en' => 'nullable|string|max:100',
         'background_color' => 'nullable|string|max:100',
-        'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'image_path' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
     ]);
 
     // تحضير البيانات

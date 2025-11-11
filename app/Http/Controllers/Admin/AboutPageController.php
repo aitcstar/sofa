@@ -60,7 +60,7 @@ class AboutPageController extends Controller
             'items_en' => 'nullable|array',
             //'item_icons' => 'nullable|array',
             //'item_icons.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'image'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         // رفع صورة القسم الرئيسية

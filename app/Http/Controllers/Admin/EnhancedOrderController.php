@@ -150,7 +150,7 @@ class EnhancedOrderController extends Controller
             'payment_status' => 'required|in:unpaid,partial,paid',
             'paid_amount' => 'nullable|numeric|min:0',
             'expected_delivery_date' => 'nullable|date',
-            'diagrams' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'diagrams' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:10240',
         ]);
 
 

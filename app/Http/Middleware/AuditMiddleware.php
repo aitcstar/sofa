@@ -16,13 +16,13 @@ class AuditMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $startTime = microtime(true);
-        
+
         // Process the request
         $response = $next($request);
-        
+
         // Log the action after processing
         $this->logAction($request, $response, $startTime);
-        
+
         return $response;
     }
 
@@ -38,11 +38,11 @@ class AuditMiddleware
 
         $executionTime = round((microtime(true) - $startTime) * 1000, 2); // in milliseconds
         $user = Auth::user();
-        
+
         $action = $this->determineAction($request);
         $riskLevel = $this->determineRiskLevel($request, $response);
         $description = $this->generateDescription($request, $response);
-        
+
         $metadata = [
             'method' => $request->method(),
             'url' => $request->fullUrl(),
@@ -87,7 +87,7 @@ class AuditMiddleware
         ];
 
         $routeName = $request->route()?->getName();
-        
+
         if ($routeName) {
             foreach ($skipRoutes as $pattern) {
                 if (fnmatch($pattern, $routeName)) {
@@ -97,9 +97,9 @@ class AuditMiddleware
         }
 
         // Skip static assets
-        $staticExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf'];
+        $staticExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif','webp', 'svg', 'ico', 'woff', 'woff2', 'ttf'];
         $extension = pathinfo($request->path(), PATHINFO_EXTENSION);
-        
+
         if (in_array(strtolower($extension), $staticExtensions)) {
             return true;
         }
@@ -129,20 +129,20 @@ class AuditMiddleware
     {
         $method = $request->method();
         $path = $request->path();
-        
+
         // Authentication actions
         if (str_contains($path, 'login')) {
             return 'login_attempt';
         }
-        
+
         if (str_contains($path, 'logout')) {
             return 'logout';
         }
-        
+
         if (str_contains($path, 'register')) {
             return 'registration';
         }
-        
+
         if (str_contains($path, 'password/reset')) {
             return 'password_reset';
         }
@@ -172,7 +172,7 @@ class AuditMiddleware
         if (str_contains($path, 'export')) {
             return 'data_export';
         }
-        
+
         if (str_contains($path, 'import')) {
             return 'data_import';
         }
@@ -211,7 +211,7 @@ class AuditMiddleware
         $method = $request->method();
         $path = $request->path();
         $statusCode = $response->getStatusCode();
-        
+
         // Critical risk actions
         $criticalActions = [
             'admin/users/delete',
@@ -220,7 +220,7 @@ class AuditMiddleware
             'admin/database',
             'admin/backup',
         ];
-        
+
         foreach ($criticalActions as $action) {
             if (str_contains($path, $action)) {
                 return 'critical';
@@ -231,15 +231,15 @@ class AuditMiddleware
         if ($statusCode >= 500) {
             return 'high'; // Server errors
         }
-        
+
         if ($statusCode === 403 || $statusCode === 401) {
             return 'high'; // Unauthorized access attempts
         }
-        
+
         if (in_array($method, ['DELETE']) && str_starts_with($path, 'admin/')) {
             return 'high'; // Admin deletions
         }
-        
+
         if (str_contains($path, 'password') || str_contains($path, 'security')) {
             return 'high'; // Security-related actions
         }
@@ -248,11 +248,11 @@ class AuditMiddleware
         if (in_array($method, ['POST', 'PUT', 'PATCH']) && str_starts_with($path, 'admin/')) {
             return 'medium'; // Admin modifications
         }
-        
+
         if ($request->hasFile('*')) {
             return 'medium'; // File uploads
         }
-        
+
         if (str_contains($path, 'export') || str_contains($path, 'import')) {
             return 'medium'; // Data operations
         }
@@ -270,16 +270,16 @@ class AuditMiddleware
         $path = $request->path();
         $statusCode = $response->getStatusCode();
         $user = Auth::user();
-        
+
         $description = '';
-        
+
         // Add user information
         if ($user) {
             $description .= "المستخدم {$user->name} ";
         } else {
             $description .= "مستخدم غير مسجل ";
         }
-        
+
         // Add action description
         $description .= match($method) {
             'GET' => 'عرض',
@@ -288,16 +288,16 @@ class AuditMiddleware
             'DELETE' => 'حذف',
             default => 'تنفيذ عملية'
         };
-        
+
         $description .= " في {$path}";
-        
+
         // Add status information
         if ($statusCode >= 400) {
             $description .= " (فشل - كود {$statusCode})";
         } else {
             $description .= " (نجح - كود {$statusCode})";
         }
-        
+
         return $description;
     }
 
@@ -319,13 +319,13 @@ class AuditMiddleware
             'ssn',
             'social_security',
         ];
-        
+
         foreach ($sensitiveFields as $field) {
             if (isset($parameters[$field])) {
                 $parameters[$field] = '[REDACTED]';
             }
         }
-        
+
         // Limit the size of parameters to prevent huge logs
         $maxLength = 1000;
         foreach ($parameters as $key => $value) {
@@ -333,7 +333,7 @@ class AuditMiddleware
                 $parameters[$key] = substr($value, 0, $maxLength) . '... [TRUNCATED]';
             }
         }
-        
+
         return $parameters;
     }
 
@@ -348,12 +348,12 @@ class AuditMiddleware
             'x-api-key',
             'x-auth-token',
         ];
-        
+
         $sanitized = [];
-        
+
         foreach ($headers as $key => $value) {
             $lowerKey = strtolower($key);
-            
+
             if (in_array($lowerKey, $sensitiveHeaders)) {
                 $sanitized[$key] = '[REDACTED]';
             } else {
@@ -361,7 +361,7 @@ class AuditMiddleware
                 $sanitized[$key] = is_array($value) ? $value[0] ?? '' : $value;
             }
         }
-        
+
         return $sanitized;
     }
 
@@ -371,12 +371,12 @@ class AuditMiddleware
     private function getFileInfo(Request $request): array
     {
         $fileInfo = [];
-        
+
         foreach ($request->allFiles() as $key => $files) {
             if (!is_array($files)) {
                 $files = [$files];
             }
-            
+
             foreach ($files as $file) {
                 if ($file && $file->isValid()) {
                     $fileInfo[] = [
@@ -389,7 +389,7 @@ class AuditMiddleware
                 }
             }
         }
-        
+
         return $fileInfo;
     }
 }

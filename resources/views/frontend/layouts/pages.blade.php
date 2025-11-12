@@ -12,21 +12,23 @@
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-XXXXXXX'); // ← غيّر GTM-XXXXXXX إلى رقم Tag Manager الخاص بك
+    })(window,document,'script','dataLayer','{{ $siteSettings->googletagmanager }}');
     </script>
     <!-- End Google Tag Manager -->
 
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings->googleanalytics }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX'); // ← غيّر G-XXXXXXXXXX إلى كود Analytics الخاص بك
+      gtag('config', '{{ $siteSettings->googletagmanager }}');
     </script>
 
     <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+    <meta name="google-site-verification" content="{{ $siteSettings->googlesearchconsole }}" />
+
+
 
 
 {{-- ✅ منطقة مخصصة للـ Meta Tags --}}

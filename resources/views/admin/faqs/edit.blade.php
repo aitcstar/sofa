@@ -61,32 +61,21 @@
                 {{-- الأقسام --}}
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">القسم (عربي) <span class="text-danger">*</span></label>
-                        <select name="category_ar" class="form-select" required>
-                            <option value="التوصيل والتركيب" {{ old('category_ar', $faq->category_ar) == 'التوصيل والتركيب' ? 'selected' : '' }}>التوصيل والتركيب</option>
-                            <option value="تفاصيل الباكجات" {{ old('category_ar', $faq->category_ar) == 'تفاصيل الباكجات' ? 'selected' : '' }}>تفاصيل الباكجات</option>
-                            <option value="الدفع والفوترة" {{ old('category_ar', $faq->category_ar) == 'الدفع والفوترة' ? 'selected' : '' }}>الدفع والفوترة</option>
-                            <option value="الضمان وخدمة ما بعد البيع" {{ old('category_ar', $faq->category_ar) == 'الضمان وخدمة ما بعد البيع' ? 'selected' : '' }}>الضمان وخدمة ما بعد البيع</option>
-                            <option value="التخصيص والمشاريع الخاصة" {{ old('category_ar', $faq->category_ar) == 'التخصيص والمشاريع الخاصة' ? 'selected' : '' }}>التخصيص والمشاريع الخاصة</option>
+                        <label class="form-label">القسم <span class="text-danger">*</span></label>
+                        <select name="category_id" class="form-select" required>
+                            <option value="">اختر القسم</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ old('category_id', $faq->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name_ar }} / {{ $category->name_en }}
+                                </option>
+                            @endforeach
                         </select>
-                        @error('category_ar')
+                        @error('category_id')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">القسم (إنجليزي) <span class="text-danger">*</span></label>
-                        <select name="category_en" class="form-select" required>
-                            <option value="Delivery & Installation" {{ old('category_en', $faq->category_en) == 'Delivery & Installation' ? 'selected' : '' }}>Delivery & Installation</option>
-                            <option value="Package Details" {{ old('category_en', $faq->category_en) == 'Package Details' ? 'selected' : '' }}>Package Details</option>
-                            <option value="Payment & Billing" {{ old('category_en', $faq->category_en) == 'Payment & Billing' ? 'selected' : '' }}>Payment & Billing</option>
-                            <option value="Warranty & After-Sales" {{ old('category_en', $faq->category_en) == 'Warranty & After-Sales' ? 'selected' : '' }}>Warranty & After-Sales</option>
-                            <option value="Customization & Special Projects" {{ old('category_en', $faq->category_en) == 'Customization & Special Projects' ? 'selected' : '' }}>Customization & Special Projects</option>
-                        </select>
-                        @error('category_en')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="page" class="form-label">الصفحة <span class="text-danger">*</span></label>

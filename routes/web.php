@@ -291,6 +291,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::resource('faqs', adminFaqController::class);
     Route::post('/admin/faqs/content', [adminFaqController::class, 'updateFaq'])->name('faq.content.update');
 
+    Route::resource('faq-categories', App\Http\Controllers\Admin\FaqCategoryController::class);
+
 
     //////Home
     Route::resource('hero-sliders', HeroSliderController::class);

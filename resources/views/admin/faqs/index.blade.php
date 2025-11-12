@@ -145,7 +145,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <td>{{ $faq->question_en }}</td>
                             <td>{{ $faq->answer_ar }}</td>
                             <td>{{ $faq->answer_en }}</td>
-                            <td>{{ $faq->category_ar }}</td>
+                            <td>{{ $faq->category?->name_ar ?? '-' }}</td>
                             <td>
                                 @if($faq->page == 'home')
                                     الصفحة الرئيسية

@@ -870,15 +870,35 @@
                         </li>
                     @endif
 
-                        @if($user && ($user->hasPermission('faqs.view') || $user->role === 'admin'))
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}"
-                            href="{{ route('admin.faqs.index') }}">
-                                <i class="fas fa-comments me-2"></i>
-                                الأسئلة الشائعة
-                            </a>
-                        </li>
-                        @endif
+
+                    @if($user && ($user->hasPermission('faqs.view') || $user->role === 'admin'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.faqs.*') || request()->routeIs('admin.faq-categories.*') ? 'active' : '' }}"
+                        href="#faqsSubmenu" data-bs-toggle="collapse"
+                        aria-expanded="{{ request()->routeIs('admin.faqs.*') || request()->routeIs('admin.faq-categories.*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                        <i class="fas fa-comments me-2"></i>
+                            الأسئلة الشائعة
+                        </a>
+
+                        <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.faqs.*') || request()->routeIs('admin.faq-categories.*') ? 'show' : '' }}" id="faqsSubmenu">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.faq-categories.*') ? 'active' : '' }}"
+                                href="{{ route('admin.faq-categories.index') }}"> الاقسام</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}"
+                                href="{{ route('admin.faqs.index') }}">الأسئلة</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                @endif
+
+
+
+
+
+
 
                         @if($user && ($user->hasPermission('help.view') || $user->role === 'admin'))
                         <li class="nav-item">

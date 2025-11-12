@@ -33,6 +33,10 @@ class SettingController extends Controller
             'seo_title_en'      => 'nullable|string|max:255',
             'seo_description_en'=> 'nullable|string',
             'seo_keywords'   => 'nullable|string',
+
+            'googletagmanager' => 'nullable|string',
+            'googleanalytics' => 'nullable|string',
+            'googlesearchconsole' => 'nullable|string',
         ]);
 
         $setting = Setting::first();

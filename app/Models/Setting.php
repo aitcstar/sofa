@@ -25,7 +25,9 @@ class Setting extends Model
         'seo_description',
         'seo_title_en',
         'seo_description_en',
-
         'seo_keywords',
+        'googletagmanager',
+        'googleanalytics',
+        'googlesearchconsole',
     ];
 }

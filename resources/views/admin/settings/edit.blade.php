@@ -66,6 +66,25 @@
         </div>
 
         <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">روابط جوجل </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Google Tag Manager</label>
+                    <input type="text" name="googletagmanager" class="form-control" value="{{ old('googletagmanager', $setting->googletagmanager ?? '') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Google Analytics</label>
+                    <input type="text" name="googleanalytics" class="form-control" value="{{ old('googleanalytics', $setting->googleanalytics ?? '') }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Google Search Console</label>
+                    <input type="text" name="googlesearchconsole" class="form-control" value="{{ old('googlesearchconsole', $setting->googlesearchconsole ?? '') }}">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-primary text-white">إعدادات SEO العامه</div>
             <div class="card-body">
                 <div class="mb-3">

@@ -20,9 +20,9 @@ public function index()
 // عرض تفاصيل رسالة
 public function show(Contact $contact)
 {
-    if ($contact->status === 'new') {
+    /*if ($contact->status === 'new') {
         $contact->update(['status' => 'read']);
-    }
+    }*/
     return view('admin.contacts.show', compact('contact'));
 }
 // حذف رسالة
@@ -37,5 +37,14 @@ public function export()
 {
     return Excel::download(new ContactsExport, 'contacts.xlsx');
 }
+public function updateStatus(Request $request, $id)
+{
+    $request->validate(['status' => 'required|string']);
+    $contact = Contact::findOrFail($id);
+    $contact->update(['status' => $request->status]);
+    return response()->json(['success' => true]);
+}
+
+
 }
 

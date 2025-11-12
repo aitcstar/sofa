@@ -16,12 +16,16 @@
             <div class="p-3 border rounded bg-light">
                 {{ $contact->message }}
             </div>
-            <p class="mt-3">
+            <div class="mt-3">
                 <strong>الحالة:</strong>
-                <span class="badge bg-{{ $contact->status == 'new' ? 'warning' : 'info' }}">
-                    {{ $contact->status == 'new' ? 'جديدة' : 'مقروءة' }}
-                </span>
-            </p>
+                <select id="contactStatus" class="form-select w-auto d-inline-block"
+                    data-id="{{ $contact->id }}">
+                    <option value="new" {{ $contact->status == 'new' ? 'selected' : '' }}>جديدة</option>
+                    <option value="contacted" {{ $contact->status == 'contacted' ? 'selected' : '' }}>تم التواصل</option>
+                    <option value="no_response" {{ $contact->status == 'no_response' ? 'selected' : '' }}>لم يتم الرد</option>
+                    <option value="in_progress" {{ $contact->status == 'in_progress' ? 'selected' : '' }}>قيد المتابعة</option>
+                </select>
+            </div>
         </div>
         <div class="card-footer text-end">
             <a href="{{ route('admin.contacts.index') }}" class="btn btn-secondary">
@@ -30,4 +34,24 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('contactStatus').addEventListener('change', function() {
+        const id = this.getAttribute('data-id');
+        const status = this.value;
+
+        fetch(`/admin/contacts/${id}/status`, {
+            method: 'PATCH',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({status})
+        }).then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  alert('تم تحديث الحالة بنجاح');
+              }
+          });
+    });
+    </script>
 @endsection

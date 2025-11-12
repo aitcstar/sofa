@@ -14,5 +14,6 @@ class HelpRequest extends Model
         'phone',
         'units',
         'message',
+        'status'
     ];
 }

@@ -326,6 +326,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
 
     //
 
+
+
     Route::resource('exhibition-categories', ExhibitionCategoryController::class);
     Route::resource('exhibitions', ExhibitionController::class);
     Route::post('exhibitions/{exhibition}/images/{image}/set-primary', [ExhibitionController::class, 'setPrimaryImage'])->name('exhibitions.setPrimaryImage');
@@ -337,7 +339,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
 
     //Route::resource('exhibitions.steps', ExhibitionStepController::class)->shallow();
 
-
+    Route::patch('/contacts/{id}/status', [AdminContactController::class, 'updateStatus'])->name('contacts.updateStatus');
     Route::get('/contacts/export', [AdminContactController::class, 'export'])->name('contact.export');
     Route::resource('contacts', AdminContactController::class);
 
@@ -349,6 +351,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::post('/admin/help/content', [HelpController::class, 'updatehelp'])->name('help.content.update');
     Route::delete('/requests/{request}', [HelpController::class, 'destroy'])->name('requests.destroy');
     Route::get('/help-requests/export', [HelpController::class, 'export'])->name('help.requests.export');
+    Route::patch('/help-requests/{id}/status', [HelpController::class, 'updateStatus'])->name('help-requests.updateStatus');
 
 
     Route::resource('users', UserController::class);

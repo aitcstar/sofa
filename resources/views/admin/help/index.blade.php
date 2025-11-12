@@ -136,6 +136,8 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <th>عدد الوحدات</th>
                             <th>الرسالة</th>
                             <th>تاريخ الإرسال</th>
+                            <th>الحالة</th>
+
                             <th width="120">الإجراءات</th>
 
                         </tr>
@@ -151,6 +153,15 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <td>{{ $req->units ?? '-' }}</td>
                             <td>{{ $req->message ?? '-' }}</td>
                             <td>{{ $req->created_at->format('d/m/Y H:i') }}</td>
+                            <td>
+                                <select class="form-select form-select-sm update-help-status"
+                                    data-id="{{ $req->id }}">
+                                    <option value="new" {{ $req->status == 'new' ? 'selected' : '' }}>جديدة</option>
+                                    <option value="contacted" {{ $req->status == 'contacted' ? 'selected' : '' }}>تم التواصل</option>
+                                    <option value="no_response" {{ $req->status == 'no_response' ? 'selected' : '' }}>لم يتم الرد</option>
+                                    <option value="in_progress" {{ $req->status == 'in_progress' ? 'selected' : '' }}>قيد المتابعة</option>
+                                </select>
+                            </td>
                             <td>
                                 @if($user && ($user->hasPermission('help.edit') || $user->role === 'admin'))
                                 <form action="{{ route('admin.requests.destroy', $req) }}" method="POST" class="d-inline">
@@ -191,6 +202,30 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script>
+    document.querySelectorAll('.update-help-status').forEach(select => {
+        select.addEventListener('change', function() {
+            const id = this.getAttribute('data-id');
+            const status = this.value;
+
+            fetch(`/admin/help-requests/${id}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({status})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('تم تحديث الحالة بنجاح');
+                }
+            });
+        });
+    });
+    </script>
+
 <script>
 $(document).ready(function() {
     $('#helpRequestsTable').DataTable({

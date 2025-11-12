@@ -42,9 +42,26 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <td style="direction: ltr;">{{ '+'. $msg->country_code . $msg->phone  }}</td>
                             <td>
 
-                                    <span class="badge bg-{{ $msg->status == 'new' ? 'warning' : 'info' }}">
-                                        {{ $msg->status == 'new' ? 'جديدة' : 'مقروءة' }}
-                                    </span>
+                                @php
+                                $statusClasses = [
+                                    'new' => 'warning',
+                                    'contacted' => 'success',
+                                    'no_response' => 'secondary',
+                                    'in_progress' => 'primary',
+                                ];
+
+                                $statusLabels = [
+                                    'new' => 'جديدة',
+                                    'contacted' => 'تم التواصل',
+                                    'no_response' => 'لم يتم الرد',
+                                    'in_progress' => 'قيد المتابعة',
+                                ];
+                            @endphp
+
+                            <span class="badge bg-{{ $statusClasses[$msg->status] ?? 'secondary' }}">
+                                {{ $statusLabels[$msg->status] ?? 'غير محددة' }}
+                            </span>
+
 
 
                             </td>

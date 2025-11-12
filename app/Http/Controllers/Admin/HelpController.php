@@ -49,4 +49,13 @@ public function export()
     return Excel::download(new HelpRequestsExport, 'help_requests.xlsx');
 }
 
+public function updateStatus(Request $request, $id)
+{
+    $request->validate(['status' => 'required|string']);
+    $help = HelpRequest::findOrFail($id);
+    $help->update(['status' => $request->status]);
+    return response()->json(['success' => true]);
+}
+
+
 }

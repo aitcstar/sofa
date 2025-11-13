@@ -61,22 +61,29 @@
                     <label>أنواع التصميمات المرتبطة</label>
                     <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
                         @foreach($designs as $design)
-                            <div class="form-check">
+                            <div class="form-check mb-1">
                                 <input
                                     type="checkbox"
                                     name="design_ids[]"
                                     value="{{ $design->id }}"
                                     id="design_{{ $design->id }}"
-                                    class="form-check-input"
+                                    class="form-check-input design-checkbox"
+                                    data-design-id="{{ $design->id }}"
                                     {{ isset($selectedDesigns) && in_array($design->id, $selectedDesigns) ? 'checked' : '' }}
                                 >
                                 <label for="design_{{ $design->id }}" class="form-check-label">
                                     {{ $design->name_ar }} ({{ $design->name_en }})
                                 </label>
+
+                                <!-- div رفع الصور الخاص بالتصميم -->
+                                <div class="mt-2 design-images" id="images_for_{{ $design->id }}" style="display: none;">
+                                    <input type="file" name="design_images[{{ $design->id }}][]" class="form-control" multiple>
+                                </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
 
 
                 <div class="mb-3">
@@ -117,4 +124,33 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.design-checkbox');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function () {
+                const designId = this.dataset.designId;
+                const imagesDiv = document.getElementById('images_for_' + designId);
+
+                if (this.checked) {
+                    imagesDiv.style.display = 'block';
+                    // نجعل رفع الصورة إلزامي
+                    imagesDiv.querySelector('input').setAttribute('required', true);
+                } else {
+                    imagesDiv.style.display = 'none';
+                    imagesDiv.querySelector('input').removeAttribute('required');
+                }
+            });
+
+            // لو الفورم في وضع تعديل ويكون التصميم محدد مسبقًا
+            if (cb.checked) {
+                const designId = cb.dataset.designId;
+                document.getElementById('images_for_' + designId).style.display = 'block';
+                document.getElementById('images_for_' + designId).querySelector('input').setAttribute('required', true);
+            }
+        });
+    });
+    </script>
+
 @endsection

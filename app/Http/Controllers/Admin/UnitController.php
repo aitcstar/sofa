@@ -51,6 +51,20 @@ class UnitController extends Controller
             }
         }
 
+        if($request->has('design_images')) {
+            foreach($request->design_images as $designId => $files) {
+                foreach($files as $file) {
+                    $path = $file->store('units', 'public');
+                    $unit->images()->create([
+                        'image_path' => $path,
+                        'alt_text' => $unit->name_en,
+                        'design_id' => $designId,
+                    ]);
+                }
+            }
+        }
+
+
         return redirect()->route('admin.units.index')->with('success', 'تم إنشاء الوحدة بنجاح');
     }
 
@@ -61,7 +75,12 @@ class UnitController extends Controller
         $images = $unit->images()->orderBy('sort_order')->get();
         $selectedDesigns = $unit->designs->pluck('id')->toArray(); // <-- دي أهم سطر
 
-        return view('admin.units.edit', compact('unit', 'images','selectedDesigns','designs'));
+
+        $designImages = $unit->images->whereNotNull('design_id');
+        $unitImages = $unit->images->whereNull('design_id');
+
+
+        return view('admin.units.edit', compact('unit', 'images','selectedDesigns','designs','designImages','unitImages'));
     }
 
     public function update(Request $request, Unit $unit)
@@ -89,6 +108,20 @@ class UnitController extends Controller
                 ]);
             }
         }
+
+        if($request->has('design_images')) {
+            foreach($request->design_images as $designId => $files) {
+                foreach($files as $file) {
+                    $path = $file->store('units', 'public');
+                    $unit->images()->create([
+                        'image_path' => $path,
+                        'alt_text' => $unit->name_en,
+                        'design_id' => $designId,
+                    ]);
+                }
+            }
+        }
+
 
         return redirect()->route('admin.units.index')->with('success', 'تم تحديث الوحدة بنجاح');
     }

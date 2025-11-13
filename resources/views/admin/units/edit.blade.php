@@ -58,36 +58,58 @@
                 </div>
 
                 <div class="mb-3">
-                    <label>أنواع التصميمات المرتبطة</label>
-                    <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                    <label>التصميمات المرتبطة والوحدة الحالية</label>
+                    <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto;">
                         @foreach($designs as $design)
-                            <div class="form-check">
-                                <input
-                                    type="checkbox"
-                                    name="design_ids[]"
-                                    value="{{ $design->id }}"
-                                    id="design_{{ $design->id }}"
-                                    class="form-check-input"
-                                    {{ isset($selectedDesigns) && in_array($design->id, $selectedDesigns) ? 'checked' : '' }}
-                                >
-                                <label for="design_{{ $design->id }}" class="form-check-label">
-                                    {{ $design->name_ar }} ({{ $design->name_en }})
-                                </label>
+                        <div class="form-check mb-3">
+                            <input
+                                type="checkbox"
+                                name="design_ids[]"
+                                value="{{ $design->id }}"
+                                id="design_{{ $design->id }}"
+                                class="form-check-input design-checkbox"
+                                data-design-id="{{ $design->id }}"
+                                {{ isset($selectedDesigns) && in_array($design->id, $selectedDesigns) ? 'checked' : '' }}
+                            >
+                            <label for="design_{{ $design->id }}" class="form-check-label">
+                                {{ $design->name_ar }} ({{ $design->name_en }})
+                            </label>
+
+                            <!-- صور التصميم -->
+                            <div class="mt-2">
+                                <strong>صور {{ $design->name_ar }}</strong>
+                                <div class="row mb-2">
+                                    @foreach($designImages->where('design_id', $design->id) as $image)
+                                        <div class="col-md-3 mb-2 position-relative" style="    width: 170px;">
+                                            <img src="{{ asset('storage/'.$image->image_path) }}" class="img-fluid border rounded">
+                                            <button type="button" class="btn btn-sm btn-danger delete-image"
+                                                    data-unit="{{ $unit->id }}"
+                                                    data-image="{{ $image->id }}"
+                                                    style="position:absolute; top:5px; right:5px;">
+                                                ✕
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <input type="file" name="design_images[{{ $design->id }}][]" class="form-control mt-1" multiple>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label>رفع صور الوحدة</label>
-                    <input type="file" name="images[]" class="form-control" multiple>
-                </div>
 
-                @if(isset($images) && $images->count())
-                    <div class="mb-3">
-                        <label>صور الوحدة الحالية</label>
-                        <div class="row">
-                            @foreach($images as $image)
+
+
+
+
+
+                @if(isset($unitImages) && $unitImages->count())
+                <div class="mb-3">
+                    <label>صور الوحدة الحالية</label>
+                    <div class="row">
+                        @foreach($unitImages as $image)
                             <div class="col-md-3 mb-2 position-relative">
                                 <img src="{{ asset('storage/'.$image->image_path) }}" class="img-fluid border rounded">
                                 <button class="btn btn-sm btn-danger delete-image"
@@ -97,11 +119,11 @@
                                     ✕
                                 </button>
                             </div>
-                            @endforeach
-
-                        </div>
+                        @endforeach
                     </div>
-                @endif
+                </div>
+            @endif
+
 
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-primary">

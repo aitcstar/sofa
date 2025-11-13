@@ -15,6 +15,7 @@ class UnitImage extends Model
         'alt_text',
         'sort_order',
         'is_primary',
+        'design_id'
     ];
 
     public function unit()

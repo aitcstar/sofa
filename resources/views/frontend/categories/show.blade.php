@@ -37,110 +37,188 @@
                     $groupedItems = $package->packageUnitItems->groupBy('unit_id');
                 @endphp
 
-                @foreach($groupedItems->take(5) as $unitId => $items)
-                    @php
-                        $unit = $items->first()->unit;
-                    @endphp
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <button class="accordion-button d-flex align-items-center gap-sm-5 {{ $loop->first ? '' : 'collapsed' }}"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ $loop->index }}"
-                                aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
-                                aria-controls="collapse{{ $loop->index }}">
+@foreach($groupedItems->take(5) as $unitId => $items)
+@php
+    $unit = $items->first()->unit;
+@endphp
 
-                                @if($unit->type == "bedroom")
-                                    <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
-                                @elseif($unit->type == "living_room")
-                                    <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
-                                @elseif($unit->type == "kitchen")
-                                    <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
-                                @elseif($unit->type == "external")
-                                    <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
-                                @else
-                                    <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
-                                @endif
-                                <p class="body-2 mb-0">
-                                    {{ $unit->{'name_'.app()->getLocale()} }}
-                                </p>
+<div class="accordion-item">
+
+    <div class="accordion-header">
+        <button class="accordion-button d-flex align-items-center gap-sm-5 {{ $loop->first ? '' : 'collapsed' }}"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapse{{ $loop->index }}"
+            aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+            aria-controls="collapse{{ $loop->index }}">
+
+            @if($unit->type == "bedroom")
+                <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+            @elseif($unit->type == "living_room")
+                <img src="{{ asset('assets/images/icons/sofa.png') }}" alt="" />
+            @elseif($unit->type == "kitchen")
+                <img src="{{ asset('assets/images/icons/foot.png') }}" alt="" />
+            @elseif($unit->type == "external")
+                <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
+            @else
+                <img src="{{ asset('assets/images/icons/caricone.png') }}" alt="" />
+            @endif
+
+            <p class="body-2 mb-0">
+                {{ $unit->{'name_'.app()->getLocale()} }}
+            </p>
+        </button>
+    </div>
+
+    <div class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+        id="collapse{{ $loop->index }}"
+        data-bs-parent="#accordionExample">
+
+        <div class="accordion-body d-flex flex-column gap-sm-4">
+
+            {{-- Tabs (Designs) --}}
+            @if($unit->designs->count())
+            <div class="accordion-body d-flex gap-sm-4 flex-wrap design-tabs" data-unit="{{ $unit->id }}">
+                @foreach($unit->designs as $design)
+                    <div class="accordion-details-content-item design-tab {{ $loop->first ? 'active-tab' : '' }}"
+                        data-design="{{ $design->id }}">
+                        <p class="sub-heading-5 mb-0">
+                            {{ $design->{'name_'.app()->getLocale()} }}
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+            @endif
+
+            {{-- عناصر الوحدة --}}
+            @if($items->count())
+            <div>
+                <ul class="d-flex flex-wrap gap-sm-2 p-0 m-0" style="margin-right: 14px !important;">
+                    @foreach($items as $item)
+                    <li class="body-4 mb-0">
+                        {{ $item->item?->{'item_name_'.app()->getLocale()} ?? '—' }} ×{{ $item->item?->quantity ?? 0 }}
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            {{-- Images (مع شرط إخفاء كامل لو مفيش صور للتصميم) --}}
+            @php
+                // فقط الصور المرتبطة بتصاميم الوحدة
+                $designIds = $unit->designs->pluck('id');
+                $hasDesignImages = $unit->images->whereIn('design_id', $designIds)->count();
+            @endphp
+
+            @if($hasDesignImages)
+            <div class="category-details-images">
+                <div class="category-details-images-grid" data-unit-id="{{ $unit->id }}">
+
+                    <!-- العمود الأول: الصور الصغيرة -->
+                    <div class="category-details-images-grid-col-one">
+                        @foreach($unit->images as $uImg)
+                            @if($designIds->contains($uImg->design_id))
+                                <div class="category-details-images-grid-col-one-item
+                                    {{ $uImg->design_id == ($designIds->first() ?? 0) ? 'active' : '' }}"
+                                    data-design-id="{{ $uImg->design_id }}"
+                                    style="{{ $uImg->design_id == ($designIds->first() ?? 0) ? '' : 'display:none' }}">
+                                    <img src="{{ asset('storage/' . $uImg->image_path) }}" alt="unit-image" />
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+
+                    <!-- العمود الثاني: الصورة الكبيرة -->
+                    <div class="category-details-images-grid-col-two">
+
+                        <div class="category-details-images-grid-col-two-resize">
+                            <button class="btn maximizeBtn">
+                                <i class="fa-solid fa-maximize"></i>
                             </button>
                         </div>
 
-                        <div class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
-                            id="collapse{{ $loop->index }}"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body d-flex flex-column gap-sm-4">
+                        @php
+                            $firstDesignId = $designIds->first();
+                            $firstImage = $firstDesignId
+                                ? $unit->images->where('design_id', $firstDesignId)->first()
+                                : null;
+                        @endphp
 
-                                @if($unit->designs->count())
-                                <div class="accordion-body d-flex gap-sm-4 flex-wrap">
-                                     @foreach($unit->designs as $design)
-                                        <div class="accordion-details-content-item">
-                                            <p class="sub-heading-5 text-body mb-0">   {{ $design->{'name_'.app()->getLocale()} }}</p>
-                                        </div>
-                                        @endforeach
-                                </div>
-                                @endif
+                        @if($firstImage)
+                        <img src="{{ asset('storage/' . $firstImage->image_path) }}"
+                            alt="unit-main-image"
+                            class="mainUnitImage" />
+                        @endif
 
-
-
-
-                                <!-- Items -->
-                                @if($items->count())
-                                <div>
-                                    <ul class="d-flex flex-wrap  gap-sm-2 p-0 m-0" style="margin-right: 14px !important;">
-                                        @foreach($items as $item)
-                                        <li class="body-4 mb-0">
-                                            {{ $item->item?->{'item_name_'.app()->getLocale()} ?? '—' }} ×{{ $item->item?->quantity ?? 0 }}
-
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @endif
-
-                                <!-- Images -->
-                                @if($unit->images->count())
-                                <div class="category-details-images">
-                                    <div class="category-details-images-grid" data-unit-id="{{ $unit->id }}">
-                                        <!-- العمود الأول (الصور الصغيرة) -->
-                                        <div class="category-details-images-grid-col-one">
-                                            @foreach($unit->images as $uIndexImg => $uImg)
-                                                <div class="category-details-images-grid-col-one-item {{ $uIndexImg == 0 ? 'active' : '' }}">
-                                                    <img src="{{ asset('storage/' . $uImg->image_path) }}" alt="unit-image" />
-                                                </div>
-                                            @endforeach
-                                        </div>
-
-                                        <!-- العمود الثاني (الصورة الكبيرة + الأزرار) -->
-                                        <div class="category-details-images-grid-col-two">
-                                            <!-- زر التكبير -->
-                                            <div class="category-details-images-grid-col-two-resize">
-                                                <button class="btn maximizeBtn">
-                                                    <i class="fa-solid fa-maximize"></i>
-                                                </button>
-                                            </div>
-
-                                            <img src="{{ asset('storage/' . ($unit->images->first()->image_path ?? 'assets/images/no-image.png')) }}"
-                                                alt="unit-main-image" class="mainUnitImage" />
-
-                                            <!-- أزرار السلايدر -->
-                                            <div class="category-details-images-grid-col-two-button">
-                                                <button class="btn prevUnitBtn">
-                                                    <i class="fa-solid fa-chevron-right"></i>
-                                                </button>
-                                                <button class="btn nextUnitBtn">
-                                                    <i class="fa-solid fa-chevron-left"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
+                        <div class="category-details-images-grid-col-two-button">
+                            <button class="btn prevUnitBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="btn nextUnitBtn"><i class="fa-solid fa-chevron-left"></i></button>
                         </div>
                     </div>
-                @endforeach
+
+                </div>
+            </div>
+            @endif
+
+        </div>
+    </div>
+</div>
+@endforeach
+
+
+
+{{-- 🔥🔥🔥 سكربت التحكم في التابات --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // تغيير الصور عند الضغط على تاب تصميم
+        document.querySelectorAll(".design-tab").forEach(tab => {
+            tab.addEventListener("click", function () {
+
+                let designId = this.dataset.design;
+                let unitId = this.closest(".design-tabs").dataset.unit;
+
+                // تغيير لون التاب Active
+                this.parentElement.querySelectorAll(".design-tab")
+                    .forEach(t => t.classList.remove("active-tab"));
+                this.classList.add("active-tab");
+
+                // شبكة الصور حسب الوحدة
+                let grid = document.querySelector(`.category-details-images-grid[data-unit-id="${unitId}"]`);
+                let thumbs = grid.querySelectorAll(".category-details-images-grid-col-one-item");
+
+                // إظهار صور التصميم المختار فقط
+                thumbs.forEach(img => {
+                    img.style.display = img.dataset.designId == designId ? "block" : "none";
+                });
+
+                // أول صورة للتصميم الحالي
+                let visible = Array.from(thumbs).filter(i => i.style.display !== "none");
+
+                if (visible.length > 0) {
+                    grid.querySelector(".mainUnitImage").src =
+                        visible[0].querySelector("img").src;
+                }
+            });
+        });
+
+    });
+    </script>
+
+<style>
+.active-tab {
+    background-color: #33415C;
+    color: #fff !important;
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+.design-tab.active-tab p {
+    color: #fff !important;
+}
+
+
+    </style>
+
             </div>
         </div>
 

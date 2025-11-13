@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'أسئلة الاستبيان')
+@section('title', 'أسئلة اختر الباكج')
 
 @section('content')
 @php
@@ -8,9 +8,52 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
 @endphp
 <div class="container">
 
+    <div class="card-body">
+        <form action="{{ route('admin.choose-packeg.update') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <!-- العناوين -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">العنوان (AR)</label>
+                    <input type="text" name="title_ar" class="form-control" value="{{ $section->title_ar ?? '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">العنوان (EN)</label>
+                    <input type="text" name="title_en" class="form-control" value="{{ $section->title_en ?? '' }}">
+                </div>
+            </div>
+
+            <!-- الوصف -->
+            <div class="mb-3">
+                <label class="form-label">الوصف (AR)</label>
+                <textarea name="desc_ar" class="form-control" rows="3">{{ $section->desc_ar ?? '' }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">الوصف (EN)</label>
+                <textarea name="desc_en" class="form-control" rows="3">{{ $section->desc_en ?? '' }}</textarea>
+            </div>
+
+
+            <!-- أزرار الحفظ -->
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> حفظ التعديلات
+                </button>
+
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i> إلغاء
+                </a>
+            </div>
+        </form>
+    </div>
+
+
+    {{---
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">أسئلة الاستبيان</h1>
+        <h1 class="h2"> أسئلة اختر الباكج</h1>
         @if($user && ($user->hasPermission('surveys.create') || $user->role === 'admin'))
         <a href="{{ route('admin.survey-questions.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة سؤال جديد
@@ -82,7 +125,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
     <div class="mt-3">
         {{ $questions->links() }}
     </div>
-
+--}}
 </div>
 @endsection
 

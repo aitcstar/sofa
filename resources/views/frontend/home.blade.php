@@ -132,9 +132,9 @@
   <section id="package-selection" class="package-selection-section">
     <div class="container d-flex flex-column gap-xl">
         <div class="heading text-center d-flex flex-column gap-sm-5">
-            <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
+            <h3 class="heading-h6 mb-0">  {{ $section->{'title_'.app()->getLocale()} }}</h3>
             <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-                {{ __('site.package_desc') }}
+                {{ $section->{'desc_'.app()->getLocale()} }}
             </p>
         </div>
 
@@ -198,9 +198,9 @@
 
         <!-- Heading -->
         <div class="heading text-center d-flex flex-column gap-sm-5">
-            <h3 class="heading-h6 mb-0">{{ __('site.choose_package') }}</h3>
+            <h3 class="heading-h6 mb-0">{{ $section->{'title_'.app()->getLocale()} }}</h3>
             <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-                {{ __('site.package_desc') }}
+                {{ $section->{'desc_'.app()->getLocale()} }}
             </p>
         </div>
 

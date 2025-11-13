@@ -11,7 +11,8 @@ class SurveyQuestionController extends Controller
     public function index()
     {
         $questions = SurveyQuestion::with('options')->orderBy('order')->paginate(10);
-        return view('admin.survey-questions.index', compact('questions'));
+        $section = SurveyQuestion::first();
+        return view('admin.survey-questions.index', compact('questions','section'));
     }
 
     public function create()
@@ -120,4 +121,24 @@ public function update(Request $request, SurveyQuestion $survey_question)
 
         return redirect()->back()->with('success', 'تم حذف السؤال بنجاح.');
     }
+
+    public function choosepackeg(Request $request, SurveyQuestion $survey_question)
+    {
+        $request->validate([
+            'title_en' => 'required|string|max:255',
+            'title_ar' => 'required|string|max:255',
+            'desc_en'  => 'required|string',
+            'desc_ar'  => 'required|string',
+        ]);
+
+
+        $survey_question->where('id',5)->update([
+            'title_ar' => $request->title_ar,
+            'title_en' => $request->title_en,
+            'desc_en' => $request->desc_en,
+            'desc_ar' =>  $request->desc_ar,
+        ]);
+        return redirect()->route('admin.survey-questions.index')->with('success', 'تم التحديث بنجاح');
+    }
+
 }

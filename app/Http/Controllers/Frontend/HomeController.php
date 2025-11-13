@@ -70,7 +70,7 @@ class HomeController extends Controller
 
         $exhibitions = Exhibition::with(['images'])->where('is_active', 1)->get();
         $questions = SurveyQuestion::with('options')->orderBy('order')->get();
-
+        $section = SurveyQuestion::first();
         $countries = [
             ['code' => 'sa', 'name_ar' => 'السعودية', 'name_en' => 'Saudi Arabia', 'dial_code' => '+966'],
             ['code' => 'ae', 'name_ar' => 'الإمارات', 'name_en' => 'United Arab Emirates', 'dial_code' => '+971'],
@@ -105,6 +105,6 @@ class HomeController extends Controller
 
 
         return view('frontend.home', compact('seo','packages', 'featured_products','testimonials','faqs','sliders'
-                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish','exhibitions','questions','countries','allColors'));
+                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish','exhibitions','questions','countries','allColors','section'));
     }
 }

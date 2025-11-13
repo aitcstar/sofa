@@ -303,6 +303,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::put('/process-section', [ProcessSectionController::class, 'update'])->name('process.update');
     Route::get('/why-choose', [WhyChooseController::class, 'edit'])->name('why-choose.edit');
     Route::put('/why-choose', [WhyChooseController::class, 'update'])->name('why-choose.update');
+
+
     Route::post('/why-choose/items', [WhyChooseController::class, 'storeItem'])->name('why-choose.items.store');
     Route::put('/why-choose/items/{item}', [WhyChooseController::class, 'updateItem'])->name('why-choose.items.update');
     Route::delete('/why-choose/items/{item}', [WhyChooseController::class, 'destroyItem'])->name('why-choose.items.destroy');
@@ -335,6 +337,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::post('exhibitions/{exhibition}/images/{image}/set-primary', [ExhibitionController::class, 'setPrimaryImage'])->name('exhibitions.setPrimaryImage');
     Route::delete('exhibitions/{exhibition}/images/{image}', [ExhibitionController::class, 'deleteImage'])->name('exhibitions.deleteImage');
     Route::post('/admin/exhibitions/content', [ExhibitionController::class, 'updateExhibitions'])->name('exhibitions.content.update');
+
+    Route::put('/choose-packeg', [SurveyQuestionController::class, 'choosepackeg'])->name('choose-packeg.update');
 
     Route::resource('survey-questions', SurveyQuestionController::class);
 

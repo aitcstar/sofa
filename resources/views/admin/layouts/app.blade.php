@@ -402,27 +402,27 @@
 
                         @if($user && ($user->hasPermission('content.view') || $user->role === 'admin'))
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') ? 'active' : '' }}"
-                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*')? 'true' : 'false' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') || request()->routeIs('admin.survey-questions.*')? 'active' : '' }}"
+                               href="#contentMenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') || request()->routeIs('admin.survey-questions.*')? 'true' : 'false' }}"
                                class="dropdown-toggle">
                                 <i class="fas fa-cogs me-2"></i>
                                 إدارة المحتوى
                             </a>
 
                             <!-- Sub-menu رئيسي -->
-                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') ? 'show' : '' }}"
+                            <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.about.*') ||  request()->routeIs('admin.contact.*') || request()->routeIs('admin.survey-questions.*')? 'show' : '' }}"
                                 id="contentMenu">
 
                                 <!-- Sub-menu الصفحة الرئيسية -->
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*')? 'active' : '' }}"
-                                       href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.oready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') ? 'true' : 'false' }}"
+                                       href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*') || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.oready-to-furnish.*') ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.survey-questions.*')? 'true' : 'false' }}"
                                        class="dropdown-toggle">
                                         <i class="fas fa-home me-2"></i>
                                         الصفحة الرئيسية
                                     </a>
 
-                                    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*')  || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*')  ||  request()->routeIs('admin.testimonials.*')? 'show' : '' }}"  id="homeSubmenu">
+                                    <ul class="collapse list-unstyled ms-3 {{ request()->routeIs('admin.hero-sliders.*') || request()->routeIs('admin.steps.*')  || request()->routeIs('admin.home-about.*') || request()->routeIs('admin.process.*') ||  request()->routeIs('admin.why-choose.*') || request()->routeIs('admin.order-timeline.*') || request()->routeIs('admin.ready-to-furnish.*')  ||  request()->routeIs('admin.testimonials.*') || request()->routeIs('admin.survey-questions.*')? 'show' : '' }}"  id="homeSubmenu">
                                         <li class="nav-item">
                                             <a class="nav-link {{ request()->routeIs('admin.hero-sliders.*') ? 'active' : '' }}"
                                                href="{{ route('admin.hero-sliders.index') }}">
@@ -441,6 +441,13 @@
                                             <a class="nav-link {{ request()->routeIs('admin.home-about.*') ? 'active' : '' }}"
                                                 href="{{ route('admin.home-about.edit') }}">
                                                 نبذة من نحن
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.survey-questions.*') ? 'active' : '' }}"
+                                               href="{{ route('admin.survey-questions.index') }}">
+                                               أسئلة اختر الباكج
                                             </a>
                                         </li>
 
@@ -508,15 +515,15 @@
                         </li>
                         @endif
 
-                        @if($user && ($user->hasPermission('surveys.view') || $user->role === 'admin'))
+                        {{--@if($user && ($user->hasPermission('surveys.view') || $user->role === 'admin'))
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.survey-questions.*') ? 'active' : '' }}"
                                href="{{ route('admin.survey-questions.index') }}">
                                <i class="fas fa-info-circle me-2"></i>
-                               إدارة أسئلة الاستبيان
+                               أسئلة اختر الباكج
                             </a>
                         </li>
-                        @endif
+                        @endif--}}
 
                         @if($user && ($user->hasPermission('packages.view') || $user->role === 'admin'))
                         <!-- إدارة الباكجات مع Sub-menu-->

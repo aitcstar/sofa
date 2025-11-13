@@ -15,6 +15,8 @@ class SurveyQuestion extends Model
         'type',
         'is_required',
         'order',
+        'desc_en',
+        'desc_ar',
     ];
 
     public function options()

@@ -48,17 +48,18 @@
                             <div class="filter-option">
                                 <div class="filter-checkbox"
                                      data-filter="color-style"
-                                     data-value="{{ $color['background_color'] }}"
-                                     data-label="{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}">
+                                     data-value="{{ $color['background_color'] ?? '' }}"
+                                     data-label="{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
                                 </div>
                                 <div class="filter-option-content">
-                                    <span class="body-2 text-body">{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}</span>
-                                    <div class="color-swatch" style="background-color: {{ $color['background_color'] }}"></div>
+                                    <span class="body-2 text-body">{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}</span>
+                                    <div class="color-swatch" style="background-color: {{ $color['color_code'] ?? '#000' }}"></div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
             </div>
 
             <!-- Packages -->
@@ -67,7 +68,7 @@
                     @foreach($packages as $package)
                     <div class="col-sm-12 col-md-6 mb-sm-4 package-cards"
                         data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
-                        data-colors="{{ $package->packageUnitItems->pluck('item.background_color')->filter()->unique()->implode(',') }}"
+                        data-colors="{{ collect($package->available_colors)->pluck('name_'.app()->getLocale())->implode(',') }}"
                         data-unit-types="{{ $package->packageUnitItems->pluck('unit.name_'.app()->getLocale())->unique()->implode(',') }}">
 
                         <div class="room-item">
@@ -138,26 +139,27 @@
                                     </div>
 
                                     @php
-                                        $colors = $package->units
-                                            ->flatMap->items
-                                            ->pluck('background_color')
-                                            ->filter()
-                                            ->unique()
-                                            ->take(4);
-                                    @endphp
+                                    $locale = app()->getLocale();
+                                    $colors = collect($package->available_colors)
+                                        ->filter() // نتأكد إن في ألوان
+                                        ->take(4); // نعرض أول 4 فقط
+                                @endphp
 
-                                    <!-- Colors -->
-                                       <!-- الألوان المتاحة -->
+                                <!-- Colors -->
                                 <div class="d-flex gap-sm-3 align-items-center">
                                     <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
                                     <div class="d-flex gap-sm-5">
-                                        @forelse($package->packageUnitItems->pluck('item.background_color')->filter()->unique()->take(4) as $color)
-                                            <span class="rounded-pill" style="width: 34px; height: 16px; background-color: {{ $color }}"></span>
+                                        @forelse($colors as $color)
+                                            <span class="rounded-pill"
+                                                  style="width: 34px; height: 16px; background-color: {{ $color['color_code'] ?? '#000' }}"
+                                                  title="{{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
+                                            </span>
                                         @empty
                                             <span>لا توجد ألوان</span>
                                         @endforelse
                                     </div>
                                 </div>
+
 
                                     <!-- Time implementation -->
                                     <div class="d-flex gap-sm-3 align-items-center">
@@ -452,11 +454,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // helper: normalize colors from data-colors attribute into array (lowercase, trimmed)
     function normalizeCardColors(str) {
-        if (!str) return [];
-        return str.split(',')
-                  .map(s => s.trim().toLowerCase())
-                  .filter(Boolean);
-    }
+    if (!str) return [];
+    return str.split(',')
+              .map(s => s.trim().toLowerCase()) // trim + lowercase
+              .filter(Boolean);
+}
+
 
     // apply filters to DOM cards
     function applyFilters(activeFilters) {

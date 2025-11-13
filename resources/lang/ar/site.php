@@ -70,7 +70,7 @@ return [
     'yes' => 'نعم',
     'no' => 'لا',
     'show_packages' => 'عرض الباكيجات',
-
+    'package_colors'=> 'نمط التشطيب الأساسي في المشروع',
     'send_whatsapp_quote' => 'أرسل لي عرض السعر',
     'view_details' => 'عرض التفاصيل',
 

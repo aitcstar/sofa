@@ -14,6 +14,7 @@ return [
     'mgallery' => 'Gallery',
     'blog' => 'Blog',
     'contact' => 'Contact Us',
+    'package_colors'=> 'Basic finishing style in the project',
 
     'my_account' => 'My Account',
     'my_orders' => 'My Orders',

@@ -132,6 +132,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <th>السعر</th>
                             <th>عدد الوحدات</th>
                             <th>عدد القطع</th>
+                            <th>الوان الباكج</th>
                             <th>الترتيب</th>
                             <th>تظهر في الرئيسية</th>
                             <th>الإجراءات</th>
@@ -155,7 +156,17 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                     {{ $package->packageUnitItems->count() }}
                                 </span>
                             </td>
-
+                            <td>
+                                @if(!empty($package->available_colors))
+                                    @foreach($package->available_colors as $color)
+                                        <div class="d-inline-block me-1 mb-1 text-center" >
+                                            <span class="d-block" style="width:20px; height:20px; border-radius:50%; background-color: {{ $color['color_code'] }}; border:1px solid #ccc; margin:auto;"></span>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <span class="text-muted">لا توجد ألوان</span>
+                                @endif
+                            </td>
                             <td>{{ $package->sort_order }}</td>
                             <td>
                                 <input type="checkbox"

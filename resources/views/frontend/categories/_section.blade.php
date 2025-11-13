@@ -79,24 +79,27 @@
                         </div>
 
                         @php
-                            $colors = $package->packageUnitItems
-                                ->pluck('item.background_color')
-                                ->filter()
-                                ->unique()
-                                ->take(4);
-                        @endphp
+                        $locale = app()->getLocale();
+                        $colors = collect($package->available_colors)
+                            ->filter() // نتأكد إن في ألوان
+                            ->take(4); // نعرض أول 4 فقط
+                    @endphp
 
-                        <!-- Colors -->
-                        <div class="d-flex gap-sm-3 align-items-center">
-                            <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
-                            <div class="d-flex gap-sm-5">
-                                @forelse($colors as $color)
-                                    <span class="rounded-pill" style="width: 34px; height: 16px; background-color: {{ $color }}"></span>
-                                @empty
-                                    <span>لا توجد ألوان</span>
-                                @endforelse
-                            </div>
+                    <!-- Colors -->
+                    <div class="d-flex gap-sm-3 align-items-center">
+                        <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
+                        <div class="d-flex gap-sm-5">
+                            @forelse($colors as $color)
+                                <span class="rounded-pill"
+                                      style="width: 34px; height: 16px; background-color: {{ $color['color_code'] ?? '#000' }}"
+                                      title="{{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
+                                </span>
+                            @empty
+                                <span>لا توجد ألوان</span>
+                            @endforelse
                         </div>
+                    </div>
+
 
                         <!-- Time implementation -->
                         <div class="d-flex gap-sm-3 align-items-center">

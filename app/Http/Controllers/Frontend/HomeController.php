@@ -26,12 +26,22 @@ class HomeController extends Controller
     public function index()
     {
         $seo = SeoSetting::where('page','home')->first();
+        $locale = app()->getLocale();
         //$packages = Package::with(['images', 'units.designs','units.items'])->take(4)->get();
         $packages = Package::with([
             'images',
             'packageUnitItems.unit',
             'packageUnitItems.item'
         ])->active()->ordered()->take(4)->get();
+
+        $allColors = Package::pluck('available_colors')
+        ->flatten(1)
+        ->filter()
+        ->unique(function ($color) use ($locale) {
+            return $locale === 'ar' ? $color['name_ar'] : $color['name_en'];
+        })
+        ->values();
+
 
         $featured_products = Product::active()->featured()->take(8)->get();
         $testimonials = Testimonial::latest()->take(10)->get();
@@ -95,6 +105,6 @@ class HomeController extends Controller
 
 
         return view('frontend.home', compact('seo','packages', 'featured_products','testimonials','faqs','sliders'
-                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish','exhibitions','questions','countries'));
+                    ,'steps','about','process','processsteps','whyChoose','timelines','readyToFurnish','exhibitions','questions','countries','allColors'));
     }
 }

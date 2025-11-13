@@ -176,35 +176,26 @@ public function index()
         'packageUnitItems.item'
     ])->get();
 
-    /*$unitTypes = Unit::select('name_ar', 'name_en')
-    ->distinct()
-    ->get();*/
+    // أسماء الباقات
     $packageNames = Package::select('name_ar', 'name_en')
-    ->distinct()
-    ->get();
+        ->distinct()
+        ->get();
 
-
-
-    // الألوان
+    // الألوان من available_colors
     $locale = app()->getLocale();
-    $uniqueKey = $locale === 'ar' ? 'color_ar' : 'color_en';
+    $uniqueKey = $locale === 'ar' ? 'name_ar' : 'name_en';
 
-    $colors = $packages
-        ->flatMap(fn($package) => $package->packageUnitItems)
-        ->filter(fn($pui) => $pui->item) // ← تأكد أن item ليس null
-        ->map(fn($pui) => [
-            'color_ar' => $pui->item->color_ar,
-            'color_en' => $pui->item->color_en,
-            'background_color' => $pui->item->background_color,
-        ])
-        ->filter(fn($item) => !empty($item['background_color']))
-        ->keyBy(fn($item) => $item[$uniqueKey])
+    $colors = Package::pluck('available_colors') // جلب كل الألوان
+        ->flatten(1)                               // دمج المصفوفات
+        ->filter(fn($color) => !empty($color['name_' . $locale])) // إزالة الفارغة
+        ->unique(fn($color) => $locale === 'ar' ? $color['name_ar'] : $color['name_en']) // إزالة التكرار
         ->values();
 
     $mobileColors = $colors;
 
     return view('frontend.categories.index', compact('seo','packages','packageNames','colors','mobileColors'));
 }
+
 /*
 public function show($id)
 {
@@ -268,6 +259,7 @@ public function show($slug)
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
 
+/*
 public function filter(Request $request)
 {
     //dd($request->all());
@@ -286,14 +278,7 @@ public function filter(Request $request)
     }
 
 
-    // فلترة حسب اسم الوحدة
-    /*if (!empty($answers[5][0])) {
-        $unitName = $answers[5][0];
-        $query->whereHas('packageUnitItems.unit', function ($q) use ($unitName) {
-            $q->where('name_ar', 'LIKE', "%{$unitName}%")
-              ->orWhere('name_en', 'LIKE', "%{$unitName}%");
-        });
-    }*/
+
 
     // فلترة حسب الألوان
     if (!empty($answers[6])) {
@@ -305,13 +290,7 @@ public function filter(Request $request)
         });
     }
 
-    // فلترة حسب عدد القطع
-    /*if (!empty($answers[7])) {
-        $pieces = $answers[7];
-        $query->whereHas('packageUnitItems.item', function ($q) use ($pieces) {
-            $q->where('quantity', $pieces);
-        });
-    }*/
+
 
     // فلترة بالسعر
     if (!empty($request->price_min) && !empty($request->price_max)) {
@@ -330,6 +309,47 @@ public function filter(Request $request)
 
     return view('frontend.categories._section', compact('packages'));
 }
+*/
+
+public function filter(Request $request)
+{
+    $locale = app()->getLocale();
+    $answers = $request->answers ?? [];
+
+    $query = Package::query();
+
+    // أولاً فلترة حسب اسم الباكج
+    if (!empty($answers[5])) {
+        $packageName = $answers[5];
+        $query->where($locale === 'ar' ? 'name_ar' : 'name_en', $packageName);
+    }
+
+    // فلترة بالسعر
+    if (!empty($request->price_min) && !empty($request->price_max)) {
+        $query->whereBetween('price', [$request->price_min, $request->price_max]);
+    }
+
+    // جلب النتائج المؤقتة
+    $packages = $query->get();
+
+    // فلترة حسب اللون على مستوى الـ collection
+    if (!empty($answers[6])) {
+        $selectedColor = $answers[6];
+        $packages = $packages->filter(function($package) use ($selectedColor, $locale) {
+            return collect($package->available_colors)
+                ->pluck('name_' . $locale)
+                ->contains($selectedColor);
+        });
+    }
+
+    // لو أول تحميل للصفحة
+    if (empty($request->all())) {
+        $packages = $query->where('show_in_home', 1)->take(4)->get();
+    }
+
+    return view('frontend.categories._section', compact('packages'));
+}
+
 
 
 

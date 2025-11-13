@@ -140,51 +140,46 @@
 
         <form id="package-filter-form" class="package-selection-form padding-box-normal d-flex flex-column gap-md border border-surface radius-small-box mx-auto">
             @csrf
-            @foreach($questions as $question)
-                <div class="d-flex flex-column gap-sm-5 mb-2">
-                    @php $locale = app()->getLocale(); @endphp
-                    <label class="form-label body-1"> {{ $locale === 'ar' ? $question->title_ar : $question->title_en }}</label>
-
-                    @if(in_array($question->type, ['radio', 'checkbox']))
-                    <div class="d-flex gap-sm-3 flex-wrap question"
-                    data-type="{{ $question->type }}"
-                    data-required="{{ $question->is_required ? 1 : 0 }}">
-                   @foreach($question->options as $option)
-                       <div class="d-flex align-items-center gap-sm-5">
-                           <input  type="{{ $question->type === 'checkbox' ? 'checkbox' : 'radio' }}"
-                                  name="answers[{{ $question->id }}]{{ $question->type === 'checkbox' ? '[]' : '' }}"
-                                  value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}"
-                                  id="q{{ $question->id }}_{{ $option->id }}"
-                                  @if($question->type === 'radio' && $question->is_required) required @endif>
-                           <label for="q{{ $question->id }}_{{ $option->id }}">
-                               {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
-                           </label>
-                       </div>
-                   @endforeach
-                    <!-- مكان رسالة الخطأ -->
-                <div class="error-message text-danger" style="display:none; margin-top:5px;">
-                    يرجى اختيار خيار واحد على الأقل
+           {{-- 🔹 اختيار اسم الباقة --}}
+            <div class="mb-3">
+                <label class="form-label body-1">{{ __('site.unit_type') }}</label>
+                <div class="d-flex gap-sm-5 flex-wrap question" data-type="radio" data-required="0">
+                    @foreach($packages as $package)
+                        @php
+                            $name = app()->getLocale() === 'ar' ? $package->name_ar : $package->name_en;
+                        @endphp
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <input type="radio" name="answers[5]" id="package_{{ $package->id }}" value="{{ $name }}">
+                            <label for="package_{{ $package->id }}">{{ $name }}</label>
+                        </div>
+                    @endforeach
+                    {{-- رسالة خطأ --}}
+                    <div class="error-message text-danger" style="display:none; margin-top:5px;">
+                        يرجى اختيار خيار واحد على الأقل
+                    </div>
                 </div>
-               </div>
+            </div>
 
-                @elseif($question->type === 'select')
-                    <select name="answers[{{ $question->id }}]" class="form-select" @if($question->is_required) required @endif>
-                        <option value="">{{ __('اختر...') }}</option>
-                        @foreach($question->options as $option)
-                            <option value="{{ $locale === 'ar' ? $option->value_ar : $option->value_en }}">
-                                {{ $locale === 'ar' ? $option->label_ar : $option->label_en }}
-                            </option>
-                        @endforeach
-                    </select>
-                @elseif($question->type === 'text')
-                    <input type="text" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
-                @elseif($question->type === 'number')
-                    <input type="number" name="answers[{{ $question->id }}]" class="form-control" @if($question->is_required) required @endif>
-                @endif
-
-
+            {{-- 🔸 فلترة حسب اللون --}}
+            <div class="mb-3">
+                <label class="form-label body-1">{{ __('site.package_colors') }}</label>
+                <div class="d-flex gap-sm-5 flex-wrap question" data-type="radio" data-required="0">
+                    @foreach($allColors as $color)
+                        @php
+                            $colorName = app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'];
+                        @endphp
+                        <div class="d-flex align-items-center gap-sm-5">
+                            <input type="radio" name="answers[6]" id="color_{{ $loop->index }}" value="{{ $colorName }}">
+                            <label for="color_{{ $loop->index }}">{{ $colorName }}</label>
+                        </div>
+                    @endforeach
+                    {{-- رسالة خطأ --}}
+                    <div class="error-message text-danger" style="display:none; margin-top:5px;">
+                        يرجى اختيار خيار واحد على الأقل
+                    </div>
                 </div>
-            @endforeach
+            </div>
+
 
             <button type="submit" class="btn btn-custom-primary w-100">
                 {{ __('site.show_packages') }}

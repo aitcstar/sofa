@@ -145,6 +145,70 @@
                         </div>
                     </div>
 
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                          الوان الباكج
+                        </div>
+                        <div class="card-body">
+                            <div id="colors-container">
+                                @if(isset($package) && is_array($package->available_colors))
+                                    @foreach($package->available_colors as $index => $color)
+                                        <div class="row mb-2 color-row align-items-center">
+                                            <div class="col-md-3">
+                                                <input type="text" name="available_colors[{{ $index }}][name_ar]"
+                                                       class="form-control" placeholder="اسم اللون بالعربية"
+                                                       value="{{ $color['name_ar'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" name="available_colors[{{ $index }}][name_en]"
+                                                       class="form-control" placeholder="اسم اللون بالإنجليزية"
+                                                       value="{{ $color['name_en'] ?? '' }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="color" name="available_colors[{{ $index }}][color_code]"
+                                                       class="form-control form-control-color"
+                                                       value="{{ $color['color_code'] ?? '#000000' }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-danger" onclick="removeColorRow(this)">حذف</button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
+                            <button type="button" class="btn btn-outline-primary mt-2" onclick="addColorRow()">+ إضافة لون</button>
+                        </div>
+                      </div>
+
+                      <script>
+                      function addColorRow() {
+                          const index = document.querySelectorAll('#colors-container .color-row').length;
+                          const html = `
+                              <div class="row mb-2 color-row align-items-center">
+                                  <div class="col-md-3">
+                                      <input type="text" name="available_colors[${index}][name_ar]" class="form-control" placeholder="اسم اللون بالعربية">
+                                  </div>
+                                  <div class="col-md-3">
+                                      <input type="text" name="available_colors[${index}][name_en]" class="form-control" placeholder="اسم اللون بالإنجليزية">
+                                  </div>
+                                  <div class="col-md-3">
+                                      <input type="color" name="available_colors[${index}][color_code]" class="form-control form-control-color" value="#000000">
+                                  </div>
+                                  <div class="col-md-3">
+                                      <button type="button" class="btn btn-danger" onclick="removeColorRow(this)">حذف</button>
+                                  </div>
+                              </div>
+                          `;
+                          document.getElementById('colors-container').insertAdjacentHTML('beforeend', html);
+                      }
+
+                      function removeColorRow(btn) {
+                          btn.closest('.color-row').remove();
+                      }
+                      </script>
+
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">السعر (ريال) <span class="text-danger">*</span></label>
@@ -174,29 +238,7 @@
                                 </div>
                             @endif
                         </div>
-                        {{--
-                <div class="col-md-6">
-                    <label class="form-label">صور إضافية</label>
-                    <input type="file" name="images[]" class="form-control" accept="image/*" multiple>
 
-                    <h6>الصور الحالية</h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach ($package->images as $img)
-                            <div class="position-relative img-container" style="width:120px" id="img-{{ $img->id }}">
-                                <img src="{{ asset('storage/' . $img->image_path) }}"
-                                     class="img-thumbnail rounded" width="120">
-
-                                <button type="button"
-                                        class="btn btn-sm btn-danger rounded-circle p-1 d-flex align-items-center justify-content-center delete-image"
-                                        style="width: 24px; height: 24px; position:absolute; top:5px; right:5px;"
-                                        data-url="{{ route('admin.packages.images.destroy', [$package->id, $img->id]) }}"
-                                        data-id="{{ $img->id }}">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        @endforeach
-                    </div>
-                </div> --}}
                     </div>
 
                     <!-- صور إضافية -->

@@ -567,6 +567,37 @@ border: none !important;
     </div>
 
 
+    <!-- ضع هذا قبل إغلاق </body> -->
+<a id="whatsapp-float" href="https://wa.me/{{ $siteSettings->whatsapp }}?text=السلام%20عليكم%2C%20أريد%20معلومات"
+target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+ <!-- استخدم أي أيقونة تريد؛ هذا SVG -->
+ <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+   <path d="M20.52 3.48C18.12 1.08 14.65 0 11.17 0 5 0 .33 4.67 .33 10.83c0 1.9.5 3.76 1.45 5.39L0 24l7.95-2.07c1.53.42 3.12.64 4.72.64 6.17 0 10.84-4.67 10.84-10.83 0-3.48-1.08-6.95-3.0-9.14z" fill="#25D366"/>
+   <path d="M17.1 14.2c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.37.22-.68.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.49-.07-.15-.68-1.65-.93-2.27-.24-.6-.49-.52-.68-.53-.18-.01-.39-.01-.6-.01s-.49.07-.75.34c-.27.27-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.21 3.1.15.2 2.09 3.18 5.06 4.45 2.97 1.27 2.97.85 3.51.8.55-.05 1.77-.7 2.02-1.38.25-.68.25-1.26.18-1.38-.07-.12-.25-.2-.55-.35z" fill="#fff"/>
+ </svg>
+</a>
+
+<style>
+#whatsapp-float{
+ position: fixed;
+ right: 20px;
+ bottom: 20px;
+ z-index: 9999;
+ width: 56px;
+ height: 56px;
+ border-radius: 50%;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+ background: linear-gradient(135deg,#25D366,#128C7E);
+ text-decoration: none;
+}
+#whatsapp-float svg{ display:block; }
+</style>
+
+
+
     @if(session('open_login_tab'))
     <script>
     document.addEventListener('DOMContentLoaded', function() {

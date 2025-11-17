@@ -28,10 +28,18 @@
     <a href="#" class="body-2 text-primary">{{ app()->getLocale() == 'ar' ? $package->name_ar : $package->name_en }}</a><br>
 </div>
 
+<div class="container">
+    <h2 class="heading-h7"> {{ app()->getLocale() == 'ar' ? $package->name_ar : $package->name_en }}</h2>
+
+</div>
+
 <section class="category-details">
+
     <div class="container">
         <!-- Accordion Details -->
+
         <div class="accordion-details">
+
             <div class="accordion" id="accordionExample">
                 @php
                     $groupedItems = $package->packageUnitItems->groupBy('unit_id');

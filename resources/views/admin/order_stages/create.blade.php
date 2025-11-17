@@ -21,6 +21,18 @@
             <form action="{{ route('admin.order_stages.store') }}" method="POST">
                 @csrf
 
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">تابعة لمرحلة (اختياري)</label>
+                    <select name="parent_id" class="form-select">
+                        <option value="">مرحلة رئيسية</option>
+                        @foreach($stages as $stage)
+                            <option value="{{ $stage->id }}">{{ $stage->title_ar }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+
                 <!-- Arabic Title -->
                 <div class="row">
                     <div class="col-md-6 mb-3">

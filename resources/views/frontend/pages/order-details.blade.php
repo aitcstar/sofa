@@ -251,25 +251,24 @@
         <!-- divider -->
         <hr />
 
-       <!-- steps -->
+<!-- steps -->
 <div class="d-flex flex-column gap-sm-4">
     <h3 class="sub-heading-3 mb-0">{{ __('site.order_timeline') }}</h3>
 
     <div class="d-flex flex-column gap-sm-3">
-        @foreach($order->stageStatuses->sortBy('stage.order_number') as $index => $status)
+        @foreach(\App\Models\OrderStage::whereNull('parent_id')->orderBy('order_number')->get() as $index => $stage)
             @php
-                $stage = $status->stage;
-                $isCompleted = $status->status === 'completed';
-                $isInProgress = $status->status === 'in_progress';
-                $isPending = $status->status === 'not_started';
+                $subStages = $stage->children()->orderBy('order_number')->get();
+                // حالة المرحلة الرئيسية تعتمد على الفرعية
+                $allSubCompleted = $subStages->count() && $subStages->every(fn($sub) => $order->stageStatuses->firstWhere('order_stage_id', $sub->id)?->status === 'completed');
+                $stageStatus = $order->stageStatuses->firstWhere('order_stage_id', $stage->id);
+                $isCompleted = $allSubCompleted || ($stageStatus && $stageStatus->status === 'completed');
             @endphp
 
             <div class="d-flex gap-md">
                 <div class="d-flex flex-column gap-sm-5 position-relative">
                     @if($isCompleted)
                         <div class="step-checked"></div>
-                    @elseif($isInProgress)
-                        <div class="step-progress"></div>
                     @else
                         <div class="step-pending"></div>
                     @endif
@@ -279,25 +278,39 @@
                     @endif
                 </div>
 
-                <div class="package-step-item d-flex flex-column gap-sm-5">
+                <div class="package-step-item d-flex flex-column gap-sm-3" style="width: 90%;">
                     <h4 class="sub-heading-4 mb-0">
-                        {{ app()->getLocale() == 'ar' ? 'المرحلة (' . ($index+1) . '): ' . $stage->title_ar : 'Stage (' . ($index+1) . '): ' . $stage->title_en }}
+                        {{ app()->getLocale() == 'ar'
+                            ? 'المرحلة (' . ($index+1) . '): ' . $stage->title_ar
+                            : 'Stage (' . ($index+1) . '): ' . $stage->title_en }}
                     </h4>
 
-                    @if($stage->description_ar || $stage->description_en)
-                        <ul class="d-flex gap-l m-0">
-                            @foreach(app()->getLocale() == 'ar' ? ($stage->description_ar ?? []) : ($stage->description_en ?? []) as $desc)
-                                <li>{{ $desc }}</li>
+                    @if($subStages->count())
+                        <ul class="d-flex flex-column gap-1 m-0 ms-3">
+                            @foreach($subStages as $sub)
+                                @php
+                                    $subStatus = $order->stageStatuses->firstWhere('order_stage_id', $sub->id);
+                                    $subCompleted = $subStatus && $subStatus->status === 'completed';
+                                @endphp
+                                <li>
+                                    <span class="{{ $subCompleted ? 'text-success' : '' }}">
+                                        @if($subCompleted) ✔ @endif
+                                        {{ app()->getLocale() == 'ar' ? $sub->title_ar : $sub->title_en }}
+
+                                    </span>
+                                </li>
                             @endforeach
                         </ul>
                     @endif
 
+
+
                     <div class="d-flex gap-sm-6 align-items-center pr-2">
                         <img src="{{ asset('assets/images/icons/time.svg') }}" alt="time" />
                         <p class="body-3 mb-0">
-                            {{ $status->completed_at
-                                ? $status->completed_at->format('d F Y \ف\ي H:i')
-                                : $status->created_at->format('d F Y \ف\ي H:i') }}
+                            {{ $stageStatus && $stageStatus->completed_at
+                                ? $stageStatus->completed_at->format('d F Y \ف\ي H:i')
+                                : $stageStatus?->created_at?->format('d F Y \ف\ي H:i') ?? '-' }}
                         </p>
                     </div>
                 </div>

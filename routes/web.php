@@ -339,7 +339,6 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::post('/admin/exhibitions/content', [ExhibitionController::class, 'updateExhibitions'])->name('exhibitions.content.update');
 
     Route::put('/choose-packeg', [SurveyQuestionController::class, 'choosepackeg'])->name('choose-packeg.update');
-
     Route::resource('survey-questions', SurveyQuestionController::class);
 
 

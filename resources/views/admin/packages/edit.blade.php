@@ -481,41 +481,41 @@ function fetchItemsByUnitId(unitId, callback) {
             }
 
             function addItemToUnit(btn, uIndex) {
-    const unitCard = btn.closest('.unit-card');
-    const unitSelect = unitCard.querySelector('[name="units[' + uIndex + '][unit_id]"]');
-    const unitId = unitSelect.value; // نأخذ القيمة الحالية من select
+                    const unitCard = btn.closest('.unit-card');
+                    const unitSelect = unitCard.querySelector('[name="units[' + uIndex + '][unit_id]"]');
+                    const unitId = unitSelect.value; // نأخذ القيمة الحالية من select
 
-    if (!unitId) {
-        alert('يرجى اختيار وحدة أولاً');
-        return;
-    }
+                    if (!unitId) {
+                        alert('يرجى اختيار وحدة أولاً');
+                        return;
+                    }
 
-    fetchItemsByUnitId(unitId, function(items) {
-        const itemsContainer = unitCard.querySelector('.items-container');
-        const itemIndex = itemsContainer.querySelectorAll('.item-card').length;
+                    fetchItemsByUnitId(unitId, function(items) {
+                        const itemsContainer = unitCard.querySelector('.items-container');
+                        const itemIndex = itemsContainer.querySelectorAll('.item-card').length;
 
-        let optionsHtml = '<option value="">-- اختر قطعة --</option>';
-        items.forEach(item => {
-            optionsHtml += `<option value="${item.id}" data-item='${JSON.stringify(item).replace(/'/g, "\\'")}'>
-                ${item.item_name_ar} / ${item.item_name_en} / ${item.color_ar}
-            </option>`;
-        });
+                        let optionsHtml = '<option value="">-- اختر قطعة --</option>';
+                        items.forEach(item => {
+                            optionsHtml += `<option value="${item.id}" data-item='${JSON.stringify(item).replace(/'/g, "\\'")}'>
+                                ${item.item_name_ar} / ${item.item_name_en} / ${item.color_ar}
+                            </option>`;
+                        });
 
-        const div = document.createElement('div');
-        div.className = 'border p-2 mb-2 item-card';
-        div.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong>قطعة ${itemIndex + 1}</strong>
-                <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.item-card').remove()">حذف</button>
-            </div>
-            <select name="units[${uIndex}][items][${itemIndex}][item_id]" class="form-control select2-item" required>
-                ${optionsHtml}
-            </select>
-        `;
-        itemsContainer.appendChild(div);
-        $(div).find('.select2-item').select2();
-    });
-}
+                        const div = document.createElement('div');
+                        div.className = 'border p-2 mb-2 item-card';
+                        div.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>قطعة ${itemIndex + 1}</strong>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.item-card').remove()">حذف</button>
+                            </div>
+                            <select name="units[${uIndex}][items][${itemIndex}][item_id]" class="form-control select2-item" required>
+                                ${optionsHtml}
+                            </select>
+                        `;
+                        itemsContainer.appendChild(div);
+                        $(div).find('.select2-item').select2();
+                    });
+                }
 
             </script>
             @endsection

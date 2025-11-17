@@ -10,13 +10,19 @@ class OrderStageController extends Controller
 {
     public function index()
     {
-        $stages = OrderStage::orderBy('order_number')->get();
-        return view('admin.order_stages.index', compact('stages'));
+        $stages = OrderStage::with('children')
+        ->whereNull('parent_id')
+        ->orderBy('order_number')
+        ->get();
+
+return view('admin.order_stages.index', compact('stages'));
     }
 
     public function create()
     {
-        return view('admin.order_stages.create');
+        $stages = OrderStage::whereNull('parent_id')->orderBy('order_number')->get();
+
+    return view('admin.order_stages.create', compact('stages'));
     }
 
     public function store(Request $request)
@@ -27,6 +33,7 @@ class OrderStageController extends Controller
             'description_ar' => 'nullable|array',
             'description_en' => 'nullable|array',
             'order_number' => 'required|integer|min:1',
+            'parent_id' => 'nullable|exists:order_stages,id',
         ]);
 
         OrderStage::create([
@@ -35,14 +42,21 @@ class OrderStageController extends Controller
             'description_ar' => $request->description_ar,
             'description_en' => $request->description_en,
             'order_number' => $request->order_number,
+            'parent_id' => $request->parent_id, // ⭐ إضافة بسيطة
         ]);
 
-        return redirect()->route('admin.orders.enhanced.order_stages.index')->with('success', 'تمت إضافة المرحلة بنجاح');
+        return redirect()->route('admin.order_stages.index')->with('success', 'تمت إضافة المرحلة بنجاح');
     }
 
     public function edit(OrderStage $orderStage)
     {
-        return view('admin.order_stages.edit', compact('orderStage'));
+       // استبعاد المرحلة نفسها ومن الممكن استبعاد أولادها لو حابب
+            $stages = OrderStage::whereNull('parent_id')
+            ->where('id', '!=', $orderStage->id)
+            ->orderBy('order_number')
+            ->get();
+
+        return view('admin.order_stages.edit', compact('orderStage', 'stages'));
     }
 
     public function update(Request $request, OrderStage $orderStage)
@@ -53,10 +67,11 @@ class OrderStageController extends Controller
             'description_ar' => 'nullable|array',
             'description_en' => 'nullable|array',
             'order_number' => 'required|integer|min:1',
+            'parent_id' => 'nullable|exists:order_stages,id',
         ]);
 
         $orderStage->update($request->all());
-        return redirect()->route('admin.orders.enhanced.order_stages.index')->with('success', 'تم تعديل المرحلة بنجاح');
+        return redirect()->route('admin.order_stages.index')->with('success', 'تم تعديل المرحلة بنجاح');
     }
 
     public function destroy(OrderStage $orderStage)

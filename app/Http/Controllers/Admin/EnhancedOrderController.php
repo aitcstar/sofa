@@ -512,6 +512,7 @@ class EnhancedOrderController extends Controller
         }
     }*/
 
+    /*
     public function updateTimeline(Request $request, Order $order)
     {
         // كل الـ stageStatuses الحالية للطلب
@@ -541,6 +542,43 @@ class EnhancedOrderController extends Controller
 
         return redirect()->back()->with('success', 'تم تحديث مراحل الطلب بنجاح');
     }
+*/
+
+
+public function updateTimeline(Request $request, Order $order)
+{
+    $stagesData = $request->input('stages', []); // افترض أن البيانات تأتي بهذا الشكل: [stageId => ['completed' => true/false]]
+
+    foreach ($stagesData as $stageId => $stageInfo) {
+        // احصل على الحالة الحالية أو أنشئ جديدة
+        $status = $order->stageStatuses()->firstOrNew([
+            'order_stage_id' => $stageId
+        ]);
+
+        // تحديث حالة المرحلة
+        $status->status = isset($stageInfo['completed']) && $stageInfo['completed'] ? 'completed' : 'not_started';
+        $status->completed_at = $status->status === 'completed' ? now() : null;
+        $status->save();
+    }
+
+    // تحديث حالة الطلب الأساسي بناءً على حالة المراحل
+    $allStagesCompleted = $order->stageStatuses()->count() > 0 &&
+                          $order->stageStatuses()->where('status', 'not_started')->count() === 0;
+
+    // تحديد حالة الطلب حسب الـ ENUM المسموح بها
+    if ($allStagesCompleted) {
+        $order->status = 'processing'; // أو 'delivered' حسب منطقك
+    } elseif ($order->stageStatuses()->where('status', 'completed')->count() > 0) {
+        $order->status = 'confirmed';
+    } else {
+        $order->status = 'pending';
+    }
+
+    $order->save();
+
+    return redirect()->back()->with('success', 'تم تحديث مراحل الطلب وحالته بنجاح');
+
+}
 
 
     public function detailsHtml(Order $order)

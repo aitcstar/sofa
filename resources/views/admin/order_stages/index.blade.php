@@ -22,8 +22,7 @@
                             <th>#</th>
                             <th>العنوان (عربي)</th>
                             <th>العنوان (إنجليزي)</th>
-                            <th>الوصف (عربي)</th>
-                            <th>الوصف (إنجليزي)</th>
+
                             <th>الترتيب</th>
                             <th width="180">الإجراءات</th>
                         </tr>
@@ -32,10 +31,8 @@
                         @foreach($stages as $stage)
                             <tr class="text-center">
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $stage->title_ar }}</td>
+                                <td><strong>{{ $stage->title_ar }}</strong></td>
                                 <td>{{ $stage->title_en }}</td>
-                                <td>{{ is_array($stage->description_ar) ? implode(', ', $stage->description_ar) : $stage->description_ar }}</td>
-                                <td>{{ is_array($stage->description_en) ? implode(', ', $stage->description_en) : $stage->description_en }}</td>
                                 <td>{{ $stage->order_number }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
@@ -52,6 +49,28 @@
                                     </div>
                                 </td>
                             </tr>
+                            @foreach($stage->children as $sub)
+                                <tr class="text-center table-light">
+                                    <td>—</td>
+                                    <td>{{ $sub->title_ar }}</td>
+                                    <td>{{ $sub->title_en }}</td>
+                                    <td>{{ $sub->order_number }}</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="{{ route('admin.order_stages.edit', $sub->id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit me-1"></i> تعديل
+                                            </a>
+                                            <form action="{{ route('admin.order_stages.destroy', $sub->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                                    <i class="fas fa-trash me-1"></i> حذف
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
                         @endforeach
                     </tbody>
                 </table>
@@ -81,8 +100,8 @@
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "الكل"]],
         dom: '<"row"<"col-md-6"l><"col-md-6 text-end"f>>rt<"row"<"col-md-6"i><"col-md-6"p>>',
         columnDefs: [
-            { orderable: false, targets: [6] },
-            { searchable: false, targets: [6] }
+            { orderable: false, targets: [4] },
+            { searchable: false, targets: [4] }
         ],
         language: {
             emptyTable: "لا توجد مراحل متاحة",

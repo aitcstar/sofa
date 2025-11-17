@@ -15,6 +15,7 @@ class OrderStage extends Model
         'description_ar',
         'description_en',
         'order_number',
+        'parent_id',
     ];
 
     protected $casts = [
@@ -22,6 +23,19 @@ class OrderStage extends Model
         'description_en' => 'array',
     ];
 
+    // علاقة المرحلة بمراحلها الفرعية
+    public function children()
+    {
+        return $this->hasMany(OrderStage::class, 'parent_id');
+    }
+
+    // علاقة المرحلة بالمرحلة الأب
+    public function parent()
+    {
+        return $this->belongsTo(OrderStage::class, 'parent_id');
+    }
+
+    // حالة المرحلة للطلب
     public function stageStatuses()
     {
         return $this->hasMany(OrderStageStatus::class);

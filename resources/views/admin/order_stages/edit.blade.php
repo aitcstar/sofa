@@ -22,6 +22,21 @@
                 @csrf
                 @method('PUT')
 
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">تابعة لمرحلة (اختياري)</label>
+                    <select name="parent_id" class="form-select">
+                        <option value="">مرحلة رئيسية</option>
+                        @foreach($stages as $stage)
+                            <option value="{{ $stage->id }}"
+                                {{ old('parent_id', $orderStage->parent_id) == $stage->id ? 'selected' : '' }}>
+                                {{ $stage->title_ar }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+
                 {{-- العنوان --}}
                 <div class="row">
                     <div class="col-md-6 mb-3">

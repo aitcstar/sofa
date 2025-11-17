@@ -316,21 +316,38 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                 </div>
                 <div class="card-body">
                     @php
-                        // استرجاع المراحل المرتبة حسب order_number
-                        $stages = \App\Models\OrderStage::orderBy('order_number')->get();
+                        // استرجاع المراحل الأساسية مع المراحل الفرعية
+                        $stages = \App\Models\OrderStage::whereNull('parent_id')
+                                    ->orderBy('order_number')
+                                    ->with(['children' => function($q) {
+                                        $q->orderBy('order_number');
+                                    }])
+                                    ->get();
+
+                        // حساب حالة الطلب العامة
+                        $allCompleted = $order->stageStatuses()->count() > 0 &&
+                                        $order->stageStatuses()->where('status', 'not_started')->count() === 0;
+                        $orderStatusLabel = $allCompleted ? 'مكتمل' : 'قيد التنفيذ';
+                        $orderStatusBadge = $allCompleted ? 'success' : 'warning';
                     @endphp
+
+                    {{-- عرض حالة الطلب بشكل عام --}}
+                    <div class="mb-3">
+                        <strong>حالة الطلب:</strong>
+                        <span class="badge bg-{{ $orderStatusBadge }}">{{ $orderStatusLabel }}</span>
+                    </div>
 
                     @if($stages->count() > 0)
                     <div class="timeline">
                         @foreach($stages as $stage)
                             @php
-                                // حالة المرحلة الخاصة بالطلب الحالي
                                 $status = $order->stageStatuses()->where('order_stage_id', $stage->id)->first();
                                 $isCompleted = $status?->status === 'completed';
                                 $completedAt = $status?->completed_at;
                             @endphp
 
-                            <div class="timeline-item {{ $isCompleted ? 'completed' : 'pending' }}">
+                            {{-- المرحلة الأساسية --}}
+                            <div class="timeline-item {{ $isCompleted ? 'completed' : 'not_started' }}">
                                 <div class="timeline-marker">
                                     <i class="fas fa-{{ $isCompleted ? 'check-circle' : 'circle' }}"></i>
                                 </div>
@@ -338,11 +355,6 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <h6 class="mb-1">{{ $stage->title_ar }}</h6>
-                                            <ul class="text-muted mb-1">
-                                                @foreach($stage->description_ar ?? [] as $desc)
-                                                    <li>{{ $desc }}</li>
-                                                @endforeach
-                                            </ul>
                                         </div>
                                         <div class="text-end">
                                             @if($isCompleted)
@@ -357,6 +369,37 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                 </div>
                             </div>
 
+                            {{-- المراحل الفرعية --}}
+                            @foreach($stage->children as $child)
+                                @php
+                                    $childStatus = $order->stageStatuses()->where('order_stage_id', $child->id)->first();
+                                    $childCompleted = $childStatus?->status === 'completed';
+                                    $childCompletedAt = $childStatus?->completed_at;
+                                @endphp
+
+                                <div class="timeline-item sub-stage {{ $childCompleted ? 'completed' : 'not_started' }}">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-{{ $childCompleted ? 'check-circle' : 'circle' }}"></i>
+                                    </div>
+                                    <div class="timeline-content ps-4">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">{{ $child->title_ar }}</h6>
+                                            </div>
+                                            <div class="text-end">
+                                                @if($childCompleted)
+                                                    <span class="badge bg-success">مكتمل</span>
+                                                    <br>
+                                                    <small class="text-muted">{{ optional($childCompletedAt)->format('Y-m-d') }}</small>
+                                                @else
+                                                    <span class="badge bg-warning">قيد التنفيذ</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
                         @endforeach
                     </div>
                     @else
@@ -366,6 +409,17 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                     @endif
                 </div>
             </div>
+
+            {{-- CSS بسيط للمراحل الفرعية --}}
+            <style>
+                .timeline-item.sub-stage .timeline-content {
+                    padding-left: 2rem; /* مسافة للمراحل الفرعية */
+                    border-left: 2px dashed #ccc; /* خط فرعي */
+                    margin-bottom: 1rem;
+                }
+            </style>
+
+
 
 
             <!-- Activity Log -->
@@ -642,9 +696,11 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                 @csrf
                 @method('PUT')
                 <div id="timeline-stages">
-                    @foreach(\App\Models\OrderStage::orderBy('order_number')->get() as $index => $stage)
+                    {{-- جلب المراحل الرئيسية فقط --}}
+                    @foreach(\App\Models\OrderStage::whereNull('parent_id')->orderBy('order_number')->get() as $stage)
                         @php
                             $status = $order->stageStatuses->firstWhere('order_stage_id', $stage->id);
+                            $subStages = $stage->children()->orderBy('order_number')->get();
                         @endphp
                         <div class="card mb-2">
                             <div class="card-body row">
@@ -659,6 +715,29 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                     </div>
                                 </div>
                             </div>
+
+                            {{-- عرض المراحل الفرعية إن وجدت --}}
+                            @if($subStages->count())
+                                <div class="ms-4 mt-2">
+                                    @foreach($subStages as $sub)
+                                        @php
+                                            $subStatus = $order->stageStatuses->firstWhere('order_stage_id', $sub->id);
+                                        @endphp
+                                        <div class="row align-items-center mb-1">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control form-control-sm" value="{{ $sub->title_ar }}" disabled>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="stages[{{ $sub->id }}][completed]" class="form-check-input"
+                                                        {{ $subStatus && $subStatus->status == 'completed' ? 'checked' : '' }}>
+                                                    <label class="form-check-label">مكتملة</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -667,6 +746,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                     <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

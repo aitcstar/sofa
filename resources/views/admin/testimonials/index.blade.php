@@ -7,9 +7,9 @@
     <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">آراء العملاء</h1>
-        <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">
+       <!-- <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> إضافة توصية جديدة
-        </a>
+        </a>-->
     </div>
 
     <!-- Table Card -->
@@ -20,9 +20,10 @@
                     <thead class="table-dark text-center">
                         <tr>
                             <th>الاسم</th>
-                            <th>المكان</th>
+                           <!-- <th>المكان</th>-->
                             <th>التقييم</th>
-                            <th>الصورة</th>
+                            <th>الباكج</th>
+                            <th>الحاله</th>
                             <th width="180">الإجراءات</th>
                         </tr>
                     </thead>
@@ -30,7 +31,7 @@
                         @forelse($testimonials as $testimonial)
                         <tr class="text-center">
                             <td>{{ $testimonial->name }}</td>
-                            <td>{{ $testimonial->location }}</td>
+                            <!--<td>{{ $testimonial->location }}</td>-->
                             <td>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <span class="text-warning me-1">
@@ -45,6 +46,15 @@
                                     <span>({{ $testimonial->rating }})</span>
                                 </div>
                             </td>
+                            <td>{{ $testimonial->package->name_ar ?? '-' }}</td>
+                            <td>
+                                @if ($testimonial->status == "pending")
+                                    بانتظار الموافقه
+                                @else
+                                        تم الموافقه
+                                @endif
+                            </td>
+                             <!--
                             <td>
                                 @if($testimonial->image)
                                     <img src="{{ asset('storage/' . $testimonial->image) }}" width="60" height="60" class="rounded-circle object-fit-cover">
@@ -54,6 +64,7 @@
                                     </div>
                                 @endif
                             </td>
+                        -->
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
                                     <a href="{{ route('admin.testimonials.edit', $testimonial) }}" class="btn btn-sm btn-outline-primary">

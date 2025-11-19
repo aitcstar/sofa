@@ -499,4 +499,21 @@ return [
 'update' => 'update',
 'profile_updated_successfully' => 'profile updated successfully',
 
+
+// Review status
+'approved' => 'Approved',
+'pending' => 'Pending',
+'rejected' => 'Rejected',
+
+// General testimonial strings
+'testimonials' => 'Customer Reviews',
+'testimonials_desc' => 'See what our clients say about our services.',
+'no_testimonials_found' => 'No reviews found.',
+'your_reviews' => 'Your Reviews',
+'review_message' => 'Review Message',
+'review_rating' => 'Rating',
+'review_status' => 'Review Status',
+'delete_review' => 'Delete Review',
+'review_deleted_success' => 'Review deleted successfully.',
+'confirm_delete_review' => 'Are you sure you want to delete this review?',
 ];

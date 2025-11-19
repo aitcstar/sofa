@@ -476,6 +476,7 @@
             <p class="body-2 text-body mx-auto" style="max-width: 482px;">{{ __('site.testimonials_desc') }}</p>
         </div>
 
+
         <div id="testimonial-carousel-homepage" class="testimonial-carousel owl-carousel owl-theme">
             @foreach($testimonials as $testimonial)
                 <div class="testimonial-item card shadow-sm h-100 p-3">
@@ -484,11 +485,8 @@
                         {{ $testimonial->message }}
                     </p>
                     <div class="d-flex align-items-center gap-sm-4 mt-auto">
-                        <img src="{{ $testimonial->image ? asset('storage/' . $testimonial->image) : asset('assets/images/avatar/default.png') }}"
-                             class="imgprofile" alt="{{ $testimonial->name }}" />
                         <div class="cam">
                             <p class="mb-0 sub-heading-4 text-subheading">{{ $testimonial->name }}</p>
-                            <span class="text-body body-3">{{ $testimonial->location }}</span>
                         </div>
                         <div style="color: var(--system-yellow) !important">
                             {{ str_repeat('★', $testimonial->rating) }}
@@ -498,8 +496,52 @@
                 </div>
             @endforeach
         </div>
+
+        <div class="d-flex flex-column gap-sm-5" style="width: 55%;padding: 10px 217px;">
+            @if(auth()->check())
+                <form action="{{ app()->getLocale() == 'ar' ? route('packages.testimonialsstore') : route('packages.testimonialsstore.en') }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">
+                    @csrf
+
+                    <input type="hidden" name="package_id" value="{{ $package->id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
+
+                    <div class="mb-3">
+                        <label class="form-label">الاسم</label>
+                        <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">رسالتك</label>
+                        <textarea name="message" rows="3" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">التقييم</label>
+                        <select name="rating" class="form-control" required>
+                            <option value="5">★★★★★</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="1">★☆☆☆☆</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-custom-primary">إرسال التقييم</button>
+                </form>
+            @else
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-custom-primary" data-bs-toggle="modal" data-bs-target="#authModal">
+                        قم بتسجيل الدخول لإضافة تقييمك
+                    </button>
+                </div>
+            @endif
+        </div>
     </div>
 </section>
+
+
+
 
 <!-- DIVIDER -->
 <div class="container mb-4">
@@ -581,6 +623,8 @@
         border: none;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
+
+
 </style>
 @endpush
 
@@ -677,24 +721,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 $(document).ready(function () {
-    if ($("#testimonial-carousel-homepage").length > 0) {
-        $("#testimonial-carousel-homepage").owlCarousel({
+    let $carousel = $("#testimonial-carousel-homepage");
+    if ($carousel.length > 0) {
+
+        let totalItems = $carousel.find(".testimonial-item").length;
+
+        // اهم خطوة
+        let itemsToShow = totalItems >= 3 ? 3 : totalItems;
+
+        $carousel.owlCarousel({
             rtl: true,
-            loop: true,
+            loop: totalItems > 1,
             margin: 0,
-            stagePadding: 0,
             dots: true,
-            autoplay: true,
+            autoplay: totalItems > 1,
+            smartSpeed: 700,
             autoplayTimeout: 4000,
+
             responsive: {
                 0: { items: 1 },
-                576: { items: 1 },
-                768: { items: 2 },
-                992: { items: 3 },
-                1200: { items: 3 }
+                576: { items: Math.min(1, totalItems) },
+                768: { items: Math.min(2, totalItems) },
+                992: { items: itemsToShow },
+                1200: { items: itemsToShow }
             }
         });
     }
 });
+
+
 </script>
 @endpush

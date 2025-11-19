@@ -16,6 +16,15 @@ class TestimonialController extends Controller
         return view('admin.testimonials.index', compact('testimonials'));
     }
 
+    public function approve($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->update(['status' => 'approved']);
+
+        return back()->with('success', 'تمت الموافقة على التقييم');
+    }
+
+
     // فورم إضافة
     public function create()
     {
@@ -55,14 +64,13 @@ class TestimonialController extends Controller
     public function update(Request $request, Testimonial $testimonial)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'location' => 'nullable|string|max:255',
             'message'  => 'required|string',
             'rating'   => 'required|integer|min:1|max:5',
-            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'status'     => 'required|string|max:255',
         ]);
 
-        $data = $request->only(['name', 'location', 'message', 'rating']);
+
+        $data = $request->only(['message', 'rating','status']);
 
         if ($request->hasFile('image')) {
             // حذف الصورة القديمة

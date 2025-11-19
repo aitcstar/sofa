@@ -23,12 +23,12 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">الاسم <span class="text-danger">*</span></label>
-                        <input type="text" name="name" value="{{ old('name', $testimonial->name) }}" class="form-control" required>
+                        <input type="text"  value="{{  $testimonial->name }}" class="form-control" readonly>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">المكان</label>
-                        <input type="text" name="location" value="{{ old('location', $testimonial->location) }}" class="form-control">
+                        <label class="form-label">الباكج</label>
+                        <input type="text" value="{{ $testimonial->package->name_ar }}" class="form-control" readonly>
                     </div>
                 </div>
 
@@ -50,18 +50,13 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">الصورة</label>
-                        @if($testimonial->image)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $testimonial->image) }}" width="80" height="80" class="rounded-circle object-fit-cover border">
-                                <a href="{{ asset('storage/' . $testimonial->image) }}" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        @endif
-                        <input type="file" name="image" class="form-control" accept="image/*">
-                        <div class="form-text">اتركه فارغاً إذا كنت لا تريد تغيير الصورة</div>
+                        <label class="form-label">الحاله</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="approved" {{ $testimonial->status == 'approved' ? 'selected' : '' }}>تم الموافقه</option>
+                            <option value="pending" {{ $testimonial->status == 'pending' ? 'selected' : '' }}>بانتظار الموافقه</option>
+                        </select>
                     </div>
+
                 </div>
 
                 <div class="d-flex gap-2 mt-4">

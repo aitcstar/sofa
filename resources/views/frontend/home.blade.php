@@ -455,11 +455,8 @@
               {{ $testimonial->message }}
             </p>
             <div class="d-flex align-items-center gap-sm-4 mt-auto">
-              <img src="{{ $testimonial->image ? asset('storage/' . $testimonial->image) : asset('assets/images/avatar/default.png') }}"
-                   class="imgprofile" alt="{{ $testimonial->name }}" />
               <div class="cam">
                 <p class="mb-0 sub-heading-4 text-subheading">{{ $testimonial->name }}</p>
-                <span class="text-body body-3">{{ $testimonial->location }}</span>
               </div>
               <div style="color: var(--system-yellow) !important">
                 {{ str_repeat('★', $testimonial->rating) }}

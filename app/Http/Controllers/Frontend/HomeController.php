@@ -44,8 +44,8 @@ class HomeController extends Controller
 
 
         $featured_products = Product::active()->featured()->take(8)->get();
-        $testimonials = Testimonial::latest()->take(10)->get();
-
+        //$testimonials = Testimonial::latest()->take(10)->get();
+        $testimonials = Testimonial::where('status', 'approved')->latest()->take(10)->get();
 
         if (app()->getLocale() == 'ar') {
             $faqs = Faq::where('page', 'home')

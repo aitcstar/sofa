@@ -510,4 +510,22 @@ return [
 'contact_info' => 'للتواصل',
 'update' => 'تحديث',
 'profile_updated_successfully' => 'تم تحديث الملف الشخصي بنجاح!',
+
+
+
+'approved' => 'موافق عليه',
+    'pending' => 'قيد المراجعة',
+    'rejected' => 'مرفوض',
+
+    // نصوص عامة للتقييمات
+    'testimonials' => 'آراء العملاء',
+    'testimonials_desc' => 'تعرف على ما يقوله عملاؤنا عن خدماتنا.',
+    'no_testimonials_found' => 'لا توجد تقييمات حتى الآن.',
+    'your_reviews' => 'تقييماتك',
+    'review_message' => 'رسالة التقييم',
+    'review_rating' => 'التقييم',
+    'review_status' => 'حالة التقييم',
+    'delete_review' => 'حذف التقييم',
+    'review_deleted_success' => 'تم حذف التقييم بنجاح.',
+    'confirm_delete_review' => 'هل أنت متأكد من حذف التقييم؟',
 ];

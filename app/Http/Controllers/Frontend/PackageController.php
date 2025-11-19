@@ -234,7 +234,11 @@ public function show($slug)
     ])->where($slugColumn, $slug)->firstOrFail();
 
     // التقييمات
-    $testimonials = Testimonial::latest()->take(10)->get();
+    //$testimonials = Testimonial::latest()->take(10)->get();
+    $id = Package::where($slugColumn, $slug)->value('id');
+    $testimonials = Testimonial::where('status', 'approved')
+    ->where('package_id', $id)
+    ->get();
 
     // الأسئلة الشائعة
     $faqs = Faq::where('page', 'category')
@@ -350,6 +354,27 @@ public function filter(Request $request)
     return view('frontend.categories._section', compact('packages'));
 }
 
+public function testimonialsstore(Request $request)
+{
+    $request->validate([
+        'package_id' => 'required|exists:packages,id',
+        'name'       => 'required|string',
+        'message'    => 'required|string',
+        'rating'     => 'required|integer|min:1|max:5',
+    ]);
+
+    Testimonial::create([
+        'package_id' => $request->package_id,
+        'name'       => $request->name,
+        'message'    => $request->message,
+        'rating'     => $request->rating,
+        'location'   => auth()->user()->country->name ?? '-------',
+        'image'      => auth()->user()->image ?? null,
+        'status'     => 'pending',
+    ]);
+
+    return back()->with('success', 'تم إرسال تقييمك وسيظهر بعد الموافقة عليه');
+}
 
 
 

@@ -107,8 +107,11 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index');
     Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show');
+    Route::post('/package', [FrontendPackageController::class, 'testimonialsstore'])->name('packages.testimonialsstore');
+
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
     Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter');
+    Route::delete('/testimonial/{id}/delete', [ProfileController::class, 'destroy'])->name('user.testimonials.delete');
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
@@ -143,6 +146,9 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
     Route::get('/', [HomeController::class, 'index'])->name('home.en');
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index.en');
     Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show.en');
+    Route::post('/package', [FrontendPackageController::class, 'testimonialsstore'])->name('packages.testimonialsstore.en');
+    Route::delete('/testimonial/{id}/delete', [ProfileController::class, 'destroy'])->name('user.testimonials.delete.en');
+
     Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter.en');
 
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show.en');

@@ -78,7 +78,82 @@
                     <button type="submit" class="btn btn-custom-primary" style="min-width: 253px;">{{ __('site.update') }}</button>
                 </div>
             </form>
+
+
+            <hr>
+            <div class="profile-order-list">
+                <a class="body-1 text-primary"><strong>{{ __('site.testimonials') }}</strong></a><br><br>
+                @if($testimonials->count())
+                    @foreach($testimonials as $testimonial)
+                        <div class="profile-order-item d-flex flex-column gap-sm-4 p-3 shadow-sm rounded-4">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <!-- محتوى الريفيو -->
+                                <div class="d-flex flex-column gap-2" style="flex:1;">
+
+                                    <!-- اسم الباقة -->
+                                    <h4 class="sub-heading-4 mb-0">
+                                        {{ $testimonial->package->{'name_'.app()->getLocale()} }}
+                                    </h4>
+
+                                    <!-- الرسالة -->
+                                    <p class="body-4 mb-2 text-muted">
+                                        {{ $testimonial->message }}
+                                    </p>
+
+                                    <!-- التقييم -->
+                                    <div style="color: var(--system-yellow); font-size:18px;">
+                                        {{ str_repeat('★', $testimonial->rating) }}
+                                        {{ str_repeat('☆', 5 - $testimonial->rating) }}
+                                    </div>
+                                </div>
+
+                                <!-- الحالة -->
+                                <div>
+                                    <span class="badge
+                                        @if($testimonial->status == 'approved') bg-success
+                                        @elseif($testimonial->status == 'pending') bg-warning
+                                        @else bg-danger @endif
+                                    text-white px-3 py-2 rounded-pill">
+                                        {{ __('site.' . $testimonial->status) }}
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <!-- أزرار التحكم -->
+                            <div class="d-flex justify-content-end mt-2">
+
+                                @if($testimonial->status == "pending")
+                                    <!-- زر الحذف في كل الحالات -->
+                                    <form action="{{ app()->getLocale() == 'ar' ? route('user.testimonials.delete', $testimonial->id) : route('user.testimonials.delete.en', $testimonial->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف التقييم؟');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> حذف
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-center py-5">
+                        <p class="body-2 text-muted">{{ __('site.no_testimonials_found') }}</p>
+                    </div>
+                @endif
+            </div>
+
         </div>
+
+
+
+
+
+
     </div>
 </section>
 @endsection

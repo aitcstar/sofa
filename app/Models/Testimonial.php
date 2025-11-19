@@ -15,5 +15,13 @@ class Testimonial extends Model
         'message',
         'rating',
         'image',
+        'package_id',
+        'status',
+        'user_id',
     ];
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
 }

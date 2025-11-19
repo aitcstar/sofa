@@ -69,6 +69,16 @@ class GalleryDetailsController extends Controller
                 'alt_text' => $img->alt_text
             ])
             ->toArray() ?? [],
+            'other_unit_images' => $package?->packageUnitItems
+            ->pluck('unit.unitImages')   // جميع الصور من كل الوحدات المرتبطة بالباكدج
+            ->flatten()                  // دمجها في مصفوفة واحدة
+            ->slice(5)                   // تخطي أول 5 صور
+            ->take(6)                    // نحدد عدد الصور الجديدة اللي هنعرضها
+            ->map(fn($img) => [
+                'image_path' => $img->image_path,
+                'alt_text' => $img->alt_text
+            ])
+            ->toArray() ?? [],
 
 
 

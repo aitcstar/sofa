@@ -245,26 +245,69 @@
                 @endforeach
             </div>
 
-            <!-- images -->
             <div class="steps-implement-project-images">
                 <div class="steps-implement-project-image-grid">
-                    @foreach($pageData['project']['steps_images'] as $img)
-                        <div class="steps-implement-project-image-item {{ $img['column'] }}">
-                            <div class="steps-implement-project-image-sub-item {{ $img['size'] }}">
-                                <img src="{{ asset('storage/' .$img['image']) }}" alt="Gallery Image" />
-                                @if(isset($img['title_ar']))
-                                <div class="image-overlay">
-                                    <span class="sub-heading-2">{{ app()->getLocale() == 'ar' ? $img['title_ar'] : $img['title_en'] }}</span>
+                    @php
+                        // استخدام الصور المجهزة في الـController
+                        $unitImages = collect($pageData['project']['other_unit_images'])
+                            ->filter(fn($img) => isset($img['image_path'])) // تجاهل الصور الفارغة
+                            ->values(); // إعادة ترقيم المفاتيح
+                    @endphp
+
+                    @foreach($unitImages as $key => $img)
+                        @if(!$img) @continue @endif
+
+                        @if($key == 0)
+                            {{-- الصورة الأولى كبيرة --}}
+                            <div class="steps-implement-project-image-item">
+                                <div class="steps-implement-project-image-sub-item steps-implement-project-large-img">
+                                    <img src="{{ asset('storage/' . $img['image_path']) }}" alt="{{ $img['alt_text'] ?? 'Unit Image' }}" />
                                 </div>
-                                @endif
                             </div>
-                        </div>
+
+                        @elseif(in_array($key, [1,2]))
+                            {{-- الصور 2 و 3 صغيرة عمودي --}}
+                            @if($key == 1)
+                                <div class="steps-implement-project-image-item d-flex flex-column gap-sm-3">
+                            @endif
+                                <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                    <img src="{{ asset('storage/' . $img['image_path']) }}" alt="{{ $img['alt_text'] ?? 'Unit Image' }}" />
+                                </div>
+                            @if($key == 2)
+                                </div>
+                            @endif
+
+                        @elseif(in_array($key, [3,4]))
+                            {{-- الصور 4 و 5 صغيرة أفقي --}}
+                            @if($key == 3)
+                                <div class="steps-implement-project-image-item d-flex gap-sm-3">
+                            @endif
+                                <div class="steps-implement-project-image-sub-item steps-implement-project-small-img">
+                                    <img src="{{ asset('storage/' . $img['image_path']) }}" alt="{{ $img['alt_text'] ?? 'Unit Image' }}" />
+                                </div>
+                            @if($key == 4)
+                                </div>
+                            @endif
+
+                        @else
+                            {{-- بقية الصور كبيرة --}}
+                            <div class="steps-implement-project-image-item">
+                                <div class="steps-implement-project-image-sub-item steps-implement-project-large-img">
+                                    <img src="{{ asset('storage/' . $img['image_path']) }}" alt="{{ $img['alt_text'] ?? 'Unit Image' }}" />
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
+
+
+
+
         </div>
     </div>
 </section>
+
 
 <!-- ===== PACKAGE CONTAIN SECTION ===== -->
 

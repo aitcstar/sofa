@@ -497,7 +497,7 @@
             @endforeach
         </div>
 
-        <div class="d-flex flex-column gap-sm-5" style="width: 55%;padding: 10px 217px;">
+        <div class="d-flex flex-column gap-sm-5 mx-auto" style="width: 55%; max-width: 600px;">
             @if(auth()->check())
                 <form action="{{ app()->getLocale() == 'ar' ? route('packages.testimonialsstore') : route('packages.testimonialsstore.en') }}" method="POST" class="d-flex flex-column gap-sm-3" id="contactForm">
                     @csrf

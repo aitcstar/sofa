@@ -48,25 +48,19 @@
                 </p>
 
                 <div class="gallery-features d-flex gap-sm-4 mx-auto">
-                    <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
-                        <img src="{{ asset('assets/images/icons/user.svg') }}" alt="Delivery" />
-                        <p class="body-2 text-body mb-0" style="white-space: nowrap;">
-                            {{ app()->getLocale() == 'ar' ? $pageData['project']['type_ar'] : $pageData['project']['type_en'] }}
-                        </p>
-                    </div>
-                    <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
-                        <img src="{{ asset('assets/images/icons/book-mark.svg') }}" alt="Delivery" />
-                        <p class="body-2 text-body mb-0" style="white-space: nowrap;">
-                            {{ app()->getLocale() == 'ar' ? $pageData['project']['area_ar'] : $pageData['project']['area_en'] }}
-                        </p>
-                    </div>
-                    <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
-                        <img src="{{ asset('assets/images/icons/user.svg') }}" alt="Delivery" />
-                        <p class="body-2 text-body mb-0" style="white-space: nowrap;">
-                            {{ app()->getLocale() == 'ar' ? $pageData['project']['kitchen_ar'] : $pageData['project']['kitchen_en'] }}
-                        </p>
-                    </div>
+                    @foreach(collect($pageData['project']['packages'])
+                                ->unique(fn($unit) => app()->getLocale() == 'ar' ? $unit['title_ar'] : $unit['title_en'])
+                                ->take(4) as $unit)
+                        <div class="gallery-feature-item d-flex align-items-center gap-sm-6">
+                            <p class="body-2 text-body mb-0" style="white-space: nowrap;">
+                                {{ app()->getLocale() == 'ar' ? $unit['title_ar'] : $unit['title_en'] }}
+                            </p>
+                        </div>
+                    @endforeach
                 </div>
+
+
+
             </div>
 
             <!-- Images -->
@@ -115,7 +109,7 @@
 <style>
 .gallery-heading-images-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr; /* العمود الأول أكبر من العمودين الصغيرين */
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
 }
 
@@ -158,26 +152,68 @@
                 <h2 class="heading-h7 text-heading">
                     {{ app()->getLocale() == 'ar' ? 'تفاصيل الباكج' : 'Package Details' }}
                 </h2>
-                <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">
-                    {{ app()->getLocale() == 'ar'
-                        ? "الباكج المستخدم يحتوي على {$pageData['project']['pieces_count']} قطعة، ويشمل الأثاث الكامل لغرفة نوم واحدة، المعيشة، والمطبخ. تم اختيار {$pageData['project']['tv_design']} للتلفزيون وتصميم عمراني مفتوح لطاولة الطعام"
-                        : "The package contains {$pageData['project']['pieces_count']} pieces, including full furniture for one bedroom, living area, and kitchen. The TV design selected was {$pageData['project']['tv_design']} with an open architectural design for the dining table."
-                    }}
-                </p>
+                @php
+                // جمع أسماء الوحدات بدون تكرار
+                $unitNames = collect($pageData['project']['packages'])
+                    ->unique(fn($unit) => app()->getLocale() == 'ar' ? $unit['title_ar'] : $unit['title_en'])
+                    ->map(fn($unit) => app()->getLocale() == 'ar' ? $unit['title_ar'] : $unit['title_en'])
+                    ->implode(', ');
+
+                // جمع أسماء أنواع التصميم (مثلاً اسم العنصر)
+                $designNames = collect($pageData['project']['packages'])
+                    ->unique(fn($unit) => app()->getLocale() == 'ar' ? $unit['name_ar'] : $unit['name_en'])
+                    ->map(fn($unit) => app()->getLocale() == 'ar' ? $unit['name_ar'] : $unit['name_en'])
+                    ->implode(', ');
+            @endphp
+
+            <p class="caption-4 text-caption mb-0 mx-auto" style="max-width: 712px;">
+                {{ app()->getLocale() == 'ar'
+                    ? "الباكج المستخدم يحتوي على {$pageData['project']['pieces_count']} قطعة، ويشمل الوحدات التالية: {$unitNames}. تم اختيار تصميمات: {$designNames} للتلفزيون وطاولة الطعام."
+                    : "The package contains {$pageData['project']['pieces_count']} pieces, including the following units: {$unitNames}. Selected designs: {$designNames} for the TV and dining table."
+                }}
+            </p>
+
             </div>
 
-            <!-- Images -->
             <div class="gallery-details-images">
                 <div class="gallery-details-image-grid">
-                    @foreach($pageData['project']['details_images'] as $detail)
-                        <div class="gallery-details-image-item">
-                            <div class="gallery-details-image-sub-item">
-                                <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="Gallery Image" />
+                    @foreach($pageData['project']['details_images'] as $key => $detail)
+                        @if($key == 0)
+                            <div class="gallery-details-image-item">
+                                <div class="gallery-details-image-sub-item gallery-large-img">
+                                    <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
+                                    <div class="image-overlay">
+                                        <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @elseif($key == 1 || $key == 2)
+                            @if($key == 1)
+                                <div class="gallery-details-image-item d-flex gap-sm">
+                            @endif
+                                <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
+                                    <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
+                                    <div class="image-overlay">
+                                        <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
+                                    </div>
+                                </div>
+                            @if($key == 2)
+                                </div>
+                            @endif
+                        @else
+                            <div class="gallery-details-image-item">
+                                <div class="gallery-details-image-sub-item gallery-large-img">
+                                    <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
+                                    <div class="image-overlay">
+                                        <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
+
         </div>
     </div>
 </section>

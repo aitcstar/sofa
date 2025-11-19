@@ -56,6 +56,10 @@ public function packageUnitItems()
 {
     return $this->hasMany(PackageUnitItem::class);
 }
+public function unitImages()
+{
+    return $this->hasMany(UnitImage::class);
+}
 
 
 }

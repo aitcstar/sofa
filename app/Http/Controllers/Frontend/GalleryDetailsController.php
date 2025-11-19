@@ -59,9 +59,19 @@ class GalleryDetailsController extends Controller
                 'title_ar' => $step->title_ar ?? '',
                 'title_en' => $step->title_en ?? ''
             ])->toArray() ?? [],
-            'details_images' => $package?->images->map(fn($img) => [
-                'image_path' => $img->image_path
-            ])->toArray() ?? [],
+
+            'details_images' => $package?->packageUnitItems
+            ->pluck('unit.unitImages')   // جميع الصور من كل الوحدات المرتبطة بالباكدج
+            ->flatten()                  // دمجها في مصفوفة واحدة
+            ->take(5)                    // أخذ أول ٥ صور فقط
+            ->map(fn($img) => [
+                'image_path' => $img->image_path,
+                'alt_text' => $img->alt_text
+            ])
+            ->toArray() ?? [],
+
+
+
             'steps_images' => [],
             'packages' => $package?->packageUnitItems->map(fn($pui) => [
                 'unit_id' => $pui->unit->id,

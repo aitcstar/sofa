@@ -182,9 +182,9 @@
                             <div class="gallery-details-image-item">
                                 <div class="gallery-details-image-sub-item gallery-large-img">
                                     <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
-                                    <div class="image-overlay">
+                                    <!--<div class="image-overlay">
                                         <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         @elseif($key == 1 || $key == 2)
@@ -193,9 +193,9 @@
                             @endif
                                 <div class="gallery-details-image-sub-item gallery-small-img" style="flex: 0.5">
                                     <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
-                                    <div class="image-overlay">
+                                    <!--<div class="image-overlay">
                                         <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
-                                    </div>
+                                    </div>-->
                                 </div>
                             @if($key == 2)
                                 </div>
@@ -204,9 +204,9 @@
                             <div class="gallery-details-image-item">
                                 <div class="gallery-details-image-sub-item gallery-large-img">
                                     <img src="{{ asset('storage/' . $detail['image_path']) }}" alt="{{ $detail['alt_text'] ?? 'Gallery Image' }}" />
-                                    <div class="image-overlay">
+                                    <!--<div class="image-overlay">
                                         <span class="sub-heading-2">{{ $detail['alt_text'] ?? 'Gallery Image' }}</span>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         @endif

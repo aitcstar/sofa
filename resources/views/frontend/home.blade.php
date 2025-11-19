@@ -485,64 +485,70 @@
         </div>
 
         <!-- images -->
-        <div class="gallery-details-images">
-            <div class="gallery-details-image-grid d-flex gap-sm">
+        @php
+        // آخر 6 معارض مع الصورة الأساسية
+        $exhibitions = $exhibitions->take(6);
+    @endphp
 
-                @php
-                    $randomImages = $exhibitions->flatMap->images->shuffle()->take(5);
-                @endphp
+    <div class="gallery-details-images">
+        <div class="gallery-details-image-grid d-flex gap-sm">
 
-                {{-- العمود الأول --}}
-                <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
-                    @foreach($randomImages->take(2) as $image)
+            {{-- العمود الأول --}}
+            <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
+                @foreach($exhibitions->take(2) as $exhibition)
+                    @if($exhibition->primaryImage)
                         <div class="gallery-details-image-item">
                             <div class="gallery-details-image-sub-item gallery-large-img">
-                                <img src="{{ asset('storage/' . $image->image) }}"
-                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
+                                <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                     alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
                                 <div class="image-overlay">
                                     <span class="sub-heading-2">
-                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                {{-- العمود الثاني --}}
-                <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
-                    <div class="d-flex gap-sm">
-                        @foreach($randomImages->slice(2, 2) as $image)
-                            <div class="gallery-details-image-sub-item gallery-small-img" style="flex:0.5;">
-                                <img src="{{ asset('storage/' . $image->image) }}"
-                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
-                                <div class="image-overlay">
-                                    <span class="sub-heading-2">
-                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    @if($randomImages->count() > 4)
-                        @php $image = $randomImages[4]; @endphp
-                        <div class="gallery-details-image-item mt-sm">
-                            <div class="gallery-details-image-sub-item gallery-large-img">
-                                <img src="{{ asset('storage/' . $image->image) }}"
-                                     alt="{{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}">
-                                <div class="image-overlay">
-                                    <span class="sub-heading-2">
-                                        {{ app()->getLocale() === 'ar' ? $image->exhibition->name_ar : $image->exhibition->name_en }}
+                                        {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     @endif
+                @endforeach
+            </div>
+
+            {{-- العمود الثاني --}}
+            <div class="gallery-details-col d-flex flex-column gap-sm" style="flex:1;">
+                <div class="d-flex gap-sm">
+                    @foreach($exhibitions->slice(2, 2) as $exhibition)
+                        @if($exhibition->primaryImage)
+                            <div class="gallery-details-image-sub-item gallery-small-img" style="flex:0.5;">
+                                <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                     alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">
+                                        {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                    </span>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
 
+                @if($exhibitions->count() > 4 && $exhibitions[4]->primaryImage)
+                    @php $exhibition = $exhibitions[4]; @endphp
+                    <div class="gallery-details-image-item mt-sm">
+                        <div class="gallery-details-image-sub-item gallery-large-img">
+                            <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                 alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
+                            <div class="image-overlay">
+                                <span class="sub-heading-2">
+                                    {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
+
         </div>
+    </div>
+
 
 
         <!-- CTA Button -->

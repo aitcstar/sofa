@@ -68,7 +68,15 @@ class HomeController extends Controller
         $timelines = OrderTimelineSection::with('items')->first();
         $readyToFurnish = ReadyToFurnishSection::first();
 
-        $exhibitions = Exhibition::with(['images'])->where('is_active', 1)->get();
+        //$exhibitions = Exhibition::with(['images'])->where('is_active', 1)->get();
+
+        $exhibitions = Exhibition::with('primaryImage')
+        ->where('is_active', 1)
+        ->orderBy('created_at', 'desc') // آخر المعارض حسب التاريخ
+        ->take(6) // آخر 6
+        ->get();
+
+
         $questions = SurveyQuestion::with('options')->orderBy('order')->get();
         $section = SurveyQuestion::first();
         $countries = [

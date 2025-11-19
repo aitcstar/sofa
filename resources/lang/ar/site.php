@@ -528,4 +528,5 @@ return [
     'delete_review' => 'حذف التقييم',
     'review_deleted_success' => 'تم حذف التقييم بنجاح.',
     'confirm_delete_review' => 'هل أنت متأكد من حذف التقييم؟',
+    'phone_already_registered_login' => 'الجوال مسجل بالفعل',
 ];

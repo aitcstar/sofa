@@ -9,6 +9,7 @@ use App\Models\AboutPage;
 use App\Models\OrderStage;
 use App\Models\OrderLog;
 use App\Models\Invoice;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -149,6 +150,7 @@ class OrderController extends Controller
     }*/
 
 
+    /*
     public function store(Request $request, $id)
     {
         $user = auth()->user();
@@ -233,6 +235,121 @@ class OrderController extends Controller
 
 
     }
+*/
+
+
+public function store(Request $request, $id)
+{
+    //dd($id);
+    $package = Package::findOrFail($id);
+
+    $validated = $request->validate([
+        'phone' => 'required|string|max:20',
+        'country_code' => 'required|string|max:10',
+        'email' => 'nullable|email',
+        'role' => 'nullable',
+        'units_count' => 'required|integer|min:1',
+        'project_type' => 'required|string',
+        'current_stage' => 'required|string',
+        'has_interior_design' => 'required|boolean',
+        'needs_finishing_help' => 'required|boolean',
+        'needs_color_help' => 'required|boolean',
+        'client_type' => 'required|string|in:individual,company',
+        'commercial_register' => 'nullable|string|max:255',
+        'tax_number' => 'nullable|string|max:255',
+        'diagrams_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:4096',
+    ]);
+
+    $user = auth()->user();
+
+    // لو مش مسجل دخول
+    if (!$user) {
+        $existingUser = User::where('phone', $validated['phone'])
+            ->where('code', $validated['country_code'])
+            ->first();
+
+        if ($existingUser) {
+            // المستخدم مسجل بالفعل -> رسالة تطلب تسجيل الدخول
+            return redirect()->back()
+                ->withErrors(['phone' => __('site.phone_already_registered_login')])
+                ->withInput()
+                ->with('open_login_tab', true);
+        } else {
+            // المستخدم غير مسجل -> نسجل بياناته مؤقتًا ونعطيه OTP
+            $user = User::create([
+                'name' => $validated['name'] ?? 'عميل جديد',
+                'phone' => $validated['phone'],
+                'code' => $validated['country_code'],
+                'email' => $validated['email'],
+                'otpcode' => '12345',
+                'role' => 'customer',
+            ]);
+
+            // حفظ بيانات المستخدم في الجلسة لاستخدامها في OTP
+            session([
+                'otp_user_id' => $user->id,
+                'otp_from_order' => true,
+            ]);
+
+            // إعادة توجيه لفتح مودال OTP مباشرة
+            return redirect()->back()->with('show_otp_modal', true);
+        }
+    }
+
+    // لو مسجل دخول، نكمل إنشاء الطلب مباشرة
+    $baseAmount = $package->price * $validated['units_count'];
+    $taxAmount = $baseAmount * 0.15;
+    $totalAmount = $baseAmount + $taxAmount;
+
+    $diagramPath = null;
+    if ($request->hasFile('diagrams_file')) {
+        $diagramPath = $request->file('diagrams_file')->store('diagrams', 'public');
+    }
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'package_id' => $package->id,
+        'order_number' => 'ORD-' . strtoupper(uniqid()),
+        'name' => $user->name ?? 'عميل جديد',
+        'phone' => $validated['phone'],
+        'country_code' => $validated['country_code'],
+        'email' => $validated['email'] ?? $user->email,
+        'units_count' => $validated['units_count'],
+        'project_type' => $validated['project_type'],
+        'current_stage' => $validated['current_stage'],
+        'has_interior_design' => $validated['has_interior_design'],
+        'needs_finishing_help' => $validated['needs_finishing_help'],
+        'needs_color_help' => $validated['needs_color_help'],
+        'diagrams_path' => $diagramPath,
+        'client_type' => $validated['client_type'],
+        'commercial_register' => $validated['commercial_register'] ?? null,
+        'tax_number' => $validated['tax_number'] ?? null,
+        'base_amount' => $baseAmount,
+        'tax_amount' => $taxAmount,
+        'total_amount' => $totalAmount,
+        'status' => 'pending',
+        'payment_status' => 'unpaid',
+    ]);
+
+    // ربط المراحل بالطلب الجديد
+    $stages = OrderStage::orderBy('order_number')->get();
+    foreach ($stages as $stage) {
+        $order->stageStatuses()->create([
+            'order_stage_id' => $stage->id,
+            'status' => 'not_started',
+        ]);
+    }
+
+    OrderLog::create([
+        'order_id' => $order->id,
+        'user_id' => $user->id,
+        'action' => 'created',
+        'description' => 'تم إنشاء الطلب',
+    ]);
+
+    return redirect()->route('order.success', ['order_id' => $order->id])
+        ->with('success', __('site.order_submitted'));
+}
 
 
     public function success(Request $request, $order_id = null)

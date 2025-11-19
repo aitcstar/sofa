@@ -129,7 +129,7 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
 
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm');
-    Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store')->middleware('auth');
+    Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store');
     Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success')->middleware('auth');
     Route::get('/order/{order}', [FrontendOrderController::class, 'show'])->name('order.details')->middleware('auth');
     Route::get('/my-orders', [FrontendOrderController::class, 'myOrders'])->name('order.my')->middleware('auth');
@@ -167,7 +167,7 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
 
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm.en');
-    Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store.en')->middleware('auth');
+    Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store.en');
     Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success.en')->middleware('auth');
     Route::get('/order/{order}', [FrontendOrderController::class, 'show'])->name('order.details.en')->middleware('auth');
     Route::get('/my-orders', [FrontendOrderController::class, 'myOrders'])->name('order.my.en')->middleware('auth');

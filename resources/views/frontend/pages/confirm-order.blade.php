@@ -27,7 +27,6 @@
 
                 <form action="{{ app()->getLocale() == 'ar' ? route('order.store', $package->id) : route('order.store.en', $package->id) }}" method="POST" enctype="multipart/form-data" class="d-flex flex-column gap-sm-3 mt-4">
                     @csrf
-
                     <!-- نوع العميل (مخفي، يُحدَّث تلقائيًا) -->
                     <input type="hidden" name="client_type" id="clientType" value="individual">
 

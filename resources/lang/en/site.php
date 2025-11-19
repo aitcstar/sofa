@@ -516,4 +516,6 @@ return [
 'delete_review' => 'Delete Review',
 'review_deleted_success' => 'Review deleted successfully.',
 'confirm_delete_review' => 'Are you sure you want to delete this review?',
+'phone_already_registered_login' => 'phone already registered',
+
 ];

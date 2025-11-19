@@ -24,6 +24,7 @@ class User extends Authenticatable
         'phone',
         'code',
         'otpcode',
+        'role',
        // 'is_active',
     ];
 

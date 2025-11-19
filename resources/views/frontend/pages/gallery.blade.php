@@ -146,7 +146,7 @@
                                 <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
                                     ? route('gallery.details', $exhibition->id)
                                     : route('gallery.details.en', $exhibition->id) }}">
-                                    {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                    {{ app()->getLocale() === 'ar' ? $exhibition->package->name_ar : $exhibition->package->name_en }}
                                 </a>
 
                                 {{--<a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'

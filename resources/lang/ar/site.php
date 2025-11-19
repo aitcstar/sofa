@@ -520,7 +520,7 @@ return [
     // نصوص عامة للتقييمات
     'testimonials' => 'آراء العملاء',
     'testimonials_desc' => 'تعرف على ما يقوله عملاؤنا عن خدماتنا.',
-    'no_testimonials_found' => 'لا توجد تقييمات حتى الآن.',
+    'no_testimonials_found' => 'لا توجد آراء حتى الآن.',
     'your_reviews' => 'تقييماتك',
     'review_message' => 'رسالة التقييم',
     'review_rating' => 'التقييم',

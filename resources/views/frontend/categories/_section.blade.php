@@ -8,7 +8,7 @@
             data-colors="{{ $package->packageUnitItems->pluck('item.background_color')->filter()->unique()->implode(',') }}"
             data-unit-types="{{ $package->packageUnitItems->pluck('unit.type')->unique()->implode(',') }}">
 
-            <div class="room-item">
+            <div class="room-item" style="height: 90%;">
                 <!-- image & widget -->
                 <div class="image">
                     @if($package->image)

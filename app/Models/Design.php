@@ -12,6 +12,7 @@ class Design extends Model
     protected $fillable = [
         'name_ar',
         'name_en',
+        'package_id'
     ];
 
     // العلاقات
@@ -25,5 +26,10 @@ class Design extends Model
     public function items()
     {
         return $this->hasMany(Item::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
     }
 }

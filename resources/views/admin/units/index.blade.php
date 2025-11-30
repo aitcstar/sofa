@@ -22,6 +22,8 @@
                             <th>الاسم (AR)</th>
                             <th>الاسم (EN)</th>
                             <th>النوع</th>
+                            <th>الباكج</th>
+
                             <th width="180">الإجراءات</th>
                         </tr>
                     </thead>
@@ -41,6 +43,13 @@
                                 حمام
                                 @elseif ($unit->type == 'external')
                                 الملحقات الخارجية والإضافية
+                                @endif
+                            </td>
+                            <td>
+                                @if($unit->package)
+                                    {{ $unit->package->name_ar }}
+                                @else
+                                    بدون باكج
                                 @endif
                             </td>
                             <td>

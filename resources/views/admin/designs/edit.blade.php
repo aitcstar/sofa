@@ -30,6 +30,21 @@
             </div>
         </div>
 
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label>الباكج</label>
+                <select name="package_id" class="form-select">
+                    @foreach($packages as $package)
+                        <option value="{{ $package->id }}"
+                            {{ $design->package_id == $package->id ? 'selected' : '' }}>
+                            {{ $package->name_ar }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i> تحديث التصميم

@@ -19,6 +19,8 @@
                         <tr>
                             <th>الاسم (AR)</th>
                             <th>الاسم (EN)</th>
+                            <th>الباكج</th>
+
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -27,6 +29,14 @@
                         <tr>
                             <td>{{ $design->name_ar }} </td>
                             <td>{{ $design->name_en }} </td>
+                            <td>
+                                @if($design->package)
+                                    {{ $design->package->name_ar }}
+                                @else
+                                    بدون باكج
+                                @endif
+                            </td>
+
 
                             <td>
                                 <div class="d-flex justify-content-center gap-2">

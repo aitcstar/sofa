@@ -4,19 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Design;
+use App\Models\Package;
 use Illuminate\Http\Request;
 
 class DesignController extends Controller
 {
     public function index()
     {
-        $designs = Design::all();
+        $designs = Design::with('package')->get();
         return view('admin.designs.index', compact('designs'));
     }
 
     public function create()
     {
-        return view('admin.designs.create');
+        $packages = Package::all();
+
+        return view('admin.designs.create', compact('packages'));
     }
 
     public function store(Request $request)
@@ -24,6 +27,7 @@ class DesignController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
+            'package_id' => 'required|string|max:255',
         ]);
 
 
@@ -36,7 +40,9 @@ class DesignController extends Controller
 
     public function edit(Design $design)
     {
-        return view('admin.designs.edit', compact('design'));
+        $packages = Package::all();
+
+        return view('admin.designs.edit', compact('design','packages'));
     }
 
     public function update(Request $request, Design $design)
@@ -44,6 +50,7 @@ class DesignController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
+            'package_id' => 'required|exists:packages,id',
         ]);
 
         $data = $request->all();

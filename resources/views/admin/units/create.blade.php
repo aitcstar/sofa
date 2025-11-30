@@ -47,6 +47,17 @@
                     </select>
                 </div>
 
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label>الباكج</label>
+                        <select name="package_id" class="form-select">
+                            @foreach($packages as $package)
+                                <option value="{{ $package->id }}">{{ $package->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label>الوصف (AR)</label>
                     <textarea name="description_ar" class="form-control">{{ $unit->description_ar ?? old('description_ar') }}</textarea>

@@ -8,20 +8,23 @@ use App\Models\Unit;
 use App\Models\UnitImage;
 use App\Models\PackageUnitItem;
 use App\Models\Design;
+use App\Models\Package;
 class UnitController extends Controller
 {
 
     public function index()
     {
 
-        $units = Unit::whereNull('package_id')->get();
+        $units = Unit::with('package')->get();
         return view('admin.units.index', compact('units'));
     }
 
     public function create()
     {
         $designs = Design::all(); // كل التصميمات
-        return view('admin.units.create', compact('designs'));
+        $packages = Package::all();
+
+        return view('admin.units.create', compact('designs','packages'));
     }
 
     public function store(Request $request)
@@ -78,9 +81,10 @@ class UnitController extends Controller
 
         $designImages = $unit->images->whereNotNull('design_id');
         $unitImages = $unit->images->whereNull('design_id');
+        $packages = Package::all();
 
 
-        return view('admin.units.edit', compact('unit', 'images','selectedDesigns','designs','designImages','unitImages'));
+        return view('admin.units.edit', compact('unit', 'images','selectedDesigns','designs','designImages','unitImages','packages'));
     }
 
     public function update(Request $request, Unit $unit)
@@ -91,6 +95,8 @@ class UnitController extends Controller
             'type' => 'required|string|max:50',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'design_ids' => 'array',
+            'package_id' => 'required|exists:packages,id',
+
         ]);
 
         $unit->update($request->all());

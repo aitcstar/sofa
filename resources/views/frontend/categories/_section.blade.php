@@ -141,10 +141,16 @@
 
                 <!-- Actions Buttons -->
                 <div class="actions d-flex gap-sm-2">
-                    <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
+                    <a href="#" class="btn btn-custom-primary">
+                        <p class="text-nowrap mb-0">{{ __('site.addtocart') }}</p>
+                           <i class="fas fa-shopping-cart" style="font-size: 20px"></i>
+                       </a>
+
+                    <!--   <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
                         <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
                         <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                    </a>
+                    </a>-->
+
                     <a href="{{ app()->getLocale() == 'ar'
                         ? route('packages.show', ['slug' => $package->slug_ar ?? $package->id])
                         : route('packages.show.en', ['slug' => $package->slug_en ?? $package->id]) }}"

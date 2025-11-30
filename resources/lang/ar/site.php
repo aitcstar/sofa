@@ -19,7 +19,7 @@ return [
     'category' => 'التصنيفات',
     'about'    => 'من نحن',
     'faq' => 'الأسئلة الشائعة',
-
+'addtocart' => "اضف الى السلة",
     'my_account' => 'حسابي',
     'my_orders' => 'طلباتي',
     'dashboard' => 'لوحة التحكم',

@@ -21,6 +21,7 @@ return [
     'dashboard' => 'Dashboard',
     'logout' => 'Logout',
     'help' => 'Help Request',
+    'addtocart' => "Add To Cart",
 
     'browse_packages' => 'Browse Packages',
     'order_now' => 'Order Now',

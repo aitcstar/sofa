@@ -164,9 +164,20 @@ border: none !important;
               </li>
             </ul>
           </div>
+
         @else
           <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User" data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
         @endauth
+
+        <div class="position-relative">
+            <a href="/pages/cart.html" class="cart-link">
+                <i class="fas fa-shopping-cart" style="font-size: 20px;color:#fff"></i>
+                <!--<span
+                    class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary top-6 start-100">
+                    2
+                </span>-->
+            </a>
+        </div>
         <!-- Language Dropdown -->
         <div class="dropdown language-dropdown">
             <!-- Button -->

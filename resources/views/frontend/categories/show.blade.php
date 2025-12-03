@@ -45,7 +45,7 @@
                     $groupedItems = $package->packageUnitItems->groupBy('unit_id');
                 @endphp
 
-@foreach($groupedItems->take(5) as $unitId => $items)
+@foreach($groupedItems as $unitId => $items)
 @php
     $unit = $items->first()->unit;
 @endphp

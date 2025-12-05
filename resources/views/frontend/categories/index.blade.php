@@ -205,7 +205,13 @@
                             </div>
 
                             <div class="actions d-flex gap-sm-2">
-                                <a href="#" class="btn btn-custom-primary">
+                                <a href="#" class="btn btn-custom-primary add-to-cart-btn"
+                                   data-package-id="{{ $package->id }}"
+                                   data-package-name="{{ $package->{'name_'.app()->getLocale()} }}"
+                                   data-package-price="{{ $package->price }}"
+                                   data-package-image="{{ $package->image ? asset('storage/' . $package->image) : asset('assets/images/category/category-01.jpg') }}"
+                                   data-package-description="{{ $package->{'description_'.app()->getLocale()} }}"
+                                   data-package-pieces="{{ $package->packageUnitItems->count() }}">
                                  <p class="text-nowrap mb-0">{{ __('site.addtocart') }}</p>
                                     <i class="fas fa-shopping-cart" style="font-size: 20px"></i>
                                 </a>

@@ -36,21 +36,7 @@ class Coupon extends Model
     ];
 
     protected $casts = [
-        'value' => 'decimal:2',
-        'minimum_amount' => 'decimal:2',
-        'maximum_discount' => 'decimal:2',
-        'usage_limit' => 'integer',
-        'usage_limit_per_customer' => 'integer',
-        'usage_limit_per_user' => 'integer',
-        'used_count' => 'integer',
-        'starts_at' => 'datetime',
         'expires_at' => 'datetime',
-        'is_active' => 'boolean',
-        'applicable_to' => 'string',
-        'applicable_ids' => 'array',
-        'applicable_packages' => 'array',
-        'applicable_customers' => 'array',
-        'metadata' => 'array'
     ];
 
 

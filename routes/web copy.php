@@ -81,7 +81,6 @@ use App\Http\Controllers\Frontend\ProfileController;
 
 use App\Http\Controllers\Frontend\Auth\AuthController;
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Auth;
@@ -110,7 +109,6 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show');
     Route::post('/package', [FrontendPackageController::class, 'testimonialsstore'])->name('packages.testimonialsstore');
 
-
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
     Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter');
     Route::delete('/testimonial/{id}/delete', [ProfileController::class, 'destroy'])->name('user.testimonials.delete');
@@ -127,8 +125,8 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/help', [FrontendHelpController::class, 'index'])->name('help.index');
     Route::post('/help', [FrontendHelpController::class, 'submit'])->name('help.submit');
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm');
     Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store');
@@ -153,7 +151,6 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
 
     Route::post('/packages/filter', [FrontendPackageController::class, 'filter'])->name('packages.filter.en');
 
-
     Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show.en');
     Route::get('/about', [AboutController::class, 'index'])->name('about.en');
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index.en');
@@ -166,7 +163,7 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
     Route::get('/help', [FrontendHelpController::class, 'index'])->name('help.index.en');
     Route::post('/help', [FrontendHelpController::class, 'submit'])->name('help.submit.en');
     Route::get('/faq', [FaqController::class, 'index'])->name('faq.en');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index.en');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.en');
 
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm.en');
@@ -178,19 +175,6 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index.en')->middleware('auth');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update.en')->middleware('auth');
-});
-
-// ==================== Cart Routes ====================
-Route::middleware("auth")->group(function () {
-    Route::post("/cart/add", [CartController::class, "add"])->name("cart.add");
-    Route::put("/cart/{cart}", [CartController::class, "update"])->name("cart.update");
-    Route::delete("/cart/{cart}", [CartController::class, "remove"])->name("cart.remove");
-});
-
-// ==================== Order Routes ====================
-Route::middleware("auth")->group(function () {
-    Route::post("/orders", [OrderController::class, "store"])->name("orders.store");
-    Route::get("/orders/{order}", [OrderController::class, "show"])->name("orders.show");
 });
 
 

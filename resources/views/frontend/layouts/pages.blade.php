@@ -171,14 +171,18 @@ text-align: left;
                 <img src="{{ asset('assets/images/icons/user.svg') }}" alt="User"
                     data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
                 @endauth
-                <div class="position-relative">
-                    <a href="/pages/cart.html" class="cart-link">
+                <div class="position-relative cart-container">
+                    <a href="#" class="cart-link">
                         <i class="fas fa-shopping-cart" style="font-size: 20px"></i>
-                        <!--<span
-                            class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary top-6 start-100">
-                            2
-                        </span>-->
+                        <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
+                            0
+                        </span>
                     </a>
+                    <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
+                        <div class="cart-dropdown-content">
+                            <p class="text-center p-3">السلة فارغة</p>
+                        </div>
+                    </div>
                 </div>
                 <!-- Language Dropdown -->
                 <div class="dropdown language-dropdown">
@@ -789,6 +793,130 @@ otpInputs.forEach((input, index) => {
 
 
 </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  class ShoppingCart {
+      constructor() {
+          this.cart = this.loadCart();
+          this.updateCartUI();
+      }
+      loadCart() {
+          const cartData = localStorage.getItem('shoppingCart');
+          return cartData ? JSON.parse(cartData) : [];
+      }
+      saveCart() {
+          localStorage.setItem('shoppingCart', JSON.stringify(this.cart));
+      }
+      addToCart(packageData) {
+          const existingIndex = this.cart.findIndex(item => item.id === packageData.id);
+          if (existingIndex > -1) {
+              this.cart[existingIndex].quantity += 1;
+          } else {
+              this.cart.push({...packageData, quantity: 1});
+          }
+          this.saveCart();
+          this.updateCartUI();
+          this.showNotification(packageData.name);
+      }
+      removeFromCart(packageId) {
+          this.cart = this.cart.filter(item => item.id !== packageId);
+          this.saveCart();
+          this.updateCartUI();
+      }
+      getTotalItems() {
+          return this.cart.reduce((total, item) => total + item.quantity, 0);
+      }
+      getTotalPrice() {
+          return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      }
+      updateCartUI() {
+          const totalItems = this.getTotalItems();
+          const cartBadge = document.querySelector('.cart-badge');
+          if (cartBadge) {
+              cartBadge.textContent = totalItems;
+              cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+          }
+          this.updateCartDropdown();
+      }
+      updateCartDropdown() {
+          const cartDropdown = document.querySelector('.cart-dropdown-content');
+          if (!cartDropdown) return;
+
+          if (this.cart.length === 0) {
+              cartDropdown.innerHTML = '<p class="text-center p-3" style="color: #666;">السلة فارغة</p>';
+              return;
+          }
+
+          let html = '<div class="cart-items" style="max-height: 400px; overflow-y: auto;">';
+          this.cart.forEach(item => {
+              html += `
+                  <div class="cart-item d-flex gap-2 p-2 border-bottom" style="color: #333;">
+                      <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                      <div class="flex-grow-1">
+                          <h6 class="mb-1" style="font-size: 14px;">${item.name}</h6>
+                          <p class="mb-1 text-muted small">الكمية: ${item.quantity}</p>
+                          <p class="mb-0 fw-bold" style="color: var(--secondary);">${this.formatPrice(item.price * item.quantity)}</p>
+                      </div>
+                      <button class="btn btn-sm btn-danger remove-from-cart" data-id="${item.id}" style="height: fit-content;">
+                          <i class="fas fa-trash"></i>
+                      </button>
+                  </div>
+              `;
+          });
+          html += '</div>';
+          html += `
+              <div class="cart-total p-3 border-top">
+                  <div class="d-flex justify-content-between mb-2">
+                      <strong style="color: #333;">الإجمالي:</strong>
+                      <strong style="color: var(--secondary);">${this.formatPrice(this.getTotalPrice())}</strong>
+                  </div>
+                  <a href="/cart" class="btn btn-custom-primary w-100">عرض السلة</a>
+              </div>
+          `;
+
+          cartDropdown.innerHTML = html;
+
+          cartDropdown.querySelectorAll('.remove-from-cart').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                  const id = parseInt(e.currentTarget.dataset.id);
+                  this.removeFromCart(id);
+              });
+          });
+      }
+      formatPrice(price) {
+          return new Intl.NumberFormat('ar-SA', {minimumFractionDigits: 0}).format(price) + ' ريال';
+      }
+      showNotification(packageName) {
+          const notification = document.createElement('div');
+          notification.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;"><i class="fas fa-check-circle me-2"></i>تم إضافة "${packageName}" إلى السلة<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+          document.body.appendChild(notification);
+          setTimeout(() => notification.remove(), 3000);
+      }
+  }
+  const cart = new ShoppingCart();
+  function attachCartButtons() {
+      document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+          button.addEventListener('click', function(e) {
+              e.preventDefault();
+              const packageData = {id: parseInt(this.dataset.packageId), name: this.dataset.packageName, price: parseFloat(this.dataset.packagePrice), image: this.dataset.packageImage, description: this.dataset.packageDescription || '', pieces: parseInt(this.dataset.packagePieces) || 0};
+              cart.addToCart(packageData);
+          });
+      });
+  }
+  attachCartButtons();
+  const cartLink = document.querySelector('.cart-link');
+  const cartDropdown = document.querySelector('.cart-dropdown');
+  if (cartLink && cartDropdown) {
+      cartLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block';
+      });
+      document.addEventListener('click', function(e) {
+          if (!e.target.closest('.cart-container')) cartDropdown.style.display = 'none';
+      });
+  }
+  });
+  </script>
   @stack('scripts')
 </body>
 </html>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
-class OrderController extends Controller
+class old_OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -168,7 +168,7 @@ class OrderController extends Controller
                                 ->where('id', '!=', $order->id)
                                 ->where('created_at', '>=', now()->subDays(30))
                                 ->first();
-                
+
                 if ($original) {
                     $order->markAsDuplicate($original->id);
                 }
@@ -201,7 +201,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['user', 'package', 'assignedEmployee', 'logs.user', 'invoices', 'payments']);
-        
+
         $timeline_steps = $order->getTimelineSteps();
         $employees = User::where('role', 'employee')->get();
 
@@ -307,13 +307,13 @@ class OrderController extends Controller
         if ($request->notes) {
             $description .= " - ملاحظات: {$request->notes}";
         }
-        
-        $order->logActivity('status_changed', $description, auth()->id(), 
-                          ['status' => $old_status], 
+
+        $order->logActivity('status_changed', $description, auth()->id(),
+                          ['status' => $old_status],
                           ['status' => $request->status]);
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'تم تحديث حالة الطلب بنجاح',
             'status_text' => $order->status_text,
             'status_color' => $order->status_color
@@ -342,7 +342,7 @@ class OrderController extends Controller
         $order->logActivity('timeline_updated', "تم تحديث مرحلة {$step_name} إلى {$request->status}", auth()->id());
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'تم تحديث الجدول الزمني بنجاح'
         ]);
     }
@@ -366,17 +366,17 @@ class OrderController extends Controller
         $order->save();
 
         $new_employee = User::find($request->employee_id);
-        
+
         // تسجيل النشاط
         $description = "تم تعيين الموظف {$new_employee->name} للطلب";
         if ($old_employee) {
             $description = "تم تغيير الموظف المعين من {$old_employee->name} إلى {$new_employee->name}";
         }
-        
+
         $order->logActivity('assigned', $description, auth()->id());
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'تم تعيين الموظف بنجاح',
             'employee_name' => $new_employee->name
         ]);
@@ -397,7 +397,7 @@ class OrderController extends Controller
 
         $current_notes = $order->internal_notes ?? '';
         $new_note = "[" . now()->format('Y-m-d H:i') . " - " . auth()->user()->name . "] " . $request->note;
-        
+
         $order->internal_notes = $current_notes . "\n" . $new_note;
         $order->last_activity_at = now();
         $order->save();
@@ -406,7 +406,7 @@ class OrderController extends Controller
         $order->logActivity('note_added', 'تم إضافة ملاحظة داخلية', auth()->id());
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'تم إضافة الملاحظة بنجاح'
         ]);
     }
@@ -417,14 +417,14 @@ class OrderController extends Controller
     public function export(Request $request)
     {
         $format = $request->get('format', 'excel');
-        
+
         // تطبيق نفس الفلاتر المستخدمة في الفهرس
         $query = Order::with(['user', 'package', 'assignedEmployee']);
-        
+
         // ... تطبيق الفلاتر ...
-        
+
         $orders = $query->get();
-        
+
         if ($format === 'pdf') {
             return $this->exportToPdf($orders);
         } else {
@@ -439,7 +439,7 @@ class OrderController extends Controller
     {
         // تسجيل النشاط قبل الحذف
         $order->logActivity('deleted', 'تم حذف الطلب', auth()->id());
-        
+
         $order->delete();
 
         return redirect()->route('admin.orders.index')
@@ -471,30 +471,30 @@ class OrderController extends Controller
                     $order->delete();
                     $count++;
                     break;
-                    
+
                 case 'update_status':
                     if ($request->filled('status')) {
                         $old_status = $order->status;
                         $order->status = $request->status;
                         $order->last_activity_at = now();
                         $order->save();
-                        
-                        $order->logActivity('status_changed', 
-                                          "تم تغيير حالة الطلب من {$old_status} إلى {$request->status} (عملية جماعية)", 
+
+                        $order->logActivity('status_changed',
+                                          "تم تغيير حالة الطلب من {$old_status} إلى {$request->status} (عملية جماعية)",
                                           auth()->id());
                         $count++;
                     }
                     break;
-                    
+
                 case 'assign_employee':
                     if ($request->filled('employee_id')) {
                         $order->assigned_to = $request->employee_id;
                         $order->last_activity_at = now();
                         $order->save();
-                        
+
                         $employee = User::find($request->employee_id);
-                        $order->logActivity('assigned', 
-                                          "تم تعيين الموظف {$employee->name} للطلب (عملية جماعية)", 
+                        $order->logActivity('assigned',
+                                          "تم تعيين الموظف {$employee->name} للطلب (عملية جماعية)",
                                           auth()->id());
                         $count++;
                     }
@@ -503,7 +503,7 @@ class OrderController extends Controller
         }
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => "تم تنفيذ العملية على {$count} طلب بنجاح"
         ]);
     }
@@ -514,7 +514,7 @@ class OrderController extends Controller
         $year = date('Y');
         $lastOrder = Order::whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $nextNumber = $lastOrder ? ($lastOrder->id + 1) : 1;
-        
+
         return 'ORD-' . $year . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 
@@ -541,7 +541,7 @@ class OrderController extends Controller
         $year = date('Y');
         $lastInvoice = Invoice::whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $nextNumber = $lastInvoice ? ($lastInvoice->id + 1) : 1;
-        
+
         return 'INV-' . $year . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 

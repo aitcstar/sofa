@@ -122,8 +122,14 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                         <div class="col-md-6">
                             <table class="table table-borderless">
                                 <tr>
-                                    <td class="text-muted" width="40%"><i class="fas fa-cube me-2"></i>الباكج:</td>
-                                    <td><strong>{{ $order->package->name_ar ?? '-' }}</strong></td>
+                                    <td class="text-muted" width="40%"><i class="fas fa-cube me-2"></i>الباكجات:</td>
+                                    <td>
+                                        @forelse($order->packages as $package)
+                                            <strong>- {{ $package->name_ar ?? $package->name ?? '-' }}</strong><br>
+                                        @empty
+                                            -
+                                        @endforelse
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="text-muted"><i class="fas fa-home me-2"></i>عدد الوحدات:</td>
@@ -189,22 +195,38 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                         </div>
                     @endif
 
-                    <!-- الوحدات والعناصر -->
+                    <!-- الباكجات والوحدات والعناصر -->
                     <div class="mt-4">
-                        <h6>الوحدات والعناصر:</h6>
-                        @foreach($order->package->packageUnitItems->groupBy('unit_id') as $unitId => $items)
-                            @php $unit = $items->first()->unit; @endphp
+                        <h6>الباكجات والوحدات:</h6>
+                        @forelse($order->packages as $package)
                             <div class="mb-3">
-                                <strong>{{ $unit->name_ar }}</strong>
-                                <ul>
-                                    @foreach($items as $item)
-                                        <li>{{ $item->item->item_name_ar }} ({{ $item->item->quantity }}) - لون: {{ $item->item->color_ar }}</li>
+                                <strong>{{ $package->name_ar ?? $package->name ?? '-' }}</strong>
+
+                                @if($package->packageUnitItems->count() > 0)
+                                    @foreach($package->packageUnitItems->groupBy('unit_id') as $unitId => $items)
+                                        @php $unit = $items->first()->unit; @endphp
+                                        <div class="ms-3 mt-2">
+                                            <strong>{{ $unit->name_ar ?? $unit->name ?? '-' }}</strong>
+                                            <ul>
+                                                @foreach($items as $item)
+                                                    <li>
+                                                        {{ $item->item->item_name_ar ?? $item->item->name ?? '-' }}
+                                                        ({{ $item->item->quantity ?? '-' }}) - لون: {{ $item->item->color_ar ?? '-' }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     @endforeach
-                                </ul>
+                                @else
+                                    <div class="ms-3 text-muted">لا توجد وحدات لهذا الباكج</div>
+                                @endif
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-muted">لا توجد باكجات مرتبطة بالطلب</div>
+                        @endforelse
                     </div>
                 </div>
+
             </div>
 
 

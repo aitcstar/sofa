@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\DesignController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\OrderController;
+//use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SurveyQuestionController;

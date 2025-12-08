@@ -128,11 +128,18 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::post('/help', [FrontendHelpController::class, 'submit'])->name('help.submit');
     Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
+    //Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.applyCoupon');
+    Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
+    Route::get('/order/success/{order}', [CartController::class, 'orderSuccess'])->name('order.success')->middleware('auth');
+
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm');
     Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store');
-    Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success')->middleware('auth');
+   // Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success')->middleware('auth');
     Route::get('/order/{order}', [FrontendOrderController::class, 'show'])->name('order.details')->middleware('auth');
     Route::get('/my-orders', [FrontendOrderController::class, 'myOrders'])->name('order.my')->middleware('auth');
     Route::get('/order/{order}/invoice', [FrontendOrderController::class, 'showInvoice'])->name('order.invoice')->middleware('auth');
@@ -166,12 +173,17 @@ Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ 
     Route::get('/help', [FrontendHelpController::class, 'index'])->name('help.index.en');
     Route::post('/help', [FrontendHelpController::class, 'submit'])->name('help.submit.en');
     Route::get('/faq', [FaqController::class, 'index'])->name('faq.en');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index.en');
 
+   // Route::get('/cart', [CartController::class, 'index'])->name('cart.index.en');
+   Route::get('/cart', [CartController::class, 'index'])->name('cart.index.en');
+   Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout.en');
+   Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.applyCoupon.en');
+   Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder.en');
+   Route::get('/order/success/{order}', [CartController::class, 'orderSuccess'])->name('order.success.en')->middleware('auth');
 
     Route::get('/confirm/{id}', [FrontendOrderController::class, 'confirm'])->name('order.confirm.en');
     Route::post('/store/{id}', [FrontendOrderController::class, 'store'])->name('order.store.en');
-    Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success.en')->middleware('auth');
+    //Route::get('/success/{order_id?}', [FrontendOrderController::class, 'success'])->name('order.success.en')->middleware('auth');
     Route::get('/order/{order}', [FrontendOrderController::class, 'show'])->name('order.details.en')->middleware('auth');
     Route::get('/my-orders', [FrontendOrderController::class, 'myOrders'])->name('order.my.en')->middleware('auth');
     Route::get('/order/{order}/invoice', [FrontendOrderController::class, 'showInvoice'])->name('order.invoice.en')->middleware('auth');

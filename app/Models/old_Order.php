@@ -385,18 +385,17 @@ class Order extends Model
     parent::boot();
 
     static::creating(function ($order) {
-        // لا تعيد حساب total_amount إذا كان موجود بالفعل (من CartController)
-        if (!$order->total_amount && $order->package_id) {
+        if ($order->package_id) {
             $package = \App\Models\Package::find($order->package_id);
 
             if ($package) {
                 $basePrice = $package->price;
-                $taxRate = config('app.tax_rate', 0.15);
+                $taxRate = config('app.tax_rate', 0.15); // 15% ضريبة افتراضيًا
                 $taxAmount = $basePrice * $taxRate;
                 $finalPrice = $basePrice + $taxAmount;
 
                 $order->total_amount = $finalPrice;
-                $order->paid_amount = 0;
+                $order->paid_amount = 0; // ممكن تعدلها لو فيه دفعة أولى
                 $order->custom_fields = [
                     'base_price' => $basePrice,
                     'tax' => $taxAmount,
@@ -459,26 +458,6 @@ public function getPaymentStatusTextAttribute()
     }
 }
 
-public function package()
-{
-    return $this->belongsTo(Package::class);
-}
 
-public function orderItems()
-{
-    return $this->hasMany(OrderItem::class);
-}
-
-public function packages()
-{
-    return $this->hasManyThrough(
-        Package::class,       // النموذج النهائي
-        OrderItem::class,     // النموذج الوسيط
-        'order_id',           // مفتاح order_items يشير إلى order
-        'id',                 // مفتاح packages الرئيسي
-        'id',                 // مفتاح order الرئيسي
-        'package_id'          // مفتاح order_items يشير إلى package
-    );
-}
 
 }

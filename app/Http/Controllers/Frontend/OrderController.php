@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\SeoSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +82,22 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return view("frontend.orders.show", compact("order"));
+        $seo = SeoSetting::where('page', 'blog')->first();
+        return view("frontend.order.order-details", compact("order",'seo'));
     }
+
+    public function myOrders()
+    {
+        $seo = SeoSetting::where('page', 'blog')->first();
+
+        $orders = Order::with(['orderItems.package'])
+        ->where('user_id', auth()->id())
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+
+
+        return view('frontend.order.my-orders', compact('orders','seo'));
+    }
+
+
 }

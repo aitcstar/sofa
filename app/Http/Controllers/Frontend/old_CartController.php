@@ -256,7 +256,6 @@ class CartController extends Controller
     public function orderSuccess($orderId)
     {
         $order = Order::with('items.package')->findOrFail($orderId);
-        $seo = SeoSetting::where('page', 'blog')->first();
-        return view('frontend.cart.success', compact('order', 'seo'));
+        return view('frontend.cart.success', compact('order'));
     }
 }

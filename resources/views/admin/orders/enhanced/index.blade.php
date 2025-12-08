@@ -269,9 +269,14 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                     </div>
                                 </td>
                                 <td>
-                                    {{ $order->package->name ?? 'غير محدد' }}<br>
+                                    @forelse($order->packages as $package)
+                                        - {{ $package->{'name_'.app()->getLocale()} ?? $package->name ?? 'غير محدد' }}<br>
+                                    @empty
+                                        غير محدد
+                                    @endforelse
                                     <small class="text-muted">{{ $order->units_count }} وحدة</small>
                                 </td>
+
                                 <td>
                                     <span class="badge bg-{{ $order->status_color }}">
                                         {{ $order->status_text }}

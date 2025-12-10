@@ -45,31 +45,158 @@
   <!-- ===== STEPS SECTION  ===== -->
   <section class="step-section">
     <div class="content mx-auto">
-        <h5 class="heading-h8 text-center">{{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }}
+        <h5 class="heading-h8 text-center mb-4">
+            {{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }}
         </h5>
 
-        <div class="d-flex gap-sm-3 position-relative mx-auto">
+        <!-- ===== Desktop Layout ===== -->
+        <div class="steps-desktop d-none d-md-flex gap-sm-3 position-relative mx-auto">
             <div class="line"></div>
 
             @foreach($steps as $step)
-            @if($step->order != 0)
-                <div class="d-flex flex-column align-items-center gap-sm-4" style="width: 140px;">
+                @if($step->order != 0)
+                <div class="step-box d-flex flex-column align-items-center gap-sm-4">
                     <div class="step-item-icon">
-                        <img src="{{ asset('storage/'.$step->icon) }}" alt="{{ $step->{'title_'.app()->getLocale()} }}" />
+                        <img src="{{ asset('storage/' . $step->icon) }}" />
                     </div>
-                    <div class="d-flex flex-column align-items-center gap-sm-7">
-                        <p class="sub-heading-4 mb-0" style="font-size: 13px">{{ $step->{'title_'.app()->getLocale()} }}</p>
+
+                    <div class="d-flex flex-column align-items-center">
+                        <p class="sub-heading-4 mb-0" style="font-size: 13px">
+                            {{ $step->{'title_'.app()->getLocale()} }}
+                        </p>
+
                         <div class="body-3 text-caption mb-0" style="font-size: 10px">
                             {{ $step->{'desc_'.app()->getLocale()} }}
                         </div>
                     </div>
                 </div>
-            @endif
-        @endforeach
-
+                @endif
+            @endforeach
         </div>
+
+        <!-- ===== Mobile Slider (No Libraries) ===== -->
+        <div class="steps-mobile d-block d-md-none">
+            <div class="steps-track" id="steps-track">
+
+                @foreach($steps as $step)
+                    @if($step->order != 0)
+                    <div class="step-slide">
+                        <img src="{{ asset('storage/' . $step->icon) }}" class="slide-icon" />
+
+                        <p class="sub-heading-4 mb-1" style="font-size: 13px">
+                            {{ $step->{'title_'.app()->getLocale()} }}
+                        </p>
+
+                        <div class="body-3 text-caption" style="font-size: 10px">
+                            {{ $step->{'desc_'.app()->getLocale()} }}
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+
+            </div>
+        </div>
+
     </div>
 </section>
+
+
+<style>
+/* ===== DESKTOP ===== */
+.steps-desktop {
+    display: flex;
+    gap: 24px;
+    position: relative;
+    max-width: 930px;
+    margin: 0 auto;
+}
+
+.steps-desktop .line {
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    height: 4px;
+    width: calc(100% - 120px);
+    background: #ccc;
+}
+
+.step-box {
+    width: 150px;
+    text-align: center;
+}
+
+/* ===== MOBILE SLIDER ===== */
+.steps-mobile {
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* إخفاء السكرول */
+}
+.steps-mobile::-webkit-scrollbar {
+    display: none;
+}
+
+.steps-track {
+    display: flex;
+    gap: 20px;
+}
+
+.step-slide {
+    min-width: 75%;
+    scroll-snap-align: center;
+    text-align: center;
+    background: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.slide-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+/* bootstrap-like helpers */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+@media(min-width:768px){
+    .d-md-flex { display:flex !important; }
+    .d-md-none { display:none !important; }
+}
+@media(max-width:767px){
+    .d-md-flex { display:none !important; }
+    .d-md-none { display:block !important; }
+}
+
+</style>
+
+
+<!-- تأكد قبل هذا إن jQuery + Owl Carousel JS محمّلين -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        if (window.innerWidth > 767) return;
+
+        const container = document.querySelector('.steps-mobile');
+        const slides = document.querySelectorAll('.step-slide');
+        let index = 0;
+
+        setInterval(() => {
+            index = (index + 1) % slides.length;
+            const slide = slides[index];
+
+            container.scrollTo({
+                left: slide.offsetLeft - 20, // يروح لنفس الخطوة
+                behavior: 'smooth'
+            });
+
+        }, 2500);
+
+    });
+    </script>
+
+
 
 
 

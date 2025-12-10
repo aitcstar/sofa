@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="d-flex flex-column align-items-center">
-                        <p class="sub-heading-4 mb-0" style="font-size: 13px">
+                        <p class="sub-heading-4 mb-0" style="font-size: 12px">
                             {{ $step->{'title_'.app()->getLocale()} }}
                         </p>
 

@@ -34,7 +34,8 @@ class PackageController extends Controller
 
     public function create()
     {
-        $units = Unit::whereNull('package_id')->get();
+        //$units = Unit::whereNull('package_id')->get();
+        $units = Unit::get();
         //$items = Item::all(); // كل القطع
         return view('admin.packages.create', compact('units'));
     }
@@ -115,7 +116,7 @@ public function store(Request $request)
 
 
     // كل الوحدات المتاحة اللي ممكن إضافتها للباكج (مش موجودة مسبقاً)
-    $units = Unit::whereNull('package_id')->get();
+    $units = Unit::where('package_id',$package->id)->get();
 
     return view('admin.packages.edit', compact('package', 'units'));
 }

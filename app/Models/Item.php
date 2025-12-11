@@ -44,10 +44,16 @@ class Item extends Model
 {
     return $this->hasMany(PackageImage::class, 'package_id', 'package_id');
 }
-public function packageUnitItems()
+/*public function packageUnitItems()
 {
     return $this->hasMany(PackageUnitItem::class);
+}*/
+
+public function packageUnitItems()
+{
+    return $this->hasMany(PackageUnitItem::class, 'item_id');
 }
+
 
 
 }

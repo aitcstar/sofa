@@ -116,7 +116,8 @@ public function store(Request $request)
 
 
     // كل الوحدات المتاحة اللي ممكن إضافتها للباكج (مش موجودة مسبقاً)
-    $units = Unit::where('package_id',$package->id)->get();
+    //$units = Unit::whereNull('package_id')->get();
+    $units = Unit::all();
 
     return view('admin.packages.edit', compact('package', 'units'));
 }

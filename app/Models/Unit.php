@@ -52,13 +52,17 @@ public function images()
     return $this->hasMany(UnitImage::class);
 }
 
-public function packageUnitItems()
+/*public function packageUnitItems()
 {
     return $this->hasMany(PackageUnitItem::class);
-}
+}*/
 public function unitImages()
 {
     return $this->hasMany(UnitImage::class);
+}
+public function packageUnitItems()
+{
+    return $this->hasMany(PackageUnitItem::class, 'unit_id');
 }
 
 

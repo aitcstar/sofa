@@ -31,7 +31,7 @@ class ItemController extends Controller
 
     public function create()
     {
-        $units = Unit::whereNull('package_id')->get();
+        $units = Unit::get();
         return view('admin.items.create', compact('units'));
     }
 
@@ -79,8 +79,7 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        $units = Unit::whereNull('package_id')
-        ->orWhere('id', $item->unit_id)
+        $units = Unit::Where('id', $item->unit_id)
         ->get();
         return view('admin.items.edit', compact('item', 'units'));
     }

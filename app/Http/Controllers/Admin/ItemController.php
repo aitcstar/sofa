@@ -79,8 +79,7 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        $units = Unit::Where('id', $item->unit_id)
-        ->get();
+        $units = Unit::get();
         return view('admin.items.edit', compact('item', 'units'));
     }
 

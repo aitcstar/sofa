@@ -100,7 +100,7 @@
 .steps-container .line {
     position: absolute;
     top: 20px;
-    left: 67px;
+    left: 67px !important;
     height: 4px;
     width: 100% !important;
     background: #ccc;

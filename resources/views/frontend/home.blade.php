@@ -49,61 +49,47 @@
             {{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }}
         </h5>
 
-        <!-- ===== Desktop Layout ===== -->
-        <div class="steps-desktop d-none d-md-flex gap-sm-3 position-relative mx-auto">
-            <div class="line"></div>
+        <!-- نفس الشكل للديسكتوب والموبايل -->
+        <div class="steps-mobile-wrapper">
+            <div class="steps-container d-flex gap-sm-3 position-relative mx-auto">
 
-            @foreach($steps as $step)
-                @if($step->order != 0)
-                <div class="step-box d-flex flex-column align-items-center gap-sm-4">
-                    <div class="step-item-icon">
-                        <img src="{{ asset('storage/' . $step->icon) }}" />
-                    </div>
-
-                    <div class="d-flex flex-column align-items-center">
-                        <p class="sub-heading-4 mb-0" style="font-size: 12px">
-                            {{ $step->{'title_'.app()->getLocale()} }}
-                        </p>
-
-                        <div class="body-3 text-caption mb-0" style="font-size: 10px">
-                            {{ $step->{'desc_'.app()->getLocale()} }}
-                        </div>
-                    </div>
-                </div>
-                @endif
-            @endforeach
-        </div>
-
-        <!-- ===== Mobile Slider (No Libraries) ===== -->
-        <div class="steps-mobile d-block d-md-none">
-            <div class="steps-track" id="steps-track">
 
                 @foreach($steps as $step)
                     @if($step->order != 0)
-                    <div class="step-slide">
-                        <img src="{{ asset('storage/' . $step->icon) }}" class="slide-icon" />
 
-                        <p class="sub-heading-4 mb-1" style="font-size: 13px">
-                            {{ $step->{'title_'.app()->getLocale()} }}
-                        </p>
+                    <div class="step-box d-flex flex-column align-items-center gap-sm-4">
+                        <div class="step-item-icon">
+                            <img src="{{ asset('storage/' . $step->icon) }}" />
+                        </div>
+                        @if($step->order != 1)<div class="line"></div> @endif
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <p class="sub-heading-4 mb-0" style="font-size: 12px">
+                                {{ $step->{'title_'.app()->getLocale()} }}
+                            </p>
 
-                        <div class="body-3 text-caption" style="font-size: 10px">
-                            {{ $step->{'desc_'.app()->getLocale()} }}
+                            <div class="body-3 text-caption mb-0" style="font-size: 10px">
+                                {{ $step->{'desc_'.app()->getLocale()} }}
+                            </div>
                         </div>
                     </div>
                     @endif
                 @endforeach
-
             </div>
         </div>
+
+
+
+
+
+
 
     </div>
 </section>
 
 
+
 <style>
-/* ===== DESKTOP ===== */
-.steps-desktop {
+.steps-container {
     display: flex;
     gap: 24px;
     position: relative;
@@ -111,12 +97,12 @@
     margin: 0 auto;
 }
 
-.steps-desktop .line {
+.steps-container .line {
     position: absolute;
     top: 20px;
     left: 60px;
     height: 4px;
-    width: calc(100% - 120px);
+    width: 100% !important;
     background: #ccc;
 }
 
@@ -125,195 +111,55 @@
     text-align: center;
 }
 
-/* ===== MOBILE SLIDER ===== */
-.steps-mobile {
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* إخفاء السكرول */
-}
-.steps-mobile::-webkit-scrollbar {
-    display: none;
+/* ===== الموبايل ===== */
+@media(max-width: 767px) {
+    .steps-mobile-wrapper {
+        overflow-x: hidden; /* لا يظهر scrollbar */
+        position: relative;
+        max-width: 100%;
+    }
+
+    .steps-container {
+        flex-wrap: nowrap;  /* منع الالتفاف */
+    }
+
+
+    .step-box {
+        flex: 0 0 auto; /* حجم ثابت لكل عنصر */
+        scroll-snap-align: center;
+    }
 }
 
-.steps-track {
-    display: flex;
-    gap: 20px;
-}
 
-.step-slide {
-    min-width: 75%;
-    scroll-snap-align: center;
-    text-align: center;
-    background: #fff;
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
 
-.slide-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-}
-
-/* bootstrap-like helpers */
-.d-none { display: none !important; }
-.d-block { display: block !important; }
-@media(min-width:768px){
-    .d-md-flex { display:flex !important; }
-    .d-md-none { display:none !important; }
-}
-@media(max-width:767px){
-    .d-md-flex { display:none !important; }
-    .d-md-none { display:block !important; }
-}
 
 </style>
 
-
-<!-- تأكد قبل هذا إن jQuery + Owl Carousel JS محمّلين -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.innerWidth > 767) return; // فقط الموبايل
 
-        if (window.innerWidth > 767) return;
+    const wrapper = document.querySelector('.steps-mobile-wrapper');
+    const boxes = document.querySelectorAll('.step-box');
+    let index = 0;
 
-        const container = document.querySelector('.steps-mobile');
-        const slides = document.querySelectorAll('.step-slide');
-        let index = 0;
+    setInterval(() => {
+        const nextBox = boxes[index];
+        const offset = nextBox.offsetLeft;
 
-        setInterval(() => {
-            index = (index + 1) % slides.length;
-            const slide = slides[index];
+        wrapper.scrollTo({
+            left: offset,
+            behavior: 'smooth'
+        });
 
-            container.scrollTo({
-                left: slide.offsetLeft - 20, // يروح لنفس الخطوة
-                behavior: 'smooth'
-            });
+        index = (index + 1) % boxes.length;
+    }, 2500);
+});
 
-        }, 2500);
-
-    });
     </script>
 
 
 
-
-
-
-  <!-- ===== ABOUT US SECTION ===== -->
-  <section class="about-us-section">
-    <div class="container position-relative">
-        <img src="{{ asset('assets/images/about/pattern.svg') }}" alt="pattern" class="pattern" />
-
-        @if($about)
-            <div class="about-us-content d-flex gap-5xl">
-                <!-- Image -->
-                <div class="order-1 order-md-2 position-relative">
-                    <div class="image border-surface radius-normal-box overflow-hidden">
-                        <img class="w-100 h-100"
-                             src="{{ asset('storage/'.$about->image) }}"
-                             alt="{{ $about->{'title_'.app()->getLocale()} }}" />
-                    </div>
-                </div>
-
-                <!-- Content -->
-                <div class="order-2 order-md-1 d-flex flex-column gap-l mx-auto" style="max-width: 470px;">
-                    <div class="d-flex flex-column gap-sm-5">
-                        <p class="sub-heading-4" style="color: var(--secondary);">
-                            {{ $about->{'sub_title_'.app()->getLocale()} }}
-                        </p>
-                        <h4 class="heading-h6">{{ $about->{'title_'.app()->getLocale()} }}</h4>
-                        <p class="caption-3 text-caption mb-0">
-                            {{ $about->{'desc_'.app()->getLocale()} }}
-                        </p>
-                    </div>
-
-                    <!-- Features -->
-                    @if($about->icons->count())
-                        <div class="d-flex flex-column gap-sm-3">
-                            @foreach($about->icons as $icon)
-                                <div class="d-flex gap-sm-4 align-items-center">
-                                    <img src="{{ asset('storage/'.$icon->icon) }}"
-                                         alt="{{ $icon->{'title_'.app()->getLocale()} }}"
-                                         style="width: 32px; height: 32px; object-fit: contain;" />
-                                    <span class="body-1">{{ $icon->{'title_'.app()->getLocale()} }}</span>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if($about->button_link && $about->{'button_text_'.app()->getLocale()})
-                        <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="btn btn-custom-primary w-100 mt-3">
-                            {{ $about->{'button_text_'.app()->getLocale()} }}
-                        </a>
-                    @endif
-                </div>
-            </div>
-        @endif
-    </div>
-</section>
-
-
-  <!-- ===== PACKAGE SELECTION SECTION ===== -->
-  <section id="package-selection" class="package-selection-section">
-    <div class="container d-flex flex-column gap-xl">
-        <div class="heading text-center d-flex flex-column gap-sm-5">
-            <h3 class="heading-h6 mb-0">  {{ $section->{'title_'.app()->getLocale()} }}</h3>
-            <p class="caption-3 text-caption mb-0 mx-auto" style="max-width: 440px;">
-                {{ $section->{'desc_'.app()->getLocale()} }}
-            </p>
-        </div>
-
-        <form id="package-filter-form" class="package-selection-form padding-box-normal d-flex flex-column gap-md border border-surface radius-small-box mx-auto">
-            @csrf
-           {{-- 🔹 اختيار اسم الباقة --}}
-            <div class="mb-3">
-                <label class="form-label body-1">{{ __('site.unit_type') }}</label>
-                <div class="d-flex gap-sm-5 flex-wrap question" data-type="radio" data-required="0">
-                    @foreach($packages as $package)
-                        @php
-                            $name = app()->getLocale() === 'ar' ? $package->name_ar : $package->name_en;
-                        @endphp
-                        <div class="d-flex align-items-center gap-sm-5">
-                            <input type="radio" name="answers[5]" id="package_{{ $package->id }}" value="{{ $name }}">
-                            <label for="package_{{ $package->id }}">{{ $name }}</label>
-                        </div>
-                    @endforeach
-                    {{-- رسالة خطأ --}}
-                    <div class="error-message text-danger" style="display:none; margin-top:5px;">
-                        يرجى اختيار خيار واحد على الأقل
-                    </div>
-                </div>
-            </div>
-
-            {{-- 🔸 فلترة حسب اللون --}}
-            <div class="mb-3">
-                <label class="form-label body-1">{{ __('site.package_colors') }}</label>
-                <div class="d-flex gap-sm-5 flex-wrap question" data-type="radio" data-required="0">
-                    @foreach($allColors as $color)
-                        @php
-                            $colorName = app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'];
-                        @endphp
-                        <div class="d-flex align-items-center gap-sm-5">
-                            <input type="radio" name="answers[6]" id="color_{{ $loop->index }}" value="{{ $colorName }}">
-                            <label for="color_{{ $loop->index }}">{{ $colorName }}</label>
-                        </div>
-                    @endforeach
-                    {{-- رسالة خطأ --}}
-                    <div class="error-message text-danger" style="display:none; margin-top:5px;">
-                        يرجى اختيار خيار واحد على الأقل
-                    </div>
-                </div>
-            </div>
-
-
-            <button type="submit" class="btn btn-custom-primary w-100">
-                {{ __('site.show_packages') }}
-            </button>
-        </form>
-    </div>
-</section>
 
   <!-- ===== PACKAGES SECTION ===== -->
 

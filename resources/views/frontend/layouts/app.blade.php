@@ -81,7 +81,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v={{ $version }}">
 <link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}?v={{ $version }}">
 
-  <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}?v={{ $version }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.0/css/flag-icons.min.css" />
 
   <!-- ===== FAVICON ===== -->
@@ -381,6 +381,25 @@ border: none !important;
         </ul>
       </div>
       <div class="nav-mobile-hr"></div>
+
+        <div class="position-relative cart-container">
+            <a href="/cart" class="cart-link">
+                <i class="fas fa-shopping-cart" ></i>{{ app()->getLocale() == 'ar' ? 'السلة' : 'cart' }}
+
+                <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
+                    0
+                </span>
+            </a>
+            <!-- Cart Dropdown -->
+            <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
+                <div class="cart-dropdown-content">
+                    <p class="text-center p-3">{{ __('site.cart_empty') }}</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="nav-mobile-hr"></div>
       <!-- Language Selection -->
       <div class="nav-mobile-language">
         <div class="nav-mobile-language-option" data-language="ar" onclick="changeLanguage('ar')">

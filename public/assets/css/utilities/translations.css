@@ -172,8 +172,8 @@ body {
 }
 
 .ltr {
-  direction: rtl;
-  text-align: right;
+  direction: ltr;
+  text-align: left;
 }
 
 /* Responsive RTL/LTR */

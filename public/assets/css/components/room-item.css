@@ -12,8 +12,8 @@
 /* Room card specific styles */
 .room-item .image {
     position: relative;
-    /*height: 293px;*/
-    overflow: hidden;
+    /*height: 293px;
+    overflow: hidden;*/
     max-height: 280px;
 }
 

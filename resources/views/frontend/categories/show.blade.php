@@ -459,7 +459,7 @@
 
             <!-- Modal for image popup -->
             <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-dialog modal-dialog-centered modal-md-custom">
                     <div class="modal-content">
                         <div class="modal-body p-0">
                             <img src="" id="modalImage" class="img-fluid w-100" alt="Popup Image">

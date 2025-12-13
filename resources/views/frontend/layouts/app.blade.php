@@ -76,8 +76,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
   <!-- ===== CUSTOM CSS ===== -->
-  <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
-  <link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}" />
+  @php $version = time(); @endphp
+
+<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v={{ $version }}">
+<link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}?v={{ $version }}">
+
   <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.0/css/flag-icons.min.css" />
 

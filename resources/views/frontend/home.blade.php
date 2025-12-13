@@ -97,6 +97,12 @@
     margin: 0 auto;
 }
 
+
+
+.carousel-control-prev {
+    right: auto!important;
+}
+
 .steps-container .line {
     position: absolute;
     top: 20px;

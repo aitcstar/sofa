@@ -8,7 +8,7 @@
             data-colors="{{ $package->packageUnitItems->pluck('item.background_color')->filter()->unique()->implode(',') }}"
             data-unit-types="{{ $package->packageUnitItems->pluck('unit.type')->unique()->implode(',') }}">
 
-            <div class="room-item" style="height: 90%;">
+            <div class="room-item">
                 <!-- image & widget -->
                 <div class="image">
                     @if($package->{'title_'.app()->getLocale()})

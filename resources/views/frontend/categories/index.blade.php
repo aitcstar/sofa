@@ -71,7 +71,7 @@
                         data-colors="{{ collect($package->available_colors)->pluck('name_'.app()->getLocale())->implode(',') }}"
                         data-unit-types="{{ $package->packageUnitItems->pluck('unit.name_'.app()->getLocale())->unique()->implode(',') }}">
 
-                        <div class="room-item" style="height: 90%;">
+                        <div class="room-item">
 
                             <!-- الصورة -->
                             <div class="image">

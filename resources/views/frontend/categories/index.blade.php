@@ -72,8 +72,14 @@
                         data-unit-types="{{ $package->packageUnitItems->pluck('unit.name_'.app()->getLocale())->unique()->implode(',') }}">
 
                         <div class="room-item" style="height: 90%;">
+
                             <!-- الصورة -->
                             <div class="image">
+                                @if($package->{'title_'.app()->getLocale()})
+                                    <div class="widget text-center">
+                                        <span class="body-4 text-white"> {{ $package->{'title_'.app()->getLocale()} }} </span>
+                                    </div>
+                                @endif
                                 @if($package->image)
                                     <img src="{{ asset('storage/' . $package->image) }}" class="w-100 h-100" alt="{{ $package->{'name_'.app()->getLocale()} }}" />
                                 @else

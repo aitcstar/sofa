@@ -95,6 +95,17 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
+                            <label class="form-label"> لافته (عربي) </label>
+                            <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar', $package->title_ar) }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label"> لافته (إنجليزي) </label>
+                            <input type="text" name="title_en" class="form-control" value="{{ old('title_en', $package->title_en) }}" >
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
                             <label class="form-label"> مدة التنفيذ (عربي) <span class="text-danger">*</span></label>
                             <input type="text" name="period_ar" class="form-control"
                                 value="{{ old('period_ar', $package->period_ar) }}" required>

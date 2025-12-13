@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         index = (index + 1) % boxes.length;
-    }, 2500);
+    }, 1500);
 });
 
     </script>

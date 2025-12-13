@@ -24,18 +24,19 @@ class LocaleMiddleware  // ✅ غيرنا الاسم هنا
 
 
 
-        $locale = 'ar'; // افتراضي
-
-        // إذا كان الـ prefix هو 'en'
-        if ($request->segment(1) === 'en') {
-            $locale = 'en';
-        }
 
         // ضع اللغة في الجلسة وفي التطبيق
-        Session::put('locale', $locale);
-        App::setLocale($locale);
+        $locale = session('locale', 'ar');
 
-        return $next($request);
+if ($request->segment(1) === 'en') {
+    $locale = 'en';
+}
+
+session(['locale' => $locale]);
+App::setLocale($locale);
+
+return $next($request);
+
 
 
     }

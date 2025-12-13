@@ -87,6 +87,19 @@
                   </div>
               </div>
 
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label"> لافته (عربي) </label>
+                    <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar') }}" >
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label"> لافته (إنجليزي) </label>
+                    <input type="text" name="title_en" class="form-control" value="{{ old('title_en') }}">
+                </div>
+            </div>
+
+
               <!-- باقي الحقول -->
               <div class="row mb-3">
                   <div class="col-md-6">

@@ -59,6 +59,8 @@ public function store(Request $request)
         'decoration_en'=> 'nullable|string',
         'sort_order'=> 'nullable|integer',
         'units'   => 'nullable|array',
+        'title_ar'  => 'nullable|string',
+        'title_en'  => 'nullable|string',
         'units.*.unit_id' => 'required|integer|exists:units,id',
         'units.*.items' => 'nullable|array',
         'units.*.items.*.item_id' => 'required|integer|exists:items,id',
@@ -73,7 +75,7 @@ public function store(Request $request)
         'period_ar', 'period_en', 'service_includes_ar', 'service_includes_en',
         'payment_plan_ar', 'payment_plan_en', 'decoration_ar', 'decoration_en',
         'sort_order', 'meta_title_en', 'meta_title_ar', 'meta_description_en',
-        'meta_description_ar', 'slug_en', 'slug_ar'
+        'meta_description_ar', 'slug_en', 'slug_ar','title_ar','title_en'
     ]) + [
         'available_colors' => $validated['available_colors'] ?? [],
     ]);
@@ -143,6 +145,8 @@ public function update(Request $request, Package $package)
         'decoration_en'=> 'nullable|string',
         'meta_title_en'=> 'nullable|string',
         'meta_title_ar'=> 'nullable|string',
+        'title_ar'  => 'nullable|string',
+        'title_en'  => 'nullable|string',
         'meta_description_en'=> 'nullable|string',
         'meta_description_ar'=> 'nullable|string',
         'slug_en'=> 'nullable|string',
@@ -160,7 +164,7 @@ public function update(Request $request, Package $package)
         'period_ar', 'period_en', 'service_includes_ar', 'service_includes_en',
         'payment_plan_ar', 'payment_plan_en', 'decoration_ar', 'decoration_en',
         'sort_order', 'meta_title_en', 'meta_title_ar', 'meta_description_en',
-        'meta_description_ar', 'slug_en', 'slug_ar'
+        'meta_description_ar', 'slug_en', 'slug_ar','title_ar','title_en'
     ]) + [
         'available_colors' => $validated['available_colors'] ?? [],
     ]);

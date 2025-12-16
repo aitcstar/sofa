@@ -57,7 +57,7 @@
                                         $units = $package->packageUnitItems->pluck('unit')->unique('id')->values();
                                     @endphp
 
-                                    @foreach($units->take(3) as $puiUnit)
+                                    @foreach($units->take(2) as $puiUnit)
                                         <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
                                             @php
                                                 $icon = match($puiUnit->type) {
@@ -74,7 +74,7 @@
                                     @endforeach
 
                                     {{-- لو فيه أكتر من 4 وحدات، أضف عنصر "أخرى" --}}
-                                    @if($units->count() > 3)
+                                    @if($units->count() > 2)
                                         <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
                                             <img src="{{ asset('assets/images/icons/Group.png') }}" alt="" />
                                             <span class="body-4">{{ app()->getLocale() == 'ar' ? 'أخرى' : 'Other' }}</span>

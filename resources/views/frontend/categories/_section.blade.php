@@ -57,7 +57,7 @@
                                         $units = $package->packageUnitItems->pluck('unit')->unique('id')->values();
                                     @endphp
 
-                                    @foreach($units->take(4) as $puiUnit)
+                                    @foreach($units->take(3) as $puiUnit)
                                         <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
                                             @php
                                                 $icon = match($puiUnit->type) {

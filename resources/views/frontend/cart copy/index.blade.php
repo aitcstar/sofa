@@ -42,7 +42,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between" id="discount-row" style="display: none;">
                                 <span class="body-2">الخصم:</span>
                                 <div class="d-flex align-items-center gap-sm-6">
                                     <p class="body-2 text-success mb-0" id="discount-amount">0</p>
@@ -65,6 +65,7 @@
                                 <input type="text" class="form-control" style="flex: 1;" placeholder="أدخل كود الخصم" id="promo-code-input" />
                                 <button class="btn btn-custom-secondary" style="min-width: fit-content;" id="apply-promo-btn">تطبيق</button>
                             </div>
+                            <div id="coupon-message"></div>
                         </div>
 
                         <!-- Total Row -->
@@ -78,7 +79,7 @@
 
                         <!-- Checkout Button -->
                         <div class="checkout-section d-flex flex-column gap-sm-4">
-                            <button class="btn btn-custom-primary w-100" onclick="alert('سيتم توجيهك لصفحة الدفع قريباً')">
+                            <button class="btn btn-custom-primary w-100" id="checkout-btn">
                                 <i class="fas fa-credit-card"></i>
                                 إتمام الطلب
                             </button>
@@ -258,15 +259,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartItemsList = document.getElementById('cart-items-list');
     const cartItemsContainer = document.getElementById('cart-items-container');
     const emptyCartState = document.getElementById('empty-cart-state');
+    
+    let appliedCoupon = JSON.parse(sessionStorage.getItem('appliedCoupon')) || null;
 
     if (cart.length === 0) {
         cartItemsContainer.style.display = 'none';
         emptyCartState.style.display = 'block';
         return;
     }
-
-    let subtotal = 0;
-    let html = '';
+    
+    renderCart();
+    
+    function renderCart() {
+        let subtotal = 0;
+        let html = '';
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
@@ -310,15 +316,26 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     });
 
-    cartItemsList.innerHTML = html;
+        cartItemsList.innerHTML = html;
+        
+        // حساب الخصم
+        let discount = 0;
+        if (appliedCoupon) {
+            discount = appliedCoupon.discount_amount || 0;
+            document.getElementById('discount-row').style.display = 'flex';
+            document.getElementById('promo-code-input').value = appliedCoupon.code;
+            document.getElementById('coupon-message').innerHTML = `<small class="text-success"><i class="fas fa-check-circle"></i> تم تطبيق كود الخصم</small>`;
+        }
+        
+        const total = subtotal - discount;
+        
+        // Update summary
+        document.getElementById('subtotal-amount').textContent = formatPrice(subtotal);
+        document.getElementById('discount-amount').textContent = formatPrice(discount);
+        document.getElementById('total-amount').textContent = formatPrice(total);
 
-    // Update summary
-    document.getElementById('subtotal-amount').textContent = formatPrice(subtotal);
-    document.getElementById('discount-amount').textContent = '0';
-    document.getElementById('total-amount').textContent = formatPrice(subtotal);
-
-    // Event listeners
-    document.querySelectorAll('.quantity-increase').forEach(btn => {
+        // Event listeners
+        document.querySelectorAll('.quantity-increase').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
             cart[index].quantity += 1;
@@ -326,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelectorAll('.quantity-decrease').forEach(btn => {
+        document.querySelectorAll('.quantity-decrease').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
             if (cart[index].quantity > 1) {
@@ -336,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+        document.querySelectorAll('.remove-item-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
             if (confirm('هل تريد حذف هذا العنصر من السلة؟')) {
@@ -347,11 +364,63 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    }
+    
+    // Apply coupon
+    document.getElementById('apply-promo-btn').addEventListener('click', function() {
+        const code = document.getElementById('promo-code-input').value.trim();
+        if (!code) {
+            showMessage('الرجاء إدخال كود الخصم', 'danger');
+            return;
+        }
+        
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        fetch('{{ app()->getLocale() == "ar" ? route("cart.applyCoupon") : route("cart.applyCoupon.en") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                code: code,
+                subtotal: subtotal
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                appliedCoupon = {
+                    code: code,
+                    discount_amount: data.discount_amount
+                };
+                sessionStorage.setItem('appliedCoupon', JSON.stringify(appliedCoupon));
+                showMessage(data.message, 'success');
+                renderCart();
+            } else {
+                showMessage(data.message, 'danger');
+            }
+        })
+        .catch(error => {
+            showMessage('حدث خطأ أثناء تطبيق الكود', 'danger');
+        });
+    });
+    
+    // Checkout button
+    document.getElementById('checkout-btn').addEventListener('click', function() {
+        window.location.href = '{{ app()->getLocale() == "ar" ? route("cart.checkout") : route("cart.checkout.en") }}';
+    });
+    
     function updateCart() {
         localStorage.setItem('shoppingCart', JSON.stringify(cart));
-        location.reload();
+        renderCart();
     }
-
+    
+    function showMessage(message, type) {
+        const messageDiv = document.getElementById('coupon-message');
+        messageDiv.innerHTML = `<small class="text-${type}"><i class="fas fa-${type === 'success' ? 'check' : 'times'}-circle"></i> ${message}</small>`;
+    }
+    
     function formatPrice(price) {
         return new Intl.NumberFormat('ar-SA', {minimumFractionDigits: 0}).format(price);
     }

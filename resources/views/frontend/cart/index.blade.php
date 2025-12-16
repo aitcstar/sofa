@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="breadcrumb-container container">
-    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ __('site.home') }}</a>
+    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="body-2 text-body">{{ app()->getLocale() == 'ar' ? 'الرئيسية' : 'Home' }}</a>
     <span class="body-2 text-body">/</span>
-    <a href="#" class="body-2 text-primary">السلة</a>
+    <a href="#" class="body-2 text-primary">{{ app()->getLocale() == 'ar' ? 'السلة' : 'Cart' }}</a>
 </div>
 
 <!-- ===== CART MAIN SECTION ===== -->
@@ -22,7 +22,7 @@
                     <div class="continue-shopping">
                         <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="btn btn-custom-outline">
                             <i class="fas fa-arrow-right me-2"></i>
-                            متابعة التسوق
+                            {{ app()->getLocale() == 'ar' ? 'متابعة التسوق' : 'Continue Shopping' }}
                         </a>
                     </div>
                 </div>
@@ -30,12 +30,12 @@
                 <!-- Order Summary Column -->
                 <div class="col-lg-4">
                     <div class="order-summary">
-                        <h3 class="sub-heading-4 mb-0">ملخص الطلب</h3>
+                        <h3 class="sub-heading-4 mb-0">{{ app()->getLocale() == 'ar' ? 'ملخص الطلب' : 'Order Summary' }}</h3>
 
                         <!-- Summary Row -->
                         <div class="d-flex flex-column gap-sm-5 mt-3">
                             <div class="d-flex justify-content-between">
-                                <span class="body-2">المجموع الفرعي:</span>
+                                <span class="body-2">{{ app()->getLocale() == 'ar' ? 'المجموع الفرعي:' : 'Subtotal:' }}</span>
                                 <div class="d-flex align-items-center gap-sm-6">
                                     <p class="body-2 mb-0" id="subtotal-amount">0</p>
                                     <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between" id="discount-row" style="display: none;">
-                                <span class="body-2">الخصم:</span>
+                                <span class="body-2">{{ app()->getLocale() == 'ar' ? 'الخصم:' : 'Discount:' }}</span>
                                 <div class="d-flex align-items-center gap-sm-6">
                                     <p class="body-2 text-success mb-0" id="discount-amount">0</p>
                                     <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
@@ -51,26 +51,26 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <span class="body-2">التوصيل والتركيب:</span>
+                                <span class="body-2">{{ app()->getLocale() == 'ar' ? 'التوصيل والتركيب:' : 'Delivery & Installation:' }}</span>
                                 <div class="d-flex align-items-center gap-sm-6">
-                                    <p class="body-2 text-secondary mb-0">مجاني</p>
+                                    <p class="body-2 text-secondary mb-0">{{ app()->getLocale() == 'ar' ? 'مجاني' : 'Free' }}</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Promo Code -->
                         <div class="mt-4 d-flex flex-column gap-sm-4">
-                            <h4 class="sub-heading-4 mb-0">كود الخصم</h4>
+                            <h4 class="sub-heading-4 mb-0">{{ app()->getLocale() == 'ar' ? 'كود الخصم' : 'Promo Code' }}</h4>
                             <div class="d-flex gap-sm-4">
-                                <input type="text" class="form-control" style="flex: 1;" placeholder="أدخل كود الخصم" id="promo-code-input" />
-                                <button class="btn btn-custom-secondary" style="min-width: fit-content;" id="apply-promo-btn">تطبيق</button>
+                                <input type="text" class="form-control" style="flex: 1;" placeholder="{{ app()->getLocale() == 'ar' ? 'أدخل كود الخصم' : 'Enter promo code' }}" id="promo-code-input" />
+                                <button class="btn btn-custom-secondary" style="min-width: fit-content;" id="apply-promo-btn">{{ app()->getLocale() == 'ar' ? 'تطبيق' : 'Apply' }}</button>
                             </div>
                             <div id="coupon-message"></div>
                         </div>
 
                         <!-- Total Row -->
                         <div class="total-row d-flex justify-content-between align-items-center mt-4">
-                            <span class="sub-heading-4 mb-0">المجموع النهائي:</span>
+                            <span class="sub-heading-4 mb-0">{{ app()->getLocale() == 'ar' ? 'المجموع النهائي:' : 'Total:' }}</span>
                             <div class="d-flex align-items-center gap-sm-6">
                                 <p class="sub-heading-2 mb-0" id="total-amount">0</p>
                                 <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
@@ -81,11 +81,11 @@
                         <div class="checkout-section d-flex flex-column gap-sm-4">
                             <button class="btn btn-custom-primary w-100" id="checkout-btn">
                                 <i class="fas fa-credit-card"></i>
-                                إتمام الطلب
+                                {{ app()->getLocale() == 'ar' ? 'إتمام الطلب' : 'Proceed to Checkout' }}
                             </button>
-                            <button class="btn btn-custom-outline w-100" onclick="alert('سيتم فتح واتساب قريباً')">
+                            <button class="btn btn-custom-outline w-100" onclick="alert('{{ app()->getLocale() == 'ar' ? 'سيتم فتح واتساب قريباً' : 'WhatsApp will be available soon' }}')">
                                 <i class="fab fa-whatsapp"></i>
-                                طلب عبر واتساب
+                                {{ app()->getLocale() == 'ar' ? 'طلب عبر واتساب' : 'Order via WhatsApp' }}
                             </button>
                         </div>
                     </div>
@@ -96,10 +96,10 @@
             <div class="empty-cart-state" id="empty-cart-state" style="display: none;">
                 <div class="text-center py-5">
                     <i class="fas fa-shopping-cart empty-cart-icon mb-3"></i>
-                    <h3 class="sub-heading-3 mb-3">العربة فارغة</h3>
-                    <p class="body-2 text-caption mb-4">لم تقم بإضافة أي منتجات إلى العربة بعد</p>
+                    <h3 class="sub-heading-3 mb-3">{{ app()->getLocale() == 'ar' ? 'العربة فارغة' : 'Your Cart is Empty' }}</h3>
+                    <p class="body-2 text-caption mb-4">{{ app()->getLocale() == 'ar' ? 'لم تقم بإضافة أي منتجات إلى العربة بعد' : 'You haven\'t added any products to the cart yet' }}</p>
                     <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="btn btn-custom-primary">
-                        تصفح المنتجات
+                        {{ app()->getLocale() == 'ar' ? 'تصفح المنتجات' : 'Browse Products' }}
                     </a>
                 </div>
             </div>
@@ -251,15 +251,16 @@
         margin-bottom: var(--spacing-sm) !important;
     }
 }
-    </style>
+</style>
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const locale = '{{ app()->getLocale() }}';
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     const cartItemsList = document.getElementById('cart-items-list');
     const cartItemsContainer = document.getElementById('cart-items-container');
     const emptyCartState = document.getElementById('empty-cart-state');
-    
+
     let appliedCoupon = JSON.parse(sessionStorage.getItem('appliedCoupon')) || null;
 
     if (cart.length === 0) {
@@ -267,68 +268,69 @@ document.addEventListener('DOMContentLoaded', function() {
         emptyCartState.style.display = 'block';
         return;
     }
-    
+
     renderCart();
-    
+
     function renderCart() {
         let subtotal = 0;
         let html = '';
 
-    cart.forEach((item, index) => {
-        const itemTotal = item.price * item.quantity;
-        subtotal += itemTotal;
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
 
-        html += `
-            <div class="cart-item" data-index="${index}">
-                <div class="cart-item-image">
-                    <img src="${item.image}" alt="${item.name}" class="w-100 h-100" />
-                </div>
-                <div class="d-flex flex-column gap-sm-5 flex-grow-1">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="sub-heading-3 mb-0">${item.name}</h3>
-                        <div class="d-flex align-items-center gap-sm-6">
-                            <p class="sub-heading-2 mb-0">${formatPrice(itemTotal)}</p>
-                            <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
+            html += `
+                <div class="cart-item" data-index="${index}">
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}" class="w-100 h-100" />
+                    </div>
+                    <div class="d-flex flex-column gap-sm-5 flex-grow-1">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="sub-heading-3 mb-0">${item.name}</h3>
+                            <div class="d-flex align-items-center gap-sm-6">
+                                <p class="sub-heading-2 mb-0">${formatPrice(itemTotal)}</p>
+                                <img src="{{ asset('assets/images/currency/sar.svg') }}" alt="SAR" />
+                            </div>
+                        </div>
+                        <div class="mb-2" style="flex: 1;">
+                            ${item.description ? `<p class="body-4">${item.description}</p>` : ''}
+                            ${item.pieces ? `<p class="body-4">${locale == 'ar' ? 'عدد القطع:' : 'Pieces:'} ${item.pieces}</p>` : ''}
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn quantity-decrease" data-index="${index}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-index="${index}" readonly />
+                                <button class="quantity-btn quantity-increase" data-index="${index}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <button class="remove-item-btn" data-index="${index}">
+                                <i class="fas fa-trash-alt"></i>
+                                <span>${locale == 'ar' ? 'إزالة' : 'Remove'}</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="mb-2" style="flex: 1;">
-                        ${item.description ? `<p class="body-4">${item.description}</p>` : ''}
-                        ${item.pieces ? `<p class="body-4">عدد القطع: ${item.pieces}</p>` : ''}
-                    </div>
-                    <div class="cart-item-actions">
-                        <div class="quantity-controls">
-                            <button class="quantity-btn quantity-decrease" data-index="${index}">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-index="${index}" readonly />
-                            <button class="quantity-btn quantity-increase" data-index="${index}">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-
-                        <button class="remove-item-btn" data-index="${index}">
-                            <i class="fas fa-trash-alt"></i>
-                            <span>إزالة</span>
-                        </button>
-                    </div>
                 </div>
-            </div>
-        `;
-    });
+            `;
+        });
 
         cartItemsList.innerHTML = html;
-        
-        // حساب الخصم
+
+        // Calculate discount
         let discount = 0;
         if (appliedCoupon) {
             discount = appliedCoupon.discount_amount || 0;
             document.getElementById('discount-row').style.display = 'flex';
             document.getElementById('promo-code-input').value = appliedCoupon.code;
-            document.getElementById('coupon-message').innerHTML = `<small class="text-success"><i class="fas fa-check-circle"></i> تم تطبيق كود الخصم</small>`;
+            const successMsg = locale == 'ar' ? 'تم تطبيق كود الخصم' : 'Coupon code applied successfully';
+            document.getElementById('coupon-message').innerHTML = `<small class="text-success"><i class="fas fa-check-circle"></i> ${successMsg}</small>`;
         }
-        
+
         const total = subtotal - discount;
-        
+
         // Update summary
         document.getElementById('subtotal-amount').textContent = formatPrice(subtotal);
         document.getElementById('discount-amount').textContent = formatPrice(discount);
@@ -336,46 +338,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Event listeners
         document.querySelectorAll('.quantity-increase').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            cart[index].quantity += 1;
-            updateCart();
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                cart[index].quantity += 1;
+                updateCart();
+            });
         });
-    });
 
         document.querySelectorAll('.quantity-decrease').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            if (cart[index].quantity > 1) {
-                cart[index].quantity -= 1;
-                updateCart();
-            }
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity -= 1;
+                    updateCart();
+                }
+            });
         });
-    });
 
         document.querySelectorAll('.remove-item-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const index = parseInt(this.dataset.index);
-            if (confirm('هل تريد حذف هذا العنصر من السلة؟')) {
-                cart.splice(index, 1);
-                updateCart();
-                location.reload();
-            }
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.dataset.index);
+                const confirmMsg = locale == 'ar' ? 'هل تريد حذف هذا العنصر من السلة؟' : 'Are you sure you want to remove this item from the cart?';
+                if (confirm(confirmMsg)) {
+                    cart.splice(index, 1);
+                    updateCart();
+                    location.reload();
+                }
+            });
         });
-    });
-
     }
-    
+
     // Apply coupon
     document.getElementById('apply-promo-btn').addEventListener('click', function() {
         const code = document.getElementById('promo-code-input').value.trim();
         if (!code) {
-            showMessage('الرجاء إدخال كود الخصم', 'danger');
+            const errorMsg = locale == 'ar' ? 'الرجاء إدخال كود الخصم' : 'Please enter a promo code';
+            showMessage(errorMsg, 'danger');
             return;
         }
-        
+
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        
+
         fetch('{{ app()->getLocale() == "ar" ? route("cart.applyCoupon") : route("cart.applyCoupon.en") }}', {
             method: 'POST',
             headers: {
@@ -402,27 +405,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            showMessage('حدث خطأ أثناء تطبيق الكود', 'danger');
+            const errorMsg = locale == 'ar' ? 'حدث خطأ أثناء تطبيق الكود' : 'An error occurred while applying the code';
+            showMessage(errorMsg, 'danger');
         });
     });
-    
+
     // Checkout button
     document.getElementById('checkout-btn').addEventListener('click', function() {
         window.location.href = '{{ app()->getLocale() == "ar" ? route("cart.checkout") : route("cart.checkout.en") }}';
     });
-    
+
     function updateCart() {
         localStorage.setItem('shoppingCart', JSON.stringify(cart));
         renderCart();
     }
-    
+
     function showMessage(message, type) {
         const messageDiv = document.getElementById('coupon-message');
         messageDiv.innerHTML = `<small class="text-${type}"><i class="fas fa-${type === 'success' ? 'check' : 'times'}-circle"></i> ${message}</small>`;
     }
-    
+
     function formatPrice(price) {
-        return new Intl.NumberFormat('ar-SA', {minimumFractionDigits: 0}).format(price);
+        return new Intl.NumberFormat('en-US', {minimumFractionDigits: 0}).format(price);
     }
 });
 </script>

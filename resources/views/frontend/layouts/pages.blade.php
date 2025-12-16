@@ -817,105 +817,181 @@ otpInputs.forEach((input, index) => {
 </script>
   <script>
   document.addEventListener('DOMContentLoaded', function() {
-  class ShoppingCart {
-      constructor() {
-          this.cart = this.loadCart();
-          this.updateCartUI();
-      }
-      loadCart() {
-          const cartData = localStorage.getItem('shoppingCart');
-          return cartData ? JSON.parse(cartData) : [];
-      }
-      saveCart() {
-          localStorage.setItem('shoppingCart', JSON.stringify(this.cart));
-      }
-      addToCart(packageData) {
-          const existingIndex = this.cart.findIndex(item => item.id === packageData.id);
-          if (existingIndex > -1) {
-              this.cart[existingIndex].quantity += 1;
-          } else {
-              this.cart.push({...packageData, quantity: 1});
-          }
-          this.saveCart();
-          this.updateCartUI();
-          this.showNotification(packageData.name);
-      }
-      removeFromCart(packageId) {
-          this.cart = this.cart.filter(item => item.id !== packageId);
-          this.saveCart();
-          this.updateCartUI();
-      }
-      getTotalItems() {
-          return this.cart.reduce((total, item) => total + item.quantity, 0);
-      }
-      getTotalPrice() {
-          return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-      }
-      updateCartUI() {
-          const totalItems = this.getTotalItems();
-          const cartBadge = document.querySelector('.cart-badge');
-          if (cartBadge) {
-              cartBadge.textContent = totalItems;
-              cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
-          }
-          this.updateCartDropdown();
-      }
-      updateCartDropdown() {
-          const cartDropdown = document.querySelector('.cart-dropdown-content');
-          if (!cartDropdown) return;
+    class ShoppingCart {
+    constructor(locale = 'ar') {
+        this.locale = locale;
+        this.cart = this.loadCart();
+        this.translations = {
+            ar: {
+                cartEmpty: 'السلة فارغة',
+                quantity: 'الكمية',
+                total: 'الإجمالي',
+                viewCart: 'عرض السلة',
+                currency: 'ريال',
+                addedToCart: 'تم إضافة "{packageName}" إلى السلة'
+            },
+            en: {
+                cartEmpty: 'Your cart is empty',
+                quantity: 'Quantity',
+                total: 'Total',
+                viewCart: 'View Cart',
+                currency: 'SAR',
+                addedToCart: '"{packageName}" has been added to the cart'
+            }
+        };
+        this.updateCartUI();
+    }
 
-          if (this.cart.length === 0) {
-              cartDropdown.innerHTML = '<p class="text-center p-3" style="color: #666;">السلة فارغة</p>';
-              return;
-          }
+    loadCart() {
+        const cartData = localStorage.getItem('shoppingCart');
+        return cartData ? JSON.parse(cartData) : [];
+    }
 
-          let html = '<div class="cart-items" style="max-height: 400px; overflow-y: auto;">';
-          this.cart.forEach(item => {
-              html += `
-                  <div class="cart-item d-flex gap-2 p-2 border-bottom" style="color: #333;">
-                      <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
-                      <div class="flex-grow-1">
-                          <h6 class="mb-1" style="font-size: 14px;">${item.name}</h6>
-                          <p class="mb-1 text-muted small">الكمية: ${item.quantity}</p>
-                          <p class="mb-0 fw-bold" style="color: var(--secondary);">${this.formatPrice(item.price * item.quantity)}</p>
-                      </div>
-                      <button class="btn btn-sm btn-danger remove-from-cart" data-id="${item.id}" style="height: fit-content;">
-                          <i class="fas fa-trash"></i>
-                      </button>
-                  </div>
-              `;
-          });
-          html += '</div>';
-          html += `
-              <div class="cart-total p-3 border-top">
-                  <div class="d-flex justify-content-between mb-2">
-                      <strong style="color: #333;">الإجمالي:</strong>
-                      <strong style="color: var(--secondary);">${this.formatPrice(this.getTotalPrice())}</strong>
-                  </div>
-                  <a href="/cart" class="btn btn-custom-primary w-100">عرض السلة</a>
-              </div>
-          `;
+    saveCart() {
+        localStorage.setItem('shoppingCart', JSON.stringify(this.cart));
+    }
 
-          cartDropdown.innerHTML = html;
+    addToCart(packageData) {
+        const existingIndex = this.cart.findIndex(item => item.id === packageData.id);
 
-          cartDropdown.querySelectorAll('.remove-from-cart').forEach(btn => {
-              btn.addEventListener('click', (e) => {
-                  const id = parseInt(e.currentTarget.dataset.id);
-                  this.removeFromCart(id);
-              });
-          });
-      }
-      formatPrice(price) {
-          return new Intl.NumberFormat('ar-SA', {minimumFractionDigits: 0}).format(price) + ' ريال';
-      }
-      showNotification(packageName) {
-          const notification = document.createElement('div');
-          notification.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;"><i class="fas fa-check-circle me-2"></i>تم إضافة "${packageName}" إلى السلة<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
-          document.body.appendChild(notification);
-          setTimeout(() => notification.remove(), 3000);
-      }
-  }
-  const cart = new ShoppingCart();
+        if (existingIndex > -1) {
+            this.cart[existingIndex].quantity += 1;
+        } else {
+            this.cart.push({
+                ...packageData,
+                quantity: 1
+            });
+        }
+
+        this.saveCart();
+        this.updateCartUI();
+        this.showNotification(packageData.name);
+    }
+
+    removeFromCart(packageId) {
+        this.cart = this.cart.filter(item => item.id !== packageId);
+        this.saveCart();
+        this.updateCartUI();
+    }
+
+    updateQuantity(packageId, quantity) {
+        const index = this.cart.findIndex(item => item.id === packageId);
+        if (index > -1) {
+            if (quantity <= 0) {
+                this.removeFromCart(packageId);
+            } else {
+                this.cart[index].quantity = quantity;
+                this.saveCart();
+                this.updateCartUI();
+            }
+        }
+    }
+
+    getTotalItems() {
+        return this.cart.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    getTotalPrice() {
+        return this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+
+    updateCartUI() {
+        const totalItems = this.getTotalItems();
+        const cartBadge = document.querySelector('.cart-badge');
+
+        if (cartBadge) {
+            cartBadge.textContent = totalItems;
+            cartBadge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+        }
+
+        this.updateCartDropdown();
+    }
+
+    updateCartDropdown() {
+        const cartDropdown = document.querySelector('.cart-dropdown-content');
+        if (!cartDropdown) return;
+
+        const t = this.translations[this.locale];
+
+        if (this.cart.length === 0) {
+            cartDropdown.innerHTML = `<p class="text-center p-3" style="color: #666;">${t.cartEmpty}</p>`;
+            return;
+        }
+
+        let html = '<div class="cart-items" style="max-height: 400px; overflow-y: auto;">';
+        this.cart.forEach(item => {
+            html += `
+                <div class="cart-item d-flex gap-2 p-2 border-bottom" style="color: #333;">
+                    <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1" style="font-size: 14px;">${item.name}</h6>
+                        <p class="mb-1 text-muted small">${t.quantity}: ${item.quantity}</p>
+                        <p class="mb-0 fw-bold" style="color: var(--secondary);">${this.formatPrice(item.price * item.quantity)}</p>
+                    </div>
+                    <button class="btn btn-sm btn-danger remove-from-cart" data-id="${item.id}" style="height: fit-content;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        });
+        html += '</div>';
+        html += `
+            <div class="cart-total p-3 border-top">
+                <div class="d-flex justify-content-between mb-2">
+                    <strong style="color: #333;">${t.total}:</strong>
+                    <strong style="color: var(--secondary);">${this.formatPrice(this.getTotalPrice())}</strong>
+                </div>
+                <a href="/cart" class="btn btn-custom-primary w-100">${t.viewCart}</a>
+            </div>
+        `;
+
+        cartDropdown.innerHTML = html;
+
+        cartDropdown.querySelectorAll('.remove-from-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.currentTarget.dataset.id);
+                this.removeFromCart(id);
+            });
+        });
+    }
+
+    formatPrice(price) {
+        const t = this.translations[this.locale];
+        const numberFormatLocale = this.locale === 'ar' ? 'ar-SA' : 'en-US';
+        return new Intl.NumberFormat(numberFormatLocale, {
+            minimumFractionDigits: 0
+        }).format(price) + ` ${t.currency}`;
+    }
+
+    showNotification(packageName) {
+        const t = this.translations[this.locale];
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                <i class="fas fa-check-circle me-2"></i>
+                ${t.addedToCart.replace('{packageName}', packageName)}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+}
+
+// Example of how to use it:
+// const locale = document.documentElement.lang; // Assuming you have <html lang="ar"> or <html lang="en">
+// const shoppingCart = new ShoppingCart(locale);
+
+// جلب لغة الموقع الحالية من Laravel
+const siteLocale = "{{ app()->getLocale() }}";
+
+// إنشاء ShoppingCart باستخدام لغة الموقع
+const cart = new ShoppingCart(siteLocale);
+
   function attachCartButtons() {
       document.querySelectorAll('.add-to-cart-btn').forEach(button => {
           button.addEventListener('click', function(e) {

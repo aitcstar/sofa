@@ -161,7 +161,7 @@
                                                   title="{{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
                                             </span>
                                         @empty
-                                            <span>لا توجد ألوان</span>
+                                        <span> {{ app()->getLocale() == 'ar' ? 'لا توجد ألوان' : 'No Color' }} </span>
                                         @endforelse
                                     </div>
                                 </div>

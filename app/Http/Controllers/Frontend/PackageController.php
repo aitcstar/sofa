@@ -299,6 +299,7 @@ public function show($slug)
     // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
 if ($slug !== $slugLower) {
     // تحديد اسم الروت حسب اللغة
+    dd(app()->getLocale());
     $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 
     return redirect()->route($routeName, $slugLower, 301);

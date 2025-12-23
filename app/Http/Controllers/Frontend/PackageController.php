@@ -271,6 +271,8 @@ public function show($slug)
 {
     $seo = SeoSetting::where('page', 'category')->first();
 
+    $slug = strtolower($slug);
+
     // حدد أي slug تستخدمه حسب اللغة الحالية
     $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
 

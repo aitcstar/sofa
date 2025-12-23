@@ -37,7 +37,7 @@ header .header-nav .header-nav-item::before {
   margin-top: -101px;
   z-index: 20;
   position: relative;
-  height: 202px;
+  height: 240px;
   max-width: 1110px;
 }
 

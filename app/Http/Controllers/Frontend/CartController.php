@@ -19,15 +19,21 @@ class CartController extends Controller
     {
         $cartItems = Cart::with("package")->where("user_id", auth()->id())->get();
 
-        $seo = app()->getLocale() == 'ar' ? 'السلة' : 'Cart';
-        $seo->index_status = 'noindex';
+        $seo = [
+            'title' => app()->getLocale() == 'ar' ? 'السلة' : 'Cart',
+            'index_status' => 'noindex',
+        ];
+
         return view("frontend.cart.index", compact("cartItems","seo"));
     }
 
     public function checkout()
     {
-        $seo = app()->getLocale() == 'ar' ? 'الدفع' : 'checkout';
-        $seo->index_status = 'noindex';
+        $seo = [
+            'title' => app()->getLocale() == 'ar' ? 'الدفع' : 'checkout',
+            'index_status' => 'noindex',
+        ];
+
         return view("frontend.cart.checkout", compact("seo"));
     }
 

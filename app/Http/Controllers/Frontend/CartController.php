@@ -18,14 +18,15 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::with("package")->where("user_id", auth()->id())->get();
-        $seo = SeoSetting::where('page', 'blog')->first();
+
+        $seo = app()->getLocale() == 'ar' ? 'السلة' : 'Cart';
 
         return view("frontend.cart.index", compact("cartItems","seo"));
     }
 
     public function checkout()
     {
-        $seo = SeoSetting::where('page', 'blog')->first();
+        $seo = app()->getLocale() == 'ar' ? 'الدفع' : 'checkout';
 
         return view("frontend.cart.checkout", compact("seo"));
     }

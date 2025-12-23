@@ -46,7 +46,30 @@
   <section class="step-section">
     <div class="content mx-auto">
         <h5 class="heading-h8 text-center mb-4">
-            {{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }}
+            {{ optional($steps->where('order', 0)->first())->{'title_'.app()->getLocale()} }} &nbsp;
+            <i class="fa-solid fa-hourglass-half hourglass-mobile-safe"
+   style="color:#ad996f; font-size:32px;"></i>
+
+<style>
+.hourglass-mobile-safe {
+  animation: hourglassFlip 8s linear infinite;
+  will-change: transform;
+}
+
+@keyframes hourglassFlip {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(180deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* احترام إعدادات تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  .hourglass-mobile-safe {
+    animation-duration: 8s;
+  }
+}
+</style>
+
         </h5>
 
         <!-- نفس الشكل للديسكتوب والموبايل -->
@@ -93,7 +116,7 @@
     display: flex;
     gap: 24px;
     position: relative;
-    max-width: 930px;
+    max-width: 1110px;
     margin: 0 auto;
 }
 
@@ -103,17 +126,10 @@
     right: auto!important;
 }
 
-.steps-container .line {
-    position: absolute;
-    top: 20px;
-    left: 67px !important;
-    height: 4px;
-    width: 100% !important;
-    background: #ccc;
-}
+
 
 .step-box {
-    width: 150px;
+    /*width: 150px;*/
     text-align: center;
 }
 

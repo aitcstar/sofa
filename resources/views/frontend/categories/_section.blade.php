@@ -29,7 +29,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column gap-sm-6">
                             <h5 class="sub-heading-3"> {{ $package->{'name_'.app()->getLocale()} }}</h5>
-                            <p class="body-3 mb-0">
+                            <p class="body-3 mb-0" style="color: rgb(105 28 17);font-weight: bold;">
                                 {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                             </p>
                         </div>
@@ -95,10 +95,11 @@
                         <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
                         <div class="d-flex gap-sm-5">
                             @forelse($colors as $color)
-                                <span class="rounded-pill"
-                                      style="width: 34px; height: 16px; background-color: {{ $color['color_code'] ?? '#000' }}"
-                                      title="{{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
+                            <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                <span class="body-4">
+                                      {{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}
                                 </span>
+                            </div>
                             @empty
                                 <span> {{ app()->getLocale() == 'ar' ? 'لا توجد ألوان' : 'No Color' }} </span>
                             @endforelse

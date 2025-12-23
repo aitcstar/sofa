@@ -92,7 +92,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex flex-column gap-sm-6">
                                         <h5 class="sub-heading-3"> {{ $package->{'name_'.app()->getLocale()} }}</h5>
-                                        <p class="body-3 mb-0">
+                                        <p class="body-3 mb-0" style="color: rgb(105 28 17);font-weight: bold;">
                                             {{ $package->{'description_'.app()->getLocale()} ?: 'مثالي للمساحات الصغيرة، يوفر الراحة والأناقة' }}
                                         </p>
                                     </div>

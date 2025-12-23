@@ -139,14 +139,15 @@
 
                     </div>
 
-                    <div class="gallery-item-content d-flex flex-column gap-sm-5" style="margin: 23px;">
+                    <div class="gallery-item-content d-flex flex-column gap-sm-5" style="margin: -4px;">
                         @if($exhibition->package)
                             <!-- اسم المعرض واسم الباكج -->
                             <div class="d-flex flex-column gap-sm-6">
                                 <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
                                     ? route('gallery.details', $exhibition->id)
                                     : route('gallery.details.en', $exhibition->id) }}">
-                                    {{ app()->getLocale() === 'ar' ? $exhibition->package->name_ar : $exhibition->package->name_en }}
+                                    {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                     {{--{{ app()->getLocale() === 'ar' ? $exhibition->package->name_ar : $exhibition->package->name_en }}--}}
                                 </a>
 
                                 {{--<a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
@@ -166,6 +167,10 @@
                                     </p>
                                     <div class="d-flex gap-sm-6 align-items-center"
                                          style="border: 1px solid var(--surface-border); border-radius: var(--radius-small-box-2); padding: 2px 14px;">
+                                        <p class="body-4 text-subheading mb-0">
+                                            {{ $exhibition->package->packageUnitItems->groupBy('unit_id')->count() }}
+                                            {{ __('site.unit') }}
+                                        </p> |
                                         <p class="body-4 text-subheading mb-0">
                                             {{ $exhibition->package->packageUnitItems->count() }}
                                             {{ __('site.piece') }}

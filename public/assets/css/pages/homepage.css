@@ -38,7 +38,7 @@ header .header-nav .header-nav-item::before {
   z-index: 20;
   position: relative;
   height: 202px;
-  max-width: 930px;
+  max-width: 1110px;
 }
 
 .step-section .content .step-item-icon {
@@ -58,6 +58,29 @@ header .header-nav .header-nav-item::before {
   z-index: 1;
   width: calc(100% - 120px);
   background-color: var(--secondary);
+}
+
+/* السهم */
+.step-section .content .line::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 8px solid var(--secondary);
+}
+
+.steps-container .line {
+    position: absolute;
+    top: 20px;
+    left: 105px !important;
+    height: 4px;
+    width: 100% !important;
+    background: #ccc;
 }
 
 @media (max-width: 767.98px) {
@@ -85,6 +108,8 @@ header .header-nav .header-nav-item::before {
     left: 48px;
     height: 3px;
     width: calc(100% - 96px);
+
+    left: 182px !important;
   }
 }
 

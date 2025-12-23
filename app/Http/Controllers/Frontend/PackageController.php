@@ -286,6 +286,7 @@ public function show($slug)
     if (!$package) {
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
+            dd(app()->getLocale());
             // تحديد اسم الروت حسب اللغة
             $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 

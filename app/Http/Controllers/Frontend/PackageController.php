@@ -286,10 +286,14 @@ public function show($slug)
     if (!$package) {
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
-            return redirect()->route('packages.show.en', $oldSlug->package->$slugColumn, 301);
+            // تحديد اسم الروت حسب اللغة
+            $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
+
+            return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
         }
         abort(404);
     }
+
 
     // لو الـ slug الحالي في URL ليس lowercase، نعيد توجيه للـ lowercase
     if ($slug !== $slugLower) {

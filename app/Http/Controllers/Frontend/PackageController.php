@@ -266,16 +266,19 @@ public function show($slug)
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
 */
-
 public function show($slug)
 {
-    $seo = SeoSetting::where('page', 'category')->first();
-    dd(app()->getLocale());
-    // حول slug للـ lowercase قبل البحث
+    // حول slug للحروف الصغيرة فورًا
     $slugLower = strtolower($slug);
 
     $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
 
+    // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
+    if ($slug !== $slugLower) {
+        return redirect()->route('packages.show', $slugLower, 301);
+    }
+
+    // جلب الباقة حسب slug
     $package = Package::with([
         'images',
         'packageUnitItems.unit.images',
@@ -283,41 +286,29 @@ public function show($slug)
         'packageUnitItems.item'
     ])->where($slugColumn, $slugLower)->first();
 
+    // إذا لم توجد الباقة، تحقق من أي slug قديم
     if (!$package) {
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
-            // تحديد اسم الروت حسب اللغة
-
-            $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
-
-            return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
+            return redirect()->route('packages.show', $oldSlug->package->$slugColumn, 301);
         }
         abort(404);
     }
 
+    // تحميل بيانات إضافية
+    $seo = SeoSetting::where('page', 'category')->first();
 
-    // لو الـ slug الحالي في URL ليس lowercase، نعيد توجيه للـ lowercase
-    // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
-if ($slug !== $slugLower) {
-    // تحديد اسم الروت حسب اللغة
-    //dd(app()->getLocale());
-    $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
-
-    return redirect()->route($routeName, $slugLower, 301);
-}
-// التقييمات
-    //$testimonials = Testimonial::latest()->take(10)->get();
-    $id = Package::where($slugColumn, $slug)->value('id');
+    // التقييمات
     $testimonials = Testimonial::where('status', 'approved')
-    ->where('package_id', $id)
-    ->get();
+        ->where('package_id', $package->id)
+        ->get();
 
     // الأسئلة الشائعة
     $faqs = Faq::where('page', 'category')
                 ->orderBy('sort', 'asc')
                 ->get();
 
-    // استخراج أنواع الوحدات الفريدة من الجدول الوسيط
+    // استخراج أنواع الوحدات الفريدة
     $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
         ->where('package_id', $package->id)
         ->get()

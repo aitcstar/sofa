@@ -107,7 +107,11 @@ Route::post('/verify-code', [AuthController::class, 'verifyCode'])->name('verify
 Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index');
-    Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show');
+   // Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show');
+   Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('packages.show');
+
     Route::post('/package', [FrontendPackageController::class, 'testimonialsstore'])->name('packages.testimonialsstore');
 
 
@@ -154,7 +158,11 @@ Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
 Route::group(['prefix' => 'en', 'middleware' => 'locale'], function () { // ✅ أضف middleware هنا أيضاً
     Route::get('/', [HomeController::class, 'index'])->name('home.en');
     Route::get('/packages', [FrontendPackageController::class, 'index'])->name('packages.index.en');
-    Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show.en');
+   // Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])->name('packages.show.en');
+    Route::get('/package/{slug}', [FrontendPackageController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('packages.show.en');
+
     Route::post('/package', [FrontendPackageController::class, 'testimonialsstore'])->name('packages.testimonialsstore.en');
     Route::delete('/testimonial/{id}/delete', [ProfileController::class, 'destroy'])->name('user.testimonials.delete.en');
 

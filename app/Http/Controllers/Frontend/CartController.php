@@ -22,7 +22,8 @@ class CartController extends Controller
         $seo = new \stdClass();
         $seo->title = app()->getLocale() == 'ar' ? 'السلة' : 'Cart';
         $seo->index_status = 'noindex';
-
+        $seo->slug_en = 'cart'; // أو أي slug ديناميكي حسب الصفحة
+        $seo->slug_ar = 'السلة';
 
         return view("frontend.cart.index", compact("cartItems","seo"));
     }
@@ -32,7 +33,8 @@ class CartController extends Controller
         $seo = new \stdClass();
         $seo->title = aapp()->getLocale() == 'ar' ? 'الدفع' : 'checkout';
         $seo->index_status = 'noindex';
-
+        $seo->slug_en = 'checkout'; // أو أي slug ديناميكي حسب الصفحة
+        $seo->slug_ar = 'الدفع';
 
         return view("frontend.cart.checkout", compact("seo"));
     }

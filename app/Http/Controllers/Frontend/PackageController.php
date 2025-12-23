@@ -269,57 +269,32 @@ public function show($slug)
 
 public function show($slug)
 {
-    $seo = SeoSetting::where('page', 'category')->first();
+    // حول slug للـ lowercase قبل البحث
+    $slugLower = strtolower($slug);
 
-    $slug = strtolower($slug);
-
-    // حدد أي slug تستخدمه حسب اللغة الحالية
     $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
 
-    // تحميل الباقة حسب الـ slug الحالي
     $package = Package::with([
         'images',
         'packageUnitItems.unit.images',
         'packageUnitItems.unit.designs',
         'packageUnitItems.item'
-    ])->where($slugColumn, $slug)->first();
+    ])->where($slugColumn, $slugLower)->first();
 
-    // لو مش موجود، شوف إذا كان slug قديم وحوّل للجديد
     if (!$package) {
-        $oldSlug = PackageSlug::where('slug', $slug)->first();
+        $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
-            // إعادة توجيه 301 للـ slug الجديد
-            return redirect()->route('packages.show', $oldSlug->package->$slugColumn, 301);
+            return redirect()->route('packages.show.en', $oldSlug->package->$slugColumn, 301);
         }
         abort(404);
     }
 
-    // التقييمات
-    $testimonials = Testimonial::where('status', 'approved')
-        ->where('package_id', $package->id)
-        ->get();
+    // لو الـ slug الحالي في URL ليس lowercase، نعيد توجيه للـ lowercase
+    if ($slug !== $slugLower) {
+        return redirect()->route('packages.show.en', $slugLower, 301);
+    }
 
-    // الأسئلة الشائعة
-    $faqs = Faq::where('page', 'category')
-                ->orderBy('sort', 'asc')
-                ->get();
-
-    // استخراج أنواع الوحدات الفريدة من الجدول الوسيط
-    $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
-        ->where('package_id', $package->id)
-        ->get()
-        ->pluck('unit')
-        ->unique('id')
-        ->values()
-        ->map(function ($unit) {
-            return [
-                'type' => $unit->type,
-                'name_ar' => $unit->name_ar,
-                'name_en' => $unit->name_en,
-            ];
-        });
-
-    return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
+    return view('frontend.categories.show', compact('package'));
 }
 
 

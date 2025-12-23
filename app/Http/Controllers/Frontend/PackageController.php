@@ -286,8 +286,7 @@ public function show($slug)
     if (!$package) {
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
-            dd(app()->getLocale());
-            // تحديد اسم الروت حسب اللغة
+\            // تحديد اسم الروت حسب اللغة
             $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 
             return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
@@ -297,9 +296,13 @@ public function show($slug)
 
 
     // لو الـ slug الحالي في URL ليس lowercase، نعيد توجيه للـ lowercase
-    if ($slug !== $slugLower) {
-        return redirect()->route('packages.show.en', $slugLower, 301);
-    }
+    // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
+if ($slug !== $slugLower) {
+    // تحديد اسم الروت حسب اللغة
+    $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
+
+    return redirect()->route($routeName, $slugLower, 301);
+}
 // التقييمات
     //$testimonials = Testimonial::latest()->take(10)->get();
     $id = Package::where($slugColumn, $slug)->value('id');

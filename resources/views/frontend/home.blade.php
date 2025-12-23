@@ -494,13 +494,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     @if($exhibition->primaryImage)
                         <div class="gallery-details-image-item">
                             <div class="gallery-details-image-sub-item gallery-large-img">
-                                <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
-                                     alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
-                                <div class="image-overlay">
-                                    <span class="sub-heading-2">
-                                        {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
-                                    </span>
-                                </div>
+                                <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+                                    ? route('gallery.details', $exhibition->id)
+                                    : route('gallery.details.en', $exhibition->id) }}">
+                                    <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                        alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
+                                    <div class="image-overlay">
+                                        <span class="sub-heading-2">
+                                            {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                        </span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     @endif
@@ -513,13 +517,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     @foreach($exhibitions->slice(2, 2) as $exhibition)
                         @if($exhibition->primaryImage)
                             <div class="gallery-details-image-sub-item gallery-small-img" style="flex:0.5;">
-                                <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
-                                     alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
-                                <div class="image-overlay">
-                                    <span class="sub-heading-2">
-                                        {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
-                                    </span>
-                                </div>
+                                <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+                                    ? route('gallery.details', $exhibition->id)
+                                    : route('gallery.details.en', $exhibition->id) }}">
+                                    <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                        alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
+                                    <div class="image-overlay">
+                                        <span class="sub-heading-2">
+                                            {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                        </span>
+                                    </div>
+                                </a>
                             </div>
                         @endif
                     @endforeach
@@ -529,13 +537,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     @php $exhibition = $exhibitions[4]; @endphp
                     <div class="gallery-details-image-item mt-sm">
                         <div class="gallery-details-image-sub-item gallery-large-img">
-                            <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
-                                 alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
-                            <div class="image-overlay">
-                                <span class="sub-heading-2">
-                                    {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
-                                </span>
-                            </div>
+                            <a class="sub-heading-4" href="{{ app()->getLocale() === 'ar'
+                                ? route('gallery.details', $exhibition->id)
+                                : route('gallery.details.en', $exhibition->id) }}">
+                                <img src="{{ asset('storage/' . $exhibition->primaryImage->image) }}"
+                                    alt="{{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}">
+                                <div class="image-overlay">
+                                    <span class="sub-heading-2">
+                                        {{ app()->getLocale() === 'ar' ? $exhibition->name_ar : $exhibition->name_en }}
+                                    </span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 @endif

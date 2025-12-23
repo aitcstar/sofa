@@ -110,4 +110,31 @@ public function packageUnitItems()
 }
 
 
+
+protected static function booted()
+    {
+        // تحويل slug للحروف الصغيرة قبل الحفظ
+        static::saving(function ($package) {
+            if ($package->slug) {
+                $package->slug = Str::slug(strtolower($package->slug));
+            }
+        });
+
+        // حفظ slug القديم عند التحديث
+        static::updating(function ($package) {
+            if ($package->isDirty('slug')) {
+                \App\Models\PackageSlug::create([
+                    'package_id' => $package->id,
+                    'slug' => $package->getOriginal('slug'),
+                ]);
+            }
+        });
+    }
+
+    public function oldSlugs()
+    {
+        return $this->hasMany(PackageSlug::class);
+    }
+
+
 }

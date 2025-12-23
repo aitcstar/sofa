@@ -11,6 +11,8 @@ use App\Models\Testimonial;
 use App\Models\Faq;
 use App\Models\PackageUnitItem;
 use App\Models\Unit;
+use App\Models\PackageSlug;
+
 class PackageController extends Controller
 {
     /*public function index()
@@ -218,6 +220,7 @@ $unitTypes = Unit::select('name_ar', 'name_en')
     return view('frontend.categories.show', compact('seo','package', 'testimonials', 'faqs','unitTypes'));
 }*/
 
+/*
 public function show($slug)
 {
     $seo = SeoSetting::where('page', 'category')->first();
@@ -262,58 +265,61 @@ public function show($slug)
 
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
-
-/*
-public function filter(Request $request)
-{
-    //dd($request->all());
-    $query = Package::query()->with(['packageUnitItems.unit','packageUnitItems.item']);
-
-    $answers = $request->answers ?? [];
-
-    // فلترة حسب اسم الباقة (عربي أو إنجليزي)
-    if (!empty($answers[5])) {
-        $packageName = $answers[5];
-        //dd($packageName);
-        $query->where(function ($q) use ($packageName) {
-            $q->where('name_ar', 'LIKE', "%{$packageName}%")
-            ->orWhere('name_en', 'LIKE', "%{$packageName}%");
-        });
-    }
-
-
-
-
-    // فلترة حسب الألوان
-    if (!empty($answers[6])) {
-        $color = $answers[6];
-        $query->whereHas('packageUnitItems.item', function ($q) use ($color) {
-            $q->where('background_color', $color)
-              ->orWhere('color_ar', 'LIKE', "%{$color}%")
-              ->orWhere('color_en', 'LIKE', "%{$color}%");
-        });
-    }
-
-
-
-    // فلترة بالسعر
-    if (!empty($request->price_min) && !empty($request->price_max)) {
-        $query->whereBetween('price', [$request->price_min, $request->price_max]);
-    }
-
-    // إذا لم يكن هناك فلتر (أي عند أول تحميل الصفحة) نجيب أول 4 باكجات فقط
-    if (empty($request->all())) {
-        // لو مفيش أي فلاتر في الطلب، هات فقط الباقات المعروضة في الرئيسية
-        $packages = $query->where('show_in_home', 1)->take(4)->get();
-    } else {
-        // لو في فلاتر، هات الكل بناءً عليها
-        $packages = $query->get();
-    }
-
-
-    return view('frontend.categories._section', compact('packages'));
-}
 */
+
+public function show($slug)
+{
+    $seo = SeoSetting::where('page', 'category')->first();
+
+    // حدد أي slug تستخدمه حسب اللغة الحالية
+    $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
+
+    // تحميل الباقة حسب الـ slug الحالي
+    $package = Package::with([
+        'images',
+        'packageUnitItems.unit.images',
+        'packageUnitItems.unit.designs',
+        'packageUnitItems.item'
+    ])->where($slugColumn, $slug)->first();
+
+    // لو مش موجود، شوف إذا كان slug قديم وحوّل للجديد
+    if (!$package) {
+        $oldSlug = PackageSlug::where('slug', $slug)->first();
+        if ($oldSlug) {
+            // إعادة توجيه 301 للـ slug الجديد
+            return redirect()->route('packages.show', $oldSlug->package->$slugColumn, 301);
+        }
+        abort(404);
+    }
+
+    // التقييمات
+    $testimonials = Testimonial::where('status', 'approved')
+        ->where('package_id', $package->id)
+        ->get();
+
+    // الأسئلة الشائعة
+    $faqs = Faq::where('page', 'category')
+                ->orderBy('sort', 'asc')
+                ->get();
+
+    // استخراج أنواع الوحدات الفريدة من الجدول الوسيط
+    $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
+        ->where('package_id', $package->id)
+        ->get()
+        ->pluck('unit')
+        ->unique('id')
+        ->values()
+        ->map(function ($unit) {
+            return [
+                'type' => $unit->type,
+                'name_ar' => $unit->name_ar,
+                'name_en' => $unit->name_en,
+            ];
+        });
+
+    return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
+}
+
 
 public function filter(Request $request)
 {

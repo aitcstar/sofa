@@ -270,7 +270,7 @@ public function show($slug)
 public function show($slug)
 {
     $seo = SeoSetting::where('page', 'category')->first();
-
+    dd(app()->getLocale());
     // حول slug للـ lowercase قبل البحث
     $slugLower = strtolower($slug);
 
@@ -287,7 +287,7 @@ public function show($slug)
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
             // تحديد اسم الروت حسب اللغة
-            dd(app()->getLocale());
+
             $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 
             return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
@@ -300,7 +300,7 @@ public function show($slug)
     // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
 if ($slug !== $slugLower) {
     // تحديد اسم الروت حسب اللغة
-    dd(app()->getLocale());
+    //dd(app()->getLocale());
     $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 
     return redirect()->route($routeName, $slugLower, 301);

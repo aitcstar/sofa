@@ -269,6 +269,8 @@ public function show($slug)
 
 public function show($slug)
 {
+    $seo = SeoSetting::where('page', 'category')->first();
+
     // حول slug للـ lowercase قبل البحث
     $slugLower = strtolower($slug);
 

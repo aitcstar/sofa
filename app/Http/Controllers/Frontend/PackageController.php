@@ -322,7 +322,7 @@ public function show($slug)
 
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
-}
+
 
 
 public function filter(Request $request)

@@ -293,8 +293,35 @@ public function show($slug)
     if ($slug !== $slugLower) {
         return redirect()->route('packages.show.en', $slugLower, 301);
     }
+// التقييمات
+    //$testimonials = Testimonial::latest()->take(10)->get();
+    $id = Package::where($slugColumn, $slug)->value('id');
+    $testimonials = Testimonial::where('status', 'approved')
+    ->where('package_id', $id)
+    ->get();
 
-    return view('frontend.categories.show', compact('package'));
+    // الأسئلة الشائعة
+    $faqs = Faq::where('page', 'category')
+                ->orderBy('sort', 'asc')
+                ->get();
+
+    // استخراج أنواع الوحدات الفريدة من الجدول الوسيط
+    $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
+        ->where('package_id', $package->id)
+        ->get()
+        ->pluck('unit')
+        ->unique('id')
+        ->values()
+        ->map(function ($unit) {
+            return [
+                'type' => $unit->type,
+                'name_ar' => $unit->name_ar,
+                'name_en' => $unit->name_en,
+            ];
+        });
+
+    return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
+}
 }
 
 

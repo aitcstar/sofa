@@ -32,7 +32,7 @@ class CartController extends Controller
     public function checkout()
     {
         $seo = new \stdClass();
-        $seo->title = aapp()->getLocale() == 'ar' ? 'الدفع' : 'checkout';
+        $seo->title = app()->getLocale() == 'ar' ? 'الدفع' : 'checkout';
         $seo->index_status = 'noindex';
         $seo->slug_en = 'checkout'; // أو أي slug ديناميكي حسب الصفحة
         $seo->slug_ar = 'الدفع';

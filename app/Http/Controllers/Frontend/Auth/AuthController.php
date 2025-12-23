@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator; // ← لا تنسَ هذا في الأعلى
 use App\Models\SeoSetting;
 use App\Models\AboutPage;
+use App\Mail\SendOtpMail;
+
 class AuthController extends Controller
 {
 
@@ -45,11 +47,36 @@ class AuthController extends Controller
         }
 
         // توليد كود OTP جديد
-        $user->otpcode = '12345';//rand(10000, 99999);
-        $user->save();
+        //$user->otpcode = '12345';//rand(10000, 99999);
+        //$user->save();
 
         // حفظ في الجلسة
+        //session(['otp_user_id' => $user->id]);
+
+
+        // منع إعادة الإرسال لو لسه صالح
+        if ($user->otp_expires_at && $user->otp_expires_at->isFuture()) {
+            return redirect()->back()
+                ->withErrors(['phone' => 'تم إرسال رمز بالفعل، برجاء الانتظار.'])
+                ->with('open_login_tab', true);
+        }
+
+        $otp = rand(10000, 99999);
+
+        $user->otpcode = $otp;
+        $user->otp_expires_at = Carbon::now()->addMinutes(5);
+        $user->save();
+
         session(['otp_user_id' => $user->id]);
+
+        try {
+            Mail::to($user->email)->send(new SendOtpMail($otp));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'phone' => 'حدث خطأ أثناء إرسال رمز التحقق.'
+            ]);
+        }
+
 
         return redirect()->back()->with('show_otp_modal', true);
     }
@@ -70,13 +97,13 @@ class AuthController extends Controller
                 ->with('open_register_tab', true); // لفتح تاب التسجيل تلقائيًا
         }
 
-
+        $otp = rand(10000, 99999);
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
             'phone'     => $request->phone,
             'code'      => $request->country_code,
-            'otpcode'   => 12345,//rand(10000, 99999), // أو استخدم OTP حقيقي
+            'otpcode'   => $otp,//rand(10000, 99999), // أو استخدم OTP حقيقي
         ]);
 
         // حفظ بيانات المستخدم في الجلسة لاستخدامها في التحقق
@@ -86,12 +113,21 @@ class AuthController extends Controller
             'otp_from_registration' => true,
         ]);
 
+        try {
+            Mail::to($user->email)->send(new SendOtpMail($otp));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'email' => 'حدث خطأ أثناء إرسال رمز التحقق. حاول مرة أخرى.'
+            ]);
+        }
+
+
         // إعادة التوجيه لنفس الصفحة مع فلش يطلب فتح مودال OTP
         return redirect()->back()->with('show_otp_modal', true);
     }
 
 
-
+/*
     public function verifyCode(Request $request)
     {
         $request->validate([
@@ -129,4 +165,49 @@ class AuthController extends Controller
             ->with('otp_error', __('site.invalid_otp'))
             ->with('show_otp_modal', true);
     }
+    */
+    public function verifyCode(Request $request)
+{
+    $request->validate([
+        'code' => 'required|array|size:5',
+        'code.*' => 'required|numeric|digits:1',
+    ]);
+
+    $fullCode = implode('', $request->code);
+
+    $userId = session('otp_user_id');
+    if (!$userId) {
+        return redirect()->route('home')->withErrors(['error' => __('site.session_expired')]);
+    }
+
+    $user = User::find($userId);
+
+    // ✅ التحقق من صحة الكود وصلاحية OTP
+    if (!$user || $user->otpcode != $fullCode || ($user->otp_expires_at && $user->otp_expires_at->isPast())) {
+        return redirect()->back()
+            ->with('otp_error', __('site.invalid_or_expired_otp'))
+            ->with('show_otp_modal', true);
+    }
+
+    // تسجيل الدخول
+    Auth::login($user);
+
+    // ✅ حذف OTP بعد الاستخدام
+    $user->otpcode = null;
+    $user->otp_expires_at = null;
+    $user->save();
+
+    // تنظيف الجلسة
+    $fromRegistration = session()->has('otp_from_registration');
+    session()->forget(['otp_user_id', 'otp_phone', 'otp_from_registration']);
+
+    if ($fromRegistration) {
+        $seo = SeoSetting::where('page', 'about')->first();
+        $sections = AboutPage::all();
+        return view('frontend.pages.welcome', compact('seo', 'sections'));
+    }
+
+    return redirect()->intended('/');
+}
+
 }

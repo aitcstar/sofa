@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator; // ← لا تنسَ هذا في ال�
 use App\Models\SeoSetting;
 use App\Models\AboutPage;
 use App\Mail\SendOtpMail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {

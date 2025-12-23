@@ -24,7 +24,8 @@ class CartController extends Controller
         $seo->index_status = 'noindex';
         $seo->slug_en = 'cart'; // أو أي slug ديناميكي حسب الصفحة
         $seo->slug_ar = 'السلة';
-
+        $seo->meta_title_ar = 'السلة';
+        $seo->meta_title_en = 'cart';
         return view("frontend.cart.index", compact("cartItems","seo"));
     }
 
@@ -35,7 +36,8 @@ class CartController extends Controller
         $seo->index_status = 'noindex';
         $seo->slug_en = 'checkout'; // أو أي slug ديناميكي حسب الصفحة
         $seo->slug_ar = 'الدفع';
-
+        $seo->meta_title_ar = 'الدفع';
+        $seo->meta_title_en = 'checkout';
         return view("frontend.cart.checkout", compact("seo"));
     }
 

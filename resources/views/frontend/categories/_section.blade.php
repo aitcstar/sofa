@@ -161,11 +161,19 @@
                     <!--   <a href="https://wa.me/{{ $siteSettings->whatsapp }}" target="_blank" class="btn btn-custom-primary w-100">
                         <p class="text-nowrap mb-0">{{ __('site.send_whatsapp_quote') }}</p>
                         <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i>
-                    </a>-->
+                    </a>
 
                     <a href="{{ app()->getLocale() == 'ar'
                         ? route('packages.show', ['slug' => $package->slug_ar ?? $package->id])
                         : route('packages.show.en', ['slug' => $package->slug_en ?? $package->id]) }}"
+                        class="btn btn-custom-secondary w-100">
+                        <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
+                        <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>
+                    </a>-->
+
+                    <a href="{{ app()->getLocale() == 'ar'
+                        ? route('packages.show', ['slug' => strtolower($package->slug_ar ?? $package->id)])
+                        : route('packages.show.en', ['slug' => strtolower($package->slug_en ?? $package->id)]) }}"
                         class="btn btn-custom-secondary w-100">
                         <span style="white-space: nowrap;">{{ __('site.view_details') }}</span>
                         <i class="fa-solid fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} action-icon"></i>

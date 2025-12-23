@@ -272,10 +272,11 @@ public function show($slug)
     $slugLower = strtolower($slug);
 
     $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
+    $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
 
     // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
     if ($slug !== $slugLower) {
-        return redirect()->route('packages.show', $slugLower, 301);
+        return redirect()->route($routeName, $slugLower, 301);
     }
 
     // جلب الباقة حسب slug
@@ -290,7 +291,7 @@ public function show($slug)
     if (!$package) {
         $oldSlug = PackageSlug::where('slug', $slugLower)->first();
         if ($oldSlug) {
-            return redirect()->route('packages.show', $oldSlug->package->$slugColumn, 301);
+            return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
         }
         abort(404);
     }
@@ -298,17 +299,14 @@ public function show($slug)
     // تحميل بيانات إضافية
     $seo = SeoSetting::where('page', 'category')->first();
 
-    // التقييمات
     $testimonials = Testimonial::where('status', 'approved')
         ->where('package_id', $package->id)
         ->get();
 
-    // الأسئلة الشائعة
     $faqs = Faq::where('page', 'category')
                 ->orderBy('sort', 'asc')
                 ->get();
 
-    // استخراج أنواع الوحدات الفريدة
     $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
         ->where('package_id', $package->id)
         ->get()
@@ -325,6 +323,7 @@ public function show($slug)
 
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
 }
+
 
 
 

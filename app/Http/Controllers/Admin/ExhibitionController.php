@@ -41,8 +41,8 @@ class ExhibitionController extends Controller
             'name_en' => 'required|string|max:255',
             'summary_ar' => 'nullable|string',
             'summary_en' => 'nullable|string',
-            //'description_ar' => 'nullable|string',
-            //'description_en' => 'nullable|string',
+            'city_ar' => 'nullable|string',
+            'city_en' => 'nullable|string',
 
             'meta_title_en' => 'nullable|string',
             'meta_title_ar' => 'nullable|string',
@@ -118,7 +118,8 @@ class ExhibitionController extends Controller
         'meta_description_ar' => 'nullable|string',
         'slug_en' => 'nullable|string',
         'slug_ar' => 'nullable|string',
-
+        'city_ar' => 'nullable|string',
+        'city_en' => 'nullable|string',
         'delivery_date' => 'nullable|date',
         'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg',
         'steps' => 'nullable|array',
@@ -136,7 +137,7 @@ class ExhibitionController extends Controller
         'category_id', 'package_id', 'name_ar', 'name_en',
         'summary_ar', 'summary_en', 'delivery_date',
         'meta_title_en',  'meta_title_ar' ,'meta_description_en',
-        'meta_description_ar', 'slug_en' , 'slug_ar',
+        'meta_description_ar', 'slug_en' , 'slug_ar', 'city_ar' , 'city_en',
     ]));
 
     // معالجة الصور الجديدة

@@ -101,14 +101,14 @@
                         <textarea name="summary_en" class="form-control"></textarea>
                     </div>
 
-                    <!--<div class="col-md-6 mb-3">
-                        <label>الوصف (عربي)</label>
-                        <textarea name="description_ar" class="form-control"></textarea>
+                    <div class="col-md-6 mb-3">
+                        <label>المدينه (عربي)</label>
+                        <input type="text" name="city_ar" class="form-control">
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label>الوصف (إنجليزي)</label>
-                        <textarea name="description_en" class="form-control"></textarea>
-                    </div>-->
+                        <label>المدينه (إنجليزي)</label>
+                        <input type="text" name="city_en" class="form-control">
+                    </div>
 
                     <div class="col-md-6 mb-3">
                         <label>تاريخ التسليم</label>

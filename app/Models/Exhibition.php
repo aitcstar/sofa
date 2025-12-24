@@ -21,7 +21,9 @@ class Exhibition extends Model
         'meta_description_en',
         'meta_description_ar',
         'slug_en',
-        'slug_ar'
+        'slug_ar',
+        'city_ar',
+        'city_en'
     ];
 
     public function category()

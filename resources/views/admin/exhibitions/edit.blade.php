@@ -102,6 +102,8 @@
                         <input type="text" name="name_en" class="form-control" value="{{ $exhibition->name_en }}" required>
                     </div>
 
+
+
                     <!-- الملخص -->
                     <div class="col-md-6 mb-3">
                         <label class="form-label">ملخص (عربي)</label>
@@ -111,6 +113,17 @@
                         <label class="form-label">ملخص (إنجليزي)</label>
                         <textarea name="summary_en" class="form-control" rows="3">{{ $exhibition->summary_en }}</textarea>
                     </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">المدينه (عربي)</label>
+                        <input type="text" name="city_ar" class="form-control" value="{{ $exhibition->city_ar }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">المدينه (إنجليزي)</label>
+                        <input type="text" name="city_en" class="form-control" value="{{ $exhibition->city_en }}">
+                    </div>
+
+
 
                     <!-- التاريخ -->
                     <div class="col-md-6 mb-3">

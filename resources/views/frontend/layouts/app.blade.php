@@ -581,7 +581,6 @@ border: none !important;
             <!-- Sign In -->
            <!-- Sign In -->
            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
-
             <!-- Nested Tabs for Phone / Email -->
             <ul class="nav nav-tabs mb-3" id="loginNestedTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -596,9 +595,9 @@ border: none !important;
                 </li>
             </ul>
 
-            <div class="tab-content" id="loginNestedTabContent">
+            <div class="tab-content " id="loginNestedTabContent">
                 <!-- Login by Phone -->
-                <div class="tab-pane fade show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
+                <div class="tab-pane fade  form-group show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
                     <form action="{{ route('login.checkPhone') }}" method="POST">
                         @csrf
                         <div class="form-group">
@@ -635,7 +634,7 @@ border: none !important;
                 </div>
 
                 <!-- Login by Email -->
-                <div class="tab-pane fade" id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
+                <div class="tab-pane form-group fade " id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
                     <form action="{{ route('login.checkEmail') }}" method="POST">
                         @csrf
                         <div class="form-group">

@@ -121,7 +121,7 @@
 .input-phone .country-select {
   flex-shrink: 0;
   width: 140px;
-  min-height: 44px;
+  min-height: 57px;
   border: 1px solid var(--input-border);
   border-radius: var(--radius-small-box-3);
   background-color: var(--input-bg);
@@ -132,6 +132,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
+  top: 3px;
 }
 
 .input-phone .country-select:hover {

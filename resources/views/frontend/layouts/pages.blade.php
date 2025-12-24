@@ -522,7 +522,7 @@ text-align: left;
 
                 <div class="tab-content" id="loginNestedTabContent">
                     <!-- Login by Phone -->
-                    <div class="tab-pane fade show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
+                    <div class="tab-pane fade form-group show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
                         <form action="{{ route('login.checkPhone') }}" method="POST">
                             @csrf
                             <div class="form-group">
@@ -559,7 +559,7 @@ text-align: left;
                     </div>
 
                     <!-- Login by Email -->
-                    <div class="tab-pane fade" id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
+                    <div class="tab-pane form-group fade" id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
                         <form action="{{ route('login.checkEmail') }}" method="POST">
                             @csrf
                             <div class="form-group">

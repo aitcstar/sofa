@@ -156,12 +156,13 @@
                                     <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Available_colors') }}</p>
                                     <div class="d-flex gap-sm-5">
                                         @forelse($colors as $color)
-                                            <span class="rounded-pill"
-                                                  style="width: 34px; height: 16px; background-color: {{ $color['color_code'] ?? '#000' }}"
-                                                  title="{{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
-                                            </span>
+                                            <div class="feature-item d-flex gap-sm-6 border rounded-pill border-surface px-2 py-1">
+                                                <span class="body-4">
+                                                    {{ $locale === 'ar' ? $color['name_ar'] : $color['name_en'] }}
+                                                </span>
+                                            </div>
                                         @empty
-                                        <span> {{ app()->getLocale() == 'ar' ? 'لا توجد ألوان' : 'No Color' }} </span>
+                                            <span> {{ app()->getLocale() == 'ar' ? 'لا توجد ألوان' : 'No Color' }} </span>
                                         @endforelse
                                     </div>
                                 </div>

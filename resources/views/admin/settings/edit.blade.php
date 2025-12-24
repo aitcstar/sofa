@@ -41,6 +41,19 @@
 
 
             </div>
+
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">إعدادات الطلب</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">أقل عدد متاح من الوحدات في الطلب</label>
+                        <input type="number" min="1" name="min_units" class="form-control"
+                            value="{{ old('min_units', $setting->min_units ?? '') }}">
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
         <div class="card mb-4 border-0 shadow-sm">

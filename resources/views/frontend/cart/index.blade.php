@@ -7,6 +7,7 @@
     <a href="#" class="body-2 text-primary">{{ app()->getLocale() == 'ar' ? 'السلة' : 'Cart' }}</a>
 </div>
 
+
 <!-- ===== CART MAIN SECTION ===== -->
 <section class="cart-section">
     <div class="container">
@@ -254,6 +255,7 @@
 </style>
 @push('scripts')
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     const locale = '{{ app()->getLocale() }}';
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
@@ -269,7 +271,21 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    renderCart();
+    let needsUpdate = false;
+
+cart.forEach(item => {
+    if (!item.quantity || item.quantity < MIN_UNITS) {
+        item.quantity = MIN_UNITS;
+        needsUpdate = true;
+    }
+});
+
+if (needsUpdate) {
+    localStorage.setItem('shoppingCart', JSON.stringify(cart));
+}
+
+renderCart();
+
 
     function renderCart() {
         let subtotal = 0;
@@ -301,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <button class="quantity-btn quantity-decrease" data-index="${index}">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-index="${index}" readonly />
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="${MIN_UNITS}" data-index="${index}" readonly />
                                 <button class="quantity-btn quantity-increase" data-index="${index}">
                                     <i class="fas fa-plus"></i>
                                 </button>
@@ -318,6 +334,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         cartItemsList.innerHTML = html;
+
+        cart.forEach(item => {
+    if (!item.quantity || item.quantity < MIN_UNITS) {
+        item.quantity = MIN_UNITS;
+    }
+});
+
 
         // Calculate discount
         let discount = 0;
@@ -348,12 +371,31 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.quantity-decrease').forEach(btn => {
             btn.addEventListener('click', function() {
                 const index = parseInt(this.dataset.index);
-                if (cart[index].quantity > 1) {
+                //if (cart[index].quantity > 1) {
+                if (cart[index].quantity > MIN_UNITS) {
                     cart[index].quantity -= 1;
                     updateCart();
                 }
             });
         });
+
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', function () {
+                const index = parseInt(this.dataset.index);
+                let val = parseInt(this.value) || MIN_UNITS;
+
+                if (val < MIN_UNITS) {
+                    alert(locale == 'ar'
+                        ? `أقل عدد مسموح به هو ${MIN_UNITS}`
+                        : `Minimum allowed quantity is ${MIN_UNITS}`);
+                    val = MIN_UNITS;
+                }
+
+                cart[index].quantity = val;
+                updateCart();
+            });
+        });
+
 
         document.querySelectorAll('.remove-item-btn').forEach(btn => {
             btn.addEventListener('click', function() {

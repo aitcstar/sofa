@@ -12,6 +12,7 @@ use App\Models\SeoSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\Setting;
 
 class CartController extends Controller
 {
@@ -41,7 +42,7 @@ class CartController extends Controller
         return view("frontend.cart.checkout", compact("seo"));
     }
 
-    public function add(Request $request)
+    /*public function add(Request $request)
     {
         $request->validate([
             "package_id" => "required|exists:packages,id",
@@ -63,7 +64,42 @@ class CartController extends Controller
         }
 
         return redirect()->route("cart.index")->with("success", "Package added to cart!");
+    }*/
+
+    public function add(Request $request)
+{
+    $minUnits = Setting::first()?->min_units ?? 1;
+
+    $request->validate([
+        "package_id" => "required|exists:packages,id",
+        "quantity" => "nullable|integer",
+    ]);
+
+    // لو الكمية مش موجودة أو أقل من الحد الأدنى
+    $quantity = $request->quantity;
+    if (!$quantity || $quantity < $minUnits) {
+        $quantity = $minUnits;
     }
+
+    $cartItem = Cart::where("user_id", auth()->id())
+        ->where("package_id", $request->package_id)
+        ->first();
+
+    if ($cartItem) {
+        $cartItem->increment("quantity", $quantity);
+    } else {
+        Cart::create([
+            "user_id" => auth()->id(),
+            "package_id" => $request->package_id,
+            "quantity" => $quantity,
+        ]);
+    }
+
+    return redirect()
+        ->route("cart.index")
+        ->with("success", "Package added to cart!");
+}
+
 
     public function update(Request $request, Cart $cart)
     {
@@ -140,13 +176,14 @@ class CartController extends Controller
         }
 
 
+        $minUnits = Setting::first()?->min_units ?? 1;
 
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'country_code' => 'required|string|max:10',
-            'units_count' => 'required|integer|min:1',
+            'units_count' => "required|integer|min:$minUnits",
             'project_type' => 'required|in:small,medium,large',
             'current_stage' => 'required|in:design,execution,operation',
             'cart_data' => 'required|json',

@@ -765,7 +765,9 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
    <path d="M17.1 14.2c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.37.22-.68.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.49-.07-.15-.68-1.65-.93-2.27-.24-.6-.49-.52-.68-.53-.18-.01-.39-.01-.6-.01s-.49.07-.75.34c-.27.27-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.21 3.1.15.2 2.09 3.18 5.06 4.45 2.97 1.27 2.97.85 3.51.8.55-.05 1.77-.7 2.02-1.38.25-.68.25-1.26.18-1.38-.07-.12-.25-.2-.55-.35z" fill="#fff"/>
  </svg>
 </a>
-
+@php
+    $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
+@endphp
 <style>
 #whatsapp-float{
  position: fixed;
@@ -976,12 +978,23 @@ otpInputs.forEach((input, index) => {
 
   <!-- Cart Functionality Script -->
   <script>
+    const MIN_UNITS = {{ $minUnits }};
+
   document.addEventListener('DOMContentLoaded', function() {
   // Cart functionality
   class ShoppingCart {
     constructor(locale = 'ar') {
         this.locale = locale;
         this.cart = this.loadCart();
+
+        // 🔹 ADDED: تأكيد أن أقل كمية هي MIN_UNITS
+        this.cart.forEach(item => {
+            if (!item.quantity || item.quantity < MIN_UNITS) {
+                item.quantity = MIN_UNITS;
+            }
+        });
+        this.saveCart(); // 🔹 ADDED
+
         this.translations = {
             ar: {
                 cartEmpty: 'السلة فارغة',
@@ -1008,6 +1021,7 @@ otpInputs.forEach((input, index) => {
         return cartData ? JSON.parse(cartData) : [];
     }
 
+
     saveCart() {
         localStorage.setItem('shoppingCart', JSON.stringify(this.cart));
     }
@@ -1016,11 +1030,11 @@ otpInputs.forEach((input, index) => {
         const existingIndex = this.cart.findIndex(item => item.id === packageData.id);
 
         if (existingIndex > -1) {
-            this.cart[existingIndex].quantity += 1;
+            this.cart[existingIndex].quantity += MIN_UNITS; // 🔹 CHANGED (كان +1)
         } else {
             this.cart.push({
                 ...packageData,
-                quantity: 1
+                quantity: MIN_UNITS
             });
         }
 
@@ -1038,13 +1052,13 @@ otpInputs.forEach((input, index) => {
     updateQuantity(packageId, quantity) {
         const index = this.cart.findIndex(item => item.id === packageId);
         if (index > -1) {
-            if (quantity <= 0) {
-                this.removeFromCart(packageId);
+            if (quantity < MIN_UNITS) { // 🔹 ADDED
+                this.cart[index].quantity = MIN_UNITS; // 🔹 ADDED
             } else {
                 this.cart[index].quantity = quantity;
-                this.saveCart();
-                this.updateCartUI();
             }
+            this.saveCart();
+            this.updateCartUI();
         }
     }
 
@@ -1143,68 +1157,57 @@ otpInputs.forEach((input, index) => {
     }
 }
 
-// Example of how to use it:
-// const locale = document.documentElement.lang; // Assuming you have <html lang="ar"> or <html lang="en">
-// const shoppingCart = new ShoppingCart(locale);
-
-  // Initialize cart
-// جلب لغة الموقع الحالية من Laravel
 const siteLocale = "{{ app()->getLocale() }}";
-
-// إنشاء ShoppingCart باستخدام لغة الموقع
 const cart = new ShoppingCart(siteLocale);
 
-  // Add event listeners to "Add to Cart" buttons
-  function attachCartButtons() {
-      document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-          button.addEventListener('click', function(e) {
-              e.preventDefault();
+function attachCartButtons() {
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
 
-              const packageData = {
-                  id: parseInt(this.dataset.packageId),
-                  name: this.dataset.packageName,
-                  price: parseFloat(this.dataset.packagePrice),
-                  image: this.dataset.packageImage,
-                  description: this.dataset.packageDescription || '',
-                  pieces: parseInt(this.dataset.packagePieces) || 0
-              };
+            const packageData = {
+                id: parseInt(this.dataset.packageId),
+                name: this.dataset.packageName,
+                price: parseFloat(this.dataset.packagePrice),
+                image: this.dataset.packageImage,
+                description: this.dataset.packageDescription || '',
+                pieces: parseInt(this.dataset.packagePieces) || 0
+            };
 
-              cart.addToCart(packageData);
-          });
-      });
-  }
+            cart.addToCart(packageData);
+        });
+    });
+}
 
-  attachCartButtons();
+attachCartButtons();
 
-  const packagesWrapper = document.getElementById('packages-wrapper');
-  if (packagesWrapper) {
-      const observer = new MutationObserver(function() {
-          attachCartButtons();
-      });
-      observer.observe(packagesWrapper, { childList: true, subtree: true });
-  }
+const packagesWrapper = document.getElementById('packages-wrapper');
+if (packagesWrapper) {
+    const observer = new MutationObserver(function() {
+        attachCartButtons();
+    });
+    observer.observe(packagesWrapper, { childList: true, subtree: true });
+}
 
-  // Toggle cart dropdown
-  const cartLink = document.querySelector('.cart-link');
-  const cartDropdown = document.querySelector('.cart-dropdown');
+const cartLink = document.querySelector('.cart-link');
+const cartDropdown = document.querySelector('.cart-dropdown');
 
-  if (cartLink && cartDropdown) {
-      cartLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          const isVisible = cartDropdown.style.display === 'block';
-          cartDropdown.style.display = isVisible ? 'none' : 'block';
-      });
+if (cartLink && cartDropdown) {
+    cartLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isVisible = cartDropdown.style.display === 'block';
+        cartDropdown.style.display = isVisible ? 'none' : 'block';
+    });
 
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-          if (!e.target.closest('.cart-container')) {
-              cartDropdown.style.display = 'none';
-          }
-      });
-  }
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.cart-container')) {
+            cartDropdown.style.display = 'none';
+        }
+    });
+}
 
   }); // End DOMContentLoaded
-  </script>
+</script>
 
   @stack('scripts')
 </body>

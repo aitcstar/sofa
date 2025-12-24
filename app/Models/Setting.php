@@ -29,5 +29,6 @@ class Setting extends Model
         'googletagmanager',
         'googleanalytics',
         'googlesearchconsole',
+        'min_units',
     ];
 }

@@ -37,6 +37,8 @@ class SettingController extends Controller
             'googletagmanager' => 'nullable|string',
             'googleanalytics' => 'nullable|string',
             'googlesearchconsole' => 'nullable|string',
+            'min_units' => 'nullable|integer|min:1',
+
         ]);
 
         $setting = Setting::first();

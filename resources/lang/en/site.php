@@ -311,6 +311,7 @@ return [
     'iran' => 'Iran',
     'close' => 'close',
     'Log in / Create an account' => ' Log in / Create an account',
+    'email_not_registered' => 'Email not registered',
 
     ///
     'package' => 'Package',

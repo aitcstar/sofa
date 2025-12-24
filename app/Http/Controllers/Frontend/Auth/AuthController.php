@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Mail;
 class AuthController extends Controller
 {
 
-    public function checkPhone(Request $request)
+    /*public function checkPhone(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'phone'        => 'required|string',
@@ -80,7 +80,48 @@ class AuthController extends Controller
 
 
         return redirect()->back()->with('show_otp_modal', true);
+    }*/
+
+    public function checkPhone(Request $request)
+{
+    $request->validate(['phone' => 'required|string']);
+    $user = User::where('phone', $request->phone)->first();
+
+    if (!$user) {
+        return back()->withErrors(['phone' => __('site.phone_not_registered')])->with('open_login_tab', true);
     }
+
+    $otp = rand(10000, 99999);
+    $user->otpcode = $otp;
+    $user->otp_expires_at = now()->addMinutes(5);
+    $user->save();
+
+    session(['otp_user_id' => $user->id]);
+    Mail::to($user->email)->send(new SendOtpMail($otp));
+
+    return back()->with('show_otp_modal', true);
+}
+
+public function checkEmail(Request $request)
+{
+    $request->validate(['email' => 'required|email']);
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return back()->withErrors(['email' => __('site.email_not_registered')])->with('open_login_tab', true);
+    }
+
+    $otp = rand(10000, 99999);
+    $user->otpcode = $otp;
+    $user->otp_expires_at = now()->addMinutes(5);
+    $user->save();
+
+    session(['otp_user_id' => $user->id]);
+    Mail::to($user->email)->send(new SendOtpMail($otp));
+
+    return back()->with('show_otp_modal', true);
+}
+
 
     public function register(Request $request)
     {

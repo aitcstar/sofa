@@ -329,7 +329,7 @@ return [
     'Color_style' => ' ستايل الألوان',
     'apply' => 'تطبيق',
     'Classification details' => ' تفاصيل التصنيف',
-
+'email_not_registered' => 'البريد الإلكتروني غير مسجل',
     'Delivery' => 'التوصيل',
     'Base price' => 'السعر الأساسي',
     'Tax' => 'الضريبة',

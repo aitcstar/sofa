@@ -579,27 +579,37 @@ border: none !important;
           <!-- Body -->
           <div class="tab-content mt-4" id="myTabContent">
             <!-- Sign In -->
-            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
-                <form action="{{ route('login.check') }}" method="POST">
-                    @csrf
-                    <!-- Phone -->
-                    <div class="form-group">
-                        <label class="form-label mb-0">@lang('site.phone_number')</label>
-                        <div class="input-phone position-relative">
-                            <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
-                                <span class="flag fi fi-sa selected-flag-login"></span>
-                                <span class="code selected-code-login">+966</span>
-                            </div>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <div class="input-with-icon" style="min-height: 45px;">
-                                      <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
-                                      <i class="input-icon">
-                                        <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
-                                      </i>
-                                    </div>
-                                  </li>
-                                @foreach($countries as $country)
+           <!-- Sign In -->
+           <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
+
+            <!-- Nested Tabs for Phone / Email -->
+            <ul class="nav nav-tabs mb-3" id="loginNestedTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="login-phone-tab" data-bs-toggle="tab"
+                        data-bs-target="#login-phone" type="button" role="tab" aria-controls="login-phone"
+                        aria-selected="true">@lang('site.phone')</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="login-email-tab" data-bs-toggle="tab"
+                        data-bs-target="#login-email" type="button" role="tab" aria-controls="login-email"
+                        aria-selected="false">@lang('site.email')</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="loginNestedTabContent">
+                <!-- Login by Phone -->
+                <div class="tab-pane fade show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
+                    <form action="{{ route('login.checkPhone') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label mb-0">@lang('site.phone_number')</label>
+                            <div class="input-phone position-relative">
+                                <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
+                                    <span class="flag fi fi-sa selected-flag-login"></span>
+                                    <span class="code selected-code-login">+966</span>
+                                </div>
+                                <ul class="dropdown-menu">
+                                    @foreach($countries as $country)
                                     <li>
                                         <a class="dropdown-item country-item-login d-flex justify-content-between align-items-center" href="#"
                                         data-flag="{{ $country['code'] }}" data-code="{{ $country['dial_code'] }}">
@@ -610,20 +620,39 @@ border: none !important;
                                             <span>{{ $country['dial_code'] }}</span>
                                         </a>
                                     </li>
-                                @endforeach
-                            </ul>
-                            <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
-                            <input type="tel" name="phone"  value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
-
+                                    @endforeach
+                                </ul>
+                                <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
+                                <input type="tel" name="phone" value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
+                            </div>
+                            @error('phone')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('phone')
-                        <div class="text-danger mt-1">{{ $message }}</div>
-                    @enderror
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
-                </form>
+                        <br>
+                        <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                    </form>
+                </div>
+
+                <!-- Login by Email -->
+                <div class="tab-pane fade" id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
+                    <form action="{{ route('login.checkEmail') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label mb-0">@lang('site.email')</label>
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="@lang('site.email')" required />
+                            @error('email')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                    </form>
+                </div>
             </div>
+        </div>
+
+
             <!-- Register -->
 
             <!-- التسجيل -->

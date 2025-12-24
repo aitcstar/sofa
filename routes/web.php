@@ -102,6 +102,10 @@ Route::post('/login/check', [AuthController::class, 'checkPhone'])->name('login.
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/verify-code', [AuthController::class, 'verifyCode'])->name('verify.code');
 
+Route::post('/login/check-phone', [AuthController::class, 'checkPhone'])->name('login.checkPhone');
+
+// تسجيل الدخول بالبريد الإلكتروني
+Route::post('/login/check-email', [AuthController::class, 'checkEmail'])->name('login.checkEmail');
 
 // روتات بدون prefix للعربية (الافتراضية)
 Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا

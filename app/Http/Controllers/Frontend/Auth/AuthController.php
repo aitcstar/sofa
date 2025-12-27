@@ -227,7 +227,7 @@ public function checkEmail(Request $request)
     $user = User::find($userId);
 
     // ✅ التحقق من صحة الكود وصلاحية OTP
-    if (!$user || $user->otpcode != $fullCode || ($user->otp_expires_at && $user->otp_expires_at->isPast())) {
+    if (!$user || $user->otpcode != $fullCode || ($user->otp_expires_at && \Carbon\Carbon::parse($user->otp_expires_at)->isPast())    ) {
         return redirect()->back()
             ->with('otp_error', __('site.invalid_or_expired_otp'))
             ->with('show_otp_modal', true);

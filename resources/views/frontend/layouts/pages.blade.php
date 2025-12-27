@@ -1064,10 +1064,18 @@ otpInputs.forEach((input, index) => {
         });
     }
 
-    formatPrice(price) {
+    /*formatPrice(price) {
         const t = this.translations[this.locale];
         const numberFormatLocale = this.locale === 'ar' ? 'ar-SA' : 'en-US';
         return new Intl.NumberFormat(numberFormatLocale, {
+            minimumFractionDigits: 0
+        }).format(price) + ` ${t.currency}`;
+    }*/
+
+    formatPrice(price) {
+        const t = this.translations[this.locale];
+        // Force English digits even in Arabic locale
+        return new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 0
         }).format(price) + ` ${t.currency}`;
     }

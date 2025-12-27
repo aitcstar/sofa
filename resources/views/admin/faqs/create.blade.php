@@ -79,7 +79,7 @@
                         <select id="page" name="page" class="form-select" required>
                             <option value="">اختر الصفحة</option>
                             <option value="home" {{ old('page') == 'home' ? 'selected' : '' }}>الصفحة الرئيسية</option>
-                            <option value="category" {{ old('page') == 'category' ? 'selected' : '' }}>التصنيفات</option>
+                            <option value="category" {{ old('page') == 'category' ? 'selected' : '' }}> الباكجات</option>
                         </select>
                         @error('page')
                             <small class="text-danger">{{ $message }}</small>

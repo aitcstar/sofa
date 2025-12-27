@@ -81,7 +81,7 @@
                     <label for="page" class="form-label">الصفحة <span class="text-danger">*</span></label>
                     <select id="page" name="page" class="form-select" required>
                         <option value="home" {{ old('page', $faq->page) == 'home' ? 'selected' : '' }}>الصفحة الرئيسية</option>
-                        <option value="category" {{ old('page', $faq->page) == 'category' ? 'selected' : '' }}>التصنيفات</option>
+                        <option value="category" {{ old('page', $faq->page) == 'category' ? 'selected' : '' }}> الباكجات</option>
                     </select>
                     @error('page')
                         <small class="text-danger">{{ $message }}</small>

@@ -134,20 +134,44 @@
 
         <!-- الأكواد الموجودة -->
         <div class="mt-4">
-            <h5>الأكواد الموجودة</h5>
-            <ul>
-                @foreach($scripts as $script)
-                    <li>
-                        {{ $script->title }}
-                        <form action="{{ route('admin.header-scripts.destroy', $script->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger">حذف</button>
-                        </form>
-                    </li>
-                @endforeach
-            </ul>
+            <h5 class="mb-3">الأكواد الموجودة</h5>
+
+            @if($scripts->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان الكود</th>
+                                <th>الكود</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($scripts as $index => $script)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $script->title }}</td>
+                                    <td>
+                                        <textarea class="form-control" rows="2" readonly>{{ $script->script }}</textarea>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.header-scripts.destroy', $script->id) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذا الكود؟');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger">حذف</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="alert alert-info">لا توجد أكواد محفوظة حتى الآن.</div>
+            @endif
         </div>
+
     </div>
 </div>
 

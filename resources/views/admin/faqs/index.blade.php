@@ -152,7 +152,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                 @elseif($faq->page == 'blog')
                                     المدونة
                                 @elseif($faq->page == 'category')
-                                    التصنيفات
+                                الباكجات
                                 @else
                                     {{ $faq->page }}
                                 @endif

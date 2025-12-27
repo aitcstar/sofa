@@ -78,23 +78,7 @@
             </div>
         </div>
 
-        <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-primary text-white">روابط جوجل </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">Google Tag Manager</label>
-                    <input type="text" name="googletagmanager" class="form-control" value="{{ old('googletagmanager', $setting->googletagmanager ?? '') }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Google Analytics</label>
-                    <input type="text" name="googleanalytics" class="form-control" value="{{ old('googleanalytics', $setting->googleanalytics ?? '') }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Google Search Console</label>
-                    <input type="text" name="googlesearchconsole" class="form-control" value="{{ old('googlesearchconsole', $setting->googlesearchconsole ?? '') }}">
-                </div>
-            </div>
-        </div>
+
 
 
         <div class="card mb-4 border-0 shadow-sm">
@@ -128,6 +112,45 @@
             <i class="fas fa-save me-1"></i> حفظ الإعدادات
         </button>
     </form>
+
+
+
+    <!-- Form أكواد الهيدر -->
+<div class="card mb-4 border-0 shadow-sm mt-4">
+    <div class="card-header bg-primary text-white">أكواد الهيدر</div>
+    <div class="card-body">
+        <form method="POST" action="{{ route('admin.header-scripts.store') }}">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label">عنوان الكود</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">الكود</label>
+                <textarea name="script" class="form-control" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">حفظ الكود</button>
+        </form>
+
+        <!-- الأكواد الموجودة -->
+        <div class="mt-4">
+            <h5>الأكواد الموجودة</h5>
+            <ul>
+                @foreach($scripts as $script)
+                    <li>
+                        {{ $script->title }}
+                        <form action="{{ route('admin.header-scripts.destroy', $script->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">حذف</button>
+                        </form>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
+
 </div>
 
 @endsection

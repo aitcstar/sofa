@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ContactSectionController;
 use App\Http\Controllers\Admin\ExhibitionCategoryController;
 use App\Http\Controllers\Admin\ExhibitionController;
 //use App\Http\Controllers\Admin\ExhibitionStepController;
+use App\Http\Controllers\Admin\HeaderScriptController;
 
 use App\Http\Controllers\Admin\HelpController;
 // Enhanced System Controllers
@@ -351,6 +352,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     Route::get('/ready-to-furnish', [ReadyToFurnishController::class, 'edit'])->name('ready-to-furnish.edit');
     Route::put('/ready-to-furnish', [ReadyToFurnishController::class, 'update'])->name('ready-to-furnish.update');
 
+    Route::post('/header-scripts', [HeaderScriptController::class, 'store'])->name('header-scripts.store');
+    Route::delete('/header-scripts/{id}', [HeaderScriptController::class, 'destroy'])->name('header-scripts.destroy');
 
     Route::resource('about', AboutPageController::class);
 

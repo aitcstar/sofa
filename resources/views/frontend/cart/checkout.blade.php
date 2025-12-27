@@ -59,10 +59,12 @@
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
                                 </div>
-
+                                @php
+                                $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
+                            @endphp
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ app()->getLocale() == 'ar' ? 'عدد الوحدات' : 'Number of Units' }} <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="units_count" value="{{ old('units_count', 1) }}" min="1" required>
+                                    <input type="number" class="form-control" name="units_count" value="{{ old('units_count', $minUnits) }}" min="{{$minUnits}}" required>
                                     @error('units_count')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror

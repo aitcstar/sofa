@@ -11,6 +11,7 @@ use App\Models\SeoSetting;
 use App\Models\AboutPage;
 use App\Mail\SendOtpMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Setting;
 
 class AuthController extends Controller
 {
@@ -146,6 +147,7 @@ public function checkEmail(Request $request)
             'phone'     => $request->phone,
             'code'      => $request->country_code,
             'otpcode'   => $otp,//rand(10000, 99999), // أو استخدم OTP حقيقي
+            'role'      => 'customer'
         ]);
 
         // حفظ بيانات المستخدم في الجلسة لاستخدامها في التحقق
@@ -246,7 +248,9 @@ public function checkEmail(Request $request)
     if ($fromRegistration) {
         $seo = SeoSetting::where('page', 'about')->first();
         $sections = AboutPage::all();
-        return view('frontend.pages.welcome', compact('seo', 'sections'));
+        $minUnits = Setting::value('min_units') ?? 1; // ⚡ هنا نضيف المتغير
+
+        return view('frontend.pages.welcome', compact('seo', 'sections','minUnits'));
     }
 
     return redirect()->intended('/');

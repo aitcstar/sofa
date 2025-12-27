@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Models\HeaderScript;
 
 class SettingController extends Controller
 {
     public function edit()
     {
         $setting = Setting::first(); // عندك سجل واحد فقط
-        return view('admin.settings.edit', compact('setting'));
+        $scripts = HeaderScript::all(); // ⚡ هذا المتغير
+
+        return view('admin.settings.edit', compact('setting','scripts'));
     }
 
     public function update(Request $request)

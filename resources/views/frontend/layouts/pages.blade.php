@@ -10,30 +10,11 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.svg') }}">
 
-  <!-- Google Tag Manager -->
-  <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','{{ $siteSettings->googletagmanager }}');
-    </script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings->googleanalytics }}"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{ $siteSettings->googletagmanager }}');
-    </script>
-
-    <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="{{ $siteSettings->googlesearchconsole }}" />
 
 
-
+  @foreach(\App\Models\HeaderScript::all() as $script)
+  {!! $script->script !!}
+@endforeach
 
 {{-- ✅ منطقة مخصصة للـ Meta Tags --}}
 @if (View::hasSection('meta'))
@@ -105,6 +86,9 @@ text-align: left;
   @stack('styles')
 </head>
 <body>
+    @php
+    $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
+  @endphp
     <!-- ===== HEADER SECTION ===== -->
     <header class="header container">
         <div class="header-container">
@@ -653,9 +637,7 @@ text-align: left;
     </div>
   </div>
 
-  @php
-  $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
-@endphp
+
     <!-- ✅ مودال OTP منفصل (خارج authModal) -->
     <div class="modal fade" id="codeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -664,12 +646,12 @@ text-align: left;
         <h6 class="mb-3 text-center">@lang('site.mailsend')</h6>
         <form method="POST" action="{{ route('verify.code') }}">
             @csrf
-            <div class="d-flex gap-2 justify-content-center mb-3">
-            <input type="text" name="code[0]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[1]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[2]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[3]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <div class="d-flex gap-2 justify-content-center mb-3" dir="ltr">
+                <input type="text" name="code[0]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[1]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[2]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[3]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
             </div>
 
             @if(session('otp_error'))
@@ -766,6 +748,44 @@ text-align: left;
     <script src="{{ asset('assets/js/language.js') }}"></script>
     <script src="{{ asset('assets/js/nav-bar.js') }}"></script>
   <!-- Custom Scripts -->
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('.otp-input');
+
+        inputs.forEach((input, index) => {
+
+            input.addEventListener('input', (e) => {
+                input.value = input.value.replace(/[^0-9]/g, '');
+
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').replace(/\D/g, '');
+                pasteData.split('').forEach((char, i) => {
+                    if (inputs[i]) {
+                        inputs[i].value = char;
+                    }
+                });
+                if (inputs[pasteData.length]) {
+                    inputs[pasteData.length].focus();
+                }
+            });
+        });
+    });
+    </script>
+
   <script>
     // Mobile Menu Toggle
     document.getElementById('mobileMenuToggle').addEventListener('click', function() {

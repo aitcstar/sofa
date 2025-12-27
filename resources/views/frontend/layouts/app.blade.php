@@ -10,27 +10,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.svg') }}">
 
-  <!-- Google Tag Manager -->
-  <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','{{ $siteSettings->googletagmanager }}');
-    </script>
-    <!-- End Google Tag Manager -->
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings->googleanalytics }}"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{ $siteSettings->googletagmanager }}');
-    </script>
-
-    <!-- Google Search Console Verification -->
-    <meta name="google-site-verification" content="{{ $siteSettings->googlesearchconsole }}" />
+    @foreach(\App\Models\HeaderScript::all() as $script)
+        {!! $script->script !!}
+    @endforeach
 
 
   @if (View::hasSection('meta'))
@@ -222,6 +205,9 @@ border: none !important;
   @stack('styles')
 </head>
 <body>
+    @php
+    $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
+@endphp
   <!-- ===== HEADER SECTION ===== -->
   <header class="header container">
     <div class="header-container">
@@ -737,13 +723,14 @@ border: none !important;
         <h6 class="mb-3 text-center">@lang('site.mailsend')</h6>
         <form method="POST" action="{{ route('verify.code') }}">
             @csrf
-            <div class="d-flex gap-2 justify-content-center mb-3">
-            <input type="text" name="code[0]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[1]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[2]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[3]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
-            <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" style="width: 50px;" required />
+            <div class="d-flex gap-2 justify-content-center mb-3" dir="ltr">
+                <input type="text" name="code[0]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[1]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[2]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[3]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
+                <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
             </div>
+
 
             @if(session('otp_error'))
             <div class="text-danger text-center mb-2">{{ session('otp_error') }}</div>
@@ -765,9 +752,7 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
    <path d="M17.1 14.2c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.37.22-.68.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.49-.07-.15-.68-1.65-.93-2.27-.24-.6-.49-.52-.68-.53-.18-.01-.39-.01-.6-.01s-.49.07-.75.34c-.27.27-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.21 3.1.15.2 2.09 3.18 5.06 4.45 2.97 1.27 2.97.85 3.51.8.55-.05 1.77-.7 2.02-1.38.25-.68.25-1.26.18-1.38-.07-.12-.25-.2-.55-.35z" fill="#fff"/>
  </svg>
 </a>
-@php
-    $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
-@endphp
+
 <style>
 #whatsapp-float{
  position: fixed;
@@ -843,6 +828,43 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
     <script src="{{ asset('assets/js/language.js') }}"></script>
     <script src="{{ asset('assets/js/nav-bar.js') }}"></script>
   <!-- Custom Scripts -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('.otp-input');
+
+        inputs.forEach((input, index) => {
+
+            input.addEventListener('input', (e) => {
+                input.value = input.value.replace(/[^0-9]/g, '');
+
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').replace(/\D/g, '');
+                pasteData.split('').forEach((char, i) => {
+                    if (inputs[i]) {
+                        inputs[i].value = char;
+                    }
+                });
+                if (inputs[pasteData.length]) {
+                    inputs[pasteData.length].focus();
+                }
+            });
+        });
+    });
+    </script>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

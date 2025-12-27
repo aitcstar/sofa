@@ -317,7 +317,7 @@ renderCart();
                                 <button class="quantity-btn quantity-decrease" data-index="${index}">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <input type="number" class="quantity-input" value="${item.quantity}" min="${MIN_UNITS}" data-index="${index}" readonly />
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="${MIN_UNITS}" data-index="${index}" />
                                 <button class="quantity-btn quantity-increase" data-index="${index}">
                                     <i class="fas fa-plus"></i>
                                 </button>

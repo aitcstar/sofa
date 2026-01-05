@@ -104,6 +104,54 @@
                      placeholder="{{ __('help.units') }}" required />
           </div>
 
+          <!-- Project Size -->
+            <div class="form-group">
+                <label class="body-2 text-body mb-2">{{ __('help.project_size') }}</label>
+                <select class="form-control" name="project_size" required>
+                    <option value="">{{ __('help.select_project_size') }}</option>
+                    <option value="small">{{ __('help.small') }} (10-20 {{ __('help.units') }})</option>
+                    <option value="medium">{{ __('help.medium') }} (20-30 {{ __('help.units') }})</option>
+                    <option value="large">{{ __('help.large') }} (30+ {{ __('help.units') }})</option>
+                </select>
+            </div>
+
+            <!-- Client Type -->
+            <div class="form-group">
+                <label class="body-2 text-body mb-2">{{ __('help.client_type') }}</label>
+                <select class="form-control" name="client_type" required>
+                    <option value="">{{ __('help.select_client_type') }}</option>
+                    <option value="individual">{{ __('help.individual') }}</option>
+                    <option value="company">{{ __('help.company') }}</option>
+                </select>
+            </div>
+
+            <!-- Has Interior Design Plan? -->
+            <div class="form-group d-flex align-items-center gap-sm-3">
+                <label class="body-2 text-body mb-0">{{ __('help.has_interior_plan') }}</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="has_interior_plan" id="hasInteriorPlan" value="1">
+                    <label class="form-check-label" for="hasInteriorPlan">{{ __('help.yes') }}</label>
+                </div>
+            </div>
+
+            <!-- Needs Finishing Help? -->
+            <div class="form-group d-flex align-items-center gap-sm-3">
+                <label class="body-2 text-body mb-0">{{ __('help.needs_finishing_help') }}</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="needs_finishing_help" id="needsFinishingHelp" value="1">
+                    <label class="form-check-label" for="needsFinishingHelp">{{ __('help.yes') }}</label>
+                </div>
+            </div>
+
+            <!-- Needs Color Selection Help? -->
+            <div class="form-group d-flex align-items-center gap-sm-3">
+                <label class="body-2 text-body mb-0">{{ __('help.needs_color_help') }}</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="needs_color_help" id="needsColorHelp" value="1">
+                    <label class="form-check-label" for="needsColorHelp">{{ __('help.yes') }}</label>
+                </div>
+            </div>
+
           <!-- Message -->
           <div class="form-group">
               <textarea class="form-control" id="message" name="message"

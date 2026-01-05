@@ -51,43 +51,7 @@ class HelpController extends Controller
         return view('frontend.pages.help', compact('seo','content','countries'));
     }
 
-   /* public function submit(Request $request)
-    {
-        // التحقق من صحة البيانات
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'country_code' => 'required',
-            'units' => 'required|numeric|min:1',
-            'message' => 'nullable|string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'يرجى ملء جميع الحقول المطلوبة بشكل صحيح',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            // هنا يمكنك إضافة logic لمعالجة البيانات
-            // مثلاً: حفظ في قاعدة البيانات أو إرسال بريد إلكتروني
-
-            return response()->json([
-                'success' => true,
-                'message' => 'تم استلام طلبك بنجاح وسنتواصل معك خلال 48 ساعة'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.'
-            ], 500);
-        }
-    }*/
-
+/*
     public function submit(Request $request)
     {
         $validated = $request->validate([
@@ -104,17 +68,51 @@ class HelpController extends Controller
 
         $message = __('help.helper_text');
 
-if ($request->expectsJson()) {
-    return response()->json([
-        'success' => true,
-        'message' => $message
-    ]);
-}
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ]);
+        }
 
-return back()->with('success', $message);
+        return back()->with('success', $message);
 
 
 
     }
+*/
 
+public function submit(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'company' => 'nullable|string|max:255',
+        'email' => 'required|email',
+        'country_code' => 'required|string|max:10',
+        'phone' => 'required|string|max:20',
+        'units' => 'nullable|integer|min:1',
+        'message' => 'nullable|string',
+        // --- new fields ---
+        'project_size' => 'required|string|in:small,medium,large',
+        'client_type' => 'required|string|in:individual,company',
+        'has_interior_plan' => 'nullable|boolean',
+        'needs_finishing_help' => 'nullable|boolean',
+        'needs_color_help' => 'nullable|boolean',
+    ]);
+
+    // تحويل القيم الفارغة للـ checkboxes إلى false
+    $validated['has_interior_plan'] = (bool) ($request->has_interior_plan ?? false);
+    $validated['needs_finishing_help'] = (bool) ($request->needs_finishing_help ?? false);
+    $validated['needs_color_help'] = (bool) ($request->needs_color_help ?? false);
+
+    HelpRequest::create($validated);
+
+    $message = __('help.request_submitted_successfully');
+
+    if ($request->expectsJson()) {
+        return response()->json(['success' => true, 'message' => $message]);
+    }
+
+    return back()->with('success', $message);
+}
 }

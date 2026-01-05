@@ -14,6 +14,11 @@ class HelpRequest extends Model
         'phone',
         'units',
         'message',
-        'status'
+        'status',
+        'project_size',
+        'client_type',
+        'has_interior_plan',
+        'needs_finishing_help',
+        'needs_color_help',
     ];
 }

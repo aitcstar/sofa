@@ -35,6 +35,8 @@
                             </div>
                             <span class="body-2 text-body">{{ $package['name_'.app()->getLocale()] }}</span>
                         </div>
+
+
                     @endforeach
 
                     </div>
@@ -44,19 +46,19 @@
                 <div class="filter-group">
                     <h4 class="sub-heading-4 text-subheading mb-0">{{ __('site.Color_style') }}</h4>
                     <div class="filter-options">
-                        @foreach($colors as $color)
+                       <!-- Colors -->
+                            @foreach($colors as $color)
                             <div class="filter-option">
                                 <div class="filter-checkbox"
-                                     data-filter="color-style"
-                                     data-value="{{ $color['background_color'] ?? '' }}"
-                                     data-label="{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
+                                    data-filter="color-style"
+                                    data-value="{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
                                 </div>
                                 <div class="filter-option-content">
                                     <span class="body-2 text-body">{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}</span>
                                     <div class="color-swatch" style="background-color: {{ $color['color_code'] ?? '#000' }}"></div>
                                 </div>
                             </div>
-                        @endforeach
+                            @endforeach
                     </div>
                 </div>
 
@@ -301,20 +303,17 @@
 
 
                 @foreach($mobileColors as $color)
-                @if(is_array($color) && isset($color['background_color']))
+                @if(is_array($color) && isset($color['name_ar']))
                     <div class="mobile-filter-option">
                         <div class="mobile-filter-checkbox"
                              data-filter="color-style"
-                             data-value="{{ $color['background_color'] }}"
-                             data-label="{{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}">
-
+                             data-value="{{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}">
                         </div>
                         <div class="mobile-filter-option-content">
                             <span class="body-2 text-body">
-                                {{ app()->getLocale() === 'ar' ? $color['color_ar'] : $color['color_en'] }}
+                                {{ app()->getLocale() === 'ar' ? $color['name_ar'] : $color['name_en'] }}
                             </span>
-
-                            <div class="mobile-color-swatch" style="background-color: {{ $color['background_color'] }};"></div>
+                            <div class="mobile-color-swatch" style="background-color: {{ $color['color_code'] ?? '#000' }};"></div>
                         </div>
                     </div>
                 @endif
@@ -337,146 +336,237 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile Filter Elements
-    const mobileFilterToggle = document.getElementById('mobileFilterToggle');
-    const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
-    const mobileFilterDrawer = document.getElementById('mobileFilterDrawer');
-    const mobileFilterClose = document.getElementById('mobileFilterClose');
-    const applyFilters = document.getElementById('applyFilters');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile Filter Elements
+        const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+        const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
+        const mobileFilterDrawer = document.getElementById('mobileFilterDrawer');
+        const mobileFilterClose = document.getElementById('mobileFilterClose');
+        const applyFilters = document.getElementById('applyFilters');
 
-    // Mobile Filter Checkboxes
-    const mobileFilterCheckboxes = document.querySelectorAll('.mobile-filter-checkbox');
+        // Mobile Filter Checkboxes
+        const mobileFilterCheckboxes = document.querySelectorAll('.mobile-filter-checkbox');
 
-    // Open Mobile Filter
-    function openMobileFilter() {
-        mobileFilterOverlay.style.display = 'block';
-        mobileFilterDrawer.style.display = 'flex';
+        // Open Mobile Filter
+        function openMobileFilter() {
+            mobileFilterOverlay.style.display = 'block';
+            mobileFilterDrawer.style.display = 'flex';
 
-        // Trigger animation after display is set
-        setTimeout(() => {
-            mobileFilterOverlay.classList.add('active');
-            mobileFilterDrawer.classList.add('active');
-        }, 10);
+            // Trigger animation after display is set
+            setTimeout(() => {
+                mobileFilterOverlay.classList.add('active');
+                mobileFilterDrawer.classList.add('active');
+            }, 10);
 
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-    }
-
-    // Close Mobile Filter
-    function closeMobileFilter() {
-        mobileFilterOverlay.classList.remove('active');
-        mobileFilterDrawer.classList.remove('active');
-
-        // Hide elements after animation
-        setTimeout(() => {
-            mobileFilterOverlay.style.display = 'none';
-            mobileFilterDrawer.style.display = 'none';
-            document.body.style.overflow = '';
-        }, 300);
-    }
-
-    // Toggle Checkbox
-    function toggleCheckbox(checkbox) {
-        checkbox.classList.toggle('checked');
-    }
-
-    // Mobile Filter Event Listeners
-    mobileFilterToggle.addEventListener('click', openMobileFilter);
-    mobileFilterClose.addEventListener('click', closeMobileFilter);
-    mobileFilterOverlay.addEventListener('click', closeMobileFilter);
-    applyFilters.addEventListener('click', closeMobileFilter);
-
-    // Checkbox click events
-    mobileFilterCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('click', () => toggleCheckbox(checkbox));
-    });
-
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            if (mobileFilterDrawer.classList.contains('active')) {
-                closeMobileFilter();
-            }
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
         }
-    });
 
-    // Prevent drawer close when clicking inside it
-    mobileFilterDrawer.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+        // Close Mobile Filter
+        function closeMobileFilter() {
+            mobileFilterOverlay.classList.remove('active');
+            mobileFilterDrawer.classList.remove('active');
 
-    // إرسال رسالة واتساب
-    window.sendWhatsApp = function(categoryName) {
-        const phoneNumber = "966500000000";
-        const message = `مرحباً، أنا مهتم بـ ${categoryName} وأريد معرفة المزيد عن العروض والأسعار.`;
-        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
-    }
+            // Hide elements after animation
+            setTimeout(() => {
+                mobileFilterOverlay.style.display = 'none';
+                mobileFilterDrawer.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
 
-    // فلترة التصنيفات
-    /*function filterCategories() {
-        const selectedFilters = {
-            'unit-type': [],
-            'finishing-style': [],
-            'color-style': []
-        };
+        // Toggle Checkbox
+        function toggleCheckbox(checkbox) {
+            checkbox.classList.toggle('checked');
+        }
 
-        // جمع الفلاتر المحددة
-        document.querySelectorAll('.filter-checkbox.checked, .mobile-filter-checkbox.checked').forEach(checkbox => {
-            const filterType = checkbox.getAttribute('data-filter');
-            const filterValue = checkbox.getAttribute('data-value');
-            if (selectedFilters[filterType]) {
-                selectedFilters[filterType].push(filterValue);
+        // Mobile Filter Event Listeners
+        mobileFilterToggle.addEventListener('click', openMobileFilter);
+        mobileFilterClose.addEventListener('click', closeMobileFilter);
+        mobileFilterOverlay.addEventListener('click', closeMobileFilter);
+        applyFilters.addEventListener('click', closeMobileFilter);
+
+        // Checkbox click events
+        mobileFilterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', () => toggleCheckbox(checkbox));
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (mobileFilterDrawer.classList.contains('active')) {
+                    closeMobileFilter();
+                }
             }
         });
 
-        console.log('الفلاتر المحددة:', selectedFilters);
-        // هنا يمكنك إضافة منطق الفلترة حسب الحاجة
-    }
-
-    // إضافة event listeners للفلاتر
-    document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('click', function() {
-            this.classList.toggle('checked');
-            filterCategories();
+        // Prevent drawer close when clicking inside it
+        mobileFilterDrawer.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
-    });
 
-    // تطبيق الفلاتر عند النقر على زر التطبيق
-    applyFilters.addEventListener('click', filterCategories);*/
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    // SELECTORS
-    const desktopCheckboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
-    const mobileCheckboxes  = Array.from(document.querySelectorAll('.mobile-filter-checkbox'));
-    const cards             = Array.from(document.querySelectorAll('.package-cards'));
-    const applyBtn          = document.getElementById('applyFiltersMobile');
-    const mobileDrawer      = document.getElementById('mobileFilterDrawer');
-    const mobileOverlay     = document.getElementById('mobileFilterOverlay'); // لو موجود
-
-    // debug quick info
-    if (!cards.length) {
-        console.warn('No package cards found. تأكد أن العناصر تحمل class="package-cards" وأنها موجودة في الصفحة.');
-    }
-
-    // helper: collect active filters from a NodeList (desktop or mobile)
-    function getActiveFiltersFrom(nodeList) {
-    const active = { "package-name": [], "color-style": [], "unit-type": [] }; // ✅ ضفت unit-type
-    nodeList.forEach(cb => {
-        if (cb.classList && cb.classList.contains('checked')) {
-            const f = cb.dataset.filter;
-            const v = (cb.dataset.value || '').toString().trim();
-            if (f && v) {
-                active[f] = active[f] || [];
-                active[f].push(v);
-            }
+        // إرسال رسالة واتساب
+        window.sendWhatsApp = function(categoryName) {
+            const phoneNumber = "966500000000";
+            const message = `مرحباً، أنا مهتم بـ ${categoryName} وأريد معرفة المزيد عن العروض والأسعار.`;
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
+
+        // فلترة التصنيفات
+        /*function filterCategories() {
+            const selectedFilters = {
+                'unit-type': [],
+                'finishing-style': [],
+                'color-style': []
+            };
+
+            // جمع الفلاتر المحددة
+            document.querySelectorAll('.filter-checkbox.checked, .mobile-filter-checkbox.checked').forEach(checkbox => {
+                const filterType = checkbox.getAttribute('data-filter');
+                const filterValue = checkbox.getAttribute('data-value');
+                if (selectedFilters[filterType]) {
+                    selectedFilters[filterType].push(filterValue);
+                }
+            });
+
+            console.log('الفلاتر المحددة:', selectedFilters);
+            // هنا يمكنك إضافة منطق الفلترة حسب الحاجة
+        }
+
+        // إضافة event listeners للفلاتر
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+                filterCategories();
+            });
+        });
+
+        // تطبيق الفلاتر عند النقر على زر التطبيق
+        applyFilters.addEventListener('click', filterCategories);*/
     });
-    return active;
-}
+
+
+
+    /*
+    document.addEventListener('DOMContentLoaded', function () {
+        // SELECTORS
+        const desktopCheckboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
+        const mobileCheckboxes  = Array.from(document.querySelectorAll('.mobile-filter-checkbox'));
+        const cards             = Array.from(document.querySelectorAll('.package-cards'));
+        const applyBtn          = document.getElementById('applyFiltersMobile');
+        const mobileDrawer      = document.getElementById('mobileFilterDrawer');
+        const mobileOverlay     = document.getElementById('mobileFilterOverlay'); // لو موجود
+
+        // debug quick info
+        if (!cards.length) {
+            console.warn('No package cards found. تأكد أن العناصر تحمل class="package-cards" وأنها موجودة في الصفحة.');
+        }
+
+        // helper: collect active filters from a NodeList (desktop or mobile)
+        function getActiveFiltersFrom(nodeList) {
+        const active = { "package-name": [], "color-style": [], "unit-type": [] }; // ✅ ضفت unit-type
+        nodeList.forEach(cb => {
+            if (cb.classList && cb.classList.contains('checked')) {
+                const f = cb.dataset.filter;
+                const v = (cb.dataset.value || '').toString().trim();
+                if (f && v) {
+                    active[f] = active[f] || [];
+                    active[f].push(v);
+                }
+            }
+        });
+        return active;
+    }*/
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const desktopCheckboxes = Array.from(document.querySelectorAll('.filter-checkbox'));
+        const mobileCheckboxes  = Array.from(document.querySelectorAll('.mobile-filter-checkbox'));
+        const cards             = Array.from(document.querySelectorAll('.package-cards'));
+        const applyBtn          = document.getElementById('applyFiltersMobile');
+
+        // تحويل النصوص لمجموعة قياسية للمقارنة
+        function normalizeString(str) {
+            return str ? str.trim().toLowerCase() : '';
+        }
+
+        // جلب الفلاتر المحددة من NodeList
+        function getActiveFiltersFrom(nodeList) {
+            const active = { "package-name": [], "color-style": [], "unit-type": [] };
+            nodeList.forEach(cb => {
+                if (cb.classList.contains('checked')) {
+                    const f = cb.dataset.filter;
+                    const v = normalizeString(cb.dataset.value);
+                    if (f && v) active[f].push(v);
+                }
+            });
+            return active;
+        }
+
+        // جلب ألوان الكارد كنصوص lowercase
+        function getCardColors(card) {
+            return (card.dataset.colors || '').split(',').map(normalizeString).filter(Boolean);
+        }
+
+        // جلب أنواع الوحدات للكارد
+        function getCardUnits(card) {
+            return (card.dataset.unitTypes || '').split(',').map(normalizeString).filter(Boolean);
+        }
+
+        // تطبيق الفلاتر
+        function applyFilters(activeFilters) {
+            cards.forEach(card => {
+                let show = true;
+
+                const pkgName = normalizeString(card.dataset.packageName);
+
+                // فلترة اسم الباكج
+                if (activeFilters["package-name"].length && !activeFilters["package-name"].includes(pkgName)) {
+                    show = false;
+                }
+
+                // فلترة اللون
+                const cardColors = getCardColors(card);
+                if (activeFilters["color-style"].length && !activeFilters["color-style"].some(c => cardColors.includes(c))) {
+                    show = false;
+                }
+
+                // فلترة نوع الوحدة
+                const cardUnits = getCardUnits(card);
+                if (activeFilters["unit-type"].length && !activeFilters["unit-type"].some(u => cardUnits.includes(u))) {
+                    show = false;
+                }
+
+                card.style.display = show ? '' : 'none';
+            });
+        }
+
+        // toggle .checked عند الضغط + apply filters مباشرة
+        function setupCheckboxes(nodeList) {
+            nodeList.forEach(cb => {
+                cb.addEventListener('click', function() {
+                    cb.classList.toggle('checked');
+                    applyFilters(getActiveFiltersFrom(nodeList === desktopCheckboxes ? desktopCheckboxes : mobileCheckboxes));
+                });
+            });
+        }
+
+        // إعداد الديسكتوب والموبايل
+        setupCheckboxes(desktopCheckboxes);
+        setupCheckboxes(mobileCheckboxes);
+
+        // زر Apply للموبايل (لو موجود)
+        if (applyBtn) {
+            applyBtn.addEventListener('click', function() {
+                applyFilters(getActiveFiltersFrom(mobileCheckboxes));
+            });
+        }
+
+        // عرض كل الكروت أول مرة
+        applyFilters({ "package-name": [], "color-style": [], "unit-type": [] });
+    });
+
 
 
     // helper: normalize colors from data-colors attribute into array (lowercase, trimmed)
@@ -485,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return str.split(',')
               .map(s => s.trim().toLowerCase()) // trim + lowercase
               .filter(Boolean);
-}
+    }
 
 
     // apply filters to DOM cards
@@ -519,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         card.style.display = show ? '' : 'none';
     });
-}
+    }
 
     // DESKTOP: toggle immediately
     desktopCheckboxes.forEach(cb => {
@@ -559,7 +649,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // initial show all
     applyFilters({ "package-name": [], "color-style": [] });
-});
+
 
 
 

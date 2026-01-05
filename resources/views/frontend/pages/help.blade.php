@@ -106,7 +106,6 @@
 
           <!-- Project Size -->
             <div class="form-group">
-                <label class="body-2 text-body mb-2">{{ __('help.project_size') }}</label>
                 <select class="form-control" name="project_size" required>
                     <option value="">{{ __('help.select_project_size') }}</option>
                     <option value="small">{{ __('help.small') }} (10-20 {{ __('help.units') }})</option>
@@ -117,7 +116,6 @@
 
             <!-- Client Type -->
             <div class="form-group">
-                <label class="body-2 text-body mb-2">{{ __('help.client_type') }}</label>
                 <select class="form-control" name="client_type" required>
                     <option value="">{{ __('help.select_client_type') }}</option>
                     <option value="individual">{{ __('help.individual') }}</option>
@@ -126,7 +124,7 @@
             </div>
 
             <!-- Has Interior Design Plan? -->
-            <div class="form-group d-flex align-items-center gap-sm-3">
+            <div class="form-group  gap-sm-3">
                 <label class="body-2 text-body mb-0">{{ __('help.has_interior_plan') }}</label>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="has_interior_plan" id="hasInteriorPlan" value="1">
@@ -135,7 +133,7 @@
             </div>
 
             <!-- Needs Finishing Help? -->
-            <div class="form-group d-flex align-items-center gap-sm-3">
+            <div class="form-group gap-sm-3">
                 <label class="body-2 text-body mb-0">{{ __('help.needs_finishing_help') }}</label>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="needs_finishing_help" id="needsFinishingHelp" value="1">
@@ -144,7 +142,7 @@
             </div>
 
             <!-- Needs Color Selection Help? -->
-            <div class="form-group d-flex align-items-center gap-sm-3">
+            <div class="form-group  gap-sm-3">
                 <label class="body-2 text-body mb-0">{{ __('help.needs_color_help') }}</label>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="needs_color_help" id="needsColorHelp" value="1">

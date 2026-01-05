@@ -7,6 +7,7 @@ use App\Models\Faq;
 use App\Models\SeoSetting;
 use App\Models\PageContent;
 use App\Models\FaqCategory;
+use App\Models\Package;
 
 class FaqController extends Controller
 {
@@ -14,8 +15,7 @@ class FaqController extends Controller
     {
         $page = 'faq';
         $seoSettings = SeoSetting::all()->keyBy('page');
-
-        $faqs = Faq::with('category')->orderBy('sort')->get();
+        $faqs = Faq::with('category','package')->orderBy('sort')->get();
         $content = PageContent::where('page', 'faq')->first();
 
         return view('admin.faqs.index', compact('faqs','page','seoSettings','content'));
@@ -24,7 +24,9 @@ class FaqController extends Controller
     public function create()
     {
         $categories = FaqCategory::orderBy('sort')->get();
-        return view('admin.faqs.create', compact('categories'));
+        $packages = Package::active()->ordered()->get();
+
+        return view('admin.faqs.create', compact('categories','packages'));
     }
 
     public function store(Request $request)
@@ -37,10 +39,11 @@ class FaqController extends Controller
         'answer_en' => 'required|string',
         'sort'       => 'required|numeric',
         'page'       => 'required|string',
+        'package_id'  => 'nullable|exists:packages,id', // اختياري
     ]);
 
     Faq::create($request->only([
-        'category_id', 'question_ar', 'question_en', 'answer_ar', 'answer_en', 'sort', 'page'
+        'category_id', 'package_id','question_ar', 'question_en', 'answer_ar', 'answer_en', 'sort', 'page'
     ]));
 
     return redirect()->route('admin.faqs.index')->with('success', 'تمت إضافة السؤال بنجاح');
@@ -50,7 +53,9 @@ class FaqController extends Controller
     public function edit(Faq $faq)
     {
         $categories = FaqCategory::orderBy('sort')->get();
-        return view('admin.faqs.edit', compact('faq', 'categories'));
+        $packages = Package::active()->ordered()->get();
+
+        return view('admin.faqs.edit', compact('faq', 'categories','packages'));
     }
 
     public function update(Request $request, Faq $faq)
@@ -63,10 +68,11 @@ class FaqController extends Controller
             'answer_en' => 'required|string',
             'sort'       => 'required|numeric',
             'page'       => 'required|string',
+            'package_id'  => 'nullable|exists:packages,id', // اختياري
         ]);
 
         $faq->update($request->only([
-            'category_id', 'question_ar', 'question_en', 'answer_ar', 'answer_en', 'sort', 'page'
+            'category_id', 'package_id','question_ar', 'question_en', 'answer_ar', 'answer_en', 'sort', 'page'
         ]));
 
         return redirect()->route('admin.faqs.index')->with('success', 'تم تحديث السؤال بنجاح');

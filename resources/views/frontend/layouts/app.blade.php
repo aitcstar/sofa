@@ -82,7 +82,11 @@
 border: none !important;
 }
 
-
+.color-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
 .dropdown-menu {
 
     min-width: 245px;

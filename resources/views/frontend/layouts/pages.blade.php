@@ -82,6 +82,11 @@ border: none !important;
 min-width: 245px;
 text-align: left;
 }
+.color-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
         </style>
   @stack('styles')
 </head>

@@ -87,6 +87,47 @@
                     </div>
                 </div>
 
+                <div class="col-md-6 mb-3" id="package_div" style="display: none;">
+                    <label for="package_id" class="form-label">الباكج <span class="text-danger">*</span></label>
+                    <select id="package_id" name="package_id" class="form-select">
+                        <option value="">اختر الباكج</option>
+                        @foreach($packages as $package)
+                            <option value="{{ $package->id }}"
+                                {{ old('package_id', $faq->package_id ?? '') == $package->id ? 'selected' : '' }}>
+                                {{ $package->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('package_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const pageSelect = document.getElementById('page');
+                        const packageDiv = document.getElementById('package_div');
+
+                        function togglePackageDropdown() {
+                            if (pageSelect.value === 'category') {
+                                packageDiv.style.display = 'block';
+                                document.getElementById('package_id').setAttribute('required', 'required');
+                            } else {
+                                packageDiv.style.display = 'none';
+                                document.getElementById('package_id').removeAttribute('required');
+                            }
+                        }
+
+                        // عند تغير الاختيار
+                        pageSelect.addEventListener('change', togglePackageDropdown);
+
+                        // للتحقق عند تحميل الصفحة (مثلاً عند إعادة التوجيه بعد Validation Error)
+                        togglePackageDropdown();
+                    });
+                </script>
+
+
+
                 <div class="form-group">
                     <label for="order">الترتيب</label>
                     <input type="number" name="sort" id="sort" class="form-control" value="{{ old('sort', $faq->sort ?? 0) }}">

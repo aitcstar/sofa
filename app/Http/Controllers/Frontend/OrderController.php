@@ -83,12 +83,29 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $seo = SeoSetting::where('page', 'blog')->first();
+
+        $seo = new \stdClass();
+        $seo->title = app()->getLocale() == 'ar' ? 'الطلبات' : 'orders';
+        $seo->index_status = 'noindex';
+        $seo->slug_en = 'orders'; // أو أي slug ديناميكي حسب الصفحة
+        $seo->slug_ar = 'الطلبات';
+        $seo->meta_title_ar = 'الطلبات';
+        $seo->meta_title_en = 'orders';
+
         return view("frontend.order.order-details", compact("order",'seo'));
     }
 
     public function myOrders()
     {
-        $seo = SeoSetting::where('page', 'blog')->first();
+        //$seo = SeoSetting::where('page', 'blog')->first();
+
+        $seo = new \stdClass();
+        $seo->title = app()->getLocale() == 'ar' ? 'طلباتي' : 'My Orders';
+        $seo->index_status = 'noindex';
+        $seo->slug_en = 'My Orders'; // أو أي slug ديناميكي حسب الصفحة
+        $seo->slug_ar = 'طلباتي';
+        $seo->meta_title_ar = 'طلباتي';
+        $seo->meta_title_en = 'My Orders';
 
         $orders = Order::with(['orderItems.package'])
         ->where('user_id', auth()->id())

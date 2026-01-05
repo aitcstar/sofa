@@ -13,7 +13,16 @@ class ProfileController extends Controller
     // عرض صفحة الملف الشخصي
 public function index(Request $request)
 {
-    $seo = SeoSetting::where('page', 'blog')->first();
+    //$seo = SeoSetting::where('page', 'blog')->first();
+
+    $seo = new \stdClass();
+    $seo->title = app()->getLocale() == 'ar' ? 'البروفيل' : 'Profile';
+    $seo->index_status = 'noindex';
+    $seo->slug_en = 'Profile'; // أو أي slug ديناميكي حسب الصفحة
+    $seo->slug_ar = 'البروفيل';
+    $seo->meta_title_ar = 'البروفيل';
+    $seo->meta_title_en = 'Profile';
+
     $content = PageContent::where('page','blog')->first();
 
     $testimonials = Testimonial::where('status', 'approved')->where('user_id',auth()->user()->id)->latest()->take(10)->get();

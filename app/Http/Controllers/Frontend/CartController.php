@@ -184,8 +184,8 @@ class CartController extends Controller
             'phone' => 'required|string|max:20',
             'country_code' => 'required|string|max:10',
             'units_count' => "required|integer|min:$minUnits",
-            'project_type' => 'required|in:small,medium,large',
-            'current_stage' => 'required|in:design,execution,operation',
+            //'project_type' => 'required|in:small,medium,large',
+            //'current_stage' => 'required|in:design,execution,operation',
             'cart_data' => 'required|json',
         ]);
 
@@ -231,11 +231,11 @@ class CartController extends Controller
                 'phone' => $request->phone,
                 'country_code' => $request->country_code,
                 'units_count' => $request->units_count,
-                'project_type' => $request->project_type,
-                'current_stage' => $request->current_stage,
-                'has_interior_design' => $request->has('has_interior_design'),
-                'needs_finishing_help' => $request->has('needs_finishing_help'),
-                'needs_color_help' => $request->has('needs_color_help'),
+                //'project_type' => $request->project_type,
+                //'current_stage' => $request->current_stage,
+                //'has_interior_design' => $request->has('has_interior_design'),
+                //'needs_finishing_help' => $request->has('needs_finishing_help'),
+                //'needs_color_help' => $request->has('needs_color_help'),
                 'internal_notes' => $request->internal_notes,
                 'base_amount' => $subtotal,
                 'discount_amount' => $discount,
@@ -304,7 +304,14 @@ class CartController extends Controller
     public function orderSuccess($orderId)
     {
         $order = Order::with('items.package')->findOrFail($orderId);
-        $seo = SeoSetting::where('page', 'blog')->first();
+        $seo = new \stdClass();
+        $seo->title = app()->getLocale() == 'ar' ? 'إنشاء طلبك' : 'order success';
+        $seo->index_status = 'noindex';
+        $seo->slug_en = 'order success'; // أو أي slug ديناميكي حسب الصفحة
+        $seo->slug_ar = 'إنشاء طلبك';
+        $seo->meta_title_ar = 'إنشاء طلبك';
+        $seo->meta_title_en = 'order success';
+
         return view('frontend.cart.success', compact('order', 'seo'));
     }
 }

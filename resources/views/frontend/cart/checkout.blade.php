@@ -60,23 +60,45 @@
                                     @enderror
                                 </div>
                                 @php
-                                $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
+                                // خذ أول عنصر من السلة (أو أي عنصر حسب المشروع) وحدد الكمية
+                                $cart = json_decode(session()->get('shoppingCart', '[]'), true);
+                                $unitsCount = $cart[0]['quantity'] ?? \App\Models\Setting::first()?->min_units ?? 1;
                             @endphp
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ app()->getLocale() == 'ar' ? 'عدد الوحدات' : 'Number of Units' }} <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="units_count" value="{{ old('units_count', $minUnits) }}" min="{{$minUnits}}" required>
+                                    <input type="number" class="form-control" name="units_count" value="{{ $unitsCount }}" readonly>
+
                                     @error('units_count')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ app()->getLocale() == 'ar' ? 'نوع العميل' : 'Client Type' }} <span class="text-danger">*</span></label>
+                                <select class="form-select" name="client_type" required>
+                                    <option value="">{{ app()->getLocale() == 'ar' ? 'اختر نوع العميل' : 'Select Client Type' }}</option>
+                                    <option value="individual" {{ old('client_type') == 'individual' ? 'selected' : '' }}>
+                                        {{ app()->getLocale() == 'ar' ? 'فرد' : 'Individual' }}
+                                    </option>
+                                    <option value="commercial" {{ old('client_type') == 'commercial' ? 'selected' : '' }}>
+                                        {{ app()->getLocale() == 'ar' ? 'شركة' : 'Commercial' }}
+                                    </option>
+                                </select>
+
+                                @error('client_type')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{---
                             <h5 class="sub-heading-4 mb-3 mt-4">{{ app()->getLocale() == 'ar' ? 'تفاصيل المشروع' : 'Project Details' }}</h5>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ app()->getLocale() == 'ar' ? 'نوع المشروع' : 'Project Type' }} <span class="text-danger">*</span></label>
-                                    <select class="form-select" name="project_type" required>
+                                    <select class="form-select" name="project_type">
                                         <option value="">{{ app()->getLocale() == 'ar' ? 'اختر نوع المشروع' : 'Select Project Type' }}</option>
                                         <option value="small" {{ old('project_type') == 'small' ? 'selected' : '' }}>{{ app()->getLocale() == 'ar' ? 'صغير' : 'Small' }}</option>
                                         <option value="medium" {{ old('project_type') == 'medium' ? 'selected' : '' }}>{{ app()->getLocale() == 'ar' ? 'متوسط' : 'Medium' }}</option>
@@ -89,7 +111,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ app()->getLocale() == 'ar' ? 'المرحلة الحالية' : 'Current Stage' }} <span class="text-danger">*</span></label>
-                                    <select class="form-select" name="current_stage" required>
+                                    <select class="form-select" name="current_stage" >
                                         <option value="">{{ app()->getLocale() == 'ar' ? 'اختر المرحلة' : 'Select Stage' }}</option>
                                         <option value="design" {{ old('current_stage') == 'design' ? 'selected' : '' }}>{{ app()->getLocale() == 'ar' ? 'تصميم' : 'Design' }}</option>
                                         <option value="execution" {{ old('current_stage') == 'execution' ? 'selected' : '' }}>{{ app()->getLocale() == 'ar' ? 'تنفيذ' : 'Execution' }}</option>
@@ -129,7 +151,7 @@
                                     </div>
                                 </div>
                             </div>
-
+--}}
                             <div class="mb-3">
                                 <label class="form-label">{{ app()->getLocale() == 'ar' ? 'ملاحظات إضافية' : 'Additional Notes' }}</label>
                                 <textarea class="form-control" name="internal_notes" rows="3">{{ old('internal_notes') }}</textarea>
@@ -204,6 +226,16 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    const unitsInput = document.querySelector('input[name="units_count"]');
+
+    if (unitsInput) {
+        unitsInput.value = cart.length > 0 ? cart[0].quantity : {{ \App\Models\Setting::first()?->min_units ?? 1 }};
+    }
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const locale = '{{ app()->getLocale() }}';
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];

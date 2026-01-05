@@ -18,6 +18,7 @@ class Faq extends Model
         'sort',
         'page',
         'blog_id',
+        'package_id',
     ];
 
     public function category()
@@ -34,4 +35,10 @@ class Faq extends Model
     {
         return app()->getLocale() == 'ar' ? $this->answer_ar : $this->answer_en;
     }
+
+    public function package()
+{
+    return $this->belongsTo(Package::class);
+}
+
 }

@@ -89,6 +89,25 @@
                 </div>
 
 
+                {{-- Dropdown الباكجات --}}
+                <div class="row" id="package-row" style="display: {{ old('page', $faq->page) == 'category' ? 'block' : 'none' }};">
+                    <div class="col-md-6 mb-3">
+                        <label for="package_id" class="form-label">الباكج <span class="text-danger">*</span></label>
+                        <select id="package_id" name="package_id" class="form-select">
+                            <option value="">اختر الباكج</option>
+                            @foreach($packages as $package)
+                                <option value="{{ $package->id }}"
+                                    {{ old('package_id', $faq->package_id ?? '') == $package->id ? 'selected' : '' }}>
+                                    {{ $package->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('package_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="order">الترتيب</label>
                     <input type="number" name="sort" id="sort" class="form-control" value="{{ old('sort', $faq->sort ?? 0) }}">
@@ -106,4 +125,22 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pageSelect = document.getElementById('page');
+        const packageRow = document.getElementById('package-row');
+
+        pageSelect.addEventListener('change', function () {
+            if (this.value === 'category') {
+                packageRow.style.display = 'block';
+            } else {
+                packageRow.style.display = 'none';
+                document.getElementById('package_id').value = '';
+            }
+        });
+    });
+</script>
 @endsection

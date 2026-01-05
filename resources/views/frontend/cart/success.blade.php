@@ -85,6 +85,16 @@
                                 <i class="fas fa-shopping-bag"></i>
                                 {{ app()->getLocale() == 'ar' ? 'تصفح المنتجات' : 'Browse Products' }}
                             </a>
+
+
+                            <a href="{{ url('/order/' . $order->id) }}" class="btn btn-custom-outline">
+                                <i class="fas fa-shopping-bag"></i>
+                                {{ app()->getLocale() == 'ar' ? 'تفاصيل الطلب' : 'Order details' }}
+                            </a>
+
+
+
+
                         </div>
                     </div>
                 </div>

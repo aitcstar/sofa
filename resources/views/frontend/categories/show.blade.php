@@ -86,17 +86,25 @@
 
             {{-- Tabs (Designs) --}}
             @if($unit->designs->count())
-            <div class="accordion-body d-flex gap-sm-4 flex-wrap design-tabs" data-unit="{{ $unit->id }}">
-                @foreach($unit->designs as $design)
-                    <div class="accordion-details-content-item design-tab {{ $loop->first ? 'active-tab' : '' }}"
-                        data-design="{{ $design->id }}">
-                        <p class="sub-heading-5 mb-0">
-                            {{ $design->{'name_'.app()->getLocale()} }}
-                        </p>
-                    </div>
-                @endforeach
-            </div>
-            @endif
+<div class="accordion-body d-flex flex-row align-items-center gap-sm-4 design-tabs" data-unit="{{ $unit->id }}">
+    <!-- الرقم في أقصى اليسار -->
+    <div class="design-count">
+        {{ $items->count() }}
+    </div>
+
+    @foreach($unit->designs as $design)
+        <div class="accordion-details-content-item design-tab {{ $loop->first ? 'active-tab' : '' }}"
+            data-design="{{ $design->id }}">
+            <p class="sub-heading-5 mb-0">
+                {{ $design->{'name_'.app()->getLocale()} }}
+            </p>
+        </div>
+    @endforeach
+</div>
+@endif
+
+
+
 
             {{-- عناصر الوحدة --}}
             @if($items->count())
@@ -569,7 +577,7 @@
             </div>
 
             <div class="accordion" id="accordionFaq">
-                @foreach($faqs as $index => $faq)
+                @foreach($package->faqs as $index => $faq)
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button @if($index != 0) collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFaq{{ $index }}"
@@ -597,6 +605,38 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/pages/category-details.css') }}">
 <style>
+
+.design-tabs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative; /* مهم لعمل absolute للرقم */
+}
+
+/* الرقم دائماً على أقصى اليسار داخل التصميم */
+.design-count {
+    position: absolute;
+    left: 0; /* أقصى اليسار */
+    top: 50%;
+    transform: translateY(-50%); /* لمركزه عمودياً */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ad996f; /* لون الدائرة */
+    color: white;
+    font-weight: bold;
+    z-index: 10;
+}
+
+
+
+
+
+
     /* تحسين مظهر الأزرار */
     .category-details-images-grid-col-two-button button,
     .category-details-images-grid-col-two-resize button {

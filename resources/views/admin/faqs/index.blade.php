@@ -134,6 +134,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <th>الإجابة (إنجليزي)</th>
                             <th>القسم</th>
                             <th>الصفحة</th>
+                            <th>اسم الباكج</th>
                             <th>الترتيب</th>
                             <th width="180">الإجراءات</th>
                         </tr>
@@ -157,7 +158,7 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                     {{ $faq->page }}
                                 @endif
                             </td>
-
+                            <td>{{ $faq->package?->name_ar ?? '-' }}</td>
                             <td>{{ $faq->sort }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">

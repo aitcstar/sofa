@@ -284,7 +284,7 @@ public function show($slug)
         'images',
         'packageUnitItems.unit.images',
         'packageUnitItems.unit.designs',
-        'packageUnitItems.item'
+        'packageUnitItems.item','faqs'
     ])->where($slugColumn, $slugLower)->first();
 
     // إذا لم توجد الباقة، تحقق من أي slug قديم

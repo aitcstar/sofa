@@ -52,7 +52,7 @@
                         <!-- Including -->
                         <div class="d-flex gap-sm-3 align-items-center">
                             <p class="body-2 text-caption mb-0" style="width: 90px;">{{ __('site.Includes') }}</p>
-                            <div class="d-flex flex-wrap gap-sm-3">
+                            <div class="d-flex flex-wrap gap-sm-1">
                                 @php
                                         $units = $package->packageUnitItems->pluck('unit')->unique('id')->values();
                                     @endphp

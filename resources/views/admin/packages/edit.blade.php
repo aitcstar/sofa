@@ -435,13 +435,13 @@ function fetchItemsByUnitId(unitId, callback) {
                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                         <h6>وحدة ${unitIndex+1}</h6>
                         <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
+                    </div>
+                    <div class="card-body">
                         <input type="number"
                             name="units[${unitIndex}][sort_order]"
                             class="form-control mt-2"
                             value="${unitIndex + 1}">
 
-                    </div>
-                    <div class="card-body">
                         <label>اختر الوحدة</label>
                         <select name="units[${unitIndex}][unit_id]" class="form-control select2-unit" onchange="loadUnitDetails(this)" required>
                             <option value="">-- اختر وحدة --</option>

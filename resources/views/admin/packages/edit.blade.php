@@ -437,6 +437,8 @@ function fetchItemsByUnitId(unitId, callback) {
                         <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
                     </div>
                     <div class="card-body">
+                        <label>ترتيب الوحدة</label>
+
                         <input type="number"
                             name="units[${unitIndex}][sort_order]"
                             class="form-control mt-2"

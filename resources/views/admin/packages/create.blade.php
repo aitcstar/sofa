@@ -328,6 +328,7 @@ window.addUnitFromList = function () {
     </div>
     <div class="card-body">
         <div class="mb-2">
+            <label>ترتيب الوحدة</label>
             <input type="number" name="units[${unitIndex}][sort_order]" class="form-control" value="0" min="0">
 
             <label>اختر الوحدة</label>

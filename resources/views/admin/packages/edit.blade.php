@@ -278,7 +278,7 @@
                                     $unit = $unitItems->first()->unit;
                                 @endphp
                                 <div class="card mb-3 unit-card">
-                                    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                                    <div class="card-header d-flex justify-content-between align-items-center bg-primary" style="color: white;">
                                         <h6>وحدة {{ $unit->name_ar }} / {{ $unit->name_en }}</h6>
                                         <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
                                     </div>

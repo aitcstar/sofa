@@ -194,7 +194,7 @@ public function update(Request $request, Package $package)
 
     // أضف الوحدات الجديدة
     if (!empty($validated['units'])) {
-        foreach ($validated['units'] as $unitData) {
+        /*foreach ($validated['units'] as $unitData) {
             $unitId = $unitData['unit_id'];
 
             if (!empty($unitData['items'])) {
@@ -207,7 +207,33 @@ public function update(Request $request, Package $package)
                     ]);
                 }
             }
+        }*/
+
+        foreach ($validated['units'] as $unitData) {
+
+            $unitId = $unitData['unit_id'] ?? $unitData['selected_unit_id'] ?? null;
+
+            if (!$unitId) {
+                continue;
+            }
+
+            if (!empty($unitData['items'])) {
+                foreach ($unitData['items'] as $itemData) {
+
+                    if (empty($itemData['item_id'])) {
+                        continue;
+                    }
+
+                    PackageUnitItem::create([
+                        'package_id' => $package->id,
+                        'unit_id'    => $unitId,
+                        'item_id'    => $itemData['item_id'],
+                        'sort_order' => $itemData['sort_order'] ?? 0,
+                    ]);
+                }
+            }
         }
+
 
         Unit::where('id', $unitId)->update([
             'sort_order' => $unitData['sort_order'] ?? 0

@@ -16,6 +16,7 @@ class Unit extends Model
         'type',
         'description_en',
         'description_ar',
+        'sort_order',
     ];
 
     // العلاقات

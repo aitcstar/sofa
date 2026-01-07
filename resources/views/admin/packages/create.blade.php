@@ -268,6 +268,10 @@ window.addUnitFromList = function () {
             <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.unit-card').remove()">
                 حذف
             </button>
+            <div class="mb-2">
+                <label>ترتيب الظهور</label>
+                <input type="number" name="units[${unitIndex}][sort_order]" class="form-control" value="0" min="0">
+            </div>
         </div>
         <div class="card-body">
             <div class="mb-2">

@@ -285,6 +285,15 @@
                                     <div class="card-body">
                                         <input type="hidden" name="units[{{ $unitId }}][unit_id]" value="{{ $unit->id }}">
 
+                                        <div class="mb-2">
+                                            <label>ترتيب الوحدة</label>
+                                            <input type="number"
+                                                   name="units[{{ $unitId }}][sort_order]"
+                                                   class="form-control"
+                                                   value="{{ old("units.$unitId.sort_order", $unit->sort_order ?? 0) }}">
+                                        </div>
+
+
                                         <!-- دروب داون لاختيار الوحدة -->
                                         <div class="mb-2">
                                             <label>اختر الوحدة</label>
@@ -486,6 +495,10 @@ function fetchItemsByUnitId(unitId, callback) {
                         <option value="">-- اختر قطعة --</option>
                         ${options}
                     </select>
+                    <input type="number"
+           name="units[${uIndex}][items][${itemIndex}][sort_order]"
+           class="form-control mt-2"
+           value="${itemIndex + 1}">
                 </div>`;
                 unitCard.find('.items-container').append(html);
                 unitCard.find('.select2-item').last().select2();
@@ -522,6 +535,10 @@ function fetchItemsByUnitId(unitId, callback) {
                             <select name="units[${uIndex}][items][${itemIndex}][item_id]" class="form-control select2-item" required>
                                 ${optionsHtml}
                             </select>
+                            <input type="number"
+                                name="units[${uIndex}][items][${itemIndex}][sort_order]"
+                                class="form-control mt-2"
+                                value="${itemIndex + 1}">
                         `;
                         itemsContainer.appendChild(div);
                         $(div).find('.select2-item').select2();

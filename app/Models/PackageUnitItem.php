@@ -12,6 +12,7 @@ class PackageUnitItem extends Model
         'package_id',
         'unit_id',
         'item_id',
+        'sort_order',
     ];
 
     public function package()

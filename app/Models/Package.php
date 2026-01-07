@@ -47,7 +47,9 @@ class Package extends Model
 
     public function units()
 {
-    return $this->hasMany(Unit::class);
+    //return $this->hasMany(Unit::class);
+    return $this->hasMany(Unit::class)->orderBy('sort_order');
+
 }
 
     public function exhibitions()
@@ -106,7 +108,7 @@ public function surveyAnswers()
 
 public function packageUnitItems()
 {
-    return $this->hasMany(PackageUnitItem::class)->with(['unit.images', 'item']);
+    return $this->hasMany(PackageUnitItem::class)->with(['unit.images', 'item'])->orderBy('sort_order');
 }
 
 

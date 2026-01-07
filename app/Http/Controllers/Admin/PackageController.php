@@ -98,10 +98,16 @@ public function store(Request $request)
                         'package_id' => $package->id,
                         'unit_id'    => $unitId,
                         'item_id'    => $itemData['item_id'],
+                        'sort_order' => $itemData['sort_order'] ?? 0,
                     ]);
                 }
             }
         }
+
+        Unit::where('id', $unitId)->update([
+            'sort_order' => $unitData['sort_order'] ?? 0
+        ]);
+
     }
 
     return redirect()->route('admin.packages.index')->with('success', 'تم إنشاء الباكج بنجاح');
@@ -156,6 +162,8 @@ public function update(Request $request, Package $package)
         'available_colors.*.name_ar' => 'required_with:available_colors|string',
         'available_colors.*.name_en' => 'required_with:available_colors|string',
         'available_colors.*.color_code' => 'required_with:available_colors|string',
+        'units.*.sort_order' => 'nullable|integer',
+
     ]);
 
 
@@ -195,10 +203,16 @@ public function update(Request $request, Package $package)
                         'package_id' => $package->id,
                         'unit_id'    => $unitId,
                         'item_id'    => $itemData['item_id'],
+                        'sort_order' => $itemData['sort_order'] ?? 0,
                     ]);
                 }
             }
         }
+
+        Unit::where('id', $unitId)->update([
+            'sort_order' => $unitData['sort_order'] ?? 0
+        ]);
+
     }
 
     return redirect()->route('admin.packages.index')

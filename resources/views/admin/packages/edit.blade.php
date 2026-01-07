@@ -435,6 +435,11 @@ function fetchItemsByUnitId(unitId, callback) {
                     <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
                         <h6>وحدة ${unitIndex+1}</h6>
                         <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
+                        <input type="number"
+                            name="units[${unitIndex}][sort_order]"
+                            class="form-control mt-2"
+                            value="${unitIndex + 1}">
+
                     </div>
                     <div class="card-body">
                         <label>اختر الوحدة</label>
@@ -495,10 +500,7 @@ function fetchItemsByUnitId(unitId, callback) {
                         <option value="">-- اختر قطعة --</option>
                         ${options}
                     </select>
-                    <input type="number"
-           name="units[${uIndex}][items][${itemIndex}][sort_order]"
-           class="form-control mt-2"
-           value="${itemIndex + 1}">
+
                 </div>`;
                 unitCard.find('.items-container').append(html);
                 unitCard.find('.select2-item').last().select2();
@@ -535,10 +537,6 @@ function fetchItemsByUnitId(unitId, callback) {
                             <select name="units[${uIndex}][items][${itemIndex}][item_id]" class="form-control select2-item" required>
                                 ${optionsHtml}
                             </select>
-                            <input type="number"
-                                name="units[${uIndex}][items][${itemIndex}][sort_order]"
-                                class="form-control mt-2"
-                                value="${itemIndex + 1}">
                         `;
                         itemsContainer.appendChild(div);
                         $(div).find('.select2-item').select2();

@@ -8,10 +8,11 @@ use App\Models\LeadActivity;
 use App\Models\Quote;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use Auth;
 class EnhancedCRMController extends Controller
 {
     /**
@@ -121,7 +122,7 @@ class EnhancedCRMController extends Controller
         ]);
 
         //DB::beginTransaction();
-//dd($request->all());
+        //dd($request->all());
         try {
             $lead = Lead::create($validated);
 
@@ -349,16 +350,45 @@ class EnhancedCRMController extends Controller
     /**
      * Show create quote form.
      */
-    public function createQuote()
+
+    /* public function createQuote()
     {
         $leads = Lead::whereIn('status', ['contacted', 'interested'])->get();
 
         return view('admin.crm.quotes.create', compact('leads'));
+    }*/
+
+    public function createQuote()
+    {
+        $leads = Lead::whereIn('status', ['contacted', 'interested'])->get();
+
+        // تحميل packageUnitItems مع العلاقة item()
+        $packages = Package::with('packageUnitItems.item')->get()->map(function ($pkg) {
+            return [
+                'id' => $pkg->id,
+                'name_ar' => $pkg->name_ar,
+                'items' => $pkg->packageUnitItems->map(function ($packageUnitItem) {
+                    // $packageUnitItem هو PackageUnitItem
+                    // $packageUnitItem->item هو نموذج Item
+                    return [
+                        'name' => $packageUnitItem->item->item_name_ar ?? 'بدون اسم',
+                        'description' => $packageUnitItem->item->description ?? '',
+                        'default_price' => (float) ($packageUnitItem->item->default_price ?? 0),
+                        'default_quantity' => (int) ($packageUnitItem->item->default_quantity ?? 1),
+                    ];
+                })
+            ];
+        });
+
+        // dd($packages); // ← الآن سيعرض البيانات بشكل صحيح
+
+        return view('admin.crm.quotes.create', compact('leads', 'packages'));
     }
 
     /**
      * Store new quote.
      */
+    /*
     public function storeQuote(Request $request)
     {
         $validated = $request->validate([
@@ -437,7 +467,124 @@ class EnhancedCRMController extends Controller
                 ->with('error', 'حدث خطأ: ' . $e->getMessage())
                 ->withInput();
         }
-    }
+    }*/
+
+    /**
+ * Store new quote.
+ */
+public function storeQuote(Request $request)
+{
+    //dd('dddd');
+    // التحقق من البيانات
+    $validated = $request->validate([
+        'lead_id' => 'required|exists:leads,id',
+        'customer_name' => 'required|string|max:255',
+        'customer_email' => 'nullable|email',
+        'customer_phone' => 'nullable|string',
+        'customer_company' => 'nullable|string',
+        'issue_date' => 'required|date',
+        'valid_until' => 'required|date|after_or_equal:issue_date',
+        'packages' => 'required|array|min:1',
+        'packages.*.items' => 'required|array|min:1',
+        'packages.*.items.*.name' => 'required|string',
+        'packages.*.items.*.description' => 'nullable|string',
+        'packages.*.items.*.quantity' => 'required|numeric|min:1',
+        'packages.*.items.*.unit_price' => 'required|numeric|min:0',
+        'discount_amount' => 'nullable|numeric|min:0',
+        'tax_rate' => 'required|numeric|min:0|max:100',
+        'terms_conditions' => 'nullable|string',
+        'notes' => 'nullable|string',
+    ]);
+
+
+
+    DB::beginTransaction();
+    //try {
+        // حساب المبالغ
+        $subtotal = 0;
+        foreach ($request->packages as $pkg) {
+            foreach ($pkg['items'] as $item) {
+                $subtotal += $item['quantity'] * $item['unit_price'];
+            }
+        }
+
+        $discountAmount = $request->discount_amount ?? 0;
+        $taxRate = $request->tax_rate ?? 0;
+        $afterDiscount = $subtotal - $discountAmount;
+        $taxAmount = round($afterDiscount * ($taxRate / 100), 2);
+        $totalAmount = $afterDiscount + $taxAmount;
+
+        // توليد رقم عرض السعر
+        $quoteNumber = 'QUO-' . now()->format('Ymd') . '-' . str_pad(Quote::count() + 1, 4, '0', STR_PAD_LEFT);
+
+        // إنشاء عرض السعر
+        $quote = Quote::create([
+            'lead_id' => $request->lead_id,
+            'customer_name' => $request->customer_name,
+            'customer_email' => $request->customer_email,
+            'customer_phone' => $request->customer_phone,
+            'customer_company' => $request->customer_company,
+            'quote_number' => $quoteNumber,
+            'issue_date' => $request->issue_date,
+            'valid_until' => $request->valid_until,
+            'subtotal' => $subtotal,
+            'discount_amount' => $discountAmount,
+            'tax_rate' => $taxRate,
+            'tax_amount' => $taxAmount,
+            'total_amount' => $totalAmount,
+            'terms_conditions' => $request->terms_conditions,
+            'notes' => $request->notes,
+            'status' => 'draft',
+            'created_by' => auth()->id() ?? 1,
+        ]);
+
+       // dd($request->packages);
+
+        // حفظ جميع القطع (Items) تحت الباكجات
+        // بما أن كل باكج مُعبّأ بالقطع عند الاختيار، نقوم بحفظها كعناصر مستقلة في جدول `quote_items`
+        foreach ($request->packages as $pkgData) {
+            $packageId = $pkgData['package_id'] ?? null;
+
+            foreach ($pkgData['items'] as $itemData) {
+                $quote->items()->create([
+                    'item_name' => $itemData['name'],
+                    'description' => $itemData['description'] ?? null,
+                    'quantity' => $itemData['quantity'],
+                    'unit_price' => $itemData['unit_price'],
+                    'total_price' => $itemData['quantity'] * $itemData['unit_price'],
+                    'package_id' => $packageId, // ✅ هذا هو المفتاح
+                ]);
+            }
+        }
+
+        // تسجيل نشاط في العميل المحتمل
+        LeadActivity::create([
+            'lead_id' => $request->lead_id,
+            'user_id' => auth()->id() ?? 1,
+            'activity_type' => 'quote_created',
+            'description' => "تم إنشاء عرض سعر جديد رقم: {$quote->quote_number}",
+        ]);
+
+        DB::commit();
+
+        // تحديد الإجراء: مسودة أم إرسال؟
+        if ($request->has('action') && $request->action === 'send') {
+            // يمكنك هنا إرسال بريد إلكتروني أو تغيير الحالة لـ 'sent'
+            $quote->update(['status' => 'sent']);
+            // إرسال بريد (اختياري)
+        }
+
+        return redirect()->route('admin.crm.quotes.show', $quote)
+            ->with('success', 'تم إنشاء عرض السعر بنجاح');
+
+   /* } catch (\Exception $e) {
+        DB::rollback();
+        \Log::error('Error creating quote: ' . $e->getMessage());
+        return redirect()->back()
+            ->with('error', 'حدث خطأ أثناء حفظ عرض السعر. يُرجى المحاولة لاحقًا.')
+            ->withInput();
+    }*/
+}
 
 
     /**
@@ -445,9 +592,8 @@ class EnhancedCRMController extends Controller
      */
     public function showQuote(Quote $quote)
     {
-        $quote->load(['lead', 'createdBy']);
-
-        return view('admin.crm.enhanced.quote-show', compact('quote'));
+        $quote->load(['lead', 'createdBy', 'items']); // ✅ أضف items هنا
+        return view('admin.crm.quotes.show', compact('quote'));
     }
 
     /**

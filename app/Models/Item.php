@@ -23,6 +23,9 @@ class Item extends Model
         'color_en',
         'background_color',
         'image_path',
+        'description',
+        'default_price',
+        'default_quantity',
     ];
 
     protected $casts = [

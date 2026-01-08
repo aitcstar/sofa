@@ -135,9 +135,9 @@
                             <label class="form-label">نوع المشروع <span class="text-danger">*</span></label>
                             <select name="project_type" class="form-select" required>
                                 <option value="">اختر نوع المشروع</option>
-                                <option value="large" {{ old('project_type') === 'large' ? 'selected' : '' }}>مشروع كبير</option>
-                                <option value="medium" {{ old('project_type') === 'medium' ? 'selected' : '' }}>مشروع متوسط</option>
-                                <option value="small" {{ old('project_type') === 'small' ? 'selected' : '' }}>مشروع صغير</option>
+                                <option value="large" {{ old('project_type') === 'large' ? 'selected' : '' }}>كبير 30+ وحدة</option>
+                                <option value="medium" {{ old('project_type') === 'medium' ? 'selected' : '' }}>متوسط من ( 20 - 30 ) وحدة</option>
+                                <option value="small" {{ old('project_type') === 'small' ? 'selected' : '' }}>صغير  من ( 10 - 20 ) وحدة</option>
                             </select>
                         </div>
 
@@ -167,7 +167,7 @@
                                     <div class="form-check">
                                         <input type="checkbox" name="has_interior_design" class="form-check-input" id="interiorDesign" {{ old('has_interior_design') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="interiorDesign">
-                                            تصميم داخلي
+                                            هل لديك مخطط تصميم داخلي
                                         </label>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                     <div class="form-check">
                                         <input type="checkbox" name="needs_finishing_help" class="form-check-input" id="finishingHelp" {{ old('needs_finishing_help') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="finishingHelp">
-                                            مساعدة في التشطيب
+                                            هل تحتاج مساعدة في التشطيب
                                         </label>
                                     </div>
                                 </div>
@@ -183,8 +183,8 @@
                                     <div class="form-check">
                                         <input type="checkbox" name="needs_color_help" class="form-check-input" id="colorHelp" {{ old('needs_color_help') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="colorHelp">
-                                            مساعدة في اختيار الألوان
-                                        </label>
+                                            هل تحتاج مساعدة في اختيار الأألوان
+                                                                                 </label>
                                     </div>
                                 </div>
                             </div>

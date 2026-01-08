@@ -259,6 +259,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web'])->group(function () {
 });
 
 
+Route::get('/admin/packages/{package}/designs-from-units', [PackageController::class, 'designsFromUnits']);
 
 Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -278,6 +279,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
     // حذف الباكدج كامل
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])
     ->name('packages.destroy');
+
 
     // حذف صورة واحدة من الباكدج
     Route::delete('packages/{package}/images/{image}', [PackageController::class, 'deleteImage'])

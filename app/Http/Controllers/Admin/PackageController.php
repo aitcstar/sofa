@@ -125,8 +125,9 @@ public function store(Request $request)
 
     // كل الوحدات المتاحة اللي ممكن إضافتها للباكج (مش موجودة مسبقاً)
     //$units = Unit::whereNull('package_id')->get();
-    $units = Unit::all();
-
+    //$units = Unit::all();
+ // الوحدات المرتبطة بالباكج حالياً
+ $units = $package->units()->get(); // جلب الوحدات المرتبطة بالباكج فقط
     return view('admin.packages.edit', compact('package', 'units'));
 }
 
@@ -134,6 +135,7 @@ public function store(Request $request)
 
 public function update(Request $request, Package $package)
 {
+    // ✅ إضافة قاعدة التحقق لـ unit_id و unit_sort_order و items بشكل صريح
     $validated = $request->validate([
         'name_ar' => 'required|string|max:255',
         'name_en' => 'required|string|max:255',
@@ -142,7 +144,7 @@ public function update(Request $request, Package $package)
         'description_en' => 'nullable|string',
         'period_ar'=> 'nullable|string',
         'period_en'=> 'nullable|string',
-        'sort_order'=> 'nullable|string',
+        'sort_order'=> 'nullable|integer', // ✅ تم تغييره من string إلى integer
         'service_includes_ar'=> 'nullable|string',
         'service_includes_en'=> 'nullable|string',
         'payment_plan_ar'=> 'nullable|string',
@@ -158,12 +160,16 @@ public function update(Request $request, Package $package)
         'slug_en'=> 'nullable|string',
         'slug_ar'=> 'nullable|string',
         'units'   => 'nullable|array',
+        'units.*.unit_id' => 'required_with:units|exists:units,id', // ✅ إضافة
+        'units.*.sort_order' => 'nullable|integer',
+        'units.*.unit_sort_order' => 'nullable|integer', // ✅ إضافة
+        'units.*.items' => 'nullable|array',
+        'units.*.items.*.item_id' => 'required_with:units.*.items|exists:items,id', // ✅ إضافة
+        'units.*.items.*.sort_order' => 'nullable|integer',
         'available_colors' => 'nullable|array',
         'available_colors.*.name_ar' => 'required_with:available_colors|string',
         'available_colors.*.name_en' => 'required_with:available_colors|string',
         'available_colors.*.color_code' => 'required_with:available_colors|string',
-        'units.*.sort_order' => 'nullable|integer',
-
     ]);
 
 
@@ -194,53 +200,31 @@ public function update(Request $request, Package $package)
 
     // أضف الوحدات الجديدة
     if (!empty($validated['units'])) {
-        /*foreach ($validated['units'] as $unitData) {
+        foreach ($validated['units'] as $unitData) {
             $unitId = $unitData['unit_id'];
 
+            // ✅ 1. تحديث sort_order في جدول units (لعرض جدول الكميات)
+            $unitSortOrder = $unitData['unit_sort_order'] ?? 0;
+            Unit::where('id', $unitId)->update([
+                'sort_order' => $unitSortOrder
+            ]);
+
+            // ✅ 2. ترتيب الوحدة داخل هذا الباكج (يُستخدم لترتيب الوحدات عند عرض الباكج)
+            $packageUnitSortOrder = $unitData['sort_order'] ?? 0;
+
             if (!empty($unitData['items'])) {
                 foreach ($unitData['items'] as $itemData) {
                     PackageUnitItem::create([
                         'package_id' => $package->id,
                         'unit_id'    => $unitId,
                         'item_id'    => $itemData['item_id'],
-                        'sort_order' => $itemData['sort_order'] ?? 0,
-                    ]);
-                }
-            }
-        }*/
-
-        foreach ($validated['units'] as $unitData) {
-
-            $unitId = $unitData['unit_id'] ?? $unitData['selected_unit_id'] ?? null;
-
-            if (!$unitId) {
-                continue;
-            }
-
-            if (!empty($unitData['items'])) {
-                foreach ($unitData['items'] as $itemData) {
-
-                    if (empty($itemData['item_id'])) {
-                        continue;
-                    }
-
-                    PackageUnitItem::create([
-                        'package_id' => $package->id,
-                        'unit_id'    => $unitId,
-                        'item_id'    => $itemData['item_id'],
-                        'sort_order' => $itemData['sort_order'] ?? 0,
+                        // ✅ هنا نستخدم ترتيب الوحدة في الباكج (ليس ترتيب العنصر داخل الوحدة)
+                        'sort_order' => $packageUnitSortOrder,
                     ]);
                 }
             }
         }
-
-
-        Unit::where('id', $unitId)->update([
-            'sort_order' => $unitData['sort_order'] ?? 0
-        ]);
-
     }
-
     return redirect()->route('admin.packages.index')
         ->with('success', 'تم تحديث الباكج بنجاح');
 }
@@ -271,6 +255,19 @@ public function update(Request $request, Package $package)
 
         return redirect()->route('admin.packages.index')->with('success', 'تم حذف الباكج بنجاح.');
     }
+
+
+    public function designsFromUnits(Package $package)
+    {
+        $designs = \App\Models\Design::where('package_id', $package->id)
+            ->select('id','name_ar','name_en')
+            ->get();
+
+        return response()->json($designs);
+    }
+
+
+
 
     public function deleteImage(Package $package, PackageImage $image)
     {

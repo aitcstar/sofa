@@ -145,4 +145,5 @@ protected static function booted()
     return $this->hasMany(Faq::class, 'package_id');
 }
 
+
 }

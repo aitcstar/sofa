@@ -270,7 +270,8 @@
                         <h5>الوحدات</h5>
                         <div id="units-container">
                             @php
-                            $groupedUnits = $package->packageUnitItems->groupBy('unit_id');
+                                $groupedUnits = $package->packageUnitItems->sortBy('sort_order')->groupBy('unit_id');
+                                $unitLoopIndex = 0;
                             @endphp
 
                             @foreach($groupedUnits as $unitId => $unitItems)
@@ -283,29 +284,27 @@
                                         <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
                                     </div>
                                     <div class="card-body">
-                                        <input type="hidden" name="units[{{ $unitId }}][unit_id]" value="{{ $unit->id }}">
+                                        {{-- ✅ استخدام $unitLoopIndex كفهرس عددي متسلسل --}}
+                                        <input type="hidden" name="units[{{ $unitLoopIndex }}][unit_id]" value="{{ $unit->id }}">
 
-                                        <div class="mb-2">
-                                            <label>ترتيب الوحدة</label>
-                                            <input type="number"
-                                                   name="units[{{ $unitId }}][sort_order]"
-                                                   class="form-control"
-                                                   value="{{ old("units.$unitId.sort_order", $unit->sort_order ?? 0) }}">
+                                        <div class="row mb-2">
+                                            <div class="col-md-6">
+                                                <label>ترتيب الوحدة في الباكج</label>
+                                                <input type="number"
+                                                       name="units[{{ $unitLoopIndex }}][sort_order]"
+                                                       class="form-control"
+                                                       value="{{ old("units.$unitLoopIndex.sort_order", $unitItems->first()->sort_order ?? 0) }}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>ترتيب الوحدة في جدول الكميات</label>
+                                                <input type="number"
+                                                       name="units[{{ $unitLoopIndex }}][unit_sort_order]"
+                                                       class="form-control"
+                                                       value="{{ old("units.$unitLoopIndex.unit_sort_order", $unit->sort_order ?? 0) }}">
+                                            </div>
                                         </div>
 
-
-                                        <!-- دروب داون لاختيار الوحدة -->
-                                        <div class="mb-2">
-                                            <label>اختر الوحدة</label>
-                                            <select name="units[{{ $unitId }}][selected_unit_id]" class="form-control select2-unit" required>
-                                                <option value="">-- اختر وحدة --</option>
-                                                @foreach($units as $u)
-                                                    <option value="{{ $u->id }}" {{ $u->id == $unit->id ? 'selected' : '' }}>
-                                                        {{ $u->name_ar }} / {{ $u->name_en }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        {{-- ✅ إزالة حقل selected_unit_id غير الضروري --}}
 
                                         <!-- صور الوحدة -->
                                         <div class="unit-images-preview d-flex flex-wrap gap-2 mb-3">
@@ -324,7 +323,7 @@
                                                             <strong>قطعة {{ $iIndex + 1 }}</strong>
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.item-card').remove()">حذف</button>
                                                         </div>
-                                                        <select class="form-control select2-item" name="units[{{ $unitId }}][items][{{ $iIndex }}][item_id]" required>
+                                                        <select class="form-control select2-item" name="units[{{ $unitLoopIndex }}][items][{{ $iIndex }}][item_id]" required>
                                                             <option value="{{ $item->id }}" selected>{{ $item->item_name_ar }} / {{ $item->item_name_en }} / {{ $item->color_ar }}</option>
                                                         </select>
                                                     </div>
@@ -332,15 +331,15 @@
                                             @endforeach
                                         </div>
 
-                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addItemToUnit(this, {{ $unitId }})">
+                                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addItemToUnit(this, {{ $unitLoopIndex }})">
                                             إضافة قطعة
                                         </button>
                                     </div>
                                 </div>
+                                @php
+                                    $unitLoopIndex++;
+                                @endphp
                             @endforeach
-
-
-
                         </div>
 
                         <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addUnit()">إضافة وحدة</button>
@@ -428,6 +427,7 @@ function fetchItemsByUnitId(unitId, callback) {
             }
 
             // إضافة وحدة جديدة
+            /*
             function addUnit(){
                 const container = $('#units-container');
                 let html = `
@@ -507,6 +507,111 @@ function fetchItemsByUnitId(unitId, callback) {
                 unitCard.find('.items-container').append(html);
                 unitCard.find('.select2-item').last().select2();
             }
+*/
+
+function addUnit(){
+    const container = $('#units-container');
+    let html = `
+    <div class="card mb-3 unit-card" data-unit-index="${unitIndex}">
+        <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+            <h6>وحدة ${unitIndex + 1}</h6>
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeUnit(this)">حذف</button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>ترتيب الوحدة في الباكج</label>
+                    <input type="number"
+                           name="units[${unitIndex}][sort_order]"
+                           class="form-control"
+                           value="${unitIndex + 1}">
+                </div>
+                <div class="col-md-6">
+                    <label>ترتيب الوحدة في جدول الكميات</label>
+                    <input type="number"
+                           name="units[${unitIndex}][unit_sort_order]"
+                           class="form-control"
+                           value="${unitIndex + 1}">
+                </div>
+            </div>
+
+            <label>اختر الوحدة</label>
+            <select name="units[${unitIndex}][unit_id]" class="form-control select2-unit" onchange="loadUnitDetails(this)" required>
+                <option value="">-- اختر وحدة --</option>
+                @foreach($units as $u)
+                    <option value="{{ $u->id }}">{{ $u->name_ar }} / {{ $u->name_en }}</option>
+                @endforeach
+            </select>
+
+            <div class="unit-images-preview d-flex flex-wrap gap-2 mt-2"></div>
+            <div class="items-container mt-3"></div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addItemToUnit(this, ${unitIndex})">
+                إضافة قطعة
+            </button>
+        </div>
+    </div>`;
+    container.append(html);
+    $('.select2-unit').last().select2();
+    unitIndex++;
+}
+
+function addItemToUnit(btn, uIndex) {
+    const unitCard = btn.closest('.unit-card');
+    const unitSelect = unitCard.querySelector('[name="units[' + uIndex + '][unit_id]"]');
+    const unitId = unitSelect.value; // نأخذ القيمة الحالية من select
+
+    if (!unitId) {
+        alert('يرجى اختيار وحدة أولاً');
+        return;
+    }
+
+    fetchItemsByUnitId(unitId, function(items) {
+        const itemsContainer = unitCard.querySelector('.items-container');
+        const itemIndex = itemsContainer.querySelectorAll('.item-card').length;
+
+        let optionsHtml = '<option value="">-- اختر قطعة --</option>';
+        items.forEach(item => {
+            optionsHtml += `<option value="${item.id}" data-item='${JSON.stringify(item).replace(/'/g, "\\'")}'>
+                ${item.item_name_ar} / ${item.item_name_en} / ${item.color_ar}
+            </option>`;
+        });
+
+        const div = document.createElement('div');
+        div.className = 'border p-2 mb-2 item-card';
+        div.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <strong>قطعة ${itemIndex + 1}</strong>
+                <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.item-card').remove()">حذف</button>
+            </div>
+            <select name="units[${uIndex}][items][${itemIndex}][item_id]" class="form-control select2-item" required>
+                ${optionsHtml}
+            </select>
+        `;
+        itemsContainer.appendChild(div);
+        $(div).find('.select2-item').select2();
+    });
+}
+
+// تحميل تفاصيل الوحدة (صور وعناصر) عند اختيارها
+function loadUnitDetails(select){
+    let unitId = $(select).val();
+    let unitCard = $(select).closest('.unit-card');
+    if(!unitId) return;
+
+    $.get("{{ route('admin.units.details', ['unit' => 'UNIT_ID']) }}".replace('UNIT_ID', unitId), function(data){
+        // عرض الصور
+        let preview = unitCard.find('.unit-images-preview');
+        preview.html('');
+        data.images.forEach(img=>{
+            preview.append(`<img src="${img.image_path}" style="width:120px;height:120px;object-fit:cover;border:1px solid #ddd;">`);
+        });
+
+        // حفظ القطع في data-card للوحدة
+        unitCard.data('items', data.items);
+    });
+}
+
 
             function addItemToUnit(btn, uIndex) {
                     const unitCard = btn.closest('.unit-card');

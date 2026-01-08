@@ -179,7 +179,7 @@ public function destroy(Request $request, Item $item)
     return response()->json(['success' => true]);
 }*/
 
-public function getByUnit($unitId)
+/*public function getByUnit($unitId)
 {
     // تأكد أن الوحدة موجودة ومتاحة
     $unit = Unit::whereNull('package_id')->findOrFail($unitId);
@@ -190,7 +190,30 @@ public function getByUnit($unitId)
     ]);
 
     return response()->json($items);
+}*/
+
+public function getByUnit($unitId)
+{
+    $unit = Unit::with('items')->findOrFail($unitId);
+
+    return response()->json($unit->items->map(function($item){
+        return [
+            'id' => $item->id,
+            'item_name_ar' => $item->item_name_ar,
+            'item_name_en' => $item->item_name_en,
+            'quantity' => $item->quantity,
+            'dimensions' => $item->dimensions,
+            'material_ar' => $item->material_ar,
+            'material_en' => $item->material_en,
+            'color_ar' => $item->color_ar,
+            'color_en' => $item->color_en,
+            'background_color' => $item->background_color,
+            'image_path' => $item->image_path,
+        ];
+    }));
 }
+
+
 
 
 

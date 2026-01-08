@@ -56,6 +56,7 @@ public function index()
 }
 
 
+/*
 public function show($slug)
 {
     // حول slug للحروف الصغيرة فورًا
@@ -112,8 +113,83 @@ public function show($slug)
         });
 
     return view('frontend.categories.show', compact('seo', 'package', 'testimonials', 'faqs', 'unitTypes'));
-}
+}*/
 
+public function show($slug)
+{
+    // حول slug للحروف الصغيرة فورًا
+    $slugLower = strtolower($slug);
+
+    $slugColumn = app()->getLocale() == 'ar' ? 'slug_ar' : 'slug_en';
+    $routeName = app()->getLocale() == 'ar' ? 'packages.show' : 'packages.show.en';
+
+    // إذا slug الحالي ليس lowercase، أعد التوجيه للـ lowercase
+    if ($slug !== $slugLower) {
+        return redirect()->route($routeName, $slugLower, 301);
+    }
+
+    // جلب الباقة
+    $package = Package::with([
+        'images',
+        'packageUnitItems.unit.images',
+        'packageUnitItems.unit.designs',
+        'packageUnitItems.item',
+        'faqs'
+    ])->where($slugColumn, $slugLower)->first();
+
+    // إذا لم توجد الباقة، تحقق من أي slug قديم
+    if (!$package) {
+        $oldSlug = PackageSlug::where('slug', $slugLower)->first();
+        if ($oldSlug) {
+            return redirect()->route($routeName, $oldSlug->package->$slugColumn, 301);
+        }
+        abort(404);
+    }
+
+    // ✅ إعداد البيانات المرتبة للـ Accordion (حسب units.sort_order)
+    $groupedForAccordion = $package->packageUnitItems
+        ->groupBy('unit_id')
+        ->sortBy(function ($items) {
+            return $items->first()->unit->sort_order ?? 9999;
+        });
+
+    // ✅ إعداد البيانات المرتبة لجدول الكميات (حسب package_unit_items.sort_order)
+    $groupedForTable = $package->packageUnitItems
+        ->groupBy('unit_id')
+        ->sortBy(function ($items) {
+            return $items->first()->sort_order ?? 9999;
+        });
+
+    // تحميل بيانات إضافية
+    $seo = SeoSetting::where('page', 'category')->first();
+
+    $testimonials = Testimonial::where('status', 'approved')
+        ->where('package_id', $package->id)
+        ->get();
+
+    $faqs = Faq::where('page', 'category')
+                ->orderBy('sort', 'asc')
+                ->get();
+
+    $unitTypes = PackageUnitItem::with('unit:id,type,name_ar,name_en')
+        ->where('package_id', $package->id)
+        ->get()
+        ->pluck('unit')
+        ->unique('id')
+        ->values()
+        ->map(function ($unit) {
+            return [
+                'type' => $unit->type,
+                'name_ar' => $unit->name_ar,
+                'name_en' => $unit->name_en,
+            ];
+        });
+
+    return view('frontend.categories.show', compact(
+        'seo', 'package', 'testimonials', 'faqs', 'unitTypes',
+        'groupedForAccordion', 'groupedForTable'
+    ));
+}
 
 
 

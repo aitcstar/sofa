@@ -50,6 +50,16 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label>الباكج</label>
+                        <select name="package_id" id="package_select" class="form-select">
+                            @foreach($packages as $package)
+                                <option value="{{ $package->id }}"
+                                    {{ $unit->package_id == $package->id ? 'selected' : '' }}>
+                                    {{ $package->name_ar }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                       {{--
                         <select name="package_id" class="form-select">
                             @foreach($packages as $package)
                                 <option value="{{ $package->id }}"
@@ -58,6 +68,7 @@
                                 </option>
                             @endforeach
                         </select>
+                    --}}
                     </div>
                 </div>
 
@@ -71,6 +82,7 @@
                     <textarea name="description_en" class="form-control">{{ $unit->description_en ?? old('description_en') }}</textarea>
                 </div>
 
+                <!--
                 <div class="mb-3">
                     <label>التصميمات المرتبطة والوحدة الحالية</label>
                     <div class="border rounded p-3" style="max-height: 400px; overflow-y: auto;">
@@ -89,7 +101,6 @@
                                 {{ $design->name_ar }} ({{ $design->name_en }})
                             </label>
 
-                            <!-- صور التصميم -->
                             <div class="mt-2">
                                 <strong>صور {{ $design->name_ar }}</strong>
                                 <div class="row mb-2">
@@ -112,6 +123,14 @@
 
                     </div>
                 </div>
+                -->
+
+            <div class="mb-3">
+                <label>التصميمات المرتبطة بالباكج</label>
+                <div class="border rounded p-3" id="designs_container" style="max-height: 400px; overflow-y: auto;">
+                    <!-- سيتم ملؤه ديناميكياً -->
+                </div>
+            </div>
 
 
 
@@ -183,5 +202,134 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+<script>
+    $(document).ready(function() {
+
+        function loadDesigns(packageId, selectedDesigns = [], designImages = {}) {
+            const container = $('#designs_container');
+
+            if (!packageId) {
+                container.html('<div class="text-muted">اختر باكج أولاً</div>');
+                return;
+            }
+
+            container.html('جاري التحميل...');
+
+            $.getJSON(`/admin/packages/${packageId}/designs-from-units`, function(designs) {
+
+                if (!designs.length) {
+                    container.html('<div class="text-danger">لا يوجد تصميمات لهذا الباكج</div>');
+                    return;
+                }
+
+                let html = '';
+
+                designs.forEach(design => {
+
+                    const isChecked = selectedDesigns.includes(design.id) ? 'checked' : '';
+                    let imagesHtml = '';
+
+                    if (designImages[design.id]) {
+                        imagesHtml += '<div class="row mb-2">';
+                        designImages[design.id].forEach(image => {
+                            imagesHtml += `
+                            <div class="col-md-3 mb-2 position-relative" style="width: 170px;">
+                                <img src="${image.url}" class="img-fluid border rounded">
+                                <button type="button" class="btn btn-sm btn-danger delete-image"
+                                        data-unit="${image.unitId}"
+                                        data-image="${image.id}"
+                                        style="position:absolute; top:5px; right:5px;">✕</button>
+                            </div>`;
+                        });
+                        imagesHtml += '</div>';
+                    }
+
+                    html += `
+                    <div class="form-check mb-3">
+                        <input type="checkbox"
+                            name="design_ids[]"
+                            value="${design.id}"
+                            id="design_${design.id}"
+                            class="form-check-input design-checkbox"
+                            data-design-id="${design.id}"
+                            ${isChecked}
+                        >
+                        <label for="design_${design.id}" class="form-check-label">
+                            ${design.name_ar} (${design.name_en})
+                        </label>
+
+                        <div class="mt-2 design-images" id="images_for_${design.id}" style="display:${isChecked ? 'block' : 'none'};">
+                            <strong>صور ${design.name_ar}</strong>
+                            ${imagesHtml}
+                            <input type="file" name="design_images[${design.id}][]" class="form-control mt-1" multiple>
+                        </div>
+                    </div>`;
+                });
+
+                container.html(html);
+            });
+        }
+
+        // عند تغيير الباكج
+        $('#package_select').change(function() {
+            const packageId = $(this).val();
+            loadDesigns(packageId); // عند تغيير الباكج لا نرسل selectedImages
+        });
+
+        // عند التحميل الأولي (للتعديل) نعرض التصميمات الحالية والصور
+        const initialPackageId = $('#package_select').val();
+        const selectedDesigns = @json($selectedDesigns);
+
+        // تجهيز الصور الحالية لكل تصميم
+        const designImages = {};
+        @foreach($designImages as $image)
+            if (!designImages[{{ $image->design_id }}]) designImages[{{ $image->design_id }}] = [];
+            designImages[{{ $image->design_id }}].push({
+                id: {{ $image->id }},
+                url: "{{ asset('storage/'.$image->image_path) }}",
+                unitId: {{ $unit->id }}
+            });
+        @endforeach
+
+        loadDesigns(initialPackageId, selectedDesigns, designImages);
+
+        // عرض div رفع الصور عند تحديد checkbox
+        $(document).on('change', '.design-checkbox', function() {
+            const designId = $(this).data('design-id');
+            const imagesDiv = $('#images_for_' + designId);
+            if ($(this).is(':checked')) {
+                imagesDiv.show();
+                imagesDiv.find('input[type="file"]').attr('required', true);
+            } else {
+                imagesDiv.hide();
+                imagesDiv.find('input[type="file"]').removeAttr('required').val('');
+            }
+        });
+
+        // حذف الصور الحالية
+        $(document).on('click', '.delete-image', function() {
+            if (!confirm('هل تريد حذف الصورة؟')) return;
+            const button = $(this);
+            const unitId = button.data('unit');
+            const imageId = button.data('image');
+
+            $.ajax({
+                url: '/admin/units/' + unitId + '/images/' + imageId,
+                type: 'DELETE',
+                data: {_token: '{{ csrf_token() }}'},
+                success: function(res){
+                    if(res.success){
+                        button.closest('.col-md-3').remove();
+                    } else alert('حدث خطأ أثناء الحذف');
+                },
+                error: function(){ alert('حدث خطأ أثناء الحذف'); }
+            });
+        });
+
+    });
+    </script>
+
 
 @endsection

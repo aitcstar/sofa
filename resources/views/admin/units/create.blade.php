@@ -50,7 +50,8 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label>الباكج</label>
-                        <select name="package_id" class="form-select">
+                        <select name="package_id" class="form-select" id="package_select">
+                            <option>حدد الباكج</option>
                             @foreach($packages as $package)
                                 <option value="{{ $package->id }}">{{ $package->name }}</option>
                             @endforeach
@@ -68,6 +69,7 @@
                     <textarea name="description_en" class="form-control">{{ $unit->description_en ?? old('description_en') }}</textarea>
                 </div>
 
+                <!--
                 <div class="mb-3">
                     <label>أنواع التصميمات المرتبطة</label>
                     <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
@@ -86,7 +88,6 @@
                                     {{ $design->name_ar }} ({{ $design->name_en }})
                                 </label>
 
-                                <!-- div رفع الصور الخاص بالتصميم -->
                                 <div class="mt-2 design-images" id="images_for_{{ $design->id }}" style="display: none;">
                                     <input type="file" name="design_images[{{ $design->id }}][]" class="form-control" multiple>
                                 </div>
@@ -94,6 +95,15 @@
                         @endforeach
                     </div>
                 </div>
+                -->
+
+                <div class="mb-3">
+                    <label>أنواع التصميمات المرتبطة</label>
+                    <div class="border rounded p-3" id="designs_container" style="max-height: 200px; overflow-y: auto;">
+                        <div class="text-muted">اختر باكج أولاً</div>
+                    </div>
+                </div>
+
 
 
 
@@ -163,5 +173,77 @@
         });
     });
     </script>
+
+
+<script>
+    document.getElementById('package_select').addEventListener('change', function () {
+        const packageId = this.value;
+        const container = document.getElementById('designs_container');
+
+        if (!packageId) {
+            container.innerHTML = '<div class="text-muted">اختر باكج أولاً</div>';
+            return;
+        }
+
+        container.innerHTML = 'جاري التحميل...';
+
+        fetch(`/admin/packages/${packageId}/designs-from-units`)
+            .then(res => res.json())
+            .then(designs => {
+
+                if (!designs.length) {
+                    container.innerHTML = '<div class="text-danger">لا يوجد تصميمات لهذا الباكج</div>';
+                    return;
+                }
+
+                let html = '';
+
+                designs.forEach(design => {
+                    html += `
+                    <div class="form-check mb-1">
+                        <input type="checkbox"
+                            name="design_ids[]"
+                            value="${design.id}"
+                            id="design_${design.id}"
+                            class="form-check-input design-checkbox"
+                            data-design-id="${design.id}"
+                        >
+                        <label for="design_${design.id}" class="form-check-label">
+                            ${design.name_ar} (${design.name_en})
+                        </label>
+
+                        <div class="mt-2 design-images" id="images_for_${design.id}" style="display:none;">
+                            <input type="file" name="design_images[${design.id}][]" class="form-control" multiple>
+                        </div>
+                    </div>`;
+                });
+
+                container.innerHTML = html;
+
+                attachDesignCheckboxListeners();
+            });
+    });
+
+
+    function attachDesignCheckboxListeners() {
+        document.querySelectorAll('.design-checkbox').forEach(cb => {
+            cb.addEventListener('change', function () {
+                const designId = this.dataset.designId;
+                const imagesDiv = document.getElementById('images_for_' + designId);
+                const input = imagesDiv.querySelector('input');
+
+                if (this.checked) {
+                    imagesDiv.style.display = 'block';
+                    input.setAttribute('required', true);
+                } else {
+                    imagesDiv.style.display = 'none';
+                    input.removeAttribute('required');
+                    input.value = '';
+                }
+            });
+        });
+    }
+    </script>
+
 
 @endsection

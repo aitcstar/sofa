@@ -131,8 +131,16 @@
                         <tbody>
                             @foreach($items as $item)
                                 <tr>
-                                    <td data-key="{{ $item->item_name }}">{{ $item->item_name }}</td>
-                                    <td data-key="{{ $item->description ?? '-' }}">{{ $item->description ?? '-' }}</td>
+                                    <td data-key="{{ $item->item_name_ar ?? $item->item_name_en ?? $item->item_name }}"
+                                        data-ar="{{ $item->item_name_ar ?? $item->item_name }}"
+                                        data-en="{{ $item->item_name_en ?? $item->item_name }}">
+                                        {{ $item->item_name_ar ?? $item->item_name }}
+                                    </td>
+                                    <td data-key="{{ $item->description_ar ?? $item->description_en ?? $item->description ?? '-' }}"
+                                        data-ar="{{ $item->description_ar ?? $item->description ?? '-' }}"
+                                        data-en="{{ $item->description_en ?? $item->description ?? '-' }}">
+                                        {{ $item->description_ar ?? $item->description ?? '-' }}
+                                    </td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>
                                         <span class="currency" data-ar="{{ number_format($item->unit_price,2) }} ريال"
@@ -149,6 +157,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
+
                     </table>
                 @endforeach
             @endif

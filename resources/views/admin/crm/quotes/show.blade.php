@@ -226,35 +226,34 @@
     <script>
         const toggleLangBtn = document.getElementById('toggleLang');
 
-        toggleLangBtn.addEventListener('click', function() {
+        toggleLangBtn.addEventListener('click', function () {
             const htmlTag = document.documentElement;
             const isAr = htmlTag.getAttribute('lang') === 'ar';
 
-            if(isAr) {
-                // تغيير للإنجليزية
+            if (isAr) {
                 htmlTag.setAttribute('lang', 'en');
                 htmlTag.setAttribute('dir', 'ltr');
                 document.body.style.textAlign = 'left';
                 toggleLangBtn.innerText = 'AR';
-
-                // تحديث النصوص على الصفحة
-                document.querySelectorAll('[data-ar]').forEach(el => {
-                    el.innerText = el.getAttribute('data-en');
-                });
+                switchLang('en');
             } else {
-                // تغيير للعربية
                 htmlTag.setAttribute('lang', 'ar');
                 htmlTag.setAttribute('dir', 'rtl');
                 document.body.style.textAlign = 'right';
                 toggleLangBtn.innerText = 'EN';
-
-                // تحديث النصوص على الصفحة
-                document.querySelectorAll('[data-ar]').forEach(el => {
-                    el.innerText = el.getAttribute('data-ar');
-                });
+                switchLang('ar');
             }
         });
-    </script>
+
+        function switchLang(lang) {
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                el.innerText = lang === 'ar'
+                    ? el.getAttribute('data-ar')
+                    : el.getAttribute('data-en');
+            });
+        }
+        </script>
+
 
 </body>
 </html>

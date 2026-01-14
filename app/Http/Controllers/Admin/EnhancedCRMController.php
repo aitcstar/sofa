@@ -349,6 +349,18 @@ public function convertToOrder(Request $request, Lead $lead)
         }
 
 
+        $projectTypeMapping = [
+            'building' => 'large',
+            'compound' => 'large',
+            'hotel_apartments' => 'medium',
+            'villa' => 'medium',
+            'commercial' => 'small',
+            'other' => 'small',
+        ];
+
+        $projectType = $projectTypeMapping[$this->project_type] ?? 'small';
+
+
         $order = Order::create([
             'user_id' => $customer->id,
             'package_id' => $packageId,
@@ -356,7 +368,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'name' => $lead->name,
             'email' => $lead->email,
             'phone' => $lead->phone,
-            'project_type' => $lead->project_type,
+            'project_type' =>  $projectType,
             'base_amount' => $baseAmount,
             'total_amount' => $lead->total_amount,
             'discount_amount' => $lead->discount_amount ?? 0,

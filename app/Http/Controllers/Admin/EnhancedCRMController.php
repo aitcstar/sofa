@@ -356,45 +356,45 @@ public function convertToOrder(Request $request, Lead $lead)
         ];
         $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
 
-        // Calculate base amount and total units
+        // Calculate totals from quote items
         $baseAmount = $quote->quoteItems->sum(function ($item) {
             return $item->price * $item->quantity;
         });
 
         $totalUnits = $quote->quoteItems->sum('quantity'); // عدد القطع الإجمالي
 
-        $taxAmount = $lead->tax_amount ?? 0;
-        $totalAmount = $baseAmount + $taxAmount;
+        $taxAmount = $quote->quoteItems->sum('tax_amount'); // مجموع الضرائب لكل عنصر
+        $totalAmount = $baseAmount + $taxAmount - ($lead->discount_amount ?? 0);
 
+        // Determine package_id if all items belong to one package
         $packageIds = $quote->quoteItems->pluck('package_id')->unique();
+        $packageId = $packageIds->count() === 1 ? $packageIds->first() : null;
 
-$packageId = $packageIds->count() === 1 ? $packageIds->first() : null;
-
-$order = Order::create([
-    'user_id' => $customer->id,
-    'package_id' => $packageId, // <- إذا باكج واحد فقط، يتم ملؤه
-    'order_number' => $orderNumber,
-    'name' => $lead->name,
-    'email' => $lead->email,
-    'phone' => $lead->phone,
-    'project_type' => $projectType,
-    'base_amount' => $baseAmount,
-    'total_amount' => $totalAmount,
-    'units_count' => $totalUnits,
-    'discount_amount' => $lead->discount_amount ?? 0,
-    'tax_amount' => $taxAmount,
-    'client_type' => 'individual',
-    'country_code' => $lead->country_code ?? '+966',
-    'status' => 'pending',
-    'payment_status' => 'unpaid',
-    'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
-]);
-
+        // Create order
+        $order = Order::create([
+            'user_id' => $customer->id,
+            'package_id' => $packageId,
+            'order_number' => $orderNumber,
+            'name' => $lead->name,
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'project_type' => $projectType,
+            'base_amount' => $baseAmount,
+            'total_amount' => $totalAmount,
+            'units_count' => $totalUnits,
+            'discount_amount' => $lead->discount_amount ?? 0,
+            'tax_amount' => $taxAmount,
+            'client_type' => 'individual',
+            'country_code' => $lead->country_code ?? '+966',
+            'status' => 'pending',
+            'payment_status' => 'unpaid',
+            'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
+        ]);
 
         // Add order items grouped by package
         $quote->quoteItems
             ->groupBy('package_id')
-            ->each(function ($items, $packageId) use ($order) {
+            ->each(function ($items, $pkgId) use ($order) {
                 $quantitySum = $items->sum('quantity');
                 $priceSum = $items->sum(function ($item) {
                     return $item->price * $item->quantity;
@@ -402,9 +402,9 @@ $order = Order::create([
 
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'package_id' => $packageId,
+                    'package_id' => $pkgId,
                     'quantity' => $quantitySum,
-                    'price' => $priceSum,
+                    'price' => $priceSum, // سعر إجمالي لكل مجموعة
                 ]);
             });
 
@@ -435,6 +435,7 @@ $order = Order::create([
             ->with('error', 'حدث خطأ: ' . $e->getMessage());
     }
 }
+
 
 
 

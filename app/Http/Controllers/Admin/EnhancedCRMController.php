@@ -336,22 +336,24 @@ public function convertToOrder(Request $request, Lead $lead)
             ]
         );
 
-        // Generate order number
-        $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
-
-        // Get the lead's quote
-        $quote = $lead->quotes()->first();
-
+        // Get quote
+        $quote = $lead->quote;
         if (!$quote) {
             return redirect()->back()->with('error', 'لا يوجد Quote مرتبط بهذا العميل المحتمل.');
         }
 
-        $packageId = $quote->quoteItems()->first()?->package_id;
+        // Calculate amounts
+        $baseAmount = $quote->quoteItems->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
 
-        if (!$packageId) {
-            return redirect()->back()->with('error', 'لا يوجد Package مرتبط بعناصر هذا الـ Quote.');
-        }
+        $taxAmount = $lead->tax_amount ?? 0;
+        $totalAmount = $baseAmount + $taxAmount;
 
+        // Generate order number
+        $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
+
+        // Determine project type
         $projectTypeMapping = [
             'building' => 'large',
             'compound' => 'large',
@@ -363,42 +365,35 @@ public function convertToOrder(Request $request, Lead $lead)
 
         $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
 
-        // Create order using amounts from quote
+        // Create order
         $order = Order::create([
             'user_id' => $customer->id,
-            'package_id' => $packageId,
+            'package_id' => $quote->quoteItems->first()?->package_id, // أول باكج
             'order_number' => $orderNumber,
             'name' => $lead->name,
             'email' => $lead->email,
             'phone' => $lead->phone,
-            'project_type' =>  $projectType,
-            'base_amount' => $quote->base_amount ?? 0,
-            'tax_amount' => $quote->tax_amount ?? 0,
-            'total_amount' => $quote->total_amount ?? 0,
-            'discount_amount' => $quote->discount_amount ?? 0,
-            'client_type' => $lead->client_type ?? 'individual',
+            'project_type' => $projectType,
+            'base_amount' => $baseAmount,
+            'total_amount' => $totalAmount,
+            'discount_amount' => $lead->discount_amount ?? 0,
+            'tax_amount' => $taxAmount,
+            'client_type' => 'individual',
             'country_code' => $lead->country_code ?? '+966',
             'status' => 'pending',
             'payment_status' => 'unpaid',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        $quote = $lead->quote;
-
-        if (!$quote) {
-            return redirect()->back()->with('error', 'لا يوجد Quote مرتبط بهذا العميل المحتمل.');
-        }
-
+        // Add order items (based on packages in quote)
         foreach ($quote->quoteItems as $quoteItem) {
             OrderItem::create([
                 'order_id' => $order->id,
                 'package_id' => $quoteItem->package_id,
                 'quantity' => $quoteItem->quantity,
-                'price' => $quoteItem->price ?? 0,
+                'price' => $quoteItem->price * $quoteItem->quantity,
             ]);
         }
-
-
 
         // Update lead status
         $lead->update([
@@ -410,7 +405,7 @@ public function convertToOrder(Request $request, Lead $lead)
         // Log activity
         LeadActivity::create([
             'lead_id' => $lead->id,
-            'user_id' => auth()->id() ?? $customer->id, // إذا اليوزر الحالي موجود استخدمه
+            'user_id' => $customer->id,
             'activity_type' => 'converted',
             'description' => "تم تحويل العميل المحتمل إلى طلب رقم: {$order->order_number}",
         ]);
@@ -427,6 +422,7 @@ public function convertToOrder(Request $request, Lead $lead)
             ->with('error', 'حدث خطأ: ' . $e->getMessage());
     }
 }
+
 
 
     /**

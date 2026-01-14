@@ -690,4 +690,11 @@ class Quote extends Model
 {
     return $this->hasMany(QuoteItem::class, 'quote_id');
 }
+
+// QuoteItem.php
+public function item()
+{
+    return $this->belongsTo(Item::class);
+}
+
 }

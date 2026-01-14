@@ -384,16 +384,15 @@ public function convertToOrder(Request $request, Lead $lead)
         ]);
 
         // Copy quote items to order items
-        foreach ($quote->quoteItems as $item) {
+        foreach ($lead->quote->quoteItems as $quoteItem) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'name' => $item->name,
-                'quantity' => $item->quantity,
-                'unit_price' => $item->unit_price,
-                'total_price' => $item->total_price,
+                'package_id' => $quoteItem->package_id, // <-- لازم هنا
+                'quantity' => $quoteItem->quantity,
+                'price' => $quoteItem->price ?? 0, // لو عندك سعر لكل عنصر
             ]);
         }
+
 
         // Update lead status
         $lead->update([

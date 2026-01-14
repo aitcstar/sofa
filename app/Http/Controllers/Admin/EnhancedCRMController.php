@@ -356,14 +356,10 @@ public function convertToOrder(Request $request, Lead $lead)
         ];
         $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
 
-        // Calculate totals from quote items
-        $baseAmount = $quote->quoteItems->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
-
-        $totalUnits = $quote->quoteItems->sum('quantity'); // عدد القطع الإجمالي
-
-        $taxAmount = $quote->quoteItems->sum('tax_amount'); // مجموع الضرائب لكل عنصر
+        // Calculate totals from quote items using total_price
+        $baseAmount = $quote->quoteItems->sum('total_price'); // استخدم total_price مباشرة
+        $totalUnits = $quote->quoteItems->sum('quantity');    // عدد القطع الإجمالي
+        $taxAmount = $quote->quoteItems->sum('tax_amount');   // مجموع الضرائب لكل عنصر
         $totalAmount = $baseAmount + $taxAmount - ($lead->discount_amount ?? 0);
 
         // Determine package_id if all items belong to one package
@@ -391,20 +387,18 @@ public function convertToOrder(Request $request, Lead $lead)
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        // Add order items grouped by package
+        // Add order items grouped by package using total_price from quote_items
         $quote->quoteItems
             ->groupBy('package_id')
             ->each(function ($items, $pkgId) use ($order) {
                 $quantitySum = $items->sum('quantity');
-                $priceSum = $items->sum(function ($item) {
-                    return $item->price * $item->quantity;
-                });
+                $priceSum = $items->sum('total_price'); // استخدم total_price فقط
 
                 OrderItem::create([
                     'order_id' => $order->id,
                     'package_id' => $pkgId,
                     'quantity' => $quantitySum,
-                    'price' => $priceSum, // سعر إجمالي لكل مجموعة
+                    'price' => $priceSum, // السعر الإجمالي لكل الباكج حسب عناصره
                 ]);
             });
 

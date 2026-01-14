@@ -243,6 +243,8 @@ class EnhancedCRMController extends Controller
     /**
      * Convert lead to order.
      */
+
+     /*
     public function convertToOrder(Lead $lead)
     {
         if ($lead->status === 'converted') {
@@ -310,6 +312,75 @@ class EnhancedCRMController extends Controller
                 ->with('error', 'حدث خطأ: ' . $e->getMessage());
         }
     }
+*/
+
+public function convertToOrder($orderData = [])
+{
+    if ($this->status !== 'accepted') {
+        throw new \Exception('لا يمكن تحويل عرض السعر إلى طلب إلا إذا كان مقبولاً');
+    }
+
+    try {
+        \DB::beginTransaction();
+
+        // التأكد من وجود العميل
+        $customer = $this->customer;
+        if (!$customer && $this->lead) {
+            $customer = $this->lead->convertToCustomer();
+        } elseif (!$customer) {
+            $customer = User::create([
+                'name' => $this->customer_name,
+                'email' => $this->customer_email,
+                'phone' => $this->customer_phone,
+                'password' => bcrypt(Str::random(12)),
+                'role' => 'customer',
+            ]);
+        }
+
+        // إنشاء الطلب
+        $order = Order::create(array_merge([
+            'user_id' => $customer->id,
+            'quote_id' => $this->id,
+            'lead_id' => $this->lead_id,
+            'order_number' => Order::generateOrderNumber(),
+            'name' => $this->customer_name,
+            'email' => $this->customer_email,
+            'phone' => $this->customer_phone,
+            'project_type' => $this->metadata['project_type'] ?? null,
+            'units_count' => $this->metadata['units_count'] ?? 1,
+            'subtotal' => $this->subtotal,
+            'tax_amount' => $this->tax_amount,
+            'discount_amount' => $this->discount_amount,
+            'total_amount' => $this->total_amount,
+            'status' => 'pending',
+            'payment_status' => 'pending',
+        ], $orderData));
+
+        // تحويل عناصر عرض السعر إلى عناصر طلب
+        foreach ($this->items as $quoteItem) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'package_id' => $quoteItem->package_id,
+                'quantity' => $quoteItem->quantity,
+                'price' => $quoteItem->unit_price,
+            ]);
+        }
+
+        // تحديث حالة عرض السعر
+        $this->update([
+            'status' => 'converted',
+            'converted_to_order_at' => now(),
+        ]);
+
+        \DB::commit();
+
+        return $order;
+
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        throw $e;
+    }
+}
 
     /**
      * Display quotes list.

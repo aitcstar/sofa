@@ -259,7 +259,7 @@ class EnhancedCRMController extends Controller
                     'name' => $lead->name,
                     'phone' => $lead->phone,
                     'role' => 'customer',
-                    'password' => bcrypt(str_random(16)),
+                    'password' => bcrypt(Str::random(16)),
                 ]
             );
 

@@ -342,7 +342,7 @@ public function convertToOrder(Request $request, Lead $lead)
         // Create order
         $order = Order::create([
             'user_id' => $customer->id,
-            'package_id' => $request->package_id, // تأكد أنه موجود في الفورم
+            'package_id' => $request->package_id,
             'order_number' => $orderNumber,
             'name' => $lead->name,
             'email' => $lead->email,
@@ -353,10 +353,12 @@ public function convertToOrder(Request $request, Lead $lead)
             'tax_amount' => $lead->tax_amount,
             'client_type' => 'individual',
             'customer_type' => 'individual',
+            'country_code' => $lead->country_code ?? '+966', // 👈 الحل هنا
             'status' => 'pending',
             'payment_status' => 'pending',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
+
 
         // Update lead status
         $lead->update([

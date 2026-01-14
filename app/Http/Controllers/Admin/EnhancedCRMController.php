@@ -358,7 +358,8 @@ public function convertToOrder(Request $request, Lead $lead)
             'other' => 'small',
         ];
 
-        $projectType = $projectTypeMapping[$this->project_type] ?? 'small';
+        // افحص الـ Lead أو Quote بدل الكونترولر
+        $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
 
 
         $order = Order::create([

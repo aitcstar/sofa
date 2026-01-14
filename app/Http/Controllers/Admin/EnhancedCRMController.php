@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Support\Str;
+
 class EnhancedCRMController extends Controller
 {
     /**

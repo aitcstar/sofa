@@ -1012,12 +1012,7 @@ otpInputs.forEach((input, index) => {
         return cartData ? JSON.parse(cartData) : [];
     }
 
-    this.cart.forEach(item => {
-        if (!item.quantity || item.quantity < MIN_UNITS) {
-            item.quantity = MIN_UNITS;
-        }
-    });
-
+    
     saveCart() {
         localStorage.setItem('shoppingCart', JSON.stringify(this.cart));
     }

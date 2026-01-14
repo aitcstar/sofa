@@ -147,11 +147,16 @@ public function show($slug)
     }
 
     // ✅ إعداد البيانات المرتبة للـ Accordion (حسب units.sort_order)
-    $groupedForAccordion = $package->packageUnitItems
+    /*$groupedForAccordion = $package->packageUnitItems
         ->groupBy('unit_id')
         ->sortBy(function ($items) {
             return $items->first()->unit->sort_order ?? 9999;
-        });
+        });*/
+
+        $groupedForAccordion = $package->packageUnitItems
+    ->sortBy(fn($item) => $item->unit->sort_order ?? 9999)
+    ->groupBy('unit_id');
+
 
     // ✅ إعداد البيانات المرتبة لجدول الكميات (حسب package_unit_items.sort_order)
     $groupedForTable = $package->packageUnitItems
@@ -159,6 +164,8 @@ public function show($slug)
         ->sortBy(function ($items) {
             return $items->first()->sort_order ?? 9999;
         });
+
+
 
     // تحميل بيانات إضافية
     $seo = SeoSetting::where('page', 'category')->first();

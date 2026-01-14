@@ -185,11 +185,18 @@ class QuoteController extends Controller
      * Display the specified quote
      */
     public function show(Quote $quote)
-    {
-        $quote->load(['lead', 'customer', 'createdBy', 'items.package']);
+{
+    $quote->load([
+        'lead',
+        'customer',
+        'createdBy',
+        'items.package',
+        'items.item' // <-- هذه الخطوة مهمة
+    ]);
 
-        return view('admin.quotes.show', compact('quote'));
-    }
+    return view('admin.quotes.show', compact('quote'));
+}
+
 
     /**
      * Show the form for editing the specified quote

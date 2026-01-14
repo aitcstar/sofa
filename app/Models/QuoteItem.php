@@ -44,7 +44,7 @@ class QuoteItem extends Model
     {
         $this->total_price = $this->quantity * $this->unit_price;
         $this->save();
-        
+
         // إعادة حساب إجماليات عرض السعر
         $this->quote->calculateTotals();
     }
@@ -75,5 +75,10 @@ class QuoteItem extends Model
             // إعادة حساب إجماليات عرض السعر
             $item->quote->calculateTotals();
         });
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_name', 'item_name_ar');
     }
 }

@@ -180,23 +180,45 @@
         <div class="border rounded mb-4">
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <span data-ar="المجموع الفرعي:" data-en="Subtotal:">المجموع الفرعي:</span>
-                <span>{{ number_format($quote->subtotal, 2) }} ريال</span>
+                <span
+                    data-ar="{{ number_format($quote->subtotal, 2) }} ريال"
+                    data-en="{{ number_format($quote->subtotal, 2) }} SAR">
+                    {{ number_format($quote->subtotal, 2) }} ريال
+                </span>
             </div>
+
             @if($quote->discount_amount > 0)
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <span data-ar="الخصم:" data-en="Discount:">الخصم:</span>
-                <span class="text-danger">-{{ number_format($quote->discount_amount, 2) }} ريال</span>
+                <span class="text-danger"
+                    data-ar="-{{ number_format($quote->discount_amount, 2) }} ريال"
+                    data-en="-{{ number_format($quote->discount_amount, 2) }} SAR">
+                    -{{ number_format($quote->discount_amount, 2) }} ريال
+                </span>
             </div>
             @endif
+
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <span data-ar="الضريبة:" data-en="Tax:">الضريبة ({{ $quote->tax_rate }}%):</span>
-                <span>{{ number_format($quote->tax_amount, 2) }} ريال</span>
+                <span
+                    data-ar="{{ number_format($quote->tax_amount, 2) }} ريال"
+                    data-en="{{ number_format($quote->tax_amount, 2) }} SAR">
+                    {{ number_format($quote->tax_amount, 2) }} ريال
+                </span>
             </div>
+
             <div class="d-flex justify-content-between p-3 bg-primary-dark text-white">
                 <span><strong data-ar="المجموع النهائي:" data-en="Total:">المجموع النهائي:</strong></span>
-                <span><strong>{{ number_format($quote->total_amount, 2) }} ريال</strong></span>
+                <span>
+                    <strong
+                        data-ar="{{ number_format($quote->total_amount, 2) }} ريال"
+                        data-en="{{ number_format($quote->total_amount, 2) }} SAR">
+                        {{ number_format($quote->total_amount, 2) }} ريال
+                    </strong>
+                </span>
             </div>
         </div>
+
 
         <!-- Notes & Terms -->
         @if($quote->terms_conditions)

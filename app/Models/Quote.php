@@ -685,4 +685,9 @@ class Quote extends Model
             ->whereNotIn('status', ['accepted', 'rejected', 'expired', 'converted'])
             ->update(['status' => 'expired']);
     }
+
+    public function quoteItems()
+{
+    return $this->hasMany(QuoteItem::class, 'quote_id');
+}
 }

@@ -38,8 +38,8 @@
         <div class="accordion-details">
             <div class="accordion" id="accordionExample">
                 {{-- ✅ استخدام $groupedForAccordion للترتيب حسب units.sort_order --}}
-                @foreach($groupedForAccordion as $unitId => $items)
-                    @php
+                @foreach($groupedForAccordion->sortBy(fn($items) => $items->first()->unit->sort_order ?? 999) as $unitId => $items)
+                @php
                         $unit = $items->first()->unit;
                     @endphp
 

@@ -132,15 +132,17 @@
                             @foreach($quote->items as $quoteItem)
                             <tr>
                                 <!-- اسم القطعة حسب اللغة -->
-                                <td data-ar="{{ $quoteItem->item ? ($quoteItem->item->item_name_ar ?? $quoteItem->item->item_name) : $quoteItem->item_name }}"
-                                    data-en="{{ $quoteItem->item ? ($quoteItem->item->item_name_en ?? $quoteItem->item->item_name) : $quoteItem->item_name }}">
-                                    {{ $quoteItem->item ? ($quoteItem->item->item_name_ar ?? $quoteItem->item->item_name) : $quoteItem->item_name }}
-                                </td>
+                                <td
+    data-ar="{{ $quoteItem->item ? $quoteItem->item->item_name_ar : $quoteItem->item_name }}"
+    data-en="{{ $quoteItem->item ? $quoteItem->item->item_name_en : $quoteItem->item_name }}">
+    {{ $quoteItem->item ? $quoteItem->item->item_name_ar : $quoteItem->item_name }}
+</td>
 
-                                <td data-ar="{{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}"
-                                    data-en="{{ $quoteItem->item ? ($quoteItem->item->description_en ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}">
-                                    {{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}
-                                </td>
+<td
+    data-ar="{{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}"
+    data-en="{{ $quoteItem->item ? ($quoteItem->item->description_en ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}">
+    {{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}
+</td>
 
                                 <td>{{ $quoteItem->quantity }}</td>
 

@@ -373,7 +373,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'base_amount' => $baseAmount,
             'total_amount' => $lead->total_amount,
             'discount_amount' => $lead->discount_amount ?? 0,
-            'tax_amount' => $lead->tax_amount,
+            'tax_amount' => $lead->tax_amount ?? 0,
             'client_type' => 'individual',
             'country_code' => $lead->country_code ?? '+966',
             'status' => 'pending',

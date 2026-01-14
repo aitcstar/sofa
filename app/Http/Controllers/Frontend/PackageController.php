@@ -154,8 +154,10 @@ public function show($slug)
         });*/
 
         $groupedForAccordion = $package->packageUnitItems
-    ->sortBy(fn($item) => $item->unit->sort_order ?? 9999)
-    ->groupBy('unit_id');
+        ->sortBy(fn($item) => $item->unit->sort_order ?? 9999)
+        ->groupBy('unit_id')
+        ->take(6);
+
 
 
     // ✅ إعداد البيانات المرتبة لجدول الكميات (حسب package_unit_items.sort_order)

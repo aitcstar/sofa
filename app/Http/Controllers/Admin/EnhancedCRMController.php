@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Support\Str;
+use App\Models\OrderItem;
+
 
 class EnhancedCRMController extends Controller
 {
@@ -314,73 +316,75 @@ class EnhancedCRMController extends Controller
     }
 */
 
-public function convertToOrder($orderData = [])
+public function convertToOrder(Request $request, Lead $lead)
 {
-    if ($this->status !== 'accepted') {
-        throw new \Exception('لا يمكن تحويل عرض السعر إلى طلب إلا إذا كان مقبولاً');
+    if ($lead->status === 'converted') {
+        return redirect()->back()->with('error', 'تم تحويل هذا العميل المحتمل مسبقاً');
     }
+
+    DB::beginTransaction();
 
     try {
-        \DB::beginTransaction();
-
-        // التأكد من وجود العميل
-        $customer = $this->customer;
-        if (!$customer && $this->lead) {
-            $customer = $this->lead->convertToCustomer();
-        } elseif (!$customer) {
-            $customer = User::create([
-                'name' => $this->customer_name,
-                'email' => $this->customer_email,
-                'phone' => $this->customer_phone,
-                'password' => bcrypt(Str::random(12)),
+        // Find or create customer
+        $customer = User::firstOrCreate(
+            ['email' => $lead->email],
+            [
+                'name' => $lead->name,
+                'phone' => $lead->phone,
                 'role' => 'customer',
-            ]);
-        }
+                'password' => bcrypt(Str::random(16)),
+            ]
+        );
 
-        // إنشاء الطلب
-        $order = Order::create(array_merge([
+        // Generate order number
+        $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
+
+        // Create order
+        $order = Order::create([
             'user_id' => $customer->id,
-            'quote_id' => $this->id,
-            'lead_id' => $this->lead_id,
-            'order_number' => Order::generateOrderNumber(),
-            'name' => $this->customer_name,
-            'email' => $this->customer_email,
-            'phone' => $this->customer_phone,
-            'project_type' => $this->metadata['project_type'] ?? null,
-            'units_count' => $this->metadata['units_count'] ?? 1,
-            'subtotal' => $this->subtotal,
-            'tax_amount' => $this->tax_amount,
-            'discount_amount' => $this->discount_amount,
-            'total_amount' => $this->total_amount,
+            'package_id' => $request->package_id, // تأكد أنه موجود في الفورم
+            'order_number' => $orderNumber,
+            'name' => $lead->name,
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'project_type' => $lead->project_type,
+            'total_amount' => $lead->total_amount,
+            'discount_amount' => $lead->discount_amount,
+            'tax_amount' => $lead->tax_amount,
+            'client_type' => 'individual',
+            'customer_type' => 'individual',
             'status' => 'pending',
             'payment_status' => 'pending',
-        ], $orderData));
-
-        // تحويل عناصر عرض السعر إلى عناصر طلب
-        foreach ($this->items as $quoteItem) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'package_id' => $quoteItem->package_id,
-                'quantity' => $quoteItem->quantity,
-                'price' => $quoteItem->unit_price,
-            ]);
-        }
-
-        // تحديث حالة عرض السعر
-        $this->update([
-            'status' => 'converted',
-            'converted_to_order_at' => now(),
+            'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        \DB::commit();
+        // Update lead status
+        $lead->update([
+            'status' => 'converted',
+            'converted_to_order_id' => $order->id,
+            'converted_at' => now(),
+        ]);
 
-        return $order;
+        // Log activity
+        LeadActivity::create([
+            'lead_id' => $lead->id,
+            'user_id' => auth()->id(),
+            'activity_type' => 'converted',
+            'description' => "تم تحويل العميل المحتمل إلى طلب رقم: {$order->order_number}",
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('admin.orders.enhanced.show', $order)
+            ->with('success', 'تم تحويل العميل المحتمل إلى طلب بنجاح');
 
     } catch (\Exception $e) {
-        \DB::rollBack();
-        throw $e;
+        DB::rollBack();
+
+        return redirect()->back()
+            ->with('error', 'حدث خطأ: ' . $e->getMessage());
     }
-}
+ }
 
     /**
      * Display quotes list.

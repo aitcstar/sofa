@@ -129,37 +129,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($quote->items as $item)
+                            @foreach($quote->items as $quoteItem)
                             <tr>
                                 <!-- اسم القطعة حسب اللغة -->
-                                <td data-ar="{{ $item->item_name_ar ?? $item->item_name }}"
-                                    data-en="{{ $item->item_name_en ?? $item->item_name }}">
-                                    {{ $item->item_name_ar ?? $item->item_name }}
+                                <td data-ar="{{ $quoteItem->item->item_name_ar ?? $quoteItem->item->item_name }}"
+                                    data-en="{{ $quoteItem->item->item_name_en ?? $quoteItem->item->item_name }}">
+                                    {{ $quoteItem->item->item_name_ar ?? $quoteItem->item->item_name }}
                                 </td>
 
                                 <!-- الوصف حسب اللغة -->
-                                <td data-ar="{{ $item->description_ar ?? $item->description ?? '-' }}"
-                                    data-en="{{ $item->description_en ?? $item->description ?? '-' }}">
-                                    {{ $item->description_ar ?? $item->description ?? '-' }}
+                                <td data-ar="{{ $quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-' }}"
+                                    data-en="{{ $quoteItem->item->description_en ?? $quoteItem->item->description ?? '-' }}">
+                                    {{ $quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-' }}
                                 </td>
 
-                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $quoteItem->quantity }}</td>
 
                                 <td>
-                                    <span class="currency" data-ar="{{ number_format($item->unit_price,2) }} ريال"
-                                          data-en="{{ number_format($item->unit_price,2) }} SAR">
-                                        {{ number_format($item->unit_price,2) }} ريال
+                                    <span class="currency" data-ar="{{ number_format($quoteItem->unit_price,2) }} ريال"
+                                          data-en="{{ number_format($quoteItem->unit_price,2) }} SAR">
+                                        {{ number_format($quoteItem->unit_price,2) }} ريال
                                     </span>
                                 </td>
 
                                 <td>
-                                    <span class="currency" data-ar="{{ number_format($item->total_price,2) }} ريال"
-                                          data-en="{{ number_format($item->total_price,2) }} SAR">
-                                        {{ number_format($item->total_price,2) }} ريال
+                                    <span class="currency" data-ar="{{ number_format($quoteItem->total_price,2) }} ريال"
+                                          data-en="{{ number_format($quoteItem->total_price,2) }} SAR">
+                                        {{ number_format($quoteItem->total_price,2) }} ريال
                                     </span>
                                 </td>
                             </tr>
                         @endforeach
+
 
                         </tbody>
 

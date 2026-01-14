@@ -316,8 +316,8 @@ class EnhancedCRMController extends Controller
 
 public function convertToOrder($orderData = [])
 {
-    if ($this->status !== 'accepted') {
-        throw new \Exception('لا يمكن تحويل عرض السعر إلى طلب إلا إذا كان مقبولاً');
+    if ($lead->status === 'converted') {
+        return redirect()->back()->with('error', 'تم تحويل هذا العميل المحتمل مسبقاً');
     }
 
     try {

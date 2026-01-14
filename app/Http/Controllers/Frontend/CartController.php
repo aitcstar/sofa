@@ -169,10 +169,23 @@ class CartController extends Controller
 
     public function placeOrder(Request $request)
     {
-        if (!auth()->check()) {
+        /*if (!auth()->check()) {
             session()->put('checkout_form_data', $request->all());
             return redirect()->route('cart.checkout')
                              ->with('open_login_tab', true);
+        }*/
+
+        if (!auth()->check()) {
+            session()->put('checkout_form_data', $request->all());
+            session()->put('redirect_after_login', route('order.place'));
+
+            return redirect()->route('cart.checkout')
+                             ->with('open_login_tab', true);
+        }
+
+        // لو جاي بعد تسجيل الدخول → رجّع البيانات من السيشن
+        if (session()->has('checkout_form_data')) {
+            $request->merge(session()->pull('checkout_form_data'));
         }
 
 

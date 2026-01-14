@@ -269,11 +269,17 @@ class EnhancedCRMController extends Controller
             // Create order
             $order = Order::create([
                 'user_id' => $customer->id,
+                'package_id' => $request->package_id,
                 'order_number' => $orderNumber,
                 'name' => $lead->name,
                 'email' => $lead->email,
                 'phone' => $lead->phone,
                 'project_type' => $lead->project_type,
+                'total_amount' => $lead->total_amount,
+                'discount_amount' => $lead->discount_amount,
+                'tax_amount' => $lead->tax_amount,
+                'client_type' => 'individual',
+                'customer_type' => 'individual',
                 'status' => 'pending',
                 'payment_status' => 'pending',
                 'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,

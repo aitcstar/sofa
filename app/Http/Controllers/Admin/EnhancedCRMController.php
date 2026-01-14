@@ -366,26 +366,30 @@ public function convertToOrder(Request $request, Lead $lead)
         $taxAmount = $lead->tax_amount ?? 0;
         $totalAmount = $baseAmount + $taxAmount;
 
-        // Create order
-        $order = Order::create([
-            'user_id' => $customer->id,
-            'package_id' => null, // إذا فيه أكثر من باكج
-            'order_number' => $orderNumber,
-            'name' => $lead->name,
-            'email' => $lead->email,
-            'phone' => $lead->phone,
-            'project_type' => $projectType,
-            'base_amount' => $baseAmount,
-            'total_amount' => $totalAmount,
-            'units_count' => $totalUnits, // <- هنا عدد القطع
-            'discount_amount' => $lead->discount_amount ?? 0,
-            'tax_amount' => $taxAmount,
-            'client_type' => 'individual',
-            'country_code' => $lead->country_code ?? '+966',
-            'status' => 'pending',
-            'payment_status' => 'unpaid',
-            'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
-        ]);
+        $packageIds = $quote->quoteItems->pluck('package_id')->unique();
+
+$packageId = $packageIds->count() === 1 ? $packageIds->first() : null;
+
+$order = Order::create([
+    'user_id' => $customer->id,
+    'package_id' => $packageId, // <- إذا باكج واحد فقط، يتم ملؤه
+    'order_number' => $orderNumber,
+    'name' => $lead->name,
+    'email' => $lead->email,
+    'phone' => $lead->phone,
+    'project_type' => $projectType,
+    'base_amount' => $baseAmount,
+    'total_amount' => $totalAmount,
+    'units_count' => $totalUnits,
+    'discount_amount' => $lead->discount_amount ?? 0,
+    'tax_amount' => $taxAmount,
+    'client_type' => 'individual',
+    'country_code' => $lead->country_code ?? '+966',
+    'status' => 'pending',
+    'payment_status' => 'unpaid',
+    'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
+]);
+
 
         // Add order items grouped by package
         $quote->quoteItems

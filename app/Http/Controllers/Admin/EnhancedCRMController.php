@@ -342,14 +342,6 @@ public function convertToOrder(Request $request, Lead $lead)
             return redirect()->back()->with('error', 'لا يوجد Quote مرتبط بهذا العميل المحتمل.');
         }
 
-        // Calculate amounts
-        $baseAmount = $quote->quoteItems->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
-
-        $taxAmount = $lead->tax_amount ?? 0;
-        $totalAmount = $baseAmount + $taxAmount;
-
         // Generate order number
         $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
 
@@ -362,13 +354,22 @@ public function convertToOrder(Request $request, Lead $lead)
             'commercial' => 'small',
             'other' => 'small',
         ];
-
         $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
+
+        // Calculate base amount and total units
+        $baseAmount = $quote->quoteItems->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+
+        $totalUnits = $quote->quoteItems->sum('quantity'); // عدد القطع الإجمالي
+
+        $taxAmount = $lead->tax_amount ?? 0;
+        $totalAmount = $baseAmount + $taxAmount;
 
         // Create order
         $order = Order::create([
             'user_id' => $customer->id,
-            'package_id' => $quote->quoteItems->first()?->package_id, // أول باكج
+            'package_id' => null, // إذا فيه أكثر من باكج
             'order_number' => $orderNumber,
             'name' => $lead->name,
             'email' => $lead->email,
@@ -376,6 +377,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'project_type' => $projectType,
             'base_amount' => $baseAmount,
             'total_amount' => $totalAmount,
+            'units_count' => $totalUnits, // <- هنا عدد القطع
             'discount_amount' => $lead->discount_amount ?? 0,
             'tax_amount' => $taxAmount,
             'client_type' => 'individual',
@@ -385,15 +387,22 @@ public function convertToOrder(Request $request, Lead $lead)
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        // Add order items (based on packages in quote)
-        foreach ($quote->quoteItems as $quoteItem) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'package_id' => $quoteItem->package_id,
-                'quantity' => $quoteItem->quantity,
-                'price' => $quoteItem->price * $quoteItem->quantity,
-            ]);
-        }
+        // Add order items grouped by package
+        $quote->quoteItems
+            ->groupBy('package_id')
+            ->each(function ($items, $packageId) use ($order) {
+                $quantitySum = $items->sum('quantity');
+                $priceSum = $items->sum(function ($item) {
+                    return $item->price * $item->quantity;
+                });
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'package_id' => $packageId,
+                    'quantity' => $quantitySum,
+                    'price' => $priceSum,
+                ]);
+            });
 
         // Update lead status
         $lead->update([
@@ -422,6 +431,7 @@ public function convertToOrder(Request $request, Lead $lead)
             ->with('error', 'حدث خطأ: ' . $e->getMessage());
     }
 }
+
 
 
 

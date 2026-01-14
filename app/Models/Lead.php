@@ -722,5 +722,10 @@ public function quoteItems()
     );
 }
 
+public function quote()
+{
+    return $this->hasOne(Quote::class);
+}
+
 
 }

@@ -383,15 +383,21 @@ public function convertToOrder(Request $request, Lead $lead)
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        // Copy quote items to order items
-        foreach ($lead->quote->quoteItems as $quoteItem) {
+        $quote = $lead->quote;
+
+        if (!$quote) {
+            return redirect()->back()->with('error', 'لا يوجد Quote مرتبط بهذا العميل المحتمل.');
+        }
+
+        foreach ($quote->quoteItems as $quoteItem) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'package_id' => $quoteItem->package_id, // <-- لازم هنا
+                'package_id' => $quoteItem->package_id,
                 'quantity' => $quoteItem->quantity,
-                'price' => $quoteItem->price ?? 0, // لو عندك سعر لكل عنصر
+                'price' => $quoteItem->price ?? 0,
             ]);
         }
+
 
 
         // Update lead status

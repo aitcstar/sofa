@@ -377,7 +377,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'client_type' => 'individual',
             'country_code' => $lead->country_code ?? '+966',
             'status' => 'pending',
-            'payment_status' => 'pending',
+            'payment_status' => 'unpaid',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 

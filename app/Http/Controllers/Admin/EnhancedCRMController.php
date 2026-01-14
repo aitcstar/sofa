@@ -342,15 +342,21 @@ public function convertToOrder(Request $request, Lead $lead)
         // Create order
         $baseAmount = $lead->total_amount - $lead->tax_amount + ($lead->discount_amount ?? 0);
 
+        $packageId = $lead->quoteItems()->first()?->package_id;
+
+        if (!$packageId) {
+            return redirect()->back()->with('error', 'لا يوجد Package مرتبط بهذا العميل المحتمل.');
+        }
+
         $order = Order::create([
             'user_id' => $customer->id,
-            'package_id' => $request->package_id,
+            'package_id' => $packageId,
             'order_number' => $orderNumber,
             'name' => $lead->name,
             'email' => $lead->email,
             'phone' => $lead->phone,
             'project_type' => $lead->project_type,
-            'base_amount' => $baseAmount, // 👈 الحل هنا
+            'base_amount' => $baseAmount,
             'total_amount' => $lead->total_amount,
             'discount_amount' => $lead->discount_amount ?? 0,
             'tax_amount' => $lead->tax_amount,
@@ -360,6 +366,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'payment_status' => 'pending',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
+
 
 
 

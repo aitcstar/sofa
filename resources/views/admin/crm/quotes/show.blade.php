@@ -110,14 +110,19 @@
                 <div class="alert alert-warning" data-ar="لا توجد عناصر في هذا العرض." data-en="No items in this quote.">لا توجد عناصر في هذا العرض.</div>
             @else
                 @foreach($quote->items->groupBy('package_id') as $packageId => $items)
-                    @php
-                        $firstItem = $items->first();
-                        $packageName = $firstItem->package?->name_ar ?? $firstItem->package?->name_en;
-                    @endphp
+                @php
+                $firstItem = $items->first();
+                $packageNameAr = $firstItem->package?->name_ar ?? $firstItem->package?->name_en;
+                $packageNameEn = $firstItem->package?->name_en ?? $firstItem->package?->name_ar;
+            @endphp
 
-                    <h6 class="mt-4 mb-2 border-bottom pb-2">
-                        <strong data-ar="الباكج:" data-en="Package:">الباكج:</strong> {{ $packageName }}
-                    </h6>
+            <h6 class="mt-4 mb-2 border-bottom pb-2">
+                <strong data-ar="الباكج:" data-en="Package:">الباكج:</strong>
+                <span data-ar="{{ $packageNameAr }}" data-en="{{ $packageNameEn }}">
+                    {{ $packageNameAr }}
+                </span>
+            </h6>
+
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>

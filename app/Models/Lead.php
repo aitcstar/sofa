@@ -710,10 +710,17 @@ class Lead extends Model
 {
     return $this->belongsTo(MarketingCampaign::class, 'campaign_id');
 }
-
 public function quoteItems()
 {
-    return $this->hasMany(QuoteItem::class, 'lead_id'); // تأكد أن العمود صحيح
+    return $this->hasManyThrough(
+        QuoteItem::class,  // الجدول النهائي اللي عايز تجيبه
+        Quote::class,      // الجدول الوسيط (quotes)
+        'lead_id',         // مفتاح الـ Quote اللي يشير للـ Lead
+        'quote_id',        // مفتاح الـ QuoteItem اللي يشير للـ Quote
+        'id',              // مفتاح الـ Lead
+        'id'               // مفتاح الـ Quote
+    );
 }
+
 
 }

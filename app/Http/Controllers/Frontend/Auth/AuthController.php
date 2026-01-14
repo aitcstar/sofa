@@ -130,11 +130,7 @@ public function verifyCode(Request $request)
 
     $user = User::find($userId);
 
-    if (
-        !$user ||
-        $user->otpcode != $fullCode ||
-        ($user->otp_expires_at && \Carbon\Carbon::parse($user->otp_expires_at)->isPast())
-    ) {
+    if (!$user || $user->otpcode != $fullCode || ($user->otp_expires_at && \Carbon\Carbon::parse($user->otp_expires_at)->isPast())) {
         return redirect()->back()
             ->with('otp_error', __('site.invalid_or_expired_otp'))
             ->with('show_otp_modal', true);
@@ -147,24 +143,27 @@ public function verifyCode(Request $request)
     $user->save();
 
     $fromRegistration = session()->has('otp_from_registration');
-    $redirectAfterLogin = session()->pull('redirect_after_login'); // 👈 هنا
     session()->forget(['otp_user_id', 'otp_phone', 'otp_from_registration']);
+
+    // ✅ التحقق من وجود بيانات الطلب المحفوظة
+    if (session()->has('checkout_form_data')) {
+        return redirect()->route('checkout.processing');
+    }
 
     if ($fromRegistration) {
         $seo = SeoSetting::where('page', 'about')->first();
         $sections = AboutPage::all();
         $minUnits = Setting::value('min_units') ?? 1;
-
         return view('frontend.pages.welcome', compact('seo', 'sections','minUnits'));
     }
 
-    // ✅ لو فيه صفحة مطلوبة قبل تسجيل الدخول
-    if ($redirectAfterLogin) {
-        return redirect()->to($redirectAfterLogin);
-    }
-
-    return redirect()->route('home');
+    return redirect()->intended(route('home'));
 }
+
+
+
+
+
 
 
     public function register(Request $request)

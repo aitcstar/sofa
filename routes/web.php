@@ -108,6 +108,18 @@ Route::post('/login/check-phone', [AuthController::class, 'checkPhone'])->name('
 // تسجيل الدخول بالبريد الإلكتروني
 Route::post('/login/check-email', [AuthController::class, 'checkEmail'])->name('login.checkEmail');
 
+
+// مسار حفظ بيانات الطلب قبل تسجيل الدخول
+Route::post('/cart/save-checkout-data', [CartController::class, 'saveCheckoutData'])->name('cart.saveCheckoutData');
+
+// مسار معالجة الطلب بعد تسجيل الدخول
+Route::get('/checkout/processing', function () {
+    if (!session()->has('checkout_form_data')) {
+        return redirect()->route('home')->with('error', 'انتهت صلاحية جلسة الطلب.');
+    }
+    return view('frontend.pages.processing-order');
+})->name('checkout.processing')->middleware('auth');
+
 // روتات بدون prefix للعربية (الافتراضية)
 Route::group(['middleware' => 'locale'], function () { // ✅ غير هنا
     Route::get('/', [HomeController::class, 'index'])->name('home');

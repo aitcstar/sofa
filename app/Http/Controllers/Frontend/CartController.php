@@ -167,13 +167,10 @@ class CartController extends Controller
         }
     }
 
+    /*
     public function placeOrder(Request $request)
     {
-        /*if (!auth()->check()) {
-            session()->put('checkout_form_data', $request->all());
-            return redirect()->route('cart.checkout')
-                             ->with('open_login_tab', true);
-        }*/
+
 
         if (!auth()->check()) {
             session()->put('checkout_form_data', $request->all());
@@ -298,6 +295,129 @@ class CartController extends Controller
                 ->with('error', 'حدث خطأ أثناء إنشاء الطلب. الرجاء المحاولة مرة أخرى.');
         }
     }
+*/
+
+public function saveCheckoutData(Request $request)
+{
+    $minUnits = Setting::first()?->min_units ?? 1;
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|string|max:20',
+        'country_code' => 'required|string|max:10',
+        'units_count' => "required|integer|min:$minUnits",
+        'cart_data' => 'required|json',
+    ]);
+
+    // حفظ البيانات في الجلسة
+    session()->put('checkout_form_data', $request->all());
+
+    return redirect()->back()->with('open_login_tab', true);
+}
+
+public function placeOrder(Request $request)
+    {
+        // دمج بيانات الجلسة إذا كانت موجودة
+        if (session()->has('checkout_form_data')) {
+            $request->merge(session()->pull('checkout_form_data'));
+        }
+
+        $minUnits = Setting::first()?->min_units ?? 1;
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'country_code' => 'required|string|max:10',
+            'units_count' => "required|integer|min:$minUnits",
+            'cart_data' => 'required|json',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $cartData = json_decode($request->cart_data, true);
+            if (empty($cartData)) {
+                return redirect()->back()->with('error', 'السلة فارغة');
+            }
+
+            $subtotal = 0;
+            foreach ($cartData as $item) {
+                $subtotal += $item['price'] * $item['quantity'];
+            }
+
+            $discount = 0;
+            $couponId = null;
+            if ($request->coupon_code) {
+                $coupon = Coupon::where('code', $request->coupon_code)->first();
+                if ($coupon && $coupon->isValid()) {
+                    $discount = $coupon->calculateDiscount($subtotal);
+                    $couponId = $coupon->id;
+                }
+            }
+
+            $afterDiscount = $subtotal - $discount;
+            $taxRate = 0.15;
+            $taxAmount = $afterDiscount * $taxRate;
+            $totalAmount = $afterDiscount + $taxAmount;
+
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'coupon_id' => $couponId,
+                'package_id' => $cartData[0]['id'],
+                'order_number' => $this->generateOrderNumber(),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'country_code' => $request->country_code,
+                'units_count' => $request->units_count,
+                'internal_notes' => $request->internal_notes,
+                'base_amount' => $subtotal,
+                'discount_amount' => $discount,
+                'tax_amount' => $taxAmount,
+                'total_amount' => $totalAmount,
+                'paid_amount' => 0,
+                'payment_status' => 'unpaid',
+                'status' => 'pending',
+                'priority' => 2,
+            ]);
+
+            foreach ($cartData as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'package_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+            }
+
+            if ($couponId) {
+                $coupon->use($order->id, auth()->id(), $discount, $subtotal);
+            }
+
+            $order->logActivity('order_created', 'تم إنشاء الطلب', auth()->id());
+
+            DB::commit();
+
+            return redirect()
+                ->route(app()->getLocale() == 'ar' ? 'order.success' : 'order.success.en', ['order' => $order->id])
+                ->with('success', 'تم إنشاء طلبك بنجاح! رقم الطلب: ' . $order->order_number);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error creating order: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return redirect()->back()->withInput()->with('error', 'حدث خطأ أثناء إنشاء الطلب. الرجاء المحاولة مرة أخرى.');
+        }
+    }
+
+
+
+
+
+
 
     private function generateOrderNumber()
     {

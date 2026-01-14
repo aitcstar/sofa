@@ -711,4 +711,9 @@ class Lead extends Model
     return $this->belongsTo(MarketingCampaign::class, 'campaign_id');
 }
 
+public function quoteItems()
+{
+    return $this->hasMany(QuoteItem::class, 'lead_id'); // تأكد أن العمود صحيح
+}
+
 }

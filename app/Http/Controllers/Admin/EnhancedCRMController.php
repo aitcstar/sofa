@@ -348,6 +348,7 @@ public function convertToOrder(Request $request, Lead $lead)
             return redirect()->back()->with('error', 'لا يوجد Package مرتبط بهذا العميل المحتمل.');
         }
 
+
         $order = Order::create([
             'user_id' => $customer->id,
             'package_id' => $packageId,
@@ -366,6 +367,7 @@ public function convertToOrder(Request $request, Lead $lead)
             'payment_status' => 'pending',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
+
 
 
 

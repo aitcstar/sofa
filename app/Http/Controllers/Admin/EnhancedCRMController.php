@@ -395,10 +395,11 @@ public function convertToOrder(Request $request, Lead $lead)
         // Log activity
         LeadActivity::create([
             'lead_id' => $lead->id,
-            'user_id' => auth()->id(),
+            'user_id' => $customer->id, // <-- هنا كمان مهم جدًا
             'activity_type' => 'converted',
             'description' => "تم تحويل العميل المحتمل إلى طلب رقم: {$order->order_number}",
         ]);
+
 
         DB::commit();
 

@@ -129,33 +129,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($items as $item)
-                                <tr>
-                                    <td data-key="{{ $item->item_name_ar ?? $item->item_name_en ?? $item->item_name }}"
-                                        data-ar="{{ $item->item_name_ar ?? $item->item_name }}"
-                                        data-en="{{ $item->item_name_en ?? $item->item_name }}">
-                                        {{ $item->item_name_ar ?? $item->item_name }}
-                                    </td>
-                                    <td data-key="{{ $item->description_ar ?? $item->description_en ?? $item->description ?? '-' }}"
-                                        data-ar="{{ $item->description_ar ?? $item->description ?? '-' }}"
-                                        data-en="{{ $item->description_en ?? $item->description ?? '-' }}">
-                                        {{ $item->description_ar ?? $item->description ?? '-' }}
-                                    </td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>
-                                        <span class="currency" data-ar="{{ number_format($item->unit_price,2) }} ريال"
-                                              data-en="{{ number_format($item->unit_price,2) }} SAR">
-                                            {{ number_format($item->unit_price,2) }} ريال
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="currency" data-ar="{{ number_format($item->total_price,2) }} ريال"
-                                              data-en="{{ number_format($item->total_price,2) }} SAR">
-                                            {{ number_format($item->total_price,2) }} ريال
-                                        </span>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            @foreach($quote->items as $item)
+                            <tr>
+                                <!-- اسم القطعة حسب اللغة -->
+                                <td data-ar="{{ $item->item_name_ar ?? $item->item_name }}"
+                                    data-en="{{ $item->item_name_en ?? $item->item_name }}">
+                                    {{ $item->item_name_ar ?? $item->item_name }}
+                                </td>
+
+                                <!-- الوصف حسب اللغة -->
+                                <td data-ar="{{ $item->description_ar ?? $item->description ?? '-' }}"
+                                    data-en="{{ $item->description_en ?? $item->description ?? '-' }}">
+                                    {{ $item->description_ar ?? $item->description ?? '-' }}
+                                </td>
+
+                                <td>{{ $item->quantity }}</td>
+
+                                <td>
+                                    <span class="currency" data-ar="{{ number_format($item->unit_price,2) }} ريال"
+                                          data-en="{{ number_format($item->unit_price,2) }} SAR">
+                                        {{ number_format($item->unit_price,2) }} ريال
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="currency" data-ar="{{ number_format($item->total_price,2) }} ريال"
+                                          data-en="{{ number_format($item->total_price,2) }} SAR">
+                                        {{ number_format($item->total_price,2) }} ريال
+                                    </span>
+                                </td>
+                            </tr>
+                        @endforeach
+
                         </tbody>
 
                     </table>

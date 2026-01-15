@@ -117,20 +117,17 @@ class OrderController extends Controller
     }
 
     public function showInvoice($orderId)
-    {
-        $order = Order::with(['user', 'package.packageUnitItems.unit', 'orderItems.package'])->findOrFail($orderId);
+{
+    $invoice = Order::with([
+        'user', // إذا الـ customer مرتبط بالـ user
+        'package.packageUnitItems.unit',
+        'package.packageUnitItems.item'
+    ])->findOrFail($orderId);
 
-        // إعداد بيانات الموقع للفاتورة
-        $siteSettings = (object)[
-            'site_name' => config('app.name'),
-            'address' => 'عنوان الشركة',
-            'phone' => '1234567890'
-        ];
+    $siteSettings = \App\Models\Setting::getSiteSettings(); // أو أي طريقة لجلب بيانات الموقع
 
-        return view('frontend.pages.order-invoice', [
-            'invoice' => $order,
-            'siteSettings' => $siteSettings
-        ]);
-    }
+    return view('invoices.show', compact('invoice', 'siteSettings'));
+}
+
 
 }

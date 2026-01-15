@@ -201,6 +201,7 @@ class EnhancedFinancialController extends Controller
     /**
      * Show invoice details.
      */
+    /*
     public function showInvoice(Invoice $invoice)
     {
         //$invoice->load(['order.user', 'payments']);
@@ -218,7 +219,40 @@ class EnhancedFinancialController extends Controller
 
 
         //return view('admin.financial.invoices.show', compact('invoice'));
+    }*/
+
+    public function showInvoice(Invoice $invoice)
+{
+    // 1. تحديد اللغة من الرابط
+    $lang = request()->get('lang', 'ar');
+    if (!in_array($lang, ['ar', 'en'])) {
+        $lang = 'ar';
     }
+    $dir = ($lang === 'ar') ? 'rtl' : 'ltr';
+
+    // 2. تعيين لغة التطبيق مؤقتًا
+    app()->setLocale($lang);
+
+    // 3. تحميل العلاقات
+    $invoice->load([
+        'customer',
+        'assignedEmployee',
+        'payments',
+        'package.packageUnitItems.unit',
+        'package.packageUnitItems.item',
+        'package.images',
+    ]);
+
+    // 4. إعداد إعدادات الموقع
+    $siteSettings = (object)[
+        'site_name' => config('app.name', 'SOFA Experience'),
+        'address' => 'عنوان الشركة',
+        'phone' => '1234567890'
+    ];
+
+    // 5. تمرير المتغيرات إلى الـ view
+    return view('admin.orders.invoice', compact('invoice', 'siteSettings', 'lang', 'dir'));
+}
 
     /**
      * Show edit invoice form.

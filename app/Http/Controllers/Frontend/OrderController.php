@@ -118,15 +118,26 @@ class OrderController extends Controller
 
     public function showInvoice($orderId)
     {
+        // 1. تحديد اللغة المطلوبة من الرابط (الافتراضي: ar)
+        $lang = request()->get('lang', 'ar');
+        if (!in_array($lang, ['ar', 'en'])) {
+            $lang = 'ar';
+        }
+
+        // 2. تعيين اتجاه الصفحة حسب اللغة
+        $dir = ($lang === 'ar') ? 'rtl' : 'ltr';
+
+        // 3. (اختياري) تغيير لغة التطبيق مؤقتًا — مفيد لو استخدمت __() لاحقًا
+        app()->setLocale($lang);
+
+        // 4. جلب الطلب مع العلاقات
         $order = Order::with([
             'user',
             'package.packageUnitItems.unit',
-            'package.packageUnitItems.item' // مهم عشان القطع نفسها
+            'package.packageUnitItems.item'
         ])->findOrFail($orderId);
 
-
-
-        // إعادة حساب القيم إذا كان custom_fields فارغ
+        // 5. إعادة حساب القيم إذا كان custom_fields فارغ
         if (empty($order->custom_fields) && $order->package) {
             $basePrice = $order->package->price;
             $taxRate = config('app.tax_rate', 0.15);
@@ -142,17 +153,19 @@ class OrderController extends Controller
             $order->save();
         }
 
-
-        // إعداد بيانات الموقع للفاتورة
+        // 6. إعداد بيانات الموقع
         $siteSettings = (object)[
             'site_name' => config('app.name'),
             'address' => 'عنوان الشركة',
             'phone' => '1234567890'
         ];
 
+        // 7. تمرير المتغيرات إلى الـ view
         return view('frontend.pages.order-invoice', [
             'invoice' => $order,
-            'siteSettings' => $siteSettings
+            'siteSettings' => $siteSettings,
+            'lang' => $lang,
+            'dir' => $dir
         ]);
     }
 

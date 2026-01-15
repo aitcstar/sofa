@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ $lang }}" dir="{{ $dir }}">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>الفاتورة #{{ $invoice->order_number }} - SOFA Experience</title>
+    <title>{{ __('invoice.invoice_title', ['number' => $invoice->order_number]) }} - SOFA Experience</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
@@ -18,14 +18,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
 
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: '{{ $lang === "ar" ? "Cairo" : "Arial, sans-serif" }}', sans-serif;
         }
 
         .print-button {
             position: fixed;
             top: 20px;
-            left: 20px;
+            {{ $lang === 'ar' ? 'left' : 'right' }}: 20px;
             z-index: 1000;
+            display: flex !important;
+            gap: 0.5rem;
         }
 
         @media print {
@@ -51,12 +53,21 @@
 </head>
 
 <body>
-    <!-- Print Button -->
+    <!-- Print & Language Buttons -->
     <div class="print-button no-print">
         <button onclick="window.print()" class="btn btn-primary">
-            <i class="fas fa-print me-2"></i>طباعة
+            <i class="fas fa-print me-2"></i>{{ __('invoice.print') }}
         </button>
-
+    {{$lang}}
+        @if($lang === 'ar')
+            <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" class="btn btn-outline-secondary">
+                English
+            </a>
+        @else
+            <a href="{{ request()->fullUrlWithQuery(['lang' => 'ar']) }}" class="btn btn-outline-secondary">
+                العربية
+            </a>
+        @endif
     </div>
 
     <!-- ===== INVOICE CONTAINER ===== -->
@@ -81,26 +92,30 @@
                 <!-- Invoice Data -->
                 <div class="d-flex flex-column gap-sm-6">
                     <div class="d-flex gap-sm-5">
-                        <p class="mb-0 body-2">رقم الفاتورة:</p>
+                        <p class="mb-0 body-2">{{ __('invoice.invoice_number') }}:</p>
                         <p class="mb-0 body-2" style="color: var(--input-text) !important;"># {{ $invoice->order_number }}</p>
                     </div>
                     <div class="d-flex gap-sm-5">
-                        <p class="mb-0 body-2">تاريخ الإصدار:</p>
-                        <p class="mb-0 body-2" style="color: var(--input-text) !important;">{{ $invoice->created_at->format('d F Y') }}</p>
+                        <p class="mb-0 body-2">{{ __('invoice.issue_date') }}:</p>
+                        <p class="mb-0 body-2" style="color: var(--input-text) !important;">
+                            {{ $lang === 'ar' ? $invoice->created_at->format('d F Y') : $invoice->created_at->format('F d, Y') }}
+                        </p>
                     </div>
                     <div class="d-flex gap-sm-5">
-                        <p class="mb-0 body-2">تاريخ الاستحقاق:</p>
-                        <p class="mb-0 body-2" style="color: var(--input-text) !important;">{{ $invoice->due_date ? $invoice->due_date->format('d F Y') : '-' }}</p>
+                        <p class="mb-0 body-2">{{ __('invoice.due_date') }}:</p>
+                        <p class="mb-0 body-2" style="color: var(--input-text) !important;">
+                            {{ $invoice->due_date ? ($lang === 'ar' ? $invoice->due_date->format('d F Y') : $invoice->due_date->format('F d, Y')) : '-' }}
+                        </p>
                     </div>
                     <div class="d-flex gap-sm-5">
-                        <p class="mb-0 body-2">الحالة:</p>
+                        <p class="mb-0 body-2">{{ __('invoice.status') }}:</p>
                         <p class="mb-0 body-2" style="color: var(--input-text) !important;">
                             @if($invoice->status == 'paid')
-                                مدفوعة
+                                {{ __('invoice.paid') }}
                             @elseif($invoice->status == 'partial')
-                                مدفوعة جزئياً
+                                {{ __('invoice.partially_paid') }}
                             @else
-                                غير مدفوعة
+                                {{ __('invoice.unpaid') }}
                             @endif
                         </p>
                     </div>
@@ -112,170 +127,133 @@
 
         <!-- ===== Customer Data ===== -->
         <div class="customer-data d-flex flex-column gap-sm-4 mb-4">
-            <h3 class="heading-h8 mb-3">بيانات العميل</h3>
+            <h3 class="heading-h8 mb-3">{{ __('invoice.customer_details') }}</h3>
             <div class="customer-data-item-details" style="display: flex; justify-content: space-between;">
                 <div class="d-flex flex-column gap-sm-5">
-                    <p class="mb-0 body-2">اسم العميل:</p>
-                    <p class="mb-0 body-2">رقم التواصل:</p>
-                    <p class="mb-0 body-2">العنوان:</p>
+                    <p class="mb-0 body-2">{{ __('invoice.customer_name') }}:</p>
+                    <p class="mb-0 body-2">{{ __('invoice.phone') }}:</p>
+                    <p class="mb-0 body-2">{{ __('invoice.address') }}:</p>
                 </div>
-                <div class="d-flex flex-column gap-sm-5" style="text-align: left;">
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->name ?? 'غير محدد' }}</p>
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->phone ?? 'غير محدد' }}</p>
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->address ?? 'غير محدد' }}</p>
+                <div class="d-flex flex-column gap-sm-5" style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->name ?? __('invoice.not_specified') }}</p>
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->phone ?? __('invoice.not_specified') }}</p>
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->address ?? __('invoice.not_specified') }}</p>
                 </div>
             </div>
         </div>
 
-       <!-- ===== Order Details ===== -->
-<div class="order-details d-flex flex-column gap-sm-4 mb-4">
-    <h3 class="heading-h8 mb-3">تفاصيل الطلب</h3>
+        <!-- ===== Package Details (Expanded) ===== -->
+        @if($invoice->package && $invoice->package->packageUnitItems)
+        <div class="studio-package-details mb-4">
+            <div class="mb-3">
+                <h4 class="sub-heading-3 mb-2">{{ __('invoice.components') }}</h4>
 
-    <!-- Table
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead style="background-color: #f8f9fa;">
-                <tr>
-                    <th class="body-2 py-3 text-center">نوع الوحدة</th>
-                    <th class="body-2 py-3 text-center">عدد الوحدات</th>
-                    <th class="body-2 py-3 text-center">الباكج</th>
-                    <th class="body-2 py-3 text-center">السعر/الوحدة</th>
-                    <th class="body-2 py-3 text-center">الإجمالي</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($invoice->package?->packageUnitItems ?? [] as $item)
-                <tr>
-                    <td class="body-2 py-3 text-center">{{ $item->unit->name_ar ?? 'غير محدد' }}</td>
-                    <td class="body-2 py-3 text-center">{{ $item->quantity ?? 1 }}</td>
-                    <td class="body-2 py-3 text-center">{{ $item->package->name_ar ?? 'غير محدد' }}</td>
-                    <td class="body-2 py-3 text-center">
-                        <strong>{{ number_format($item->package->price ?? 0, 0) }}</strong> ريال
-                    </td>
-                    <td class="body-2 py-3 text-center">
-                        <strong>{{ number_format(($item->package->price ?? 0) * ($item->quantity ?? 1) * 1.15, 0) }}</strong> ريال
-                    </td>
-                </tr>
+                @php
+                    $units = $invoice->package->packageUnitItems->groupBy(fn($item) => $lang === 'ar' ? $item->unit->name_ar : $item->unit->name_en);
+                @endphp
+
+                @foreach($units as $unitName => $unitItems)
+                    <div class="mb-3">
+                        <!-- Unit Name -->
+                        <div class="p-2 text-center text-white" style="background-color: var(--primary);">
+                            <h5 class="mb-0">{{ $unitName }}</h5>
+                        </div>
+
+                        <!-- Items Table -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead style="background-color: #f8f9fa;">
+                                    <tr>
+                                        <th class="body-2 text-center">{{ __('invoice.item') }}</th>
+                                        <th class="body-2 text-center">{{ __('invoice.dimensions') }}</th>
+                                        <th class="body-2 text-center">{{ __('invoice.material') }}</th>
+                                        <th class="body-2 text-center">{{ __('invoice.color') }}</th>
+                                        <th class="body-2 text-center">{{ __('invoice.image') }}</th>
+                                        <th class="body-2 text-center">{{ __('invoice.quantity') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($unitItems as $unitItem)
+                                    <tr>
+                                        <td class="text-center">
+                                            {{ $lang === 'ar' ? ($unitItem->item->item_name_ar ?? '-') : ($unitItem->item->item_name_en ?? '-') }}
+                                        </td>
+                                        <td class="text-center">{{ $unitItem->item->dimensions ?? '-' }}</td>
+                                        <td class="text-center">
+                                            {{ $lang === 'ar' ? ($unitItem->item->material_ar ?? '-') : ($unitItem->item->material_en ?? '-') }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge" style="background-color: {{ $unitItem->item->background_color ?? '#262626' }}; color: white;">
+                                                {{ $lang === 'ar' ? ($unitItem->item->color_ar ?? __('invoice.not_specified')) : ($unitItem->item->color_en ?? __('invoice.not_specified')) }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if($unitItem->item->image_path)
+                                                <img src="{{ asset('storage/' . $unitItem->item->image_path) }}"
+                                                     alt="{{ $lang === 'ar' ? $unitItem->item->item_name_ar : $unitItem->item->item_name_en }}"
+                                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                            @else
+                                                <i class="fas fa-image fa-2x text-muted"></i>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">{{ $unitItem->quantity ?? 1 }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 @endforeach
-            </tbody>
-        </table>
-    </div> -->
-</div>
-
-<!-- ===== Package Details (Expanded) ===== -->
-@if($invoice->package && $invoice->package->packageUnitItems)
-<div class="studio-package-details mb-4">
-
-<div class="mb-3">
-    <h4 class="sub-heading-3 mb-2">المكونات</h4>
-
-    @php
-    $units = $invoice->package->packageUnitItems->groupBy(fn($item) => $item->unit->name_ar);
-    @endphp
-
-    @foreach($units as $unitName => $unitItems)
-        <div class="mb-3">
-            <!-- اسم الوحدة -->
-            <div class="p-2 text-center text-white" style="background-color: var(--primary);">
-                <h5 class="mb-0">{{ $unitName }}</h5>
-            </div>
-
-            <!-- جدول القطع التابعة للوحدة -->
-            <div class="table-responsive">
-                <table class="table table-bordered mb-0">
-                    <thead style="background-color: #f8f9fa;">
-                        <tr>
-                            <th class="body-2 text-center">القطعة</th>
-                            <th class="body-2 text-center">المقاس</th>
-                            <th class="body-2 text-center">الخامة</th>
-                            <th class="body-2 text-center">اللون</th>
-                            <th class="body-2 text-center">الصورة</th>
-                            <th class="body-2 text-center">الكمية</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($unitItems as $unitItem)
-                        <tr>
-                            <td class="text-center">{{ $unitItem->item->item_name_ar ?? '-' }}</td>
-                            <td class="text-center">{{ $unitItem->item->dimensions ?? '-' }}</td>
-                            <td class="text-center">{{ $unitItem->item->material_ar ?? '-' }}</td>
-                            <td class="text-center">
-                                <span class="badge" style="background-color: {{ $unitItem->item->background_color ?? '#262626' }}; color: white;">
-                                    {{ $unitItem->item->color_ar ?? 'غير محدد' }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                @if($unitItem->item->image_path)
-                                    <img src="{{ asset('storage/' . $unitItem->item->image_path) }}"
-                                         alt="{{ $unitItem->item->name }}"
-                                         style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
-                                @else
-                                    <i class="fas fa-image fa-2x text-muted"></i>
-                                @endif
-                            </td>
-                            <td class="text-center">{{ $unitItem->quantity ?? 1 }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
-    @endforeach
-
-    </div>
-</div>
-@endif
-
+        @endif
 
         <!-- ===== Total Summary ===== -->
         <div class="total-summary border rounded mb-4">
             <div class="d-flex justify-content-between p-3 border-bottom">
-                <p class="body-2 mb-0">المجموع الفرعي:</p>
-                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['base_price'] ?? 0, 0) }}</strong> ريال</p>
+                <p class="body-2 mb-0">{{ __('invoice.subtotal') }}:</p>
+                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['base_price'] ?? 0, 0) }}</strong> {{ __('invoice.currency') }}</p>
             </div>
 
             <div class="d-flex justify-content-between p-3 border-bottom">
-                <p class="body-2 mb-0">الضريبة ({{ $invoice->tax_rate ?? 15 }}%):</p>
-                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['tax'] ?? 0, 0) }}</strong> ريال</p>
+                <p class="body-2 mb-0">{{ __('invoice.tax', ['rate' => $invoice->tax_rate ?? 15]) }}:</p>
+                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['tax'] ?? 0, 0) }}</strong> {{ __('invoice.currency') }}</p>
             </div>
 
             <div class="d-flex justify-content-between p-3 border-bottom">
-                <p class="body-2 mb-0">الشحن:</p>
-                <p class="body-2 mb-0"><strong>{{ number_format($invoice->shipping_cost ?? 0, 0) }}</strong> ريال</p>
+                <p class="body-2 mb-0">{{ __('invoice.shipping') }}:</p>
+                <p class="body-2 mb-0"><strong>{{ number_format($invoice->shipping_cost ?? 0, 0) }}</strong> {{ __('invoice.currency') }}</p>
             </div>
 
             <div class="d-flex justify-content-between p-3 text-white" style="background-color: var(--primary);">
-                <p class="body-2 mb-0 fw-bold">المجموع النهائي:</p>
+                <p class="body-2 mb-0 fw-bold">{{ __('invoice.total') }}:</p>
                 <p class="heading-h7 mb-0">
                     {{ number_format(
                         ($invoice->custom_fields['base_price'] ?? 0)
                         + ($invoice->custom_fields['tax'] ?? 0)
                         + ($invoice->shipping_cost ?? 0)
-                    , 0) }} ريال
+                    , 0) }} {{ __('invoice.currency') }}
                 </p>
             </div>
-
-
-
         </div>
 
         <!-- ===== Payment Methods ===== -->
         <div class="payment-methods p-3 bg-light rounded mb-4">
             <div class="d-flex justify-content-between">
-                <p class="body-2 mb-0"> المبلغ المدفوع:</p>
-                <p class="body-2 mb-0 fw-bold">{{ number_format($invoice->paid_amount ?? 0) }}  ريال</p>
+                <p class="body-2 mb-0">{{ __('invoice.amount_paid') }}:</p>
+                <p class="body-2 mb-0 fw-bold">{{ number_format($invoice->paid_amount ?? 0) }} {{ __('invoice.currency') }}</p>
             </div>
         </div>
 
         <!-- ===== Policies ===== -->
         <div class="policies border rounded p-3 mb-4">
             <div class="mb-3">
-                <p class="fw-bold mb-1">شروط الضمان:</p>
-                <p class="body-2 mb-0">يشمل الضمان عيوب التصنيع لمدة سنة واحدة من تاريخ التسليم</p>
+                <p class="fw-bold mb-1">{{ __('invoice.warranty_terms') }}:</p>
+                <p class="body-2 mb-0">{{ __('invoice.warranty_policy') }}</p>
             </div>
             <div>
-                <p class="fw-bold mb-1">سياسة الإرجاع:</p>
-                <p class="body-2 mb-0">لا يمكن إرجاع المنتجات بعد التنفيذ إلا في حال وجود عيوب واضحة في التصنيع</p>
+                <p class="fw-bold mb-1">{{ __('invoice.return_policy') }}:</p>
+                <p class="body-2 mb-0">{{ __('invoice.return_policy_text') }}</p>
             </div>
         </div>
 
@@ -283,7 +261,7 @@
 
         <!-- ===== Footer ===== -->
         <div class="invoice-footer text-center">
-            <p class="body-2 mb-0">شكراً لاختياركم SOFA. لمتابعة طلبك أو التواصل معنا: info@sofa4.com | www.sofa4.com</p>
+            <p class="body-2 mb-0">{{ __('invoice.thank_you') }}</p>
         </div>
     </div>
 

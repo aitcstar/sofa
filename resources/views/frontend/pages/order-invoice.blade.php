@@ -231,11 +231,11 @@
         <div class="total-summary border rounded mb-4">
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <p class="body-2 mb-0">المجموع الفرعي:</p>
-                <p class="body-2 mb-0"><strong>{{ number_format($invoice->subtotal ?? ($invoice->custom_fields['base_price'] ?? 0), 0) }}</strong> ريال</p>
+                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['base_price'] ?? 0, 0) }}</strong> ريال</p>
             </div>
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <p class="body-2 mb-0">الضريبة ({{ $invoice->tax_rate ?? 15 }}%):</p>
-                <p class="body-2 mb-0"><strong>{{ number_format($invoice->tax_amount ?? 0, 0) }}</strong> ريال</p>
+                <p class="body-2 mb-0"><strong>{{ number_format($invoice->custom_fields['tax'] ?? 0, 0) }}</strong> ريال</p>
             </div>
             <div class="d-flex justify-content-between p-3 border-bottom">
                 <p class="body-2 mb-0">الشحن:</p>
@@ -243,8 +243,15 @@
             </div>
             <div class="d-flex justify-content-between p-3 text-white" style="background-color: var(--primary);">
                 <p class="body-2 mb-0 fw-bold">المجموع النهائي:</p>
-                <p class="heading-h7 mb-0">{{ number_format($invoice->total_amount ?? 0, 0) }} ريال</p>
+                <p class="heading-h7 mb-0">
+                    {{ number_format(
+                        ($invoice->custom_fields['base_price'] ?? 0)
+                        + ($invoice->custom_fields['tax'] ?? 0)
+                        + ($invoice->shipping_cost ?? 0)
+                    , 0) }} ريال
+                </p>
             </div>
+
 
         </div>
 

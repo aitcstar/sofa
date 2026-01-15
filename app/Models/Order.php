@@ -391,17 +391,18 @@ class Order extends Model
 
             if ($package) {
                 $basePrice = $package->price;
-                $taxRate = config('app.tax_rate', 0.15);
-                $taxAmount = $basePrice * $taxRate;
-                $finalPrice = $basePrice + $taxAmount;
+                $taxRate = config('app.tax_rate', 0.15); // 15%
+                $taxAmount = $basePrice * $taxRate;     // صح
+                $finalPrice = $basePrice + $taxAmount;  // صح
 
-                $order->total_amount = $finalPrice;
+                $order->total_amount = $finalPrice;     // صح
                 $order->paid_amount = 0;
                 $order->custom_fields = [
                     'base_price' => $basePrice,
                     'tax' => $taxAmount,
                     'final_price' => $finalPrice,
                 ];
+
             }
         }
     });

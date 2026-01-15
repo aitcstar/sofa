@@ -481,4 +481,16 @@ public function packages()
     );
 }
 
+public function getSubtotalAttribute()
+{
+    // اجمع سعر كل القطع أو الباكج
+    if ($this->package) {
+        $basePrice = $this->package->price ?? 0;
+        return $basePrice;
+    }
+
+    return 0;
+}
+
+
 }

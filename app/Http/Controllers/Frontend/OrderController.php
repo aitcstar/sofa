@@ -124,6 +124,25 @@ class OrderController extends Controller
             'package.packageUnitItems.item' // مهم عشان القطع نفسها
         ])->findOrFail($orderId);
 
+
+
+        // إعادة حساب القيم إذا كان custom_fields فارغ
+        if (empty($order->custom_fields) && $order->package) {
+            $basePrice = $order->package->price;
+            $taxRate = config('app.tax_rate', 0.15);
+            $taxAmount = $basePrice * $taxRate;
+            $finalPrice = $basePrice + $taxAmount;
+
+            $order->custom_fields = [
+                'base_price' => $basePrice,
+                'tax' => $taxAmount,
+                'final_price' => $finalPrice,
+            ];
+            $order->total_amount = $finalPrice;
+            $order->save();
+        }
+
+
         // إعداد بيانات الموقع للفاتورة
         $siteSettings = (object)[
             'site_name' => config('app.name'),

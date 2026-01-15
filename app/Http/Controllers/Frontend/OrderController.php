@@ -116,5 +116,21 @@ class OrderController extends Controller
         return view('frontend.order.my-orders', compact('orders','seo'));
     }
 
+    public function showInvoice($orderId)
+    {
+        $order = Order::with(['user', 'package.packageUnitItems.unit', 'orderItems.package'])->findOrFail($orderId);
+
+        // إعداد بيانات الموقع للفاتورة
+        $siteSettings = (object)[
+            'site_name' => config('app.name'),
+            'address' => 'عنوان الشركة',
+            'phone' => '1234567890'
+        ];
+
+        return view('frontend.orders.invoice', [
+            'invoice' => $order,
+            'siteSettings' => $siteSettings
+        ]);
+    }
 
 }

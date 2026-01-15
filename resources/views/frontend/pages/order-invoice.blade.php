@@ -58,7 +58,6 @@
         <button onclick="window.print()" class="btn btn-primary">
             <i class="fas fa-print me-2"></i>{{ __('invoice.print') }}
         </button>
-    {{$lang}}
         @if($lang === 'ar')
             <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" class="btn btn-outline-secondary">
                 English

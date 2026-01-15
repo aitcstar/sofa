@@ -127,7 +127,7 @@ class OrderController extends Controller
             'phone' => '1234567890'
         ];
 
-        return view('frontend.orders.invoice', [
+        return view('frontend.pages.order-invoice', [
             'invoice' => $order,
             'siteSettings' => $siteSettings
         ]);

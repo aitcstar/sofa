@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>الفاتورة #{{ $invoice->invoice_number }} - SOFA Experience</title>
+    <title>الفاتورة #{{ $invoice->order_number }} - SOFA Experience</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
@@ -82,7 +82,7 @@
                 <div class="d-flex flex-column gap-sm-6">
                     <div class="d-flex gap-sm-5">
                         <p class="mb-0 body-2">رقم الفاتورة:</p>
-                        <p class="mb-0 body-2" style="color: var(--input-text) !important;"># {{ $invoice->invoice_number }}</p>
+                        <p class="mb-0 body-2" style="color: var(--input-text) !important;"># {{ $invoice->order_number }}</p>
                     </div>
                     <div class="d-flex gap-sm-5">
                         <p class="mb-0 body-2">تاريخ الإصدار:</p>
@@ -120,9 +120,9 @@
                     <p class="mb-0 body-2">العنوان:</p>
                 </div>
                 <div class="d-flex flex-column gap-sm-5" style="text-align: left;">
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->customer->name ?? 'غير محدد' }}</p>
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->customer->phone ?? 'غير محدد' }}</p>
-                    <p class="mb-0 body-2 text-heading">{{ $invoice->customer->address ?? 'غير محدد' }}</p>
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->name ?? 'غير محدد' }}</p>
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->phone ?? 'غير محدد' }}</p>
+                    <p class="mb-0 body-2 text-heading">{{ $invoice->user->address ?? 'غير محدد' }}</p>
                 </div>
             </div>
         </div>
@@ -168,61 +168,60 @@
 
 <div class="mb-3">
     <h4 class="sub-heading-3 mb-2">المكونات</h4>
-    @foreach($invoice->package->packageUnitItems as $unitItem)
 
+    @php
+    $units = $invoice->package->packageUnitItems->groupBy(fn($item) => $item->unit->name_ar);
+    @endphp
 
-                <div class="mb-3">
-                    <div class="p-2 text-center text-white" style="background-color: var(--primary);">
-                        <h5 class="mb-0">{{ $unitItem->unit->name_ar ?? 'عنصر غير محدد' }}</h5>
-                    </div>
+    @foreach($units as $unitName => $unitItems)
+        <div class="mb-3">
+            <!-- اسم الوحدة -->
+            <div class="p-2 text-center text-white" style="background-color: var(--primary);">
+                <h5 class="mb-0">{{ $unitName }}</h5>
+            </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered mb-0">
-                            <thead style="background-color: #f8f9fa;">
-                                <tr>
-                                    <th class="body-2 text-center">القطعة</th>
-                                    <!--<th class="body-2 text-center">السعر</th>-->
-                                    <th class="body-2 text-center">المقاس</th>
-                                    <th class="body-2 text-center">الخامة</th>
-                                    <th class="body-2 text-center">اللون</th>
-                                    <th class="body-2 text-center">الصورة</th>
-                                    <th class="body-2 text-center">الكمية</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">{{ $unitItem->item->item_name_ar ?? '-' }}</td>
-                                    <!--<td class="text-center">{{ number_format($unitItem->price ?? 0, 0) }} ريال</td>-->
-                                    <td class="text-center">{{ $unitItem->item->dimensions ?? '-' }}</td>
-                                    <td class="text-center">{{ $unitItem->item->material_ar ?? '-' }}</td>
-                                    <td class="text-center">
-                                        <span class="badge"
-                                              style="background-color: {{ $unitItem->item->background_color ?? '#262626' }}; color: white;">
-                                            {{ $unitItem->item->color_ar ?? 'غير محدد' }}
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        @if($unitItem->item->image_path)
-                                            <img src="{{ asset('storage/' . $unitItem->item->image_path) }}"
-                                                 alt="{{ $unitItem->item->name }}"
-                                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
-                                        @else
-                                            <i class="fas fa-image fa-2x text-muted"></i>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">{{ $unitItem->quantity ?? 1 }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-
-
-        @if(!$loop->last)
-            <hr class="my-4" />
-        @endif
+            <!-- جدول القطع التابعة للوحدة -->
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead style="background-color: #f8f9fa;">
+                        <tr>
+                            <th class="body-2 text-center">القطعة</th>
+                            <th class="body-2 text-center">المقاس</th>
+                            <th class="body-2 text-center">الخامة</th>
+                            <th class="body-2 text-center">اللون</th>
+                            <th class="body-2 text-center">الصورة</th>
+                            <th class="body-2 text-center">الكمية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($unitItems as $unitItem)
+                        <tr>
+                            <td class="text-center">{{ $unitItem->item->item_name_ar ?? '-' }}</td>
+                            <td class="text-center">{{ $unitItem->item->dimensions ?? '-' }}</td>
+                            <td class="text-center">{{ $unitItem->item->material_ar ?? '-' }}</td>
+                            <td class="text-center">
+                                <span class="badge" style="background-color: {{ $unitItem->item->background_color ?? '#262626' }}; color: white;">
+                                    {{ $unitItem->item->color_ar ?? 'غير محدد' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                @if($unitItem->item->image_path)
+                                    <img src="{{ asset('storage/' . $unitItem->item->image_path) }}"
+                                         alt="{{ $unitItem->item->name }}"
+                                         style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                @else
+                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                @endif
+                            </td>
+                            <td class="text-center">{{ $unitItem->quantity ?? 1 }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     @endforeach
+
     </div>
 </div>
 @endif

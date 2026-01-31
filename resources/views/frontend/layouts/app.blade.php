@@ -204,6 +204,12 @@ border: none !important;
         min-width: 300px;
         max-width: 90vw;
     }
+    .mobile-cart-icon {
+        display: block !important;
+    }
+    .header-actions {
+        display: none !important;
+    }
 }
         </style>
   @stack('styles')
@@ -331,8 +337,20 @@ border: none !important;
         </a>
     </div>
       <!-- Mobile Menu -->
-      <div class="mobile-menu-toggle" id="mobileMenuToggle">
-        <i class="fa-solid fa-bars text-white" style="font-size: 20px;"></i>
+      <div class="mobile-menu-toggle-container" style="display: flex; gap: 15px; align-items: center;">
+        <!-- Cart Icon for Mobile -->
+        <div class="position-relative cart-container mobile-cart-icon" style="display: none;">
+          <a href="/cart" class="cart-link">
+            <i class="fas fa-shopping-cart" style="font-size: 20px; color: #fff;"></i>
+            <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
+              0
+            </span>
+          </a>
+        </div>
+        <!-- Menu Icon -->
+        <div class="mobile-menu-toggle" id="mobileMenuToggle">
+          <i class="fa-solid fa-bars text-white" style="font-size: 20px;"></i>
+        </div>
       </div>
     </div>
   </header>

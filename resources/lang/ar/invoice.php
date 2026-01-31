@@ -33,4 +33,7 @@ return [
     'return_policy' => 'سياسة الإرجاع',
     'return_policy_text' => 'لا يمكن إرجاع المنتجات بعد التنفيذ إلا في حال وجود عيوب واضحة في التصنيع',
     'thank_you' => 'شكراً لاختياركم SOFA. لمتابعة طلبك أو التواصل معنا: info@sofa4.com | www.sofa4.com',
+
+    'cost' => 'السعر',
+    'description' => 'الوصف'
 ];

@@ -143,10 +143,8 @@
                                 {{ $quoteItem->item ? $quoteItem->item->item_name_ar : $quoteItem->item_name }}
                             </td>
 
-                            <td
-                                data-ar="{{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}"
-                                data-en="{{ $quoteItem->item ? ($quoteItem->item->description_en ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}">
-                                {{ $quoteItem->item ? ($quoteItem->item->description_ar ?? $quoteItem->item->description ?? '-') : ($quoteItem->description ?? '-') }}
+                            <td>
+                               {{ $quoteItem->description ?? '-' }}
                             </td>
 
 

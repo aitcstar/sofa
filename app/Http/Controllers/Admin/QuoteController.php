@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\Lead;
+use App\Models\Item;
 use App\Models\User;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -158,6 +159,17 @@ class QuoteController extends Controller
                     'unit_price' => $itemData['unit_price'],
                     'sort_order' => $index
                 ]);
+
+                // تحديث جدول items لو موجود وربطه بالقيم الجديدة
+                Item::updateOrCreate(
+                    ['id' => $itemData['item_id'] ?? null], // لو عايز تعمل تحديث للعنصر لو موجود
+                    [
+                        'name' => $itemData['item_name'],
+                        'description' => $quoteItem->description, // من quote_items
+                        'default_price' => $quoteItem->unit_price, // من quote_items
+                    ]
+                );
+
             }
 
             // حساب الإجماليات

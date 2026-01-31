@@ -184,7 +184,7 @@
             <p><strong>السجل التجاري:</strong> {{ $invoice->order->commercial_register }}</p>
             @endif
             @endif
-            <p><strong>حالة الفاتورة:</strong> 
+            <p><strong>حالة الفاتورة:</strong>
                 <span class="status-badge status-{{ $invoice->status }}">
                     @if($invoice->status === 'paid')
                         مدفوعة

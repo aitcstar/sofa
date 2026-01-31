@@ -33,4 +33,6 @@ return [
     'return_policy' => 'Return Policy',
     'return_policy_text' => 'Products cannot be returned after production unless there are clear manufacturing defects.',
     'thank_you' => 'Thank you for choosing SOFA. To follow up on your order or contact us: info@sofa4.com | www.sofa4.com',
+    'cost' => 'cost',
+    'description' => 'description'
 ];

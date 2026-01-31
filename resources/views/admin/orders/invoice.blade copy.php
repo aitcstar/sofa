@@ -143,91 +143,80 @@
         </div>
 
         <!-- ===== Package Details (Grouped by Unit) ===== -->
-        @php
-        $isQuote = $invoice->quote_id && $invoice->quote && $invoice->quote->quoteItems->isNotEmpty();
+        @if($invoice->package && $invoice->package->packageUnitItems->isNotEmpty())
+        <div class="studio-package-details mb-4">
+            <h4 class="sub-heading-3 mb-3">{{ __('invoice.components') }}</h4>
 
-        if($isQuote){
-            $invoiceItems = $invoice->quote->quoteItems;
-            $groupedItems = $invoiceItems->groupBy(function($item) use ($lang) {
-                return $lang === 'ar' ? (optional($item->unit)->name_ar ?? 'غير محدد') : (optional($item->unit)->name_en ?? 'Not Specified');
-            });
-        } elseif($invoice->package && $invoice->package->packageUnitItems->isNotEmpty()) {
-            $invoiceItems = $invoice->package->packageUnitItems;
-            $groupedItems = $invoiceItems->groupBy(function($item) use ($lang) {
-                return $lang === 'ar' ? (optional($item->unit)->name_ar ?? 'غير محدد') : (optional($item->unit)->name_en ?? 'Not Specified');
-            });
-        } else {
-            $groupedItems = collect();
-        }
-    @endphp
+            @php
+                // تجميع العناصر حسب اسم الوحدة
+                $grouped = $invoice->package->packageUnitItems->groupBy(function($item) use ($lang) {
+                    return $lang === 'ar' ? ($item->unit->name_ar ?? 'غير محدد') : ($item->unit->name_en ?? 'Not Specified');
+                });
+            @endphp
 
-    @if($groupedItems->isNotEmpty())
-    <div class="studio-package-details mb-4">
-        <h4 class="sub-heading-3 mb-3">{{ __('invoice.components') }}</h4>
+            @foreach($grouped as $unitName => $items)
+                <div class="mb-4">
+                    <!-- اسم الوحدة -->
+                    <div class="p-2 text-center text-white" style="background-color: var(--primary);">
+                        <h5 class="mb-0">{{ $unitName }}</h5>
+                    </div>
 
-        @foreach($groupedItems as $unitName => $items)
-            <div class="mb-4">
-                <div class="p-2 text-center text-white" style="background-color: var(--primary);">
-                    <h5 class="mb-0">{{ $unitName }}</h5>
+                    <!-- جدول القطع التابعة لهذه الوحدة -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <thead style="background-color: #f8f9fa;">
+                                <tr>
+                                    <th class="body-2 text-center">{{ __('invoice.item') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.dimensions') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.material') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.color') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.image') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.quantity') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.cost') }}</th>
+                                    <th class="body-2 text-center">{{ __('invoice.description') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($items as $item)
+                                <tr>
+                                    <td class="text-center">
+                                        {{ $lang === 'ar' ? ($item->item->item_name_ar ?? '-') : ($item->item->item_name_en ?? '-') }}
+                                    </td>
+                                    <td class="text-center">{{ $item->item->dimensions ?? '-' }}</td>
+                                    <td class="text-center">
+                                        {{ $lang === 'ar' ? ($item->item->material_ar ?? '-') : ($item->item->material_en ?? '-') }}
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background-color: {{ $item->item->background_color ?? '#262626' }}; color: white;">
+                                            {{ $lang === 'ar' ? ($item->item->color_ar ?? __('invoice.not_specified')) : ($item->item->color_en ?? __('invoice.not_specified')) }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if($item->item->image_path)
+                                            <img src="{{ asset('storage/' . $item->item->image_path) }}"
+                                                 alt="{{ $lang === 'ar' ? $item->item->item_name_ar : $item->item->item_name_en }}"
+                                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                                        @else
+                                            <i class="fas fa-image fa-2x text-muted"></i>
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ number_format($item->unit_price, 2) }}</td>
+                                    <td>{{ $item->description }}</td>
+
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered mb-0">
-                        <thead style="background-color: #f8f9fa;">
-                            <tr>
-                                <th>{{ __('invoice.item') }}</th>
-                                <th>{{ __('invoice.dimensions') }}</th>
-                                <th>{{ __('invoice.material') }}</th>
-                                <th>{{ __('invoice.color') }}</th>
-                                <th>{{ __('invoice.image') }}</th>
-                                <th>{{ __('invoice.quantity') }}</th>
-                                @if($isQuote)
-                                    <th>{{ __('invoice.cost') }}</th>
-                                    <th>{{ __('invoice.description') }}</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($items as $item)
-                            <tr>
-                                <td>{{ $lang === 'ar' ? (optional($item->item)->item_name_ar ?? '-') : (optional($item->item)->item_name_en ?? '-') }}</td>
-                                <td>{{ optional($item->item)->dimensions ?? '-' }}</td>
-                                <td>{{ $lang === 'ar' ? (optional($item->item)->material_ar ?? '-') : (optional($item->item)->material_en ?? '-') }}</td>
-                                <td>
-                                    <span class="badge" style="background-color: {{ optional($item->item)->background_color ?? '#262626' }}; color: white;">
-                                        {{ $lang === 'ar' ? (optional($item->item)->color_ar ?? __('invoice.not_specified')) : (optional($item->item)->color_en ?? __('invoice.not_specified')) }}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    @if(optional($item->item)->image_path)
-                                        <img src="{{ asset('storage/' . $item->item->image_path) }}"
-                                             alt="{{ $lang === 'ar' ? optional($item->item)->item_name_ar : optional($item->item)->item_name_en }}"
-                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
-                                    @else
-                                        <i class="fas fa-image fa-2x text-muted"></i>
-                                    @endif
-                                </td>
-                                <td>{{ $item->quantity ?? ($item->pivot->quantity ?? 1) }}</td>
-
-                                @if($isQuote)
-                                    <td>{{ number_format($item->unit_price ?? $item->price ?? 0, 2) }}</td>
-                                    <td>{{ $item->description ?? ($item->pivot->description ?? '-') }}</td>
-                                @endif
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            @if(!$loop->last)
-                <hr class="my-4" />
-            @endif
-        @endforeach
-    </div>
-    @endif
-
-
+                @if(!$loop->last)
+                    <hr class="my-4" />
+                @endif
+            @endforeach
+        </div>
+        @endif
 
         <!-- ===== Total Summary ===== -->
         <div class="total-summary border rounded mb-4">

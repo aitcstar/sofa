@@ -11,48 +11,43 @@
   <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.svg') }}">
 
 
-    @foreach(\App\Models\HeaderScript::all() as $script)
-        {!! $script->script !!}
-    @endforeach
 
+  @foreach(\App\Models\HeaderScript::all() as $script)
+  {!! $script->script !!}
+@endforeach
 
-  @if (View::hasSection('meta'))
-  @yield('meta')
+{{-- ✅ منطقة مخصصة للـ Meta Tags --}}
+@if (View::hasSection('meta'))
+    @yield('meta')
 @else
 {{-- Title --}}
 <title>
-  @if(  app()->getLocale() === 'ar')
-      {{ $seo->meta_title_ar ?? 'العنوان الافتراضي' }}
+    @if(  app()->getLocale() === 'ar')
+        {{ $seo->meta_title_ar ?? 'العنوان الافتراضي' }}
+    @else
+        {{ $seo->meta_title_en ?? 'Default Title' }}
+    @endif
+  </title>
+  {{-- Description --}}
+  <meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
+  {{-- Canonical URL --}}
+  <link rel="canonical" href="{{  url()->current() }}">
+ {{-- Index/NoIndex --}}
+  @if($seo && $seo->index_status === 'noindex')
+    <meta name="robots" content="noindex, follow">
   @else
-      {{ $seo->meta_title_en ?? 'Default Title' }}
+    <meta name="robots" content="index, follow">
   @endif
-</title>
-{{-- Description --}}
-<meta name="description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? 'الوصف الافتراضي') : ($seo->meta_description_en ?? 'Default description') }}">
-{{-- Canonical URL --}}
-<link rel="canonical" href="{{  url()->current() }}">
-{{-- Index/NoIndex --}}
-@if($seo && $seo->index_status === 'noindex')
-  <meta name="robots" content="noindex, follow">
-@else
-  <meta name="robots" content="index, follow">
-@endif
-{{-- hreflang (علشان SEO متعدد اللغات) --}}
-<link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
+  {{-- hreflang (علشان SEO متعدد اللغات) --}}
+  <link rel="alternate" href="{{ url()->current() }}" hreflang="{{ app()->getLocale() === 'ar' ? 'ar' : 'en' }}" />
 {{-- OpenGraph --}}
 <meta property="og:title" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_title_ar ?? '') : ($seo->meta_title_en ?? '') }}">
 <meta property="og:description" content="{{  app()->getLocale() === 'ar' ? ($seo->meta_description_ar ?? '') : ($seo->meta_description_en ?? '') }}">
 <meta property="og:url" content="{{  url()->current() }}{{ $seo->slug_en }}">
-@endif
-
-<!-- ===== EXTERNAL LIBRARIES ===== -->
-<!-- Bootstrap CSS -->
-@if(  app()->getLocale() === 'ar')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" />
-  @else
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   @endif
-
+  <!-- ===== EXTERNAL LIBRARIES ===== -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Owl Carousel CSS -->
@@ -61,8 +56,8 @@
   <!-- ===== CUSTOM CSS ===== -->
   @php $version = time(); @endphp
 
-<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v={{ $version }}">
-<link rel="stylesheet" href="{{ asset('assets/css/pages/homepage' . (app()->getLocale() === 'ar' ? '' : '_en') . '.css') }}?v={{ $version }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}?v={{ $version }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/pages/categories.css') }}" />
 
   <link rel="stylesheet" href="{{ asset('assets/css/utilities/translations.css') }}?v={{ $version }}" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.0/css/flag-icons.min.css" />
@@ -77,133 +72,20 @@
     color: var(--bs-btn-hover-color);
     background-color: #6c757d2e;
     border-color: #6c757d82;
+
 }
 .dropdown-toggle {
 border: none !important;
 }
 
+.dropdown-menu {
+min-width: 245px;
+text-align: left;
+}
 .color-swatch {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-}
-.dropdown-menu {
-
-    min-width: 245px;
-}
-
-
-
-/* Cart Styles */
-.cart-container {
-    position: relative;
-}
-
-.cart-link {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.cart-badge {
-    font-size: 10px;
-    padding: 2px 6px;
-    min-width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cart-dropdown {
-    position: absolute;
-    top: 100%;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 350px;
-    max-width: 400px;
-    z-index: 1000;
-    margin-top: 10px;
-    display: none;
-}
-
-.cart-dropdown.show {
-    display: block;
-}
-
-/* RTL Support */
-[dir="rtl"] .cart-dropdown {
-    right: 0;
-    left: auto;
-}
-
-[dir="ltr"] .cart-dropdown {
-    left: 0;
-    right: auto;
-}
-
-.cart-dropdown-content {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.cart-items {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.cart-item {
-    transition: background-color 0.2s;
-}
-
-.cart-item:hover {
-    background-color: #f8f9fa;
-}
-
-.cart-total {
-    background-color: #f8f9fa;
-}
-
-/* Notification Styles */
-.cart-notification .alert {
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* RTL Animation */
-[dir="rtl"] .cart-notification .alert {
-    animation: slideInRTL 0.3s ease-out;
-}
-
-@keyframes slideInRTL {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .cart-dropdown {
-        min-width: 300px;
-        max-width: 90vw;
-    }
 }
         </style>
   @stack('styles')
@@ -211,131 +93,129 @@ border: none !important;
 <body>
     @php
     $minUnits = \App\Models\Setting::first()?->min_units ?? 1;
-@endphp
-  <!-- ===== HEADER SECTION ===== -->
-  <header class="header container">
-    <div class="header-container">
-      <!-- Logo -->
-      <div class="header-logo">
-        <img src="{{ asset('assets/images/logos/logo-white.svg') }}" alt="SOFA Experience" />
-      </div>
-      <!-- Navigation -->
-      <nav class="header-nav">
-        <ul class="header-nav-list">
-            <li class="header-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="header-nav-link">{{ __('site.home') }}</a>
-            </li>
-            <li class="header-nav-item {{ request()->routeIs('packages.*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="header-nav-link">{{ __('site.categories') }}</a>
-            </li>
-            <li class="header-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="header-nav-link">{{ __('site.about_us') }}</a>
-            </li>
-            <li class="header-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
-            </li>
-            <li class="header-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('blog.index') : route('blog.index.en') }}" class="header-nav-link">{{ __('site.blog') }}</a>
-            </li>
-            <li class="header-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
-                <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="header-nav-link">{{ __('site.contact') }}</a>
-            </li>
-        </ul>
-    </nav>
-      <!-- Actions -->
-      <div class="header-actions">
-        <!-- Auth -->
-        @auth
-          <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User" class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
-                <span class="selected-code" style="color: white">{{auth()->user()->name}}</span>
-              </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('profile.index') : route('profile.index.en') }}">
-                    <img src="{{ asset('assets/images/icons/user.svg') }}" />
-                    {{ __('site.my_account') }}
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('order.my') : route('order.my.en') }}">
-                    <img src="{{ asset('assets/images/icons/Profile_IconAcount.png') }}" />
-                    {{ __('site.my_orders') }}
-                </a>
-            </li>
-              @if(auth()->user()->isAdmin())
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('admin.dashboard') : route('admin.dashboard.en') }}">{{ __('site.dashboard') }}</a></li>
-              @endif
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <form method="POST" action="{{ route('logout') }}">
-                  @csrf
-                  <a class="dropdown-item" href="#" onclick="event.preventDefault(); this.closest('form').submit();" style="color: #d4342b">
-                    <img src="{{ asset('assets/images/icons/logout.svg') }}" />
-                    {{ __('site.logout') }}
-                  </a>
-                </form>
-              </li>
-            </ul>
+  @endphp
+    <!-- ===== HEADER SECTION ===== -->
+    <header class="header container">
+        <div class="header-container">
+          <!-- Logo -->
+          <div class="header-logo">
+            <img src="{{ asset('assets/images/logos/logo.svg') }}" alt="SOFA Experience" />
           </div>
-
-        @else
-          <img src="{{ asset('assets/images/icons/user-white.svg') }}" alt="User" data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
-        @endauth
-
-        <div class="position-relative cart-container">
-            <a href="#" class="cart-link">
-                <i class="fas fa-shopping-cart" style="font-size: 20px;color:#fff"></i>
-                <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
-                    0
-                </span>
-            </a>
-            <!-- Cart Dropdown -->
-            <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
-                <div class="cart-dropdown-content">
-                    <p class="text-center p-3">{{ __('site.cart_empty') }}</p>
+          <!-- Navigation -->
+          <nav class="header-nav">
+            <ul class="header-nav-list">
+                <li class="header-nav-item {{ request()->routeIs('home*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('home') : route('home.en') }}" class="header-nav-link">{{ __('site.home') }}</a>
+                </li>
+                <li class="header-nav-item {{ request()->routeIs('packages.*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="header-nav-link">{{ __('site.categories') }}</a>
+                </li>
+                <li class="header-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="header-nav-link">{{ __('site.about_us') }}</a>
+                </li>
+                <li class="header-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="header-nav-link">{{ __('site.mgallery') }}</a>
+                </li>
+                <li class="header-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('blog.index') : route('blog.index.en') }}" class="header-nav-link">{{ __('site.blog') }}</a>
+                </li>
+                <li class="header-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+                    <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="header-nav-link">{{ __('site.contact') }}</a>
+                </li>
+            </ul>
+        </nav>
+           <!-- Actions -->
+            <div class="header-actions">
+                <!-- Auth -->
+                @auth
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="countryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset('assets/images/icons/user.svg') }}" alt="User" class="dropdown-toggle" data-bs-toggle="dropdown" style="cursor: pointer;" />
+                        <span class="selected-code" style="color:black">{{auth()->user()->name}}</span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('profile.index') : route('profile.index.en') }}">
+                              <img src="{{ asset('assets/images/icons/user.svg') }}" />
+                              {{ __('site.my_account') }}
+                          </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('order.my') : route('order.my.en') }}">
+                            <img src="{{ asset('assets/images/icons/Profile_IconAcount.png') }}" />
+                              {{ __('site.my_orders') }}
+                          </a>
+                      </li>
+                        @if(auth()->user()->isAdmin())
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{ app()->getLocale() == 'ar' ? route('admin.dashboard') : route('admin.dashboard.en') }}">{{ __('site.dashboard') }}</a></li>
+                        @endif
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); this.closest('form').submit();" style="color: #d4342b">
+                              <img src="{{ asset('assets/images/icons/logout.svg') }}" />
+                              {{ __('site.logout') }}
+                            </a>
+                          </form>
+                        </li>
+                      </ul>
                 </div>
+                @else
+                <img src="{{ asset('assets/images/icons/user.svg') }}" alt="User"
+                    data-bs-toggle="modal" data-bs-target="#authModal" style="cursor: pointer;" />
+                @endauth
+                <div class="position-relative cart-container">
+                    <a href="#" class="cart-link">
+                        <i class="fas fa-shopping-cart" style="font-size: 20px"></i>
+                        <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
+                            0
+                        </span>
+                    </a>
+                    <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
+                        <div class="cart-dropdown-content">
+                            <p class="text-center p-3">السلة فارغة</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Language Dropdown -->
+                <div class="dropdown language-dropdown">
+                    <!-- Button -->
+                    <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
+                    id="languageDropdown" aria-expanded="false">
+                    <img src="{{ asset('assets/images/icons/translation.svg') }}" alt="Globe" />
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
+                        <li class="language-option" data-language="ar" onclick="changeLanguage('ar')">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇸🇦
+                                <span class="body-2 text-body">العربية</span>
+                            </div>
+                            <input  onclick="changeLanguage('ar')" type="radio" name="language" id="arabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
+                        </li>
+                        <li class="hr"></li>
+                        <li class="language-option" data-language="en" onclick="changeLanguage('en')">
+                            <div class="d-flex gap-sm-5 align-items-center">
+                                🇺🇲
+                                <span class="body-2 text-body">English</span>
+                            </div>
+                            <input onclick="changeLanguage('en')" type="radio" name="language" id="englishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
+                        </li>
+                    </ul>
+                </div>
+                <!-- Help -->
+                <a class="btn btn-custom-primary" href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}">
+                    {{ __('site.help') }}
+                  </a>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fa-solid fa-bars text-white" style="font-size: 20px;color:#444f5a !important;"></i>
             </div>
         </div>
-        <!-- Language Dropdown -->
-        <div class="dropdown language-dropdown">
-            <!-- Button -->
-            <button class="bg-transparent border-0 dropdown-toggle language-dropdown-btn" type="button"
-              id="languageDropdown" aria-expanded="false">
-              <img src="{{ asset('assets/images/icons/globle-white.svg') }}" alt="Globe" />
-            </button>
-            <!-- Dropdown Menu -->
-            <ul class="dropdown-menu language-dropdown-menu" aria-labelledby="languageDropdown">
-                <li class="language-option" data-language="ar" onclick="changeLanguage('ar')">
-                    <div class="d-flex gap-sm-5 align-items-center">
-                        🇸🇦
-                        <span class="body-2 text-body">العربية</span>
-                    </div>
-                    <input  onclick="changeLanguage('ar')" type="radio" name="language" id="arabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
-                </li>
-                <li class="hr"></li>
-                <li class="language-option" data-language="en" onclick="changeLanguage('en')">
-                    <div class="d-flex gap-sm-5 align-items-center">
-                        🇺🇲
-                        <span class="body-2 text-body">English</span>
-                    </div>
-                    <input onclick="changeLanguage('en')" type="radio" name="language" id="englishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
-                </li>
-            </ul>
-          </div>
-        <!-- Help -->
-        <a class="btn border-btn" href="{{ app()->getLocale() == 'ar' ? route('help.index') : route('help.index.en') }}" style="min-width: 132px;">
-          {{ __('site.help') }}
-        </a>
-    </div>
-      <!-- Mobile Menu -->
-      <div class="mobile-menu-toggle" id="mobileMenuToggle">
-        <i class="fa-solid fa-bars text-white" style="font-size: 20px;"></i>
-      </div>
-    </div>
-  </header>
+      </header>
   <!-- NAV MOBILE OVERLAY -->
   <div class="nav-mobile-overlay" id="navMobileOverlay"></div>
   <!-- NAV MOBILE DRAWER -->
@@ -343,7 +223,7 @@ border: none !important;
     <!-- Close Button -->
     <div class="nav-mobile-header" id="navMobileClose">
       <i class="fas fa-times" style="font-size: 18px;"></i>
-      <p class="body-1 text-subheading mb-0"> {{ __('site.close') }}</p>
+      <p class="body-1 text-subheading mb-0">{{ __('site.close') }}</p>
     </div>
     <!-- Content -->
     <div class="nav-mobile-content">
@@ -357,55 +237,52 @@ border: none !important;
             <a href="{{ app()->getLocale() == 'ar' ? route('packages.index') : route('packages.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.categories') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('about*') ? 'active' : '' }}">
-            <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }} </a>
+            <a href="{{ app()->getLocale() == 'ar' ? route('about') : route('about.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.about_us') }}</a>
           </li>
           <li class="nav-mobile-nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
             <a href="{{ app()->getLocale() == 'ar' ? route('gallery.index') : route('gallery.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.mgallery') }}</a>
           </li>
-          <li class="nav-mobile-nav-item  {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+          <li class="nav-mobile-nav-item {{ request()->routeIs('blog.*') ? 'active' : '' }}">
             <a href="{{ app()->getLocale() == 'ar' ? route('blog.index') : route('blog.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.blog') }}</a>
           </li>
-          <li class="nav-mobile-nav-item  {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+          <li class="nav-mobile-nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
             <a href="{{ app()->getLocale() == 'ar' ? route('contact.index') : route('contact.index.en') }}" class="nav-mobile-nav-link body-1">{{ __('site.contact') }}</a>
           </li>
         </ul>
       </div>
       <div class="nav-mobile-hr"></div>
+      <div class="position-relative cart-container">
+        <a href="/cart" class="cart-link">
+            <i class="fas fa-shopping-cart" ></i>{{ app()->getLocale() == 'ar' ? 'السلة' : 'cart' }}
 
-        <div class="position-relative cart-container">
-            <a href="/cart" class="cart-link">
-                <i class="fas fa-shopping-cart" ></i>{{ app()->getLocale() == 'ar' ? 'السلة' : 'cart' }}
-
-                <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
-                    0
-                </span>
-            </a>
-            <!-- Cart Dropdown -->
-            <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
-                <div class="cart-dropdown-content">
-                    <p class="text-center p-3">{{ __('site.cart_empty') }}</p>
-                </div>
+            <span class="cart-badge position-absolute translate-middle badge rounded-pill bg-secondary" style="top: 0; left: {{ app()->getLocale() == 'ar' ? '0' : 'auto' }}; right: {{ app()->getLocale() == 'ar' ? 'auto' : '0' }}; display: none;">
+                0
+            </span>
+        </a>
+        <!-- Cart Dropdown -->
+        <div class="cart-dropdown" style="display: none; position: absolute; top: 100%; {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px; max-width: 400px; z-index: 1000; margin-top: 10px;">
+            <div class="cart-dropdown-content">
+                <p class="text-center p-3">{{ __('site.cart_empty') }}</p>
             </div>
         </div>
-
-
-        <div class="nav-mobile-hr"></div>
+    </div>
+    <div class="nav-mobile-hr"></div>
       <!-- Language Selection -->
       <div class="nav-mobile-language">
         <div class="nav-mobile-language-option" data-language="ar" onclick="changeLanguage('ar')">
-          <div class="d-flex align-items-center gap-sm-5">
-            🇸🇦
-            <p class="body-2 mb-0">العربية</p>
+            <div class="d-flex align-items-center gap-sm-5">
+              🇸🇦
+              <p class="body-2 mb-0">العربية</p>
+            </div>
+            <input type="radio" name="mobile-language" id="mobileArabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
           </div>
-          <input type="radio" name="mobile-language" id="mobileArabicRadio" {{ app()->getLocale() == 'ar' ? 'checked' : '' }} />
-        </div>
-        <div class="nav-mobile-language-option" data-language="en" onclick="changeLanguage('en')" >
-          <div class="d-flex align-items-center gap-sm-5">
-            🇺🇲
-            <p class="body-2 mb-0">English</p>
+          <div class="nav-mobile-language-option" data-language="en" onclick="changeLanguage('en')" >
+            <div class="d-flex align-items-center gap-sm-5">
+              🇺🇲
+              <p class="body-2 mb-0">English</p>
+            </div>
+            <input type="radio" name="mobile-language" id="mobileEnglishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
           </div>
-          <input type="radio" name="mobile-language" id="mobileEnglishRadio" {{ app()->getLocale() == 'en' ? 'checked' : '' }} />
-        </div>
       </div>
       <div class="nav-mobile-hr"></div>
       <!-- Actions Buttons -->
@@ -543,6 +420,7 @@ border: none !important;
     </div>
 </footer>
   <!-- Auth Modal -->
+  <!-- Auth Modal -->
   @guest
   <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered auth-modal-dialog">
@@ -568,37 +446,28 @@ border: none !important;
           </ul>
           <!-- Body -->
           <div class="tab-content mt-4" id="myTabContent">
-            <!-- Sign In -->
-           <!-- Sign In -->
-           <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
-            <!-- Nested Tabs for Phone / Email -->
-            <ul class="nav nav-tabs mb-3" id="loginNestedTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="login-phone-tab" data-bs-toggle="tab"
-                        data-bs-target="#login-phone" type="button" role="tab" aria-controls="login-phone"
-                        aria-selected="true">@lang('site.phone')</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="login-email-tab" data-bs-toggle="tab"
-                        data-bs-target="#login-email" type="button" role="tab" aria-controls="login-email"
-                        aria-selected="false">@lang('site.email')</button>
-                </li>
-            </ul>
+            <!-- Sign In
+            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
+                <form action="{{ route('login.check') }}" method="POST">
+                    @csrf
 
-            <div class="tab-content " id="loginNestedTabContent">
-                <!-- Login by Phone -->
-                <div class="tab-pane fade  form-group show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
-                    <form action="{{ route('login.checkPhone') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label class="form-label mb-0">@lang('site.phone_number')</label>
-                            <div class="input-phone position-relative">
-                                <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
-                                    <span class="flag fi fi-sa selected-flag-login"></span>
-                                    <span class="code selected-code-login">+966</span>
-                                </div>
-                                <ul class="dropdown-menu">
-                                    @foreach($countries as $country)
+                    <div class="form-group">
+                        <label class="form-label mb-0">@lang('site.phone_number')</label>
+                        <div class="input-phone position-relative">
+                            <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
+                                <span class="flag fi fi-sa selected-flag-login"></span>
+                                <span class="code selected-code-login">+966</span>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="input-with-icon" style="min-height: 45px;">
+                                      <input type="text" class="form-control" placeholder=" @lang('site.search_here')" />
+                                      <i class="input-icon">
+                                        <img src="{{asset('assets/images/icons/search-normal.png')}}" alt="@lang('site.search')">
+                                      </i>
+                                    </div>
+                                  </li>
+                                @foreach($countries as $country)
                                     <li>
                                         <a class="dropdown-item country-item-login d-flex justify-content-between align-items-center" href="#"
                                         data-flag="{{ $country['code'] }}" data-code="{{ $country['dial_code'] }}">
@@ -609,37 +478,92 @@ border: none !important;
                                             <span>{{ $country['dial_code'] }}</span>
                                         </a>
                                     </li>
-                                    @endforeach
-                                </ul>
-                                <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
-                                <input type="tel" name="phone" value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
-                            </div>
-                            @error('phone')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
-                    </form>
-                </div>
+                                @endforeach
+                            </ul>
+                            <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
+                            <input type="tel" name="phone"  value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
 
-                <!-- Login by Email -->
-                <div class="tab-pane form-group fade " id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
-                    <form action="{{ route('login.checkEmail') }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label class="form-label mb-0">@lang('site.email')</label>
-                            <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="@lang('site.email')" required />
-                            @error('email')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
                         </div>
-                        <br>
-                        <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
-                    </form>
+                        @error('phone')
+                        <div class="text-danger mt-1">{{ $message }}</div>
+                    @enderror
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                </form>
+            </div>-->
+
+            <div class="tab-pane fade show active d-flex flex-column gap-sm-3" id="login" role="tabpanel" aria-labelledby="home-tab">
+
+                <!-- Nested Tabs for Phone / Email -->
+                <ul class="nav nav-tabs mb-3" id="loginNestedTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="login-phone-tab" data-bs-toggle="tab"
+                            data-bs-target="#login-phone" type="button" role="tab" aria-controls="login-phone"
+                            aria-selected="true">@lang('site.phone')</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="login-email-tab" data-bs-toggle="tab"
+                            data-bs-target="#login-email" type="button" role="tab" aria-controls="login-email"
+                            aria-selected="false">@lang('site.email')</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="loginNestedTabContent">
+                    <!-- Login by Phone -->
+                    <div class="tab-pane fade form-group show active" id="login-phone" role="tabpanel" aria-labelledby="login-phone-tab">
+                        <form action="{{ route('login.checkPhone') }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label class="form-label mb-0">@lang('site.phone_number')</label>
+                                <div class="input-phone position-relative">
+                                    <div class="country-select dropdown-toggle" data-bs-toggle="dropdown">
+                                        <span class="flag fi fi-sa selected-flag-login"></span>
+                                        <span class="code selected-code-login">+966</span>
+                                    </div>
+                                    <ul class="dropdown-menu">
+                                        @foreach($countries as $country)
+                                        <li>
+                                            <a class="dropdown-item country-item-login d-flex justify-content-between align-items-center" href="#"
+                                            data-flag="{{ $country['code'] }}" data-code="{{ $country['dial_code'] }}">
+                                                <span class="d-flex align-items-center gap-sm-3">
+                                                    <span class="flag fi fi-{{ $country['code'] }}"></span>
+                                                    <span>{{ app()->getLocale() == 'ar' ? $country['name_ar'] : $country['name_en'] }}</span>
+                                                </span>
+                                                <span>{{ $country['dial_code'] }}</span>
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    <input type="hidden" name="code" class="country_code_login" value="{{ old('country_code', '+966') }}" />
+                                    <input type="tel" name="phone" value="{{ old('phone') }}" class="phone-number form-control mt-2" placeholder="@lang('site.example_number')" required />
+                                </div>
+                                @error('phone')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                        </form>
+                    </div>
+
+                    <!-- Login by Email -->
+                    <div class="tab-pane form-group fade" id="login-email" role="tabpanel" aria-labelledby="login-email-tab">
+                        <form action="{{ route('login.checkEmail') }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label class="form-label mb-0">@lang('site.email')</label>
+                                <input type="email" name="email" value="{{ old('email') }}" class="form-control" placeholder="@lang('site.email')" required />
+                                @error('email')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-custom-primary w-100">@lang('site.continue')</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
             <!-- Register -->
@@ -735,7 +659,6 @@ border: none !important;
                 <input type="text" name="code[4]" maxlength="1" class="otp-input form-control text-center" inputmode="numeric" pattern="[0-9]*" />
             </div>
 
-
             @if(session('otp_error'))
             <div class="text-danger text-center mb-2">{{ session('otp_error') }}</div>
             @endif
@@ -746,38 +669,33 @@ border: none !important;
     </div>
     </div>
 
+    <a id="whatsapp-float" href="https://wa.me/{{ $siteSettings->whatsapp }}?text=السلام%20عليكم%2C%20أريد%20معلومات"
+        target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+         <!-- استخدم أي أيقونة تريد؛ هذا SVG -->
+         <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+           <path d="M20.52 3.48C18.12 1.08 14.65 0 11.17 0 5 0 .33 4.67 .33 10.83c0 1.9.5 3.76 1.45 5.39L0 24l7.95-2.07c1.53.42 3.12.64 4.72.64 6.17 0 10.84-4.67 10.84-10.83 0-3.48-1.08-6.95-3.0-9.14z" fill="#25D366"/>
+           <path d="M17.1 14.2c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.37.22-.68.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.49-.07-.15-.68-1.65-.93-2.27-.24-.6-.49-.52-.68-.53-.18-.01-.39-.01-.6-.01s-.49.07-.75.34c-.27.27-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.21 3.1.15.2 2.09 3.18 5.06 4.45 2.97 1.27 2.97.85 3.51.8.55-.05 1.77-.7 2.02-1.38.25-.68.25-1.26.18-1.38-.07-.12-.25-.2-.55-.35z" fill="#fff"/>
+         </svg>
+        </a>
 
-    <!-- ضع هذا قبل إغلاق </body> -->
-<a id="whatsapp-float" href="https://wa.me/{{ $siteSettings->whatsapp }}?text=السلام%20عليكم%2C%20أريد%20معلومات"
-target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
- <!-- استخدم أي أيقونة تريد؛ هذا SVG -->
- <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-   <path d="M20.52 3.48C18.12 1.08 14.65 0 11.17 0 5 0 .33 4.67 .33 10.83c0 1.9.5 3.76 1.45 5.39L0 24l7.95-2.07c1.53.42 3.12.64 4.72.64 6.17 0 10.84-4.67 10.84-10.83 0-3.48-1.08-6.95-3.0-9.14z" fill="#25D366"/>
-   <path d="M17.1 14.2c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15s-.78.97-.96 1.17c-.18.2-.37.22-.68.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.79-1.68-2.09-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.28.3-.47.1-.18.05-.34-.02-.49-.07-.15-.68-1.65-.93-2.27-.24-.6-.49-.52-.68-.53-.18-.01-.39-.01-.6-.01s-.49.07-.75.34c-.27.27-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.21 3.1.15.2 2.09 3.18 5.06 4.45 2.97 1.27 2.97.85 3.51.8.55-.05 1.77-.7 2.02-1.38.25-.68.25-1.26.18-1.38-.07-.12-.25-.2-.55-.35z" fill="#fff"/>
- </svg>
-</a>
-
-<style>
-#whatsapp-float{
- position: fixed;
- right: 20px;
- bottom: 20px;
- z-index: 9999;
- width: 56px;
- height: 56px;
- border-radius: 50%;
- display:flex;
- align-items:center;
- justify-content:center;
- box-shadow: 0 6px 18px rgba(0,0,0,0.15);
- background: linear-gradient(135deg,#25D366,#128C7E);
- text-decoration: none;
-}
-#whatsapp-float svg{ display:block; }
-</style>
-
-
-
+        <style>
+        #whatsapp-float{
+         position: fixed;
+         right: 20px;
+         bottom: 20px;
+         z-index: 9999;
+         width: 56px;
+         height: 56px;
+         border-radius: 50%;
+         display:flex;
+         align-items:center;
+         justify-content:center;
+         box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+         background: linear-gradient(135deg,#25D366,#128C7E);
+         text-decoration: none;
+        }
+        #whatsapp-float svg{ display:block; }
+        </style>
     @if(session('open_login_tab'))
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -824,6 +742,9 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
     </script>
      @endif
   @endguest
+
+
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -832,6 +753,7 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
     <script src="{{ asset('assets/js/language.js') }}"></script>
     <script src="{{ asset('assets/js/nav-bar.js') }}"></script>
   <!-- Custom Scripts -->
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -869,85 +791,77 @@ target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتس
     });
     </script>
 
-
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        // ===== Mobile Menu Toggle =====
-        const mobileToggle = document.getElementById('mobileMenuToggle');
-        const navOverlay = document.getElementById('navMobileOverlay');
-        const navDrawer = document.getElementById('navMobileDrawer');
-
-        if (mobileToggle && navOverlay && navDrawer) {
-            mobileToggle.addEventListener('click', function() {
-                navOverlay.classList.add('active');
-                navDrawer.classList.add('active');
-            });
-            document.getElementById('navMobileClose').addEventListener('click', function() {
-                navOverlay.classList.remove('active');
-                navDrawer.classList.remove('active');
-            });
-            navOverlay.addEventListener('click', function() {
-                navOverlay.classList.remove('active');
-                navDrawer.classList.remove('active');
-            });
-        }
-
-        // ===== Language Dropdown =====
-        document.querySelectorAll('.language-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const language = this.getAttribute('data-language');
-                console.log('Language changed to:', language);
-            });
-        });
-
-        // ===== Owl Carousel =====
+    // Mobile Menu Toggle
+    document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+      document.getElementById('navMobileOverlay').classList.add('active');
+      document.getElementById('navMobileDrawer').classList.add('active');
+    });
+    document.getElementById('navMobileClose').addEventListener('click', function() {
+      document.getElementById('navMobileOverlay').classList.remove('active');
+      document.getElementById('navMobileDrawer').classList.remove('active');
+    });
+    document.getElementById('navMobileOverlay').addEventListener('click', function() {
+      document.getElementById('navMobileOverlay').classList.remove('active');
+      document.getElementById('navMobileDrawer').classList.remove('active');
+    });
+    // Language Dropdown
+    document.querySelectorAll('.language-option').forEach(function(option) {
+      option.addEventListener('click', function() {
+        const language = this.getAttribute('data-language');
+        // Handle language change logic here
+        console.log('Language changed to:', language);
+      });
+    });
+    $(document).ready(function () {
         if ($("#testimonial-carousel-homepage").length > 0) {
             $("#testimonial-carousel-homepage").owlCarousel({
-                rtl: true,
-                loop: true,
-                margin: 0,
-                stagePadding: 0,
-                dots: true,
-                autoplay: true,
-                autoplayTimeout: 4000,
-                responsive: {
-                    0: { items: 1 },
-                    576: { items: 1 },
-                    768: { items: 2 },
-                    992: { items: 3 },
-                    1200: { items: 3 }
-                }
-            });
+  rtl: true,
+  loop: true,
+  margin: 0, // مهم جداً: شيل المارجن من هنا
+  stagePadding: 0,
+  dots: true,
+  autoplay: true,
+  autoplayTimeout: 4000,
+  responsive: {
+    0: { items: 1 },
+    576: { items: 1 },
+    768: { items: 2 },
+    992: { items: 3 },
+    1200: { items: 3 }
+  }
+});
+}
+});
+function changeLanguage(locale) {
+    let currentUrl = window.location.href.replace('/public', ''); // 👈 يشيل public
+
+    fetch("{{ route('setLocale') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+            locale: locale,
+            current_url: currentUrl
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            if (locale === 'ar') {
+                window.location.href = data.redirect.replace('/ar', '');
+            } else {
+                window.location.href = data.redirect;
+            }
         }
-
-        // ===== Change Language (AJAX) =====
-        window.changeLanguage = function(locale) {
-
-            let currentUrl = window.location.href.replace('/public', '');
-            fetch("{{ route('setLocale') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ locale: locale, current_url: currentUrl })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    if (locale === 'ar') {
-                        window.location.href = data.redirect.replace('/ar', '');
-                    } else {
-                        window.location.href = data.redirect;
-                    }
-                }
-            });
-        };
+    });
+}
 
 
-        // ===== اختيار الدولة =====
-    const countryItems = document.querySelectorAll('.country-item');
+ // ===== اختيار الدولة =====
+ const countryItems = document.querySelectorAll('.country-item');
     const countryCodeInput = document.querySelector('.country_code');
     const selectedCode = document.querySelector('.selected-code');
     const selectedFlag = document.querySelector('.selected-flag');
@@ -999,11 +913,10 @@ otpInputs.forEach((input, index) => {
 });
 
 
-    });
-    </script>
 
-  <!-- Cart Functionality Script -->
-  <script>
+
+</script>
+<script>
     const MIN_UNITS = {{ $minUnits }};
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -1163,14 +1076,14 @@ otpInputs.forEach((input, index) => {
             minimumFractionDigits: 0
         }).format(price) + ` ${t.currency}`;
     }*/
-    formatPrice(price) {
-    const t = this.translations[this.locale];
-    // Force English digits even in Arabic locale
-    return new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0
-    }).format(price) + ` ${t.currency}`;
-}
 
+    formatPrice(price) {
+        const t = this.translations[this.locale];
+        // Force English digits even in Arabic locale
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 0
+        }).format(price) + ` ${t.currency}`;
+    }
 
     showNotification(packageName) {
         const t = this.translations[this.locale];

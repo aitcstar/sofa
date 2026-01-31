@@ -39,6 +39,11 @@ class QuoteItem extends Model
         return $this->belongsTo(Package::class);
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
+    }
+
     // Methods
     public function calculateTotal()
     {

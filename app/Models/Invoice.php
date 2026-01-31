@@ -32,6 +32,7 @@ class Invoice extends Model
         'terms_conditions',
         'created_by',
         'metadata',
+        'quote_id',
         'paid_amount'
     ];
 
@@ -75,6 +76,12 @@ class Invoice extends Model
 
 
     // Helper Methods
+
+
+    public function quote()
+{
+    return $this->belongsTo(Quote::class);
+}
 
 
     public function getStatusColorAttribute()
@@ -207,6 +214,47 @@ class Invoice extends Model
         $paidAmount = $this->payments()->where('status', 'completed')->sum('amount');
         return max(0, $this->total_amount - $paidAmount);
     }
+
+    public function getItemsAttribute()
+    {
+        if ($this->quote) {
+            // الفاتورة مرتبطة بعرض سعر
+            return $this->quote->items->map(function($item) {
+                return [
+                    'description' => $item->description,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->unit_price,
+                    'total' => $item->total_price,
+                ];
+            });
+        }
+
+        if ($this->order) {
+            // الفاتورة مرتبطة بطلب فقط
+            $items = collect();
+
+            if ($this->order->package) {
+                $items->push([
+                    'description' => $this->order->package->name,
+                    'quantity' => $this->order->units_count ?? 1,
+                    'unit_price' => $this->subtotal,
+                    'total' => $this->subtotal,
+                ]);
+            }
+
+            return $items;
+        }
+
+        return collect();
+    }
+
+
+    public function items()
+{
+    return $this->hasMany(InvoiceItem::class);
+}
+
+
 
     public function getPaidAmountAttribute(): float
     {
@@ -346,51 +394,4 @@ class Invoice extends Model
             'total_amount' => max(0, $newTotal)
         ]);
     }
-
-   /* public function getItemsAttribute(): array
-    {
-        if (!$this->order) {
-            return [];
-        }
-
-        return [
-            [
-                'description' => $this->order->package?->name ?? 'خدمة مخصصة',
-                'quantity' => $this->order->units_count ?? 1,
-                'unit_price' => $this->subtotal,
-                'total' => $this->subtotal,
-                'details' => [
-                    'colors' => $this->order->colors,
-                    'specifications' => $this->order->specifications,
-                ]
-            ]
-        ];
-    }
-    */
-    public function getItemsAttribute()
-{
-    if (!$this->order) {
-        return collect();
-    }
-
-    // إذا كان الطلب مرتبط بباقة، نرجع عنصر يمثل الباقة
-    $items = collect();
-
-    if ($this->order->package) {
-        $items->push((object)[
-            'package' => $this->order->package,
-            'quantity' => $this->order->units_count ?? 1,
-            'unit_price' => $this->subtotal,
-            'total' => $this->subtotal,
-            'details' => (object)[
-                'colors' => $this->order->colors,
-                'specifications' => $this->order->specifications,
-            ],
-        ]);
-    }
-
-    // ممكن تضيف خدمات إضافية هنا لو عندك
-    return $items;
-}
-
 }

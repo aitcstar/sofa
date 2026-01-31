@@ -110,6 +110,8 @@ class EnhancedFinancialController extends Controller
     /**
      * Store new invoice.
      */
+
+     /*
     public function storeInvoice(Request $request)
     {
 
@@ -196,6 +198,88 @@ class EnhancedFinancialController extends Controller
                              ->withInput();
         }
     }
+*/
+
+public function storeInvoice(Request $request)
+{
+    $validated = $request->validate([
+        'order_id' => 'required|exists:orders,id',
+        'notes' => 'nullable|string',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $order = Order::findOrFail($request->order_id);
+
+        $quote = $order->quote ?? null;
+
+        $baseAmount = $quote ? $quote->subtotal : ($order->total_amount * 0.87);
+        $taxAmount = $baseAmount * 0.15;
+        $totalAmount = $baseAmount + $taxAmount;
+
+        $invoiceNumber = 'INV-' . date('Ymd') . '-' . str_pad(Invoice::count() + 1, 4, '0', STR_PAD_LEFT);
+        $paidAmount = $request->paid_amount ?? 0;
+
+        $invoice = Invoice::create([
+            'order_id' => $order->id,
+            'customer_id' => $order->user_id,
+            'quote_id' => $quote->id ?? null, // حفظ رقم عرض السعر
+            'invoice_number' => $invoiceNumber,
+            'issue_date' => Carbon::parse($order->created_at),
+            'due_date' => Carbon::parse($order->created_at)->addDays(30),
+            'base_amount' => $baseAmount,
+            'paid_amount' => $paidAmount,
+            'subtotal' => $baseAmount,
+            'tax_rate' => 15,
+            'tax_amount' => $taxAmount,
+            'discount_amount' => 0,
+            'total_amount' => $totalAmount,
+            'status' => $paidAmount >= $totalAmount ? 'paid' : ($paidAmount > 0 ? 'partial' : 'pending'),
+            'notes' => $request->notes,
+        ]);
+
+        // نسخ عناصر عرض السعر للفاتورة
+        if ($quote) {
+            foreach ($quote->items as $item) {
+                $invoice->items()->create([
+                    'description' => $item->description,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->unit_price,
+                    'total' => $item->total_price,
+                ]);
+            }
+        }
+
+        $order->total_amount = $totalAmount;
+        $order->save();
+
+        if ($paidAmount > 0) {
+            $invoice->payments()->create([
+                'order_id' => $order->id,
+                'invoice_id' => $invoice->id,
+                'customer_id' => $order->user_id,
+                'amount' => $paidAmount,
+                'payment_number' => 'PAY-' . rand(100000, 999999),
+                'payment_method' => 'cash',
+                'payment_date' => now(),
+                'status' => 'completed',
+            ]);
+        }
+
+        DB::commit();
+
+        return redirect()->route('admin.financial.invoices.show', $invoice)
+                         ->with('success', 'تم إنشاء الفاتورة بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect()->back()
+                         ->with('error', 'حدث خطأ: ' . $e->getMessage())
+                         ->withInput();
+    }
+}
+
 
 
     /**
@@ -221,6 +305,7 @@ class EnhancedFinancialController extends Controller
         //return view('admin.financial.invoices.show', compact('invoice'));
     }*/
 
+    /*
     public function showInvoice(Invoice $invoice)
 {
     // 1. تحديد اللغة من الرابط
@@ -253,6 +338,59 @@ class EnhancedFinancialController extends Controller
     // 5. تمرير المتغيرات إلى الـ view
     return view('admin.orders.invoice', compact('invoice', 'siteSettings', 'lang', 'dir'));
 }
+*/
+
+public function showInvoice(Invoice $invoice)
+{
+    $lang = request()->get('lang', 'ar');
+    if (!in_array($lang, ['ar', 'en'])) {
+        $lang = 'ar';
+    }
+    $dir = ($lang === 'ar') ? 'rtl' : 'ltr';
+    app()->setLocale($lang);
+
+    // نجيب البيانات الأساسية
+    $invoice->load([
+        'customer',
+        'assignedEmployee',
+        'payments',
+        'order', // عناصر الطلب لو مش مرتبط بعرض سعر
+        'package.images',
+    ]);
+
+    // تحديد العناصر اللي هتظهر في الفاتورة
+    $invoiceItems = collect();
+
+    if ($invoice->quote_id) {
+        // لو مرتبط بعرض سعر
+        $invoice->load(['quote.quoteItems.item', 'quote.quoteItems.unit']);
+        $invoiceItems = $invoice->quote->quoteItems ?? collect();
+    } else {
+        // لو مش مرتبط بعرض سعر
+        if ($invoice->order && $invoice->order->units_count > 0) {
+            // استخدم عناصر الطلب أو الباكدج الحالي
+            $invoiceItems = $invoice->order->items()->get()->map(function($item){
+                return (object)[
+                    'item' => $item,
+                    'quantity' => $item->quantity ?? 1,
+                    'unit_price' => $item->price ?? 0,
+                    'description' => $item->description ?? '-',
+                    'unit' => (object)['name_ar' => 'عام', 'name_en' => 'General'], // اسم وحدة افتراضي
+                ];
+            });
+        }
+    }
+
+    $siteSettings = (object)[
+        'site_name' => config('app.name', 'SOFA Experience'),
+        'address' => 'عنوان الشركة',
+        'phone' => '1234567890'
+    ];
+
+    return view('admin.orders.invoice', compact('invoice', 'invoiceItems', 'siteSettings', 'lang', 'dir'));
+}
+
+
 
     /**
      * Show edit invoice form.

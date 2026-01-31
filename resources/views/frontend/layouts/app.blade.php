@@ -223,7 +223,7 @@ border: none !important;
     <div class="header-container">
       <!-- Logo -->
       <div class="header-logo">
-        <img src="{{ asset('assets/images/logos/logo-white.svg') }}" alt="SOFA Experience"  style="margin: {{ $lang === 'ar' ? '0 -16px 0 0' : '0 0 0 -20px' }};">
+        <img src="{{ asset('assets/images/logos/logo-white.svg') }}" alt="SOFA Experience" style="margin: {{ app()->getLocale() === 'ar' ? '0 -16px 0 0' : '0 0 0 -20px' }};">
       </div>
       <!-- Navigation -->
       <nav class="header-nav">

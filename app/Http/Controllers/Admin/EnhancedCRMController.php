@@ -316,6 +316,7 @@ class EnhancedCRMController extends Controller
     }
 */
 
+/*
 public function convertToOrder(Request $request, Lead $lead)
 {
     if ($lead->status === 'converted') {
@@ -427,6 +428,65 @@ public function convertToOrder(Request $request, Lead $lead)
 
         return redirect()->back()
             ->with('error', 'حدث خطأ: ' . $e->getMessage());
+    }
+}
+*/
+
+public function convertToOrder(Request $request, Lead $lead)
+{
+    if ($lead->status === 'converted') {
+        return redirect()->back()->with('error', 'تم تحويل هذا العميل المحتمل مسبقاً');
+    }
+
+    DB::beginTransaction();
+
+    try {
+        // Find or create customer
+        $customer = User::firstOrCreate(
+            ['email' => $lead->email],
+            [
+                'name' => $lead->name,
+                'phone' => $lead->phone,
+                'role' => 'customer',
+                'password' => bcrypt(Str::random(16)),
+            ]
+        );
+
+        // Get quote
+        $quote = $lead->quote;
+        if (!$quote) {
+            return redirect()->back()->with('error', 'لا يوجد عرض سعر مرتبط بهذا العميل المحتمل');
+        }
+
+        // Create Order
+        $order = Order::create([
+            'user_id' => $customer->id,
+            'quote_id' => $quote->id,      // <-- هنا نربط الـ Order بالـ Quote
+            'lead_id' => $lead->id,
+            'name' => $lead->name,
+            'email' => $lead->email,
+            'phone' => $lead->phone,
+            'status' => 'new',
+            'total_amount' => $quote->total_amount,
+        ]);
+
+        // Update quote status
+        $quote->update([
+            'status' => 'converted',
+            'converted_to_order_at' => now(),
+        ]);
+
+        // Update lead status
+        $lead->update(['status' => 'converted']);
+
+        DB::commit();
+
+        return redirect()->route('orders.show', $order->id)
+                         ->with('success', 'تم تحويل عرض السعر إلى طلب بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'حدث خطأ أثناء التحويل: ' . $e->getMessage());
     }
 }
 

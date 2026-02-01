@@ -47,7 +47,8 @@ class Order extends Model
         'activity_log',
         'base_amount',
         'tax_amount',
-        'total_amount'
+        'total_amount',
+        'quote_id'
     ];
 
     protected $casts = [
@@ -80,6 +81,13 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function quote()
+    {
+        return $this->belongsTo(Quote::class);
+    }
+
+
 
     public function assignedEmployee()
     {

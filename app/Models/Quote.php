@@ -84,6 +84,12 @@ class Quote extends Model
         return $this->belongsTo(Order::class);
     }
 
+    public function orders()
+{
+    return $this->hasMany(Order::class);
+}
+
+
     // Scopes
     public function scopeDraft($query)
     {

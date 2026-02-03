@@ -200,7 +200,7 @@ class EnhancedFinancialController extends Controller
     }
 */
 
-public function storeInvoice(Request $request)
+/*public function storeInvoice(Request $request)
 {
     $validated = $request->validate([
         'order_id' => 'required|exists:orders,id',
@@ -254,6 +254,85 @@ public function storeInvoice(Request $request)
         $order->total_amount = $totalAmount;
         $order->save();
 
+        if ($paidAmount > 0) {
+            $invoice->payments()->create([
+                'order_id' => $order->id,
+                'invoice_id' => $invoice->id,
+                'customer_id' => $order->user_id,
+                'amount' => $paidAmount,
+                'payment_number' => 'PAY-' . rand(100000, 999999),
+                'payment_method' => 'cash',
+                'payment_date' => now(),
+                'status' => 'completed',
+            ]);
+        }
+
+        DB::commit();
+
+        return redirect()->route('admin.financial.invoices.show', $invoice)
+                         ->with('success', 'تم إنشاء الفاتورة بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect()->back()
+                         ->with('error', 'حدث خطأ: ' . $e->getMessage())
+                         ->withInput();
+    }
+}
+*/
+
+public function storeInvoice(Request $request)
+{
+    $validated = $request->validate([
+        'order_id' => 'required|exists:orders,id',
+        'notes' => 'nullable|string',
+        'paid_amount' => 'nullable|numeric',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $order = Order::with('items')->findOrFail($request->order_id); // جلب العناصر مع الطلب
+
+        $quote = $order->quote ?? null;
+
+        $baseAmount = $quote ? $quote->subtotal : ($order->total_amount * 0.87);
+        $taxAmount = $baseAmount * 0.15;
+        $totalAmount = $baseAmount + $taxAmount;
+
+        $invoiceNumber = 'INV-' . date('Ymd') . '-' . str_pad(Invoice::count() + 1, 4, '0', STR_PAD_LEFT);
+        $paidAmount = $request->paid_amount ?? 0;
+
+        // إنشاء الفاتورة
+        $invoice = Invoice::create([
+            'order_id' => $order->id,
+            'customer_id' => $order->user_id,
+            'quote_id' => $quote->id ?? null,
+            'invoice_number' => $invoiceNumber,
+            'issue_date' => Carbon::parse($order->created_at),
+            'due_date' => Carbon::parse($order->created_at)->addDays(30),
+            'base_amount' => $baseAmount,
+            'paid_amount' => $paidAmount,
+            'subtotal' => $baseAmount,
+            'tax_rate' => 15,
+            'tax_amount' => $taxAmount,
+            'discount_amount' => 0,
+            'total_amount' => $totalAmount,
+            'status' => $paidAmount >= $totalAmount ? 'paid' : ($paidAmount > 0 ? 'partial' : 'pending'),
+            'notes' => $request->notes,
+        ]);
+
+        // الفاتورة هتعتمد على عناصر الطلب مباشرة من order_items
+        // مثال لو عايز تجيب العناصر:
+        $orderItems = $order->items; // order_items مرتبطة بالـ order
+
+        // لو عايز، ممكن تحسب أو تعرض العناصر، أو تخزنها بطريقة أخرى حسب تصميمك
+
+        // تحديث المبلغ الكلي للطلب لو احتجت
+        $order->total_amount = $totalAmount;
+        $order->save();
+
+        // إنشاء الدفعة لو المدفوع > 0
         if ($paidAmount > 0) {
             $invoice->payments()->create([
                 'order_id' => $order->id,

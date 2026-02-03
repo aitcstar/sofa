@@ -316,7 +316,7 @@ class EnhancedCRMController extends Controller
     }
 */
 
-/*
+
 public function convertToOrder(Request $request, Lead $lead)
 {
     if ($lead->status === 'converted') {
@@ -326,27 +326,27 @@ public function convertToOrder(Request $request, Lead $lead)
     DB::beginTransaction();
 
     try {
-        // Find or create customer
+        // 1️⃣ إنشاء أو جلب العميل
         $customer = User::firstOrCreate(
             ['email' => $lead->email],
             [
-                'name' => $lead->name,
-                'phone' => $lead->phone,
-                'role' => 'customer',
+                'name'     => $lead->name,
+                'phone'    => $lead->phone,
+                'role'     => 'customer',
                 'password' => bcrypt(Str::random(16)),
             ]
         );
 
-        // Get quote
+        // 2️⃣ جلب عرض السعر
         $quote = $lead->quote;
         if (!$quote) {
             return redirect()->back()->with('error', 'لا يوجد Quote مرتبط بهذا العميل المحتمل.');
         }
 
-        // Generate order number
+        // 3️⃣ توليد رقم الطلب
         $orderNumber = 'ORD-' . now()->format('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT);
 
-        // Determine project type
+        // 4️⃣ تحديد نوع المشروع
         $projectTypeMapping = [
             'building' => 'large',
             'compound' => 'large',
@@ -357,65 +357,79 @@ public function convertToOrder(Request $request, Lead $lead)
         ];
         $projectType = $projectTypeMapping[$lead->project_type] ?? 'small';
 
-        // Calculate totals from quote items using total_price
-        $baseAmount = $quote->quoteItems->sum('total_price'); // استخدم total_price مباشرة
-        $totalUnits = $quote->quoteItems->sum('quantity');    // عدد القطع الإجمالي
-        $taxAmount = $quote->quoteItems->sum('tax_amount');   // مجموع الضرائب لكل عنصر
-        $totalAmount = $baseAmount + $taxAmount - ($lead->discount_amount ?? 0);
+        // 5️⃣ حساب القيم المالية من QuoteItems
+        $baseAmount     = $quote->quoteItems->sum('total_price');
+        $totalUnits     = $quote->quoteItems->sum('quantity');
+        $taxAmount      = $quote->quoteItems->sum('tax_amount');
+        $discountAmount = $lead->discount_amount ?? 0;
+        $totalAmount    = $baseAmount + $taxAmount - $discountAmount;
 
-        // Determine package_id if all items belong to one package
-        $packageIds = $quote->quoteItems->pluck('package_id')->unique();
-        $packageId = $packageIds->count() === 1 ? $packageIds->first() : null;
+        // 6️⃣ تحديد package_id (أول باكج موجود أو 0)
+        //$packageId = $quote->quoteItems->pluck('package_id')->first() ?? 0;
+        $packageId = $quote->quoteItems->pluck('package_id')->filter()->first(); // يتجاهل null
+        if (!$packageId) {
+            // حدد قيمة افتراضية من جدول packages
+            $packageId = Package::first()->id; // أو أي باكج مناسب
+        }
 
-        // Create order
+        // 7️⃣ إنشاء الطلب
         $order = Order::create([
-            'user_id' => $customer->id,
-            'package_id' => $packageId,
-            'order_number' => $orderNumber,
-            'name' => $lead->name,
-            'email' => $lead->email,
-            'phone' => $lead->phone,
-            'project_type' => $projectType,
-            'base_amount' => $baseAmount,
-            'total_amount' => $totalAmount,
-            'units_count' => $totalUnits,
-            'discount_amount' => $lead->discount_amount ?? 0,
-            'tax_amount' => $taxAmount,
-            'client_type' => 'individual',
-            'country_code' => $lead->country_code ?? '+966',
-            'status' => 'pending',
+            'user_id'        => $customer->id,
+            'quote_id'       => $quote->id,
+            'package_id'     => $packageId,
+            'order_number'   => $orderNumber,
+            'name'           => $lead->name,
+            'email'          => $lead->email,
+            'phone'          => $lead->phone,
+            'project_type'   => $projectType,
+            'base_amount'    => $baseAmount,
+            'total_amount'   => $totalAmount,
+            'units_count'    => $totalUnits,
+            'discount_amount'=> $discountAmount,
+            'tax_amount'     => $taxAmount,
+            'client_type'    => 'individual',
+            'country_code'   => $lead->country_code ?? '+966',
+            'status'         => 'pending',
             'payment_status' => 'unpaid',
             'internal_notes' => "تم التحويل من العميل المحتمل: {$lead->name}\n\n" . $lead->notes,
         ]);
 
-        // Add order items grouped by package using total_price from quote_items
+        // 8️⃣ نسخ الـ QuoteItems كـ OrderItems
         $quote->quoteItems
-            ->groupBy('package_id')
-            ->each(function ($items, $pkgId) use ($order) {
-                $quantitySum = $items->sum('quantity');
-                $priceSum = $items->sum('total_price'); // استخدم total_price فقط
+        ->groupBy('package_id')
+        ->each(function ($items, $pkgId) use ($order) {
+            if (!$pkgId) return; // يتجاهل null أو ''
 
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'package_id' => $pkgId,
-                    'quantity' => $quantitySum,
-                    'price' => $priceSum, // السعر الإجمالي لكل الباكج حسب عناصره
-                ]);
-            });
+            $quantitySum = $items->sum('quantity');
+            $priceSum = $items->sum('total_price');
 
-        // Update lead status
+            OrderItem::create([
+                'order_id' => $order->id,
+                'package_id' => $pkgId,
+                'quantity' => $quantitySum,
+                'price' => $priceSum,
+            ]);
+        });
+
+
+        // 9️⃣ تحديث حالة الـ Lead و Quote
         $lead->update([
-            'status' => 'converted',
-            'converted_to_order_id' => $order->id,
-            'converted_at' => now(),
+            'status'                 => 'converted',
+            'converted_to_order_id'  => $order->id,
+            'converted_at'           => now(),
         ]);
 
-        // Log activity
+        $quote->update([
+            'status'                 => 'accepted',
+            'converted_to_order_at'  => now(),
+        ]);
+
+        // 🔟 تسجيل النشاط
         LeadActivity::create([
-            'lead_id' => $lead->id,
-            'user_id' => $customer->id,
+            'lead_id'       => $lead->id,
+            'user_id'       => $customer->id,
             'activity_type' => 'converted',
-            'description' => "تم تحويل العميل المحتمل إلى طلب رقم: {$order->order_number}",
+            'description'   => "تم تحويل العميل المحتمل إلى طلب رقم: {$order->order_number}",
         ]);
 
         DB::commit();
@@ -425,70 +439,12 @@ public function convertToOrder(Request $request, Lead $lead)
 
     } catch (\Exception $e) {
         DB::rollBack();
-
-        return redirect()->back()
-            ->with('error', 'حدث خطأ: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'حدث خطأ: ' . $e->getMessage());
     }
 }
-*/
 
-public function convertToOrder(Request $request, Lead $lead)
-{
-    if ($lead->status === 'converted') {
-        return redirect()->back()->with('error', 'تم تحويل هذا العميل المحتمل مسبقاً');
-    }
 
-    DB::beginTransaction();
 
-    try {
-        // Find or create customer
-        $customer = User::firstOrCreate(
-            ['email' => $lead->email],
-            [
-                'name' => $lead->name,
-                'phone' => $lead->phone,
-                'role' => 'customer',
-                'password' => bcrypt(Str::random(16)),
-            ]
-        );
-
-        // Get quote
-        $quote = $lead->quote;
-        if (!$quote) {
-            return redirect()->back()->with('error', 'لا يوجد عرض سعر مرتبط بهذا العميل المحتمل');
-        }
-
-        // Create Order
-        $order = Order::create([
-            'user_id' => $customer->id,
-            'quote_id' => $quote->id,      // <-- هنا نربط الـ Order بالـ Quote
-            'lead_id' => $lead->id,
-            'name' => $lead->name,
-            'email' => $lead->email,
-            'phone' => $lead->phone,
-            'status' => 'new',
-            'total_amount' => $quote->total_amount,
-        ]);
-
-        // Update quote status
-        $quote->update([
-            'status' => 'converted',
-            'converted_to_order_at' => now(),
-        ]);
-
-        // Update lead status
-        $lead->update(['status' => 'converted']);
-
-        DB::commit();
-
-        return redirect()->route('orders.show', $order->id)
-                         ->with('success', 'تم تحويل عرض السعر إلى طلب بنجاح');
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return redirect()->back()->with('error', 'حدث خطأ أثناء التحويل: ' . $e->getMessage());
-    }
-}
 
 
 

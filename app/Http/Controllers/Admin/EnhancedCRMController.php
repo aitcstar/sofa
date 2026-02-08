@@ -853,5 +853,73 @@ public function storeQuote(Request $request)
             ],
         ];
     }
+
+
+    public function destroyLead(Lead $lead)
+{
+    DB::beginTransaction();
+
+    try {
+        // منع الحذف لو متحول لطلب (اختياري – أنصحك به)
+        if ($lead->status === 'converted') {
+            return redirect()->back()
+                ->with('error', 'لا يمكن حذف عميل محتمل تم تحويله إلى طلب');
+        }
+
+        // حذف الأنشطة
+        $lead->activities()->delete();
+
+        // حذف عروض الأسعار المرتبطة (و عناصرها)
+        foreach ($lead->quotes as $quote) {
+            $quote->items()->delete();
+            $quote->delete();
+        }
+
+        // حذف الـ Lead نفسه
+        $lead->delete();
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.crm.leads.index')
+            ->with('success', 'تم حذف العميل المحتمل بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return redirect()->back()
+            ->with('error', 'حدث خطأ أثناء الحذف: ' . $e->getMessage());
+    }
+}
+
+public function destroyQuote(Quote $quote)
+{
+    // مثال حماية
+    if ($quote->status !== 'draft') {
+        return redirect()->back()
+            ->with('error', 'لا يمكن حذف عرض سعر غير مسودة');
+    }
+
+    DB::beginTransaction();
+
+    try {
+        // حذف البنود
+        $quote->items()->delete();
+
+        // حذف عرض السعر
+        $quote->delete();
+
+        DB::commit();
+
+        return redirect()->back()
+            ->with('success', 'تم حذف عرض السعر بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return redirect()->back()
+            ->with('error', 'حدث خطأ أثناء الحذف');
+    }
+}
 }
 

@@ -938,5 +938,41 @@ public function updateTimeline(Request $request, Order $order)
             'message' => 'تم حذف الدفعة بنجاح'
         ]);
     }
+
+    public function destroy(Order $order)
+{
+    DB::beginTransaction();
+
+    try {
+        // حذف الملف لو موجود
+        if ($order->diagrams_path) {
+            Storage::disk('public')->delete($order->diagrams_path);
+        }
+
+        // حذف العلاقات
+        $order->logs()->delete();
+        $order->timeline()->delete();
+        $order->stageStatuses()->delete();
+        $order->paymentSchedules()->delete();
+        $order->payments()->delete();
+        $order->invoices()->delete();
+        $order->assignments()->delete(); // لو عندك relation باسمها
+
+        // أخيراً حذف الطلب نفسه
+        $order->delete();
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.orders.enhanced.index')
+            ->with('success', 'تم حذف الطلب وجميع بياناته بنجاح');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return redirect()->back()
+            ->with('error', 'حدث خطأ أثناء الحذف: ' . $e->getMessage());
+    }
+}
 }
 

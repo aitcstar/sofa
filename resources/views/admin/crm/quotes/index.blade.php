@@ -43,16 +43,37 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
             <th>الحالة</th>
             <th>تاريخ الإنشاء</th>
             <th>الموظف</th>
+            <th class="text-center">إجراءات</th>
         </tr>
     </thead>
     <tbody>
         @foreach($quotes as $quote)
         <tr>
-            <td><a href="{{ route('admin.crm.quotes.show', $quote) }}">{{ $quote->quote_number }}</a></td>
+            <td>
+                <a href="{{ route('admin.crm.quotes.show', $quote) }}">
+                    {{ $quote->quote_number }}
+                </a>
+            </td>
             <td>{{ $quote->customer_name }}</td>
             <td>{{ $quote->status }}</td>
             <td>{{ $quote->created_at->format('Y-m-d') }}</td>
             <td>{{ $quote->createdBy?->name ?? '-' }}</td>
+
+            <td class="text-center">
+                <form action="{{ route('admin.crm.quotes.destroy', $quote) }}"
+                      method="POST"
+                      onsubmit="return confirm('هل أنت متأكد من حذف عرض السعر؟ سيتم حذف كل بنوده');"
+                      style="display:inline-block">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                            class="btn btn-sm btn-outline-danger"
+                            title="حذف عرض السعر">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>

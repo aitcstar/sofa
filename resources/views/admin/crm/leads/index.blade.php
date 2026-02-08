@@ -139,12 +139,35 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                             <td>{{ $lead->created_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
+
                                     @if($user && ($user->hasPermission('crm.leads.view') || $user->role === 'admin'))
-                                    <a href="{{ route('admin.crm.leads.show', $lead) }}" class="btn btn-sm btn-primary">عرض</a>
+                                        <a href="{{ route('admin.crm.leads.show', $lead) }}"
+                                           class="btn btn-sm btn-primary">
+                                            عرض
+                                        </a>
                                     @endif
+
                                     @if($user && ($user->hasPermission('crm.leads.edit') || $user->role === 'admin'))
-                                    <a href="{{ route('admin.crm.leads.edit', $lead) }}" class="btn btn-sm btn-warning">تعديل</a>
+                                        <a href="{{ route('admin.crm.leads.edit', $lead) }}"
+                                           class="btn btn-sm btn-warning">
+                                            تعديل
+                                        </a>
                                     @endif
+
+                                    @if($user && ($user->hasPermission('crm.leads.delete') || $user->role === 'admin'))
+                                        <form action="{{ route('admin.crm.leads.destroy', $lead) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('هل أنت متأكد من حذف العميل المحتمل؟ سيتم حذف كل البيانات المرتبطة به');">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger">
+                                                حذف
+                                            </button>
+                                        </form>
+                                    @endif
+
                                 </div>
                             </td>
                         </tr>

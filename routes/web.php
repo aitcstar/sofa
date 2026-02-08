@@ -536,6 +536,8 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
             Route::put('/{lead}', [EnhancedCRMController::class, 'updateLead'])->name('update');
             Route::post('/{lead}/activity', [EnhancedCRMController::class, 'addActivity'])->name('add-activity');
             Route::post('/{lead}/convert', [EnhancedCRMController::class, 'convertToOrder'])->name('convert');
+
+            Route::delete('/{lead}', [EnhancedCRMController::class, 'destroyLead'])->name('destroy');
         });
 
         // Quotes
@@ -544,6 +546,7 @@ Route::prefix('admin')->name('admin.')->middleware(['web', 'admin_or_employee'])
             Route::get('/create', [EnhancedCRMController::class, 'createQuote'])->name('create');
             Route::post('/', [EnhancedCRMController::class, 'storeQuote'])->name('store');
             Route::get('/{quote}', [EnhancedCRMController::class, 'showQuote'])->name('show');
+            Route::delete('/{quote}', [EnhancedCRMController::class, 'destroyQuote'])->name('destroy');
         });
 
         // Sales Funnel

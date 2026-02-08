@@ -331,6 +331,20 @@ $user = Auth::guard('admin')->user() ?? Auth::guard('employee')->user();
                                            class="btn btn-sm btn-outline-primary" title="عرض التفاصيل">
                                             <i class="fas fa-eye"></i>
                                         </a>
+
+                                        <form action="{{ route('admin.orders.enhanced.destroy', $order->id) }}"
+                                            method="POST"
+                                            style="display:inline-block"
+                                            onsubmit="return confirm('هل أنت متأكد من حذف الطلب وكل بياناته؟ لا يمكن التراجع');">
+                                          @csrf
+                                          @method('DELETE')
+
+                                          <button type="submit"
+                                                  class="btn btn-sm btn-outline-danger"
+                                                  title="حذف الطلب">
+                                              <i class="fas fa-trash"></i>
+                                          </button>
+                                      </form>
                                        <!-- <button type="button" class="btn btn-sm btn-outline-success"
                                                 onclick="quickStatusUpdate({{ $order->id }})" title="تحديث الحالة">
                                             <i class="fas fa-edit"></i>

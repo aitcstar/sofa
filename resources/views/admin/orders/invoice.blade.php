@@ -129,14 +129,14 @@
         <div class="customer-data d-flex flex-column gap-sm-4 mb-4">
             <h3 class="heading-h8 mb-3">{{ __('invoice.customer_details') }}</h3>
             <div class="customer-data-item-details" style="display: flex; justify-content: space-between;">
-                <div class="d-flex flex-column gap-sm-5">
+                <div class="d-flex flex-column gap-sm-3">
                     <p class="mb-0 body-2">{{ __('invoice.customer_name') }}:</p>
                     <p class="mb-0 body-2">{{ __('invoice.phone') }}:</p>
                     <p class="mb-0 body-2">{{ __('invoice.address') }}:</p>
                     <p class="mb-0 body-2">{{ __('invoice.company') }}:</p>
 
                 </div>
-                <div class="d-flex flex-column gap-sm-5" style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
+                <div class="d-flex flex-column gap-sm-3" style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
                     <p class="mb-0 body-2 text-heading">{{ $invoice->customer->name ?? __('invoice.not_specified') }}</p>
                     <p class="mb-0 body-2 text-heading">{{ $invoice->customer->phone ?? __('invoice.not_specified') }}</p>
                     <p class="mb-0 body-2 text-heading">{{ $invoice->customer->address ?? __('invoice.not_specified') }}</p>

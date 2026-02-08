@@ -147,13 +147,16 @@
                 </div>
             </div>
         </div>-->
-
+        @php
+        $isQuote = $invoice->quote_id && $invoice->quote && $invoice->quote->quoteItems->isNotEmpty();
+        @endphp
         <div class="customer-data d-flex flex-column gap-sm-4 mb-4">
             <h3 class="heading-h8 mb-3">{{ __('invoice.customer_details') }}</h3>
 
             <div class="customer-data-item-details d-flex justify-content-between">
 
                 {{-- 🔹 العمود الشمال --}}
+                @if($isQuote)
                 <div class="d-flex flex-column gap-sm-3"
                      style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
 
@@ -172,7 +175,7 @@
                         {{ $invoice->quote->lead->notes ?? __('invoice.not_specified') }}
                     </p>
                 </div>
-
+                @endif
                 {{-- 🔹 العمود اليمين --}}
                 <div class="d-flex flex-column gap-sm-3"
                      style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
@@ -198,7 +201,6 @@
 
         <!-- ===== Package Details (Grouped by Unit) ===== -->
         @php
-        $isQuote = $invoice->quote_id && $invoice->quote && $invoice->quote->quoteItems->isNotEmpty();
 
         if($isQuote){
             $invoiceItems = $invoice->quote->quoteItems;

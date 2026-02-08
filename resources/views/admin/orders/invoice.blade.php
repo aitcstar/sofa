@@ -155,6 +155,26 @@
 
             <div class="customer-data-item-details d-flex justify-content-between">
 
+                {{-- 🔹 العمود اليمين --}}
+                <div class="d-flex flex-column gap-sm-3"
+                     style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.customer_name') }}:
+                        {{ $invoice->customer->name ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.phone') }}:
+                        {{ $invoice->customer->phone ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.address') }}:
+                        {{ $invoice->customer->address ?? __('invoice.not_specified') }}
+                    </p>
+                </div>
+
                 {{-- 🔹 العمود الشمال --}}
                 @if($isQuote)
                 <div class="d-flex flex-column gap-sm-3"
@@ -176,25 +196,7 @@
                     </p>
                 </div>
                 @endif
-                {{-- 🔹 العمود اليمين --}}
-                <div class="d-flex flex-column gap-sm-3"
-                     style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
 
-                    <p class="mb-0 body-2 text-heading">
-                        {{ __('invoice.customer_name') }}:
-                        {{ $invoice->customer->name ?? __('invoice.not_specified') }}
-                    </p>
-
-                    <p class="mb-0 body-2 text-heading">
-                        {{ __('invoice.phone') }}:
-                        {{ $invoice->customer->phone ?? __('invoice.not_specified') }}
-                    </p>
-
-                    <p class="mb-0 body-2 text-heading">
-                        {{ __('invoice.address') }}:
-                        {{ $invoice->customer->address ?? __('invoice.not_specified') }}
-                    </p>
-                </div>
 
             </div>
         </div>

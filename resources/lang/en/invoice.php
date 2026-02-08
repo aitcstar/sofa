@@ -14,6 +14,7 @@ return [
     'customer_name' => 'Customer Name',
     'phone' => 'Phone',
     'address' => 'Address',
+    'company' => 'Company',
     'not_specified' => 'Not Specified',
     'components' => 'Components',
     'item' => 'Item',

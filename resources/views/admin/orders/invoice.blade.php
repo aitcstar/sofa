@@ -133,7 +133,7 @@
                     <p class="mb-0 body-2">{{ __('invoice.customer_name') }}:</p>
                     <p class="mb-0 body-2">{{ __('invoice.phone') }}:</p>
                     <p class="mb-0 body-2">{{ __('invoice.address') }}:</p>
-                    <p class="mb-0 body-2">{{ __('invoice.address') }}:</p>
+                    <p class="mb-0 body-2">{{ __('invoice.company') }}:</p>
 
                 </div>
                 <div class="d-flex flex-column gap-sm-5" style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
@@ -176,11 +176,13 @@
                 <div class="p-2 text-center text-white" style="background-color: var(--primary);">
                     <h5 class="mb-0">{{ $unitName }}</h5>
                 </div>
+                @php $i = 1; @endphp
 
                 <div class="table-responsive">
                     <table class="table table-bordered mb-0">
                         <thead style="background-color: #f8f9fa;">
                             <tr>
+                                <th>#</th>
                                 <th>{{ __('invoice.item') }}</th>
                                 <th>{{ __('invoice.dimensions') }}</th>
                                 <th>{{ __('invoice.material') }}</th>
@@ -196,6 +198,8 @@
                         <tbody>
                             @foreach($items as $item)
                             <tr>
+                                <td>{{ $i++}}</td>
+
                                 <td>{{ $lang === 'ar' ? (optional($item->item)->item_name_ar ?? '-') : (optional($item->item)->item_name_en ?? '-') }}</td>
                                 <td>{{ optional($item->item)->dimensions ?? '-' }}</td>
                                 <td>{{ $lang === 'ar' ? (optional($item->item)->material_ar ?? '-') : (optional($item->item)->material_en ?? '-') }}</td>

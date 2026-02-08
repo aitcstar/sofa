@@ -125,7 +125,7 @@
 
         <hr class="my-4" />
 
-        <!-- ===== Customer Data ===== -->
+        <!-- ===== Customer Data =====
         <div class="customer-data d-flex flex-column gap-sm-4 mb-4">
             <h3 class="heading-h8 mb-3">{{ __('invoice.customer_details') }}</h3>
             <div class="customer-data-item-details" style="display: flex; justify-content: space-between;">
@@ -145,6 +145,54 @@
 
 
                 </div>
+            </div>
+        </div>-->
+
+        <div class="customer-data d-flex flex-column gap-sm-4 mb-4">
+            <h3 class="heading-h8 mb-3">{{ __('invoice.customer_details') }}</h3>
+
+            <div class="customer-data-item-details d-flex justify-content-between">
+
+                {{-- 🔹 العمود الشمال --}}
+                <div class="d-flex flex-column gap-sm-3"
+                     style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.company') }}:
+                        {{ $invoice->quote->customer_company ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.project_name') }}:
+                        {{ $invoice->quote->lead->project_type ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.description') }}:
+                        {{ $invoice->quote->lead->notes ?? __('invoice.not_specified') }}
+                    </p>
+                </div>
+
+                {{-- 🔹 العمود اليمين --}}
+                <div class="d-flex flex-column gap-sm-3"
+                     style="text-align: {{ $lang === 'ar' ? 'right' : 'left' }};">
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.customer_name') }}:
+                        {{ $invoice->customer->name ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.phone') }}:
+                        {{ $invoice->customer->phone ?? __('invoice.not_specified') }}
+                    </p>
+
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.address') }}:
+                        {{ $invoice->customer->address ?? __('invoice.not_specified') }}
+                    </p>
+                </div>
+
             </div>
         </div>
 

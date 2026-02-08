@@ -15,6 +15,7 @@ return [
     'phone' => 'Phone',
     'address' => 'Address',
     'company' => 'Company',
+    'project_name' => 'Project',
     'not_specified' => 'Not Specified',
     'components' => 'Components',
     'item' => 'Item',

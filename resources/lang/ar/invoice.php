@@ -14,7 +14,10 @@ return [
     'customer_name' => 'اسم العميل',
     'phone' => 'رقم التواصل',
     'address' => 'العنوان',
-    'company' => 'الشركة',
+    'company' => 'اسم الشركة',
+    'project_name' => 'اسم المشروع',
+
+
     'not_specified' => 'غير محدد',
     'components' => 'المكونات',
     'item' => 'القطعة',

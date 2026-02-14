@@ -179,6 +179,7 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead)
     {
+        dd('ddd');
         $employees = User::where('role', 'employee')->get();
         $packages = Package::all();
 

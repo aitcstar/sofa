@@ -123,6 +123,9 @@ class EnhancedCRMController extends Controller
             'project_type' => 'nullable|string',
             'budget' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
+            'building_number' => 'nullable',
+            'floor_number' => 'nullable',
+            'unit_number' => 'nullable',
         ]);
 
         //DB::beginTransaction();
@@ -178,6 +181,7 @@ class EnhancedCRMController extends Controller
      */
     public function updateLead(Request $request, Lead $lead)
     {
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -189,6 +193,9 @@ class EnhancedCRMController extends Controller
             'project_type' => 'nullable|string',
             'budget' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
+            'building_number' => 'nullable',
+            'floor_number' => 'nullable',
+            'unit_number' => 'nullable',
         ]);
 
         DB::beginTransaction();

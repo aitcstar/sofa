@@ -38,7 +38,10 @@ class Lead extends Model
         'converted_to_order_at',
         'lead_score',
         'metadata',
-        'tags'
+        'tags',
+        'building_number',
+        'floor_number',
+        'unit_number',
     ];
 
     protected $casts = [

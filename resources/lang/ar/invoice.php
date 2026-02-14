@@ -16,7 +16,9 @@ return [
     'address' => 'العنوان',
     'company' => 'اسم الشركة',
     'project_name' => 'اسم المشروع',
-
+    'building_number' => 'رقم المبنى',
+    'floor_number' => 'رقم الدور',
+    'unit_number' => 'رقم الوحدة',
 
     'not_specified' => 'غير محدد',
     'components' => 'المكونات',

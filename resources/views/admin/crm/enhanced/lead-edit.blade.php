@@ -39,10 +39,10 @@
                     <!-- Basic Information -->
                     <div class="col-md-6">
                         <h6 class="text-primary mb-3">المعلومات الأساسية</h6>
-                        
+
                         <div class="mb-3">
                             <label for="name" class="form-label">الاسم <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                            <input type="text" class="form-control @error('name') is-invalid @enderror"
                                    id="name" name="name" value="{{ old('name', $lead->name) }}" required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -51,7 +51,7 @@
 
                         <div class="mb-3">
                             <label for="email" class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                            <input type="email" class="form-control @error('email') is-invalid @enderror"
                                    id="email" name="email" value="{{ old('email', $lead->email) }}" required>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -60,7 +60,7 @@
 
                         <div class="mb-3">
                             <label for="phone" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" 
+                            <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                    id="phone" name="phone" value="{{ old('phone', $lead->phone) }}" required>
                             @error('phone')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -69,7 +69,7 @@
 
                         <div class="mb-3">
                             <label for="company" class="form-label">الشركة</label>
-                            <input type="text" class="form-control @error('company') is-invalid @enderror" 
+                            <input type="text" class="form-control @error('company') is-invalid @enderror"
                                    id="company" name="company" value="{{ old('company', $lead->company) }}">
                             @error('company')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -83,7 +83,7 @@
 
                         <div class="mb-3">
                             <label for="source" class="form-label">المصدر <span class="text-danger">*</span></label>
-                            <select class="form-select @error('source') is-invalid @enderror" 
+                            <select class="form-select @error('source') is-invalid @enderror"
                                     id="source" name="source" required>
                                 <option value="">اختر المصدر</option>
                                 <option value="website" {{ old('source', $lead->source) == 'website' ? 'selected' : '' }}>الموقع الإلكتروني</option>
@@ -100,7 +100,7 @@
 
                         <div class="mb-3">
                             <label for="status" class="form-label">الحالة <span class="text-danger">*</span></label>
-                            <select class="form-select @error('status') is-invalid @enderror" 
+                            <select class="form-select @error('status') is-invalid @enderror"
                                     id="status" name="status" required>
                                 <option value="new" {{ old('status', $lead->status) == 'new' ? 'selected' : '' }}>جديد</option>
                                 <option value="contacted" {{ old('status', $lead->status) == 'contacted' ? 'selected' : '' }}>تم التواصل</option>
@@ -115,7 +115,7 @@
 
                         <div class="mb-3">
                             <label for="assigned_to" class="form-label">تعيين إلى</label>
-                            <select class="form-select @error('assigned_to') is-invalid @enderror" 
+                            <select class="form-select @error('assigned_to') is-invalid @enderror"
                                     id="assigned_to" name="assigned_to">
                                 <option value="">اختر موظف</option>
                                 @foreach($employees as $employee)
@@ -129,9 +129,9 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
+                        <!--<div class="mb-3">
                             <label for="project_type" class="form-label">نوع المشروع</label>
-                            <select class="form-select @error('project_type') is-invalid @enderror" 
+                            <select class="form-select @error('project_type') is-invalid @enderror"
                                     id="project_type" name="project_type">
                                 <option value="">اختر نوع المشروع</option>
                                 <option value="villa" {{ old('project_type', $lead->project_type) == 'villa' ? 'selected' : '' }}>فيلا</option>
@@ -143,16 +143,57 @@
                             @error('project_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>-->
+
+                        <div class="mb-3">
+                            <label for="project_type" class="form-label">اسم المشروع</label>
+                            <input type="text" class="form-control @error('project_type') is-invalid @enderror" id="project_type" name="project_type" value="{{ old('project_type',$lead->project_type) }}">
+                            @error('project_type')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+
+
                     </div>
                 </div>
 
                 <!-- Budget and Notes -->
                 <div class="row mt-3">
                     <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label for="building_number" class="form-label">رقم المبنى</label>
+                            <input type="text" class="form-control @error('building_number') is-invalid @enderror" id="building_number" name="building_number" value="{{ old('building_number',$lead->building_number) }}">
+
+                            @error('building_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="floor_number" class="form-label">رقم الدور</label>
+                            <input type="text" class="form-control @error('floor_number') is-invalid @enderror" id="floor_number" name="floor_number" value="{{ old('floor_number',$lead->floor_number) }}">
+
+                            @error('floor_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="unit_number" class="form-label">رقم الوحدة</label>
+                            <input type="text" class="form-control @error('unit_number') is-invalid @enderror" id="unit_number" name="unit_number" value="{{ old('unit_number',$lead->unit_number) }}">
+
+                            @error('unit_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+
+
                         <div class="mb-3">
                             <label for="budget" class="form-label">الميزانية المتوقعة (ريال)</label>
-                            <input type="number" class="form-control @error('budget') is-invalid @enderror" 
+                            <input type="number" class="form-control @error('budget') is-invalid @enderror"
                                    id="budget" name="budget" value="{{ old('budget', $lead->estimated_value) }}" step="0.01" min="0">
                             @error('budget')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -165,7 +206,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <label for="notes" class="form-label">ملاحظات</label>
-                            <textarea class="form-control @error('notes') is-invalid @enderror" 
+                            <textarea class="form-control @error('notes') is-invalid @enderror"
                                       id="notes" name="notes" rows="4">{{ old('notes', $lead->notes) }}</textarea>
                             @error('notes')
                                 <div class="invalid-feedback">{{ $message }}</div>

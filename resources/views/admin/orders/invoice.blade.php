@@ -169,9 +169,13 @@
                         {{ $invoice->customer->phone ?? __('invoice.not_specified') }}
                     </p>
 
-                    <p class="mb-0 body-2 text-heading">
+                    <!--<p class="mb-0 body-2 text-heading">
                         {{ __('invoice.address') }}:
                         {{ $invoice->customer->address ?? __('invoice.not_specified') }}
+                    </p>-->
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.floor_number') }}:
+                        {{ $invoice->quote->lead->floor_number ?? __('invoice.not_specified') }}
                     </p>
                 </div>
 
@@ -191,8 +195,12 @@
                     </p>
 
                     <p class="mb-0 body-2 text-heading">
-                        {{ __('invoice.description') }}:
-                        {{ $invoice->quote->lead->notes ?? __('invoice.not_specified') }}
+                        {{ __('invoice.building_number') }}:
+                        {{ $invoice->quote->lead->building_number ?? __('invoice.not_specified') }}
+                    </p>
+                    <p class="mb-0 body-2 text-heading">
+                        {{ __('invoice.unit_number') }}:
+                        {{ $invoice->quote->lead->unit_number ?? __('invoice.not_specified') }}
                     </p>
                 </div>
                 @endif

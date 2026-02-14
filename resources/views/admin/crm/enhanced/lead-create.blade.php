@@ -127,27 +127,54 @@
                             @enderror
                         </div>
 
+
+
                         <div class="mb-3">
-                            <label for="project_type" class="form-label">نوع المشروع</label>
-                            <select class="form-select @error('project_type') is-invalid @enderror"
-                                    id="project_type" name="project_type">
-                                <option value="">اختر نوع المشروع</option>
-                                <option value="villa" {{ old('project_type') == 'villa' ? 'selected' : '' }}>فيلا</option>
-                                <option value="apartment" {{ old('project_type') == 'apartment' ? 'selected' : '' }}>شقة</option>
-                                <option value="office" {{ old('project_type') == 'office' ? 'selected' : '' }}>مكتب</option>
-                                <option value="commercial" {{ old('project_type') == 'commercial' ? 'selected' : '' }}>تجاري</option>
-                                <option value="other" {{ old('project_type') == 'other' ? 'selected' : '' }}>أخرى</option>
-                            </select>
+                            <label for="project_type" class="form-label">اسم المشروع</label>
+                            <input type="text" class="form-control @error('project_type') is-invalid @enderror" id="project_type" name="project_type" value="{{ old('project_type') }}">
+
                             @error('project_type')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+
                     </div>
                 </div>
 
                 <!-- Budget and Notes -->
                 <div class="row mt-3">
                     <div class="col-md-6">
+
+                        <div class="mb-3">
+                            <label for="building_number" class="form-label">رقم المبنى</label>
+                            <input type="text" class="form-control @error('building_number') is-invalid @enderror" id="building_number" name="building_number" value="{{ old('building_number') }}">
+
+                            @error('building_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="floor_number" class="form-label">رقم الدور</label>
+                            <input type="text" class="form-control @error('floor_number') is-invalid @enderror" id="floor_number" name="floor_number" value="{{ old('floor_number') }}">
+
+                            @error('floor_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="unit_number" class="form-label">رقم الوحدة</label>
+                            <input type="text" class="form-control @error('unit_number') is-invalid @enderror" id="unit_number" name="unit_number" value="{{ old('unit_number') }}">
+
+                            @error('unit_number')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+
                         <div class="mb-3">
                             <label for="budget" class="form-label">الميزانية المتوقعة (ريال)</label>
                             <input type="number" class="form-control @error('budget') is-invalid @enderror"
@@ -156,8 +183,12 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
                     </div>
                 </div>
+
+
+
 
                 <div class="row">
                     <div class="col-12">

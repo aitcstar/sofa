@@ -107,7 +107,10 @@ class LeadController extends Controller
             'estimated_value' => 'nullable|numeric|min:0',
             'expected_close_date' => 'nullable|date|after:today',
             'notes' => 'nullable|string',
-            'assigned_to' => 'nullable|exists:users,id'
+            'assigned_to' => 'nullable|exists:users,id',
+            'building_number' => 'nullable',
+            'floor_number' => 'nullable',
+            'unit_number' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -199,7 +202,10 @@ class LeadController extends Controller
             'estimated_value' => 'nullable|numeric|min:0',
             'expected_close_date' => 'nullable|date',
             'notes' => 'nullable|string',
-            'assigned_to' => 'nullable|exists:users,id'
+            'assigned_to' => 'nullable|exists:users,id',
+            'building_number' => 'nullable',
+            'floor_number' => 'nullable',
+            'unit_number' => 'nullable',
         ]);
 
         if ($validator->fails()) {

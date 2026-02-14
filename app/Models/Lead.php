@@ -23,7 +23,7 @@ class Lead extends Model
         'priority',
         'project_type',
         'units_count',
-        'budget_range',
+        'budget',
         'estimated_value',
         'expected_close_date',
         'expected_start_date',

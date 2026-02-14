@@ -173,10 +173,12 @@
                         {{ __('invoice.address') }}:
                         {{ $invoice->customer->address ?? __('invoice.not_specified') }}
                     </p>-->
+                    @if($isQuote)
                     <p class="mb-0 body-2 text-heading">
                         {{ __('invoice.floor_number') }}:
                         {{ $invoice->quote->lead->floor_number ?? __('invoice.not_specified') }}
                     </p>
+                    @endif
                 </div>
 
                 {{-- 🔹 العمود الشمال --}}

@@ -168,11 +168,12 @@
                         {{ __('invoice.phone') }}:
                         {{ $invoice->customer->phone ?? __('invoice.not_specified') }}
                     </p>
-
-                    <!--<p class="mb-0 body-2 text-heading">
+                    @if(!$isQuote)
+                    <p class="mb-0 body-2 text-heading">
                         {{ __('invoice.address') }}:
                         {{ $invoice->customer->address ?? __('invoice.not_specified') }}
-                    </p>-->
+                    </p>
+                    @endif
                     @if($isQuote)
                     <p class="mb-0 body-2 text-heading">
                         {{ __('invoice.floor_number') }}:

@@ -239,9 +239,9 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>حفظ كمسودة
                             </button>
-                            <button type="submit" name="action" value="send" class="btn btn-success">
+                            <!--<button type="submit" name="action" value="send" class="btn btn-success">
                                 <i class="fas fa-paper-plane me-2"></i>حفظ وإرسال
-                            </button>
+                            </button>-->
                             <a href="{{ route('admin.crm.quotes.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-times me-2"></i>إلغاء
                             </a>

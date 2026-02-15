@@ -513,7 +513,7 @@ public function convertToOrder(Request $request, Lead $lead)
 
     public function createQuote()
     {
-        $leads = Lead::whereIn('status', ['contacted', 'interested'])->get();
+        $leads = Lead::whereIn('status', ['new','contacted', 'interested'])->get();
 
         // تحميل packageUnitItems مع العلاقة item()
         $packages = Package::with('packageUnitItems.item')->get()->map(function ($pkg) {

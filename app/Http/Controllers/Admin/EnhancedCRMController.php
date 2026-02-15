@@ -103,7 +103,6 @@ class EnhancedCRMController extends Controller
     public function createLead()
     {
         $employees = User::where('role', 'employee')->orWhere('role', 'admin')->get();
-
         return view('admin.crm.enhanced.lead-create', compact('employees'));
     }
 
@@ -136,7 +135,7 @@ class EnhancedCRMController extends Controller
             // Create initial activity
             LeadActivity::create([
                 'lead_id' => $lead->id,
-                'user_id' => auth()->id(),
+                'user_id' =>  Auth::guard('admin')->user()->id,//auth()->id(),
                 'activity_type' => 'created',
                 'description' => 'تم إنشاء العميل المحتمل',
             ]);
@@ -208,7 +207,7 @@ class EnhancedCRMController extends Controller
             if ($oldStatus !== $lead->status) {
                 LeadActivity::create([
                     'lead_id' => $lead->id,
-                    'user_id' => auth()->id(),
+                    'user_id' =>  Auth::guard('admin')->user()->id,//auth()->id(),
                     'activity_type' => 'status_changed',
                     'description' => "تم تغيير الحالة من {$oldStatus} إلى {$lead->status}",
                 ]);

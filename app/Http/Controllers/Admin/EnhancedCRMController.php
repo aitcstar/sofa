@@ -513,8 +513,16 @@ public function convertToOrder(Request $request, Lead $lead)
 
     public function createQuote()
     {
-        $leads = Lead::whereIn('status', ['new','contacted', 'interested'])->get();
-
+        //$leads = Lead::whereIn('status', ['new','contacted', 'interested'])->get();
+        $leads = Lead::whereIn('status', ['new','contacted', 'interested'])
+        ->select('leads.*')
+        ->join(
+            \DB::raw('(SELECT MAX(id) as id FROM leads GROUP BY email) as latest'),
+            'leads.id',
+            '=',
+            'latest.id'
+        )
+        ->get();
         // تحميل packageUnitItems مع العلاقة item()
         $packages = Package::with('packageUnitItems.item')->get()->map(function ($pkg) {
             return [
